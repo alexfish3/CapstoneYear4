@@ -49,10 +49,12 @@ public class ScooterMovement : MonoBehaviour
     [HideInInspector] public float score = 0;
 
     Rigidbody rb;
+    AudioSource aud;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        aud = GetComponent<AudioSource>();
         //GameManager.Instance.AddPlayer(this);
     }
 
@@ -74,6 +76,7 @@ public class ScooterMovement : MonoBehaviour
         // Updates current speed based on acceleration, caps at max speed
         if (accelerating)
         {
+            aud.Play();
             if (currentSpeed < maxSpeed)
             {
                 currentSpeed += acceleration * Time.deltaTime;
@@ -81,6 +84,7 @@ public class ScooterMovement : MonoBehaviour
         }
         else
         {
+            aud.Stop();
             float targSpeed = currentSpeed - (acceleration * Time.deltaTime);
             currentSpeed = Mathf.Clamp(targSpeed, 0, 2048);
         }
