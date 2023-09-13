@@ -6,7 +6,10 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class ScooterMovement : MonoBehaviour
 {
+    private IEnumerator boostCoroutine;
+
     [SerializeField] PlayerInput playerInput;
+    [SerializeField] Floorchecker floorchecker;
     public Vector2 playerMovement;
 
     [SerializeField] float currentSpeed;
@@ -30,8 +33,11 @@ public class ScooterMovement : MonoBehaviour
 
     [Header("Boost Info")]
     public int boostCount;
+    public float boostSpeed;
+    public float boostDuration;
     public bool boosting;
-    bool canBoost;
+    bool canBoost = true;
+    private bool boostCall;
 
     Rigidbody rb;
 
@@ -45,12 +51,15 @@ public class ScooterMovement : MonoBehaviour
         //Vector3 cameraRotation = new Vector3(cameraHolder.transform.rotation.x, cameraHolder.transform.rotation.y + rotationControl, cameraHolder.transform.rotation.z);
         //cameraHolder.transform.rotation = Quaternion.Euler(cameraRotation);
 
+        if (!floorchecker.Grounded)
+            return;
+
         PlayerMove();
     }
 
     private void PlayerMove()
     {
-        gameObject.transform.rotation *= Quaternion.AngleAxis((steerControl * turningValue), Vector3.up);
+        rb.rotation *= Quaternion.AngleAxis((steerControl * turningValue), Vector3.up);
 
         // Updates current speed based on acceleration, caps at max speed
         if (accelerating)
@@ -62,36 +71,51 @@ public class ScooterMovement : MonoBehaviour
         }
         else
         {
-            currentSpeed = 0;
-
-            rb.velocity = Vector3.zero;
+            if (currentSpeed > 0)
+            {
+                currentSpeed -= acceleration * 5 * Time.deltaTime;
+            }
+            else if(currentSpeed <= 0)
+            {
+                currentSpeed = 0;
+            }
         }
 
-        //// Moving Forward
-        //if (accelerating && rb.velocity.magnitude <= maxSpeed)
-        //{
-        //    ////Vector3 playerTransform = new Vector3(playerMovement.x, 0, playerMovement.y);
-        //    //rb.AddForce(transform.forward * acceleration, ForceMode.Acceleration);
-        //}
+        rb.AddForce(transform.forward * currentSpeed * 50, ForceMode.Acceleration);
 
-        if(canBoost == false)
+        if (boostCall && boostCount > 0 && canBoost)
         {
-            //rb.AddForce(transform.forward * currentSpeed, ForceMode.Acceleration);
-            rb.velocity = new Vector3(0, 0, currentSpeed);
+            StartBoost();
         }
-        else
-        {
-            rb.AddForce(transform.forward * (currentSpeed * 5), ForceMode.Impulse);
-            canBoost = false;
-        }
-
-        //// Boost Forward
-        //if (accelerating && boostCount > 0 && boosting)
-        //{
-        //    rb.AddForce(transform.forward * 2, ForceMode.Impulse);
-        //}
-
     }
+
+
+    private void StartBoost()
+    {
+        boostCoroutine = Boost();
+        StartCoroutine(boostCoroutine);
+    }
+
+    private void StopBoost()
+    {
+        StopCoroutine(boostCoroutine);
+        boostCoroutine = null;
+    }
+
+    private IEnumerator Boost()
+    {
+        canBoost = false; 
+        boostCount--;
+        boosting = true;
+
+        rb.AddForce(transform.forward * boostSpeed, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(boostDuration);
+
+        boosting = false;
+        canBoost = true;
+    }
+
 
     public void OnMoveController(CallbackContext context)
     {
@@ -135,16 +159,12 @@ public class ScooterMovement : MonoBehaviour
     {
         if (context.performed)
         {
-            boosting = true;
-            if(canBoost == false)
-            {
-                canBoost = true;
-            }
+            boostCall = true;
 
         }
         else if (context.canceled)
         {
-            boosting = false;
+            boostCall = false;
         }
     }
 
