@@ -31,6 +31,7 @@ public class ScooterMovement : MonoBehaviour
 
     [Header("Braking Info")]
     public bool braking;
+    public float brakingSpeed;
 
     [Header("Boost Info")]
     public int boostCount;
@@ -80,17 +81,20 @@ public class ScooterMovement : MonoBehaviour
         }
         else
         {
+            float targSpeed = currentSpeed - (acceleration * Time.deltaTime);
+            currentSpeed = Mathf.Clamp(targSpeed, 0, 2048);
+        }
+
+        if (braking)
+        {
             if (currentSpeed > 0)
             {
-                currentSpeed -= acceleration * 5 * Time.deltaTime;
-            }
-            else if(currentSpeed <= 0)
-            {
-                currentSpeed = 0;
+                float targSpeed = currentSpeed - (brakingSpeed * Time.deltaTime);
+                currentSpeed = Mathf.Clamp(targSpeed, 0, 2048);
             }
         }
 
-        rb.AddForce(transform.forward * currentSpeed * 50, ForceMode.Acceleration);
+        rb.AddForce(transform.forward * currentSpeed, ForceMode.Acceleration);
 
         if (boostCall && boostCount > 0 && canBoost)
         {
