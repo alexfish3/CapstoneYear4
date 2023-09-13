@@ -6,6 +6,8 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class ScooterMovement : MonoBehaviour
 {
+    private IEnumerator boostCoroutine;
+
     [SerializeField] PlayerInput playerInput;
     [SerializeField] Floorchecker floorchecker;
     public Vector2 playerMovement;
@@ -32,8 +34,10 @@ public class ScooterMovement : MonoBehaviour
     [Header("Boost Info")]
     public int boostCount;
     public float boostSpeed;
+    public float boostDuration;
     public bool boosting;
-    bool canBoost;
+    bool canBoost = true;
+    private bool boostCall;
 
     Rigidbody rb;
 
@@ -77,31 +81,41 @@ public class ScooterMovement : MonoBehaviour
             }
         }
 
-        //// Moving Forward
-        //if (accelerating && rb.velocity.magnitude <= maxSpeed)
-        //{
-        //    ////Vector3 playerTransform = new Vector3(playerMovement.x, 0, playerMovement.y);
-        //    //rb.AddForce(transform.forward * acceleration, ForceMode.Acceleration);
-        //}
+        rb.AddForce(transform.forward * currentSpeed * 50, ForceMode.Acceleration);
 
-        if(canBoost == false)
+        if (boostCall && boostCount > 0 && canBoost)
         {
-            rb.AddForce(transform.forward * currentSpeed * 50, ForceMode.Acceleration);
-            //rb.velocity = new Vector3(0, 0, currentSpeed);
+            StartBoost();
         }
-        else
-        {
-            rb.AddForce(transform.forward * (boostSpeed), ForceMode.Impulse);
-            canBoost = false;
-        }
-
-        //// Boost Forward
-        //if (accelerating && boostCount > 0 && boosting)
-        //{
-        //    rb.AddForce(transform.forward * 2, ForceMode.Impulse);
-        //}
-
     }
+
+
+    private void StartBoost()
+    {
+        boostCoroutine = Boost();
+        StartCoroutine(boostCoroutine);
+    }
+
+    private void StopBoost()
+    {
+        StopCoroutine(boostCoroutine);
+        boostCoroutine = null;
+    }
+
+    private IEnumerator Boost()
+    {
+        canBoost = false; 
+        boostCount--;
+        boosting = true;
+
+        rb.AddForce(transform.forward * boostSpeed, ForceMode.Impulse);
+
+        yield return new WaitForSeconds(boostDuration);
+
+        boosting = false;
+        canBoost = true;
+    }
+
 
     public void OnMoveController(CallbackContext context)
     {
@@ -145,16 +159,12 @@ public class ScooterMovement : MonoBehaviour
     {
         if (context.performed)
         {
-            boosting = true;
-            if(canBoost == false)
-            {
-                canBoost = true;
-            }
+            boostCall = true;
 
         }
         else if (context.canceled)
         {
-            boosting = false;
+            boostCall = false;
         }
     }
 
