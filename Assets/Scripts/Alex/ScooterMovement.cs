@@ -31,6 +31,7 @@ public class ScooterMovement : MonoBehaviour
     [Header("Boost Info")]
     public int boostCount;
     public bool boosting;
+    bool canBoost;
 
     Rigidbody rb;
 
@@ -39,7 +40,7 @@ public class ScooterMovement : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         //Vector3 cameraRotation = new Vector3(cameraHolder.transform.rotation.x, cameraHolder.transform.rotation.y + rotationControl, cameraHolder.transform.rotation.z);
         //cameraHolder.transform.rotation = Quaternion.Euler(cameraRotation);
@@ -62,6 +63,8 @@ public class ScooterMovement : MonoBehaviour
         else
         {
             currentSpeed = 0;
+
+            rb.velocity = Vector3.zero;
         }
 
         //// Moving Forward
@@ -71,14 +74,15 @@ public class ScooterMovement : MonoBehaviour
         //    //rb.AddForce(transform.forward * acceleration, ForceMode.Acceleration);
         //}
 
-        if(boosting == false)
+        if(canBoost == false)
         {
-            rb.AddForce(transform.forward * currentSpeed, ForceMode.Acceleration);
-            //rb.velocity = new Vector3(0, 0, currentSpeed);
+            //rb.AddForce(transform.forward * currentSpeed, ForceMode.Acceleration);
+            rb.velocity = new Vector3(0, 0, currentSpeed);
         }
         else
         {
-            rb.velocity = new Vector3(0, 0, (currentSpeed * 2));
+            rb.AddForce(transform.forward * (currentSpeed * 5), ForceMode.Impulse);
+            canBoost = false;
         }
 
         //// Boost Forward
@@ -132,6 +136,11 @@ public class ScooterMovement : MonoBehaviour
         if (context.performed)
         {
             boosting = true;
+            if(canBoost == false)
+            {
+                canBoost = true;
+            }
+
         }
         else if (context.canceled)
         {
