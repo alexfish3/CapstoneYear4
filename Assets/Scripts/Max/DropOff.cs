@@ -13,7 +13,7 @@ public class DropOff : MonoBehaviour
             ScooterMovement player = other.GetComponent<ScooterMovement>();
             if(package.playerHolding == player)
             {
-                package.Deliver();
+                player.DropPackage(package, true);
             }
         }
     }

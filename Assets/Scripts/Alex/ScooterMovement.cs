@@ -46,7 +46,7 @@ public class ScooterMovement : MonoBehaviour
 
     // package info
     private Package heldPackage;
-    [HideInInspector] public float score = 0;
+    public float score = 0;
 
     Rigidbody rb;
     AudioSource aud;
@@ -197,6 +197,7 @@ public class ScooterMovement : MonoBehaviour
         if(earnPoints)
         {
             score += package.points;
+            package.Deliver();
         }
         heldPackage = null;
     }
