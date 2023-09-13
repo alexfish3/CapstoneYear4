@@ -51,6 +51,14 @@ public class ScooterMovement : MonoBehaviour
     Rigidbody rb;
     AudioSource aud;
 
+    public PlayerType playerNumberType;
+    public enum PlayerType
+    {
+        Player1,
+        Player2,
+    }
+
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -123,6 +131,8 @@ public class ScooterMovement : MonoBehaviour
     {
         canBoost = false; 
         boostCount--;
+        updateBoostUI(boostCount);
+        updateCanBoostUI(canBoost);
         boosting = true;
 
         rb.AddForce(transform.forward * boostSpeed, ForceMode.Impulse);
@@ -131,6 +141,7 @@ public class ScooterMovement : MonoBehaviour
 
         boosting = false;
         canBoost = true;
+        updateCanBoostUI(canBoost);
     }
 
 
@@ -197,7 +208,9 @@ public class ScooterMovement : MonoBehaviour
         if(earnPoints)
         {
             score += package.points;
+            updateScoreUI(score);
             package.Deliver();
+
         }
         heldPackage = null;
     }
@@ -210,6 +223,42 @@ public class ScooterMovement : MonoBehaviour
             {
                 heldPackage.Stolen(player);
             }
+        }
+    }
+
+    private void updateScoreUI(float score)
+    {
+        if(playerNumberType == PlayerType.Player1)
+        {
+            UIManager.Instance.updatePlayer1Text(score);
+        }
+        if (playerNumberType == PlayerType.Player2)
+        {
+            UIManager.Instance.updatePlayer2Text(score);
+        }
+    }
+
+    private void updateBoostUI(float score)
+    {
+        if (playerNumberType == PlayerType.Player1)
+        {
+            UIManager.Instance.updatePlayer1Boost(score);
+        }
+        if (playerNumberType == PlayerType.Player2)
+        {
+            UIManager.Instance.updatePlayer2Boost(score);
+        }
+    }
+
+    private void updateCanBoostUI(bool canBoost)
+    {
+        if (playerNumberType == PlayerType.Player1)
+        {
+            UIManager.Instance.updatePlayer1CanBoost(canBoost);
+        }
+        if (playerNumberType == PlayerType.Player2)
+        {
+            UIManager.Instance.updatePlayer2CanBoost(canBoost);
         }
     }
 }
