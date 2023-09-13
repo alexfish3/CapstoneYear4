@@ -210,6 +210,7 @@ GameObject:
   - component: {fileID: 3821771399049231832}
   - component: {fileID: 3229914393322429173}
   - component: {fileID: 879494476696455638}
+  - component: {fileID: 4202306841560121670}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -261,7 +262,9 @@ MonoBehaviour:
   braking: 0
   boostCount: 1
   boostSpeed: 0
+  boostDuration: 0
   boosting: 0
+  score: 0
 --- !u!114 &3821771399049231832
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,6 +471,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBody: {fileID: 6652038372960064136}
+--- !u!65 &4202306841560121670
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4447557249903744733}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.0300503, y: 1.5872289, z: 2.4521928}
+  m_Center: {x: 0.04438114, y: 0.34820896, z: 0.23491836}
 --- !u!1 &5235467315359808553
 GameObject:
   m_ObjectHideFlags: 0

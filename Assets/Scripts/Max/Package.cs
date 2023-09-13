@@ -21,7 +21,7 @@ public class Package : MonoBehaviour
     private BoxCollider hitBox;
     
     private float distance;
-    private float points;
+    [HideInInspector] public float points;
 
     private void Start()
     {
@@ -37,19 +37,19 @@ public class Package : MonoBehaviour
             playerHolding = player;
             beacon.transform.position = dropOff.transform.position;
             model.gameObject.transform.parent = playerHolding.transform;
-            // some method to assign THIS to player
+            player.PickupPackage(this);
             isHolding = true;
         }
     }
     public void Stolen(ScooterMovement playerStealing)
     {
-        // some method to assign this package to new player
+        playerHolding.DropPackage(this, false);
+        playerStealing.PickupPackage(this);
         playerHolding = playerStealing;
     }
     public void DropOff()
     {
-        // give the player the score (should be a method on the player)
-        // unassign this to player
+        playerHolding.DropPackage(this, true);
         Destroy(model);
         Destroy(this);
     }

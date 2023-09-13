@@ -133,10 +133,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isHolding: 0
+  model: {fileID: 0}
   pickup: {fileID: 8424906263538101049}
   dropOff: {fileID: 8226835197781591385}
   beacon: {fileID: 7114645051290817529}
   value: 10
+  points: 0
 --- !u!65 &8828895564871304413
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -152,7 +154,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3

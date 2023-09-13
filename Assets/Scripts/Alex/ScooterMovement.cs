@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
@@ -39,11 +40,19 @@ public class ScooterMovement : MonoBehaviour
     bool canBoost = true;
     private bool boostCall;
 
+    [Header("Stealing Info")]
+    
+
+    // package info
+    private Package heldPackage;
+    [HideInInspector] public float score = 0;
+
     Rigidbody rb;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        //GameManager.Instance.AddPlayer(this);
     }
 
     private void FixedUpdate()
@@ -168,4 +177,30 @@ public class ScooterMovement : MonoBehaviour
         }
     }
 
+    public void PickupPackage(Package package)
+    {
+        if (heldPackage == null)
+        {
+            heldPackage = package;
+        }
+    }
+    public void DropPackage(Package package, bool earnPoints)
+    {
+        if(earnPoints)
+        {
+            score += package.points;
+        }
+        heldPackage = null;
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            ScooterMovement player = other.GetComponent<ScooterMovement>();
+            if(player.boosting && heldPackage != null)
+            {
+                heldPackage.Stolen(player);
+            }
+        }
+    }
 }
