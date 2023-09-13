@@ -67,9 +67,14 @@ public class ScooterMovement : MonoBehaviour
         }
         else
         {
-            currentSpeed = 0;
-
-            rb.velocity = Vector3.zero;
+            if (currentSpeed > 0)
+            {
+                currentSpeed -= acceleration * 5 * Time.deltaTime;
+            }
+            else if(currentSpeed <= 0)
+            {
+                currentSpeed = 0;
+            }
         }
 
         //// Moving Forward
