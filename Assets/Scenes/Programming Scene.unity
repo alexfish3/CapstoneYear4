@@ -331,8 +331,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 969263969667429436, guid: b8715b9042a13414fb1a2b28b73b310b, type: 3}
+      propertyPath: rb
+      value: 
+      objectReference: {fileID: 4827843703739289035}
+    - target: {fileID: 969263969667429436, guid: b8715b9042a13414fb1a2b28b73b310b, type: 3}
       propertyPath: boostCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 969263969667429436, guid: b8715b9042a13414fb1a2b28b73b310b, type: 3}
+      propertyPath: floorchecker
+      value: 
+      objectReference: {fileID: 4827843703739289030}
+    - target: {fileID: 969263969667429436, guid: b8715b9042a13414fb1a2b28b73b310b, type: 3}
+      propertyPath: turningValue
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1434788551553180094, guid: b8715b9042a13414fb1a2b28b73b310b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -378,6 +390,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4447557249903744733, guid: b8715b9042a13414fb1a2b28b73b310b, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -409,6 +425,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerBody: {fileID: 4827843703739289029}
+--- !u!54 &4827843703739289035 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 3229914393322429173, guid: b8715b9042a13414fb1a2b28b73b310b, type: 3}
+  m_PrefabInstance: {fileID: 4827843703739289027}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ using static UnityEngine.InputSystem.InputAction;
 public class ScooterMovement : MonoBehaviour
 {
     [SerializeField] PlayerInput playerInput;
+    [SerializeField] Floorchecker floorchecker;
     public Vector2 playerMovement;
 
     [SerializeField] float currentSpeed;
@@ -30,6 +31,7 @@ public class ScooterMovement : MonoBehaviour
 
     [Header("Boost Info")]
     public int boostCount;
+    public float boostSpeed;
     public bool boosting;
     bool canBoost;
 
@@ -45,12 +47,15 @@ public class ScooterMovement : MonoBehaviour
         //Vector3 cameraRotation = new Vector3(cameraHolder.transform.rotation.x, cameraHolder.transform.rotation.y + rotationControl, cameraHolder.transform.rotation.z);
         //cameraHolder.transform.rotation = Quaternion.Euler(cameraRotation);
 
+        if (!floorchecker.Grounded)
+            return;
+
         PlayerMove();
     }
 
     private void PlayerMove()
     {
-        gameObject.transform.rotation *= Quaternion.AngleAxis((steerControl * turningValue), Vector3.up);
+        rb.rotation *= Quaternion.AngleAxis((steerControl * turningValue), Vector3.up);
 
         // Updates current speed based on acceleration, caps at max speed
         if (accelerating)
@@ -76,12 +81,12 @@ public class ScooterMovement : MonoBehaviour
 
         if(canBoost == false)
         {
-            //rb.AddForce(transform.forward * currentSpeed, ForceMode.Acceleration);
-            rb.velocity = new Vector3(0, 0, currentSpeed);
+            rb.AddForce(transform.forward * currentSpeed * 50, ForceMode.Acceleration);
+            //rb.velocity = new Vector3(0, 0, currentSpeed);
         }
         else
         {
-            rb.AddForce(transform.forward * (currentSpeed * 5), ForceMode.Impulse);
+            rb.AddForce(transform.forward * (boostSpeed), ForceMode.Impulse);
             canBoost = false;
         }
 
