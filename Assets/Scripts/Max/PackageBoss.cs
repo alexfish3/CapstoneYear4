@@ -25,4 +25,11 @@ public class PackageBoss : MonoBehaviour
             packages.Add(child.GetComponent<Package>());
         }
     }
+    private void Update()
+    {
+        if(packages.Count <= 0)
+        {
+            GameManager.Instance.GameOver();
+        }
+    }
 }

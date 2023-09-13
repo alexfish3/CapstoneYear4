@@ -13,6 +13,7 @@ public class Package : MonoBehaviour
 {
     private ScooterMovement playerHolding;
     public bool isHolding;
+    [SerializeField] GameObject model;
     [SerializeField] GameObject pickup;
     [SerializeField] GameObject dropOff;
     [SerializeField] GameObject beacon;
@@ -35,7 +36,9 @@ public class Package : MonoBehaviour
         {
             playerHolding = player;
             beacon.transform.position = dropOff.transform.position;
+            model.gameObject.transform.parent = playerHolding.transform;
             // some method to assign THIS to player
+            isHolding = true;
         }
     }
     public void Stolen(ScooterMovement playerStealing)
@@ -47,6 +50,7 @@ public class Package : MonoBehaviour
     {
         // give the player the score (should be a method on the player)
         // unassign this to player
+        Destroy(model);
         Destroy(this);
     }
     private void initBeacon()
@@ -64,6 +68,13 @@ public class Package : MonoBehaviour
             case Value.Hard:
                 beaconMesh.material.color = Color.red;
                 break;
+        }
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Player")
+        {
+            Pickup(other.GetComponent<ScooterMovement>());
         }
     }
 }
