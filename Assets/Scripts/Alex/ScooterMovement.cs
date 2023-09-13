@@ -9,9 +9,9 @@ public class ScooterMovement : MonoBehaviour
     [SerializeField] PlayerInput playerInput;
     public Vector2 playerMovement;
 
-    [SerializeField] float accelerationValue;
-    [SerializeField] float acceleration;
+    [SerializeField] float currentSpeed;
     [SerializeField] float maxSpeed;
+    [SerializeField] float acceleration;
 
     [Header("Camera Values")]
     public GameObject cameraHolder;
@@ -51,19 +51,41 @@ public class ScooterMovement : MonoBehaviour
     {
         gameObject.transform.rotation *= Quaternion.AngleAxis((steerControl * turningValue), Vector3.up);
 
-
-        // Moving Forward
-        if (accelerating && rb.velocity.magnitude <= maxSpeed)
+        // Updates current speed based on acceleration, caps at max speed
+        if (accelerating)
         {
-            //Vector3 playerTransform = new Vector3(playerMovement.x, 0, playerMovement.y);
-            rb.AddForce(transform.forward * acceleration, ForceMode.Acceleration);
+            if (currentSpeed < maxSpeed)
+            {
+                currentSpeed += acceleration * Time.deltaTime;
+            }
+        }
+        else
+        {
+            currentSpeed = 0;
         }
 
-        // Boost Forward
-        if (accelerating && boostCount > 0 && boosting)
+        //// Moving Forward
+        //if (accelerating && rb.velocity.magnitude <= maxSpeed)
+        //{
+        //    ////Vector3 playerTransform = new Vector3(playerMovement.x, 0, playerMovement.y);
+        //    //rb.AddForce(transform.forward * acceleration, ForceMode.Acceleration);
+        //}
+
+        if(boosting == false)
         {
-            rb.AddForce(transform.forward * 2, ForceMode.Impulse);
+            rb.AddForce(transform.forward * currentSpeed, ForceMode.Acceleration);
+            //rb.velocity = new Vector3(0, 0, currentSpeed);
         }
+        else
+        {
+            rb.velocity = new Vector3(0, 0, (currentSpeed * 2));
+        }
+
+        //// Boost Forward
+        //if (accelerating && boostCount > 0 && boosting)
+        //{
+        //    rb.AddForce(transform.forward * 2, ForceMode.Impulse);
+        //}
 
     }
 
