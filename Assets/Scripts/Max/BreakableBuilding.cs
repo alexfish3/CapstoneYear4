@@ -24,29 +24,26 @@ public class BreakableBuilding : MonoBehaviour
             ScooterMovement player = other.GetComponent<ScooterMovement>();
             if(player.boosting && !isBroken)
             {
-                breakBuilding();
+                StartCoroutine(breakBuilding());
                 isBroken = true;
             }
         }
     }
+
     private IEnumerator breakBuilding()
     {
         mesh.enabled = false;
         boxCollider.enabled = false;
-        breakTimer -= Time.deltaTime;
-        if(breakTimer > 0)
-        {
-            yield return null;
-        }
-        else
-        {
-            Rebuild();
-        }
+        
+        yield return new WaitForSeconds(breakTimer);
+
+        Rebuild();
     }
     private void Rebuild()
     {
         breakTimer = maxBreakTime;
         mesh.enabled = true;
         boxCollider.enabled = true;
+        isBroken = false;
     }
 }

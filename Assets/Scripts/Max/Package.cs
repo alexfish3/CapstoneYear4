@@ -11,7 +11,7 @@ public enum Value
 }
 public class Package : MonoBehaviour
 {
-    private ScooterMovement playerHolding;
+    public ScooterMovement playerHolding;
     public bool isHolding;
     [SerializeField] GameObject model;
     [SerializeField] GameObject pickup;
@@ -28,7 +28,13 @@ public class Package : MonoBehaviour
         distance = Mathf.Abs(Vector3.Distance(pickup.transform.position, dropOff.transform.position));
         points = distance + (int)value;
         initBeacon();
-        hitBox = GetComponent<BoxCollider>();
+    }
+    private void Update()
+    {
+        if(playerHolding != null)
+        {
+            model.transform.position = playerHolding.transform.position;
+        }
     }
     public void Pickup(ScooterMovement player)
     {
@@ -47,11 +53,10 @@ public class Package : MonoBehaviour
         playerStealing.PickupPackage(this);
         playerHolding = playerStealing;
     }
-    public void DropOff()
+    public void Deliver()
     {
-        playerHolding.DropPackage(this, true);
         Destroy(model);
-        Destroy(this);
+        Destroy(this.gameObject);
     }
     private void initBeacon()
     {
