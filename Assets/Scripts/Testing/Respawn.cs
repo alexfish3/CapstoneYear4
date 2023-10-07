@@ -18,12 +18,12 @@ public class Respawn : MonoBehaviour
         if (other.tag == "Collider")
         {
             firstPoint = gameObject.transform.position;
-            Debug.Log(firstPoint + " first");
+            //Debug.Log(firstPoint + " first");
         }
         if (other.tag == "Water")
         {
             secondPoint = gameObject.transform.position;
-            Debug.Log(secondPoint + " second");
+            //Debug.Log(secondPoint + " second");
             RespawnPlayer();
         }
     }
@@ -35,7 +35,7 @@ public class Respawn : MonoBehaviour
         respawnPoint = firstPoint - (direction * 16);
         respawnPoint.y = 4;
 
-        Debug.Log(respawnPoint + " respawn");
+        //Debug.Log(respawnPoint + " respawn");
         gameObject.transform.position = respawnPoint;
 
     }
