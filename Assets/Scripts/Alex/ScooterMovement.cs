@@ -7,6 +7,8 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class ScooterMovement : MonoBehaviour
 {
+
+
     private IEnumerator boostCoroutine;
 
     [SerializeField] PlayerInput playerInput;
@@ -42,6 +44,9 @@ public class ScooterMovement : MonoBehaviour
     private bool boostCall;
 
     [Header("Stealing Info")]
+
+
+
     
 
     // package info
@@ -74,6 +79,10 @@ public class ScooterMovement : MonoBehaviour
         if (!floorchecker.Grounded)
             return;
 
+        
+
+        
+
         PlayerMove();
     }
 
@@ -88,6 +97,10 @@ public class ScooterMovement : MonoBehaviour
             if (currentSpeed < maxSpeed)
             {
                 currentSpeed += acceleration * Time.deltaTime;
+            }
+            else if (currentSpeed > maxSpeed)
+            {
+                currentSpeed = 50;
             }
         }
         else
@@ -224,6 +237,11 @@ public class ScooterMovement : MonoBehaviour
                 heldPackage.Stolen(player);
             }
         }
+        if (other.tag == "DIRT")
+        {
+
+            maxSpeed = 50;
+        }
     }
 
     private void updateScoreUI(float score)
@@ -259,6 +277,15 @@ public class ScooterMovement : MonoBehaviour
         if (playerNumberType == PlayerType.Player2)
         {
             UIManager.Instance.updatePlayer2CanBoost(canBoost);
+        }
+    }
+
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "DIRT")
+        {
+            maxSpeed = 150;
         }
     }
 }
