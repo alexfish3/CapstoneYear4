@@ -15,11 +15,6 @@ public class Respawn : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Collider")
-        {
-            firstPoint = gameObject.transform.position;
-            //Debug.Log(firstPoint + " first");
-        }
         if (other.tag == "Water")
         {
             secondPoint = gameObject.transform.position;
@@ -28,12 +23,26 @@ public class Respawn : MonoBehaviour
         }
     }
 
+    public void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Collider")
+        {
+            firstPoint = gameObject.transform.position;
+        }
+    }
+
 
     public void RespawnPlayer()
     {
+        /*
+        //Old stuff but keeping for some reason idk
         Vector3 direction = (secondPoint - firstPoint).normalized;
-        respawnPoint = firstPoint - (direction * 16);
+        respawnPoint = firstPoint - (direction * 6);
         respawnPoint.y = 4;
+        */
+
+
+        respawnPoint = firstPoint;
 
         //Debug.Log(respawnPoint + " respawn");
         gameObject.transform.position = respawnPoint;
