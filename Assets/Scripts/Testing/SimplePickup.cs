@@ -25,7 +25,7 @@ public class SimplePickup : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Pickup")
+        if (other.tag == "Player")
         {
             package++;
             Destroy(gameObject);
