@@ -16,17 +16,35 @@ public class NewBehaviourScript : MonoBehaviour
     [SerializeField]
     private GameObject Barrier04;
 
+    [SerializeField]
+    private GameObject Barrier05;
+    [SerializeField]
+    private GameObject Barrier06;
+    [SerializeField]
+    private GameObject Barrier07;
+    [SerializeField]
+    private GameObject Barrier08;
+
     private bool enable;
 
     // Start is called before the first frame update
     void Start()
     {
-        seconds = 10;
+        seconds = 30;
 
         Barrier01.SetActive(true);
         Barrier02.SetActive(true);
         Barrier03.SetActive(false);
         Barrier04.SetActive(false);
+
+        Barrier05.SetActive(true);
+        Barrier06.SetActive(true);
+        Barrier07.SetActive(true);
+        Barrier08.SetActive(false);
+
+
+
+
 
         enable = true;
 
@@ -47,6 +65,12 @@ public class NewBehaviourScript : MonoBehaviour
             Barrier02.SetActive(false);
             Barrier03.SetActive(true);
             Barrier04.SetActive(true);
+
+            Barrier05.SetActive(false);
+            Barrier06.SetActive(false);
+            Barrier07.SetActive(false);
+            Barrier08.SetActive(true);
+
             enable = false;
 
         }
@@ -56,9 +80,15 @@ public class NewBehaviourScript : MonoBehaviour
             Barrier02.SetActive(true);
             Barrier03.SetActive(false);
             Barrier04.SetActive(false);
+
+            Barrier05.SetActive(true);
+            Barrier06.SetActive(true);
+            Barrier07.SetActive(true);
+            Barrier08.SetActive(false);
+
             enable = true;
         }
-        seconds = 10;
+        seconds = 30;
         StartCoroutine(Timer());
     }
 
