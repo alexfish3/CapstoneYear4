@@ -1,15 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
 {
+    [SerializeField] PlayerInstantiate playerInstantiate;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        
+        playerInstantiate.OnReadiedUp.AddListener(LoadGame);
+    }
+
+    private void OnDisable()
+    {
+        playerInstantiate.OnReadiedUp.RemoveListener(LoadGame);
     }
 
     // Update is called once per frame
@@ -17,7 +20,16 @@ public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            SceneManager.LoadScene(1);
+            playerInstantiate.CheckReadyUpCount();
         }
     }
+
+    ///<summary>
+    /// Main method that loads the game
+    ///</summary>
+    private void LoadGame()
+    {
+        SceneManager.LoadScene(1);
+    }
+
 }

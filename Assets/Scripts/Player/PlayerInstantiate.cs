@@ -4,16 +4,14 @@ using UnityEngine.InputSystem;
 
 public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 {
-    const int MAX_PLAYERS = 4;
-    const int MAX_REQUIRED_READY_UP = 2;
-
     [Header("Player References")]
+    [SerializeField] GameObject PlayerHolder;
     [SerializeField] int playerCount = 0;
-    [SerializeField] PlayerInput[] avaliblePlayerInputs = new PlayerInput[MAX_PLAYERS];
+    [SerializeField] PlayerInput[] avaliblePlayerInputs = new PlayerInput[Constants.MAX_PLAYERS];
 
     [Header("Ready Up Information")]
-    [SerializeField] bool[] playerReadyUp = new bool[MAX_PLAYERS];
-    public static UnityEvent OnReadiedUp;
+    [SerializeField] bool[] playerReadyUp = new bool[Constants.MAX_PLAYERS];
+    public UnityEvent OnReadiedUp;
     int readyUpCounter = 0;
 
     ///<summary>
@@ -24,10 +22,11 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         playerCount++;
 
         playerInput.gameObject.name = "Player " + playerCount.ToString();
-
         Debug.Log("Spawned Player " + playerCount);
-        AddToPlayerArray(playerInput);
 
+        playerInput.gameObject.transform.parent = PlayerHolder.transform;
+
+        AddToPlayerArray(playerInput);
         // Temp, remove once we enable input ready up
         PlayerReady(playerInput);
     }
@@ -45,12 +44,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void AddToPlayerArray(PlayerInput playerInput)
     {
-        for (int i = 0; i < MAX_PLAYERS; i++)
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
             if (avaliblePlayerInputs[i] == null)
             {
                 avaliblePlayerInputs[i] = playerInput;
-                return;
+                break;
             }
         }
     }
@@ -60,12 +59,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void RemoveFromPlayerArray(PlayerInput playerInput)
     {
-        for (int i = 0; i < MAX_PLAYERS; i++)
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
             if (avaliblePlayerInputs[i] == playerInput)
             {
                 avaliblePlayerInputs[i] = null;
-                return;
+                break;
             }
         }
     }
@@ -75,12 +74,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void PlayerReady(PlayerInput playerInput)
     {
-        for (int i = 0; i < MAX_PLAYERS; i++)
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
             if (avaliblePlayerInputs[i] == playerInput)
             {
                 playerReadyUp[i] = true;
-                return;
+                break;
             }
         }
 
@@ -93,7 +92,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void PlayerNotReady(PlayerInput playerInput)
     {
-        for (int i = 0; i < MAX_PLAYERS; i++)
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
             if (avaliblePlayerInputs[i] == playerInput)
             {
@@ -117,9 +116,22 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
 
         // Checks if number of readied up is greater then or equal to required amount
-        if(readyUpCounter >= MAX_REQUIRED_READY_UP)
+        if (readyUpCounter >= Constants.MAX_REQUIRED_READY_UP)
         {
+            // Requires max players and does not have max
+            if (Constants.REQUIRE_MAX_PLAYERS && readyUpCounter < Constants.MAX_PLAYERS)
+            {
+                Debug.Log("Not Enough Readied Up");
+                return;
+            }
+
+            Debug.Log("Properly Readied Up");
+
             OnReadiedUp?.Invoke();
+        }
+        else
+        {
+            Debug.Log("Not Enough Readied Up");
         }
     }
 
