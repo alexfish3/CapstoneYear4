@@ -25,7 +25,7 @@ public class Respawn : MonoBehaviour
 
     public void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Collider")
+        if (other.tag == "RespawnCollider")
         {
             firstPoint = gameObject.transform.position;
         }
