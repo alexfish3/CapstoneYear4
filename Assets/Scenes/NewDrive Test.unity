@@ -607,7 +607,19 @@ MonoBehaviour:
     m_ActionId: 699b60d5-b575-4fea-9d41-8b3321252383
     m_ActionName: Player/Accelerate[/XInputControllerWindows/rightTrigger]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1772420999}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: LeftTriggerControl
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 1c874789-a3ee-4700-b06c-6d2c5648bcd0
     m_ActionName: Player/Brake[/XInputControllerWindows/leftTrigger]
   - m_PersistentCalls:
@@ -650,6 +662,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9aa38074-808e-4fe8-9ec2-79830b7e5c41
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e53579b4-c83b-4d8b-864d-bfd122dc9029
+    m_ActionName: Player/Drift[/XInputControllerWindows/buttonWest]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -1292,6 +1308,7 @@ GameObject:
   - component: {fileID: 1434788549780743282}
   - component: {fileID: 3229914394288906041}
   - component: {fileID: 4202306841453511818}
+  - component: {fileID: 4447557250543555346}
   - component: {fileID: 2306053713786221356}
   m_Layer: 0
   m_Name: Player 1
@@ -1300,6 +1317,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &4447557250543555346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4447557250543555345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 947aefbc532d9ff4885e7164f6718348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inp: {fileID: 1772420999}
+  accelerationPower: 10
+  dragForce: 5
+  brakingPower: 15
 --- !u!136 &4586094796413124195
 CapsuleCollider:
   m_ObjectHideFlags: 0
