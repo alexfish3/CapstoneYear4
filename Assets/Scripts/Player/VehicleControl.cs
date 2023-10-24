@@ -17,6 +17,8 @@ public class VehicleControl : MonoBehaviour
     [SerializeField] private float accelerationPower = 10;
     [Tooltip("A constant representing the drag force on the bike; higher values will lead to slower acceleration and faster deceleration")]
     [SerializeField] private float dragForce = 5;
+    [Tooltip("A constant multipler applied to the dragforce when reversing to give it a lower max speed")]
+    [SerializeField] private float reverseDrag = 3;
     [Tooltip("A constant multiplier which affects how quickly the bike can brake")]
     [SerializeField] private float brakingPower = 15;
 
@@ -54,10 +56,19 @@ public class VehicleControl : MonoBehaviour
         float drag = (currentSpeed * currentSpeed) * dragForce; //drag increases with the square of speed, letting it function as a max
         float braking = leftTrig * brakingPower; //same with brakingpower
 
-        deltaSpeed = acceleration - drag - braking;
-        speed += deltaSpeed * Time.deltaTime;
+        if (currentSpeed <= 0 && braking > 0) //checks whether the player is trying to reverse
+        {
+            drag *= reverseDrag;
 
-        speed = speed < 0 ? 0 : speed;
+            deltaSpeed = -(braking - drag - acceleration);
+        }
+        else
+        {
+            deltaSpeed = acceleration - drag - braking;
+        }
+
+        speed += deltaSpeed * Time.deltaTime;
+        speed = Mathf.Abs(speed) < 0.2 ? 0 : speed; //clamps the speed to 0 when it's already very low; allows for reaching a complete stop, and prevents the bike from very slowly inching forward at low speeds
     }
 
     /// <summary>
