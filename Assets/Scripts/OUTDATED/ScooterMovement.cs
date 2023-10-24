@@ -242,6 +242,12 @@ public class ScooterMovement : MonoBehaviour
 
             maxSpeed = 50;
         }
+        if (other.tag == "Boost")
+        {
+
+            maxSpeed = 200;
+            currentSpeed = currentSpeed * 2;
+        }
     }
 
     private void updateScoreUI(float score)
@@ -286,6 +292,12 @@ public class ScooterMovement : MonoBehaviour
         if (other.tag == "DIRT")
         {
             maxSpeed = 150;
+        }
+        if (other.tag == "Boost")
+        {
+
+            maxSpeed = 150;
+            
         }
     }
 }
