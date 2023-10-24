@@ -27,7 +27,7 @@ public class VehicleControl : MonoBehaviour
     private float deltaSpeed = 0;
     private float speed = 0;
 
-    
+
     /// <summary>
     /// Standard Update
     /// Consistantly gets the current state of input from the InputManager and stores it in local variables
@@ -40,19 +40,31 @@ public class VehicleControl : MonoBehaviour
         leftTrig = inp.LeftTriggerValue;
 
         Accelerate();
+        Move();
     }
 
+    /// <summary>
+    /// Updates the speed variable based on the triggers, and scales for framerate.
+    /// </summary>
     void Accelerate()
     {
         float currentSpeed = speed;
 
-        float acceleration = rightTrig * accelerationPower;
-        float drag = (currentSpeed * currentSpeed) * dragForce;
-        float braking = leftTrig * brakingPower;
+        float acceleration = rightTrig * accelerationPower; //accelerationpower is just a scalar since rightTrig is between 0 and 1
+        float drag = (currentSpeed * currentSpeed) * dragForce; //drag increases with the square of speed, letting it function as a max
+        float braking = leftTrig * brakingPower; //same with brakingpower
 
         deltaSpeed = acceleration - drag - braking;
         speed += deltaSpeed * Time.deltaTime;
 
         speed = speed < 0 ? 0 : speed;
+    }
+
+    /// <summary>
+    /// A primitive forward movement script, which will be adapted once steering is implemented.
+    /// </summary>
+    private void Move()
+    {
+        transform.position += Vector3.forward * speed * Time.deltaTime;
     }
 }
