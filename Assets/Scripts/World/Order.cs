@@ -19,6 +19,7 @@ public class Order : MonoBehaviour
 
     private Order_Value value;
     public Order_Value Value { get { return value; } }
+    private MeshRenderer meshRenderer;
     private Transform pickup;
     private Transform dropoff;
 
@@ -43,6 +44,23 @@ public class Order : MonoBehaviour
         beaconPrefab = Instantiate(beaconPrefab);
         beacon = beaconPrefab.GetComponent<OrderBeacon>();
         beacon.InitBeacon(this);
+        
+        // setting the color of the order
+        meshRenderer = GetComponent<MeshRenderer>();
+        switch (value)
+        {
+            case Order_Value.Easy:
+                meshRenderer.material.color = Color.green;
+                break;
+            case Order_Value.Medium:
+                meshRenderer.material.color = Color.yellow;
+                break;
+            case Order_Value.Hard:
+                meshRenderer.material.color = Color.red;
+                break;
+            default:
+                break;
+        }
     }
     
     /// <summary>

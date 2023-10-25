@@ -41,7 +41,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private List<Order> orders = new List<Order>(); // list of all the orders in the game at any time
 
-    [Tooltip("Distance defining the difficulty of an order")]
+    [Tooltip("Minimum distances for respective difficulty")]
     [SerializeField]
     private int easyDistance, mediumDistance, hardDistance;
 
