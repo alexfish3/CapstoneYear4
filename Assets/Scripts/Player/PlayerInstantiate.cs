@@ -4,8 +4,12 @@ using UnityEngine.InputSystem;
 
 public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 {
-    [Header("Player References")]
-    [SerializeField] GameObject PlayerHolder;
+    [Header("Player Info")]
+    [SerializeField] GameManager gameManager;
+    [SerializeField] GameObject playerHolder;
+
+    [Space(10)]
+    [SerializeField] bool allowPlayerSpawn = true;
     [SerializeField] int playerCount = 0;
     public int PlayerCount { get { return playerCount; } }
 
@@ -18,16 +22,42 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     int readyUpCounter = 0;
 
     ///<summary>
+    /// OnEnable, where i set event methods
+    ///</summary>
+    public void OnEnable()
+    {
+        gameManager.OnSwapPlayerSelect += EnablePlayerSpawn;
+        gameManager.OnSwapBegin += DisablePlayerSpawn;
+    }
+
+    ///<summary>
+    /// OnDisable, where i set event methods
+    ///</summary>
+    public void OnDisable()
+    {
+        gameManager.OnSwapPlayerSelect -= EnablePlayerSpawn;
+        gameManager.OnSwapBegin -= DisablePlayerSpawn;
+    }
+
+    ///<summary>
     /// Event to add the player references and rename player
     ///</summary>
     public void AddPlayerReference(PlayerInput playerInput)
     {
+        // If player spawn is disabled
+        if(allowPlayerSpawn == false && Constants.SPAWN_MID_MATCH == false)
+        {
+            Debug.Log("Disable Spawning");
+            Destroy(playerInput.gameObject);
+            return;
+        }
+
         playerCount++;
 
         playerInput.gameObject.name = "Player " + playerCount.ToString();
         Debug.Log("Spawned Player " + playerCount);
 
-        playerInput.gameObject.transform.parent = PlayerHolder.transform;
+        playerInput.gameObject.transform.parent = playerHolder.transform;
 
         AddToPlayerArray(playerInput);
         // Temp, remove once we enable input ready up
@@ -39,6 +69,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void RemovePlayerReference(PlayerInput playerInput)
     {
+        // If player spawn is disabled
+        if (allowPlayerSpawn == false && Constants.SPAWN_MID_MATCH == false)
+        {
+            return;
+        }
+
         playerCount--;
     }
 
@@ -137,5 +173,15 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             Debug.Log("Not Enough Readied Up");
         }
     }
+
+    ///<summary>
+    /// Enables the ability to spawn players
+    ///</summary>
+    public void EnablePlayerSpawn() { allowPlayerSpawn = true;}
+
+    ///<summary>
+    /// Disables the ability to spawn players
+    ///</summary>
+    public void DisablePlayerSpawn() { allowPlayerSpawn = false; }
 
 }

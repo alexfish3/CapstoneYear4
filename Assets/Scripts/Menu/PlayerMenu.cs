@@ -16,15 +16,6 @@ public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
         playerInstantiate.OnReadiedUp -= LoadGameScene;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            playerInstantiate.CheckReadyUpCount();
-        }
-    }
-
     ///<summary>
     /// Main method that loads the game
     ///</summary>

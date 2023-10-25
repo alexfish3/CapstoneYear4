@@ -205,7 +205,19 @@ MonoBehaviour:
         m_CallState: 2
   m_PlayerLeftEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 128304937}
+        m_TargetAssemblyTypeName: PlayerInstantiate, Assembly-CSharp
+        m_MethodName: RemovePlayerReference
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_JoinAction:
     m_UseReference: 0
     m_Action:
@@ -241,7 +253,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
-  PlayerHolder: {fileID: 1523402770}
+  gameManager: {fileID: 1228516832}
+  playerHolder: {fileID: 1523402770}
+  allowPlayerSpawn: 0
   playerCount: 0
   avaliblePlayerInputs:
   - {fileID: 0}
@@ -249,9 +263,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   playerReadyUp: 00000000
-  OnReadiedUp:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!4 &128304938
 Transform:
   m_ObjectHideFlags: 0
@@ -261,7 +272,7 @@ Transform:
   m_GameObject: {fileID: 128304935}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 426.39148, y: 248.16443, z: 96.40811}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -757,24 +768,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
-  OnSwapMenu:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSwapPlayerSelect:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSwapBegin:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSwapMain:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSwapFinalPackage:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSwapResults:
-    m_PersistentCalls:
-      m_Calls: []
+  beginingGameState: 1
 --- !u!4 &1228516833
 Transform:
   m_ObjectHideFlags: 0
@@ -784,7 +778,7 @@ Transform:
   m_GameObject: {fileID: 1228516831}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 59.812447, y: -21.622074, z: 17.498714}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -922,7 +916,7 @@ Transform:
   m_GameObject: {fileID: 1523402770}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 110.84494, y: 24.316532, z: -20.135334}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

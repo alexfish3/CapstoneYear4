@@ -1,16 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
-public enum GameState { Menu, PlayerSelect, Begin, Main, FinalPackage, Results }
+public enum GameState { Menu, PlayerSelect, Begin, Main, FinalPackage, Results, Default }
 
 public class GameManager : SingletonMonobehaviour<GameManager>
 {
-    private GameState mainState = GameState.Menu;
+    [SerializeField] GameState beginingGameState = GameState.PlayerSelect;
+    private GameState mainState = GameState.Default;
 
     public event Action OnSwapMenu;
     public event Action OnSwapPlayerSelect;
@@ -19,15 +15,20 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public event Action OnSwapFinalPackage;
     public event Action OnSwapResults;
 
+    public void Start()
+    {
+        SetGameState(beginingGameState);
+    }
+
     ///<summary>
     /// Allows swapping of game states, and also invokes right event when swapping
     ///</summary>
     public void SetGameState(GameState state)
     {
+        Debug.Log($"Setting state to: {state}");
         mainState = state;
 
-        Debug.Log($"Setting state to: {state}");
-
+        // Calls an event for the certain state that is swapped to
         switch(mainState)
         {
             case GameState.Menu:
@@ -51,6 +52,5 @@ public class GameManager : SingletonMonobehaviour<GameManager>
             default:
                 break;
         }
-
     }
 }
