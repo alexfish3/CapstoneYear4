@@ -242,11 +242,11 @@ public class ScooterMovement : MonoBehaviour
 
             maxSpeed = 50;
         }
-        if (other.tag == "Boost")
+        if (other.tag == "Speed")
         {
 
-            maxSpeed = 200;
-            currentSpeed = currentSpeed * 2;
+            //maxSpeed = 200;
+            currentSpeed = currentSpeed * 1.5f;
         }
     }
 
@@ -296,7 +296,7 @@ public class ScooterMovement : MonoBehaviour
         if (other.tag == "Boost")
         {
 
-            maxSpeed = 150;
+            //maxSpeed = 150;
             
         }
     }
