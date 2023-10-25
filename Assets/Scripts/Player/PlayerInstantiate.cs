@@ -1,5 +1,5 @@
+using System;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
@@ -7,11 +7,14 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [Header("Player References")]
     [SerializeField] GameObject PlayerHolder;
     [SerializeField] int playerCount = 0;
+    public int PlayerCount { get { return playerCount; } }
+
     [SerializeField] PlayerInput[] avaliblePlayerInputs = new PlayerInput[Constants.MAX_PLAYERS];
+    public PlayerInput[] PlayerInputs { get { return avaliblePlayerInputs; } }
 
     [Header("Ready Up Information")]
     [SerializeField] bool[] playerReadyUp = new bool[Constants.MAX_PLAYERS];
-    public UnityEvent OnReadiedUp;
+    public event Action OnReadiedUp;
     int readyUpCounter = 0;
 
     ///<summary>

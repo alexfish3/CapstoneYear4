@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,12 +8,12 @@ public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
 
     private void OnEnable()
     {
-        playerInstantiate.OnReadiedUp.AddListener(LoadGame);
+        playerInstantiate.OnReadiedUp += LoadGameScene;
     }
 
     private void OnDisable()
     {
-        playerInstantiate.OnReadiedUp.RemoveListener(LoadGame);
+        playerInstantiate.OnReadiedUp -= LoadGameScene;
     }
 
     // Update is called once per frame
@@ -27,9 +28,28 @@ public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
     ///<summary>
     /// Main method that loads the game
     ///</summary>
-    private void LoadGame()
+    private void LoadGameScene()
     {
-        SceneManager.LoadScene(1);
+        StartCoroutine(LoadSceneAsync());
     }
 
+    ///<summary>
+    /// Loads the scene async
+    ///</summary>
+    private IEnumerator LoadSceneAsync()
+    {
+        // Loads the first scene asynchronously
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
+        asyncLoad.allowSceneActivation = false;
+
+        // Wait until the asynchronous scene is allowed to be activated
+        while (!asyncLoad.allowSceneActivation)
+        {
+            if (asyncLoad.progress >= 0.9f)
+            {
+                asyncLoad.allowSceneActivation = true;
+            }
+            yield return null;
+        }
+    }
 }

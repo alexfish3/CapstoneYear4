@@ -27,9 +27,9 @@ public class PackageBoss : MonoBehaviour
     }
     private void Update()
     {
-        if(packages.Count <= 0)
-        {
-            GameManager.Instance.GameOver();
-        }
+        //if(packages.Count <= 0)
+        //{
+        //    GameManager.Instance.GameOver();
+        //}
     }
 }
