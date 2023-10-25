@@ -8,6 +8,8 @@ using UnityEngine;
 /// </summary>
 public class VehicleControl : MonoBehaviour
 {
+    private const float STOP_THRESHOLD = 0.5f;
+
     [Header("Setup")]
     [Tooltip("An input manager class, from the correlated InputReceiver object")]
     [SerializeField] private InputManager inp;
@@ -32,7 +34,6 @@ public class VehicleControl : MonoBehaviour
 
     [Header("Debug")]
     [SerializeField] private bool drawNewDirection = false;
-    
 
     private float leftStick;
     private float rightTrig;
@@ -72,7 +73,7 @@ public class VehicleControl : MonoBehaviour
         float drag = (currentSpeed * currentSpeed) * dragForce; //drag increases with the square of speed, letting it function as a max
         float braking = leftTrig * brakingPower; //same with brakingpower
 
-        if (currentSpeed <= 0 && braking > 0) //checks whether the player is trying to reverse
+        if (currentSpeed <= 0) //checks whether the player is trying to reverse
         {
             drag *= reverseDrag;
 
@@ -84,7 +85,11 @@ public class VehicleControl : MonoBehaviour
         }
 
         speed += deltaSpeed * Time.deltaTime;
-        speed = Mathf.Abs(speed) < 0.2 ? 0 : speed; //clamps the speed to 0 when it's already very low; allows for reaching a complete stop, and prevents the bike from very slowly inching forward at low speeds
+        
+        if (acceleration <= 0 && braking <= 0)
+        {
+            speed = Mathf.Abs(speed) < STOP_THRESHOLD ? 0 : speed; //clamps the speed to 0 when it's already very low; allows for reaching a complete stop, and prevents the bike from very slowly inching forward at low speeds
+        }
     }
 
     /// <summary>
@@ -104,11 +109,12 @@ public class VehicleControl : MonoBehaviour
     /// </summary>
     private void Move()
     {
-        Vector3 startPos = transform.position;
+        //Vector3 startPos = transform.position;
+        Vector3 backWheelStartPos = backWheelLocation.position;
 
         transform.position += convertedFacing * speed * Time.deltaTime;
 
-        Vector3 newDirection = transform.position - startPos;
+        Vector3 newDirection = frontWheelLocation.position - backWheelStartPos;
         newDirection.Normalize();
 
         if (speed == 0)
@@ -121,6 +127,9 @@ public class VehicleControl : MonoBehaviour
             Debug.DrawLine(transform.position, newDirection * 5);
         }
 
-        transform.rotation = Quaternion.LookRotation(newDirection, transform.up);
+        if (speed != 0)
+        {
+            transform.rotation = Quaternion.LookRotation(newDirection, transform.up);
+        }
     }
 }
