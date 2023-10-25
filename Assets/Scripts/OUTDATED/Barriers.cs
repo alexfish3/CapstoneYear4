@@ -30,7 +30,7 @@ public class NewBehaviourScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        seconds = 5;
+        seconds = 7;
 
         Barrier01.SetActive(true);
         Barrier02.SetActive(true);
@@ -88,7 +88,7 @@ public class NewBehaviourScript : MonoBehaviour
 
             enable = true;
         }
-        seconds = 5;
+        seconds = 7;
         StartCoroutine(Timer());
     }
 
