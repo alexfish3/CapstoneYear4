@@ -8,6 +8,7 @@ public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
 
     private void OnEnable()
     {
+        playerInstantiate = PlayerInstantiate.Instance;
         playerInstantiate.OnReadiedUp += LoadGameScene;
     }
 
