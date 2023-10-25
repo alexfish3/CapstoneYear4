@@ -12,7 +12,7 @@ public class VehicleControl : MonoBehaviour
     [Tooltip("An input manager class, from the correlated InputReceiver object")]
     [SerializeField] private InputManager inp;
 
-    [Header("Constants")]
+    [Header("Speed Modifiers")]
     [Tooltip("A constant multiplier which affects how quickly the bike can accelerate")]
     [SerializeField] private float accelerationPower = 10;
     [Tooltip("A constant representing the drag force on the bike; higher values will lead to slower acceleration and faster deceleration")]
@@ -22,12 +22,27 @@ public class VehicleControl : MonoBehaviour
     [Tooltip("A constant multiplier which affects how quickly the bike can brake")]
     [SerializeField] private float brakingPower = 15;
 
+    [Header("Steering")]
+    [Tooltip("The max amount that the bike can turn at once (the amount it turns if the stick is held fully left or right) measured in degrees")]
+    [SerializeField] private float maxTurningAngle = 50.0f;
+    [Tooltip("A transform of the relative position of the front wheel")]
+    [SerializeField] private Transform frontWheelLocation;
+    [Tooltip("A transform of the relative position of the back wheel")]
+    [SerializeField] private Transform backWheelLocation;
+
+    [Header("Debug")]
+    [SerializeField] private bool drawNewDirection = false;
+    
+
     private float leftStick;
     private float rightTrig;
     private float leftTrig;
 
     private float deltaSpeed = 0;
     private float speed = 0;
+
+    private Quaternion frontWheelFacing;
+    private Vector3 convertedFacing;
 
 
     /// <summary>
@@ -42,6 +57,7 @@ public class VehicleControl : MonoBehaviour
         leftTrig = inp.LeftTriggerValue;
 
         Accelerate();
+        Steer();
         Move();
     }
 
@@ -72,10 +88,39 @@ public class VehicleControl : MonoBehaviour
     }
 
     /// <summary>
+    /// Picks the direction for the scooter to move based on the position of the left stick
+    /// Stores it as a Quaternion in frontWheelFacing then as a Vector3 in convertedFacing
+    /// </summary>
+    private void Steer()
+    {
+        float targetAngle = leftStick * maxTurningAngle; //ranges from -maxTurningAngle to +maxTurningAngle
+        frontWheelFacing = Quaternion.AngleAxis(targetAngle, Vector3.up);
+
+        convertedFacing = frontWheelFacing * transform.forward;
+    }
+
+    /// <summary>
     /// A primitive forward movement script, which will be adapted once steering is implemented.
     /// </summary>
     private void Move()
     {
-        transform.position += Vector3.forward * speed * Time.deltaTime;
+        Vector3 startPos = transform.position;
+
+        transform.position += convertedFacing * speed * Time.deltaTime;
+
+        Vector3 newDirection = transform.position - startPos;
+        newDirection.Normalize();
+
+        if (speed == 0)
+        {
+            newDirection = Vector3.forward;
+        }
+
+        if (drawNewDirection)
+        {
+            Debug.DrawLine(transform.position, newDirection * 5);
+        }
+
+        transform.rotation = Quaternion.LookRotation(newDirection, transform.up);
     }
 }

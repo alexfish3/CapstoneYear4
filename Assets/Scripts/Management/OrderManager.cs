@@ -1,8 +1,6 @@
 /// <summary>This class manages the order spawning system in Dead on Arrival. 
 /// It will spawn easy, medium, and hard orders with a cooldown, and retains a reference to each order through a list.
 /// It is a Singleton and extends the SingletonMonobehaviour class
-/// Author:     Max Moverley
-/// Version:    1.0 (10/22/23)
 /// </summary>
 
 using System.Collections;
@@ -72,15 +70,15 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                     StopEasySpawn();
                     StopMediumSpawn();
                     StopHardSpawn();
-                    if ((float)(currEasy / orders.Count()) < easyPercentage || currEasy == 0) // if the number of easy orders is below the quota
+                    if ((float)currEasy / orders.Count() < easyPercentage || currEasy == 0) // if the number of easy orders is below the quota
                     {
                         StartEasySpawn();
                     }
-                    else if ((float)(currMedium / orders.Count()) < mediumPercentage || currMedium == 0) // same for the medium orders
+                    else if ((float)currMedium / orders.Count() < mediumPercentage || currMedium == 0) // same for the medium orders
                     {
                         StartMediumSpawn();
                     }
-                    else if ((float)(currHard / orders.Count()) < hardPercentage || currHard == 0) // and the hard orders
+                    else if ((float)currHard / orders.Count() < hardPercentage || currHard == 0) // and the hard orders
                     {
                         StartHardSpawn();
                     }
@@ -91,6 +89,13 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 StartEasySpawn();
             }
         }
+        else
+        {
+            StopEasySpawn();
+            StopMediumSpawn();
+            StopHardSpawn();
+        }
+        canSpawnOrders = orders.Count() >= maxOrders ? false : true;
     }
 
     /// <summary>
@@ -192,7 +197,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     /// <param name="value">Value of the counter you want to increment (Easy, Medium, Hard)</param>
     /// <param name="amount">Amount you want to increment by (typically +1 or -1)</param>
-    private void IncrementCounters(Order.Order_Value value, int amount)
+    public void IncrementCounters(Order.Order_Value value, int amount)
     {
         switch(value)
         {
