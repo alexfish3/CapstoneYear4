@@ -24,6 +24,7 @@ public class OrderBeacon : MonoBehaviour
     /// <param name="inOrder">Order the beacon will track</param>
     public void InitBeacon(Order inOrder)
     {
+        this.transform.parent = OrderManager.Instance.transform;
         order = inOrder;
 
         switch(order.Value)

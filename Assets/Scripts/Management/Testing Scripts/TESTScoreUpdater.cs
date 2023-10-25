@@ -9,10 +9,14 @@ using TMPro;
 public class TESTScoreUpdater : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI scoreText;
-    [SerializeField] OrderHandler player;
+    private OrderHandler player;
 
+    private void Start()
+    {
+        player = GetComponent<OrderHandler>();
+    }
     private void Update()
     {
-        scoreText.text = "Score: " + player.Score;
+        scoreText.text = "$" + player.Score;
     }
 }
