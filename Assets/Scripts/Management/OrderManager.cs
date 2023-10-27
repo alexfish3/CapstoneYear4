@@ -94,6 +94,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             StopEasySpawn();
             StopMediumSpawn();
             StopHardSpawn();
+            cooledDown = true;
         }
         canSpawnOrders = orders.Count() >= maxOrders ? false : true;
     }
@@ -168,8 +169,10 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             }
 
             // checks for a possible spawn and dropoff location
-            foreach(Transform pickup in pickupWaypoints)
+            int startIndex = Random.Range(0, pickupWaypoints.Count / 2);
+            for(int i=startIndex; i<pickupWaypoints.Count; i++)
             {
+                Transform pickup = pickupWaypoints[i];
                 foreach (Transform dropoff in dropoffWaypoints)
                 {
                     float distance = Vector3.Distance(pickup.position, dropoff.position);
