@@ -42,7 +42,7 @@ public class OrderHandler : MonoBehaviour
                 order1 = inOrder;
                 order1.transform.position = order1Position.position;
             }
-            inOrder.PickupOrder();
+            inOrder.Pickup();
             inOrder.transform.parent = this.transform;
         }
     }
@@ -56,14 +56,101 @@ public class OrderHandler : MonoBehaviour
         if(order1 == rightOrder)
         {
             score += (int)order1.Value;
-            order1.Dropoff();
+            order1.Deliver();
             order1 = null;
         }
         else if(order2 == rightOrder)
         {
             score += (int)order2.Value;
-            order2.Dropoff();
+            order2.Deliver();
             order2 = null;
+        }
+    }
+
+    /// <summary>
+    /// This method is for when the player "spins" out. It will drop all the orders the player is currently holding.
+    /// </summary>
+    public void DropEverything()
+    {
+        if(order1 != null)
+        {
+            order1.Drop();
+            order1 = null;
+        }
+        if(order2 != null)
+        {
+            order2.Drop();
+            order2 = null;
+        }
+    }
+
+    /// <summary>
+    /// This method returns the order of the highest value the player is holding. If the player isn't holidng anything it returns null.
+    /// </summary>
+    /// <returns></returns>
+    public Order GetBestOrder()
+    {
+        if(order1 != null && order2 != null)
+        {
+            if(order2.Value > order1.Value)
+            {
+                return order2;
+            }
+            else
+            {
+                return order1;
+            }
+        }
+        else if(order1 != null)
+        {
+            return order1;
+        }
+        else if(order2 != null)
+        {
+            return order2;
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+
+    /// <summary>
+    /// This method accepts an order as a parameter and checks if the player is holding it. If they are it will remove it from their possession.
+    /// </summary>
+    /// <param name="inOrder">Order to be removed</param>
+    public void LoseOrder(Order inOrder)
+    {
+        if(inOrder == order1)
+        {
+            order1 = null;
+        }
+        else if(inOrder == order2)
+        {
+            order2 = null;
+        }
+    }
+
+    /// <summary>
+    /// This method steals the best order from a victim player. It will then make the victim drop their other order if they have one.
+    /// </summary>
+    /// <param name="victimPlayer">Player being stolen from</param>
+    void StealOrder(OrderHandler victimPlayer)
+    {
+        Order newOrder = victimPlayer.GetBestOrder();
+        if (newOrder != null)
+        {
+            if (order1 == null)
+            {
+                order1 = newOrder;
+            }
+            else if (order2 == null)
+            {
+                order2 = newOrder;
+            }
+            victimPlayer.LoseOrder(newOrder);
+            victimPlayer.DropEverything();
         }
     }
 }

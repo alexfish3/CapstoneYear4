@@ -66,15 +66,24 @@ public class Order : MonoBehaviour
     /// <summary>
     /// This method is called when the order is picked up by a player.
     /// </summary>
-    public void PickupOrder()
+    public void Pickup()
     {
         beacon.SetDropoff(dropoff);
     }
 
     /// <summary>
+    /// This method drops an order at it's current location.
+    /// </summary>
+    public void Drop()
+    {
+        this.transform.parent = OrderManager.Instance.transform;
+        beacon.ResetPickup();
+    }
+
+    /// <summary>
     /// This method is called when the player successfully delivers an order.
     /// </summary>
-    public void Dropoff()
+    public void Deliver()
     {
         Destroy(beaconPrefab);
         EraseOrder();
