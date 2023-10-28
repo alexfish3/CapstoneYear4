@@ -44,6 +44,9 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
         {
             playerInstantiate.PlayerInputs[i].gameObject.transform.position = gameSpawnPositions[i].transform.position;
             playerInstantiate.PlayerInputs[i].gameObject.transform.rotation = gameSpawnPositions[i].transform.rotation;
+
+            // Initalize the compass ui on each of the players
+            playerInstantiate.PlayerInputs[i].gameObject.GetComponent<CompassMarker>().InitalizeCompassUIOnAllPlayers();
         }
     }
 

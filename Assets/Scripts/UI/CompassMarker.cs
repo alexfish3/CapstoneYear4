@@ -5,7 +5,6 @@ using UnityEngine.UIElements;
 ///<summary>
 /// To be added to any world object that we want to be tracked by compass
 ///</summary>
-[RequireComponent(typeof(SphereCollider))]
 public class CompassMarker : MonoBehaviour
 {
     public Sprite icon;
