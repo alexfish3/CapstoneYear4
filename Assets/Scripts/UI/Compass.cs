@@ -8,7 +8,11 @@ public class Compass : MonoBehaviour
     [SerializeField] RawImage compassImage;
     [SerializeField] Transform player;
 
+    [Tooltip("The y position of the ui on the compass")]
     [SerializeField] float iconHeight = -70;
+
+    //[Tooltip("The distance away from the object before it fades on the compass ui. In meters")]
+    //[SerializeField] float fadeDistance = 100f;
 
     [SerializeField] GameObject iconPrefab;
     [SerializeField] List<CompassIconUI> compassUIObjects = new List<CompassIconUI>();
@@ -33,8 +37,22 @@ public class Compass : MonoBehaviour
         // Loops for all markers on player and updates their position on the compass ui
         foreach (CompassIconUI marker in compassUIObjects)
         {
+            // Updates the position on the compass
             marker.imageRect.rectTransform.anchoredPosition = GetPosOnCompass(marker.objectReference);
-            marker.SetDistanceText(CalculateDistance(marker.objectReference));
+
+            // Calculates the distance of the player to the object
+            int distanceToObject = CalculateDistance(marker.objectReference);
+            marker.SetDistanceText(distanceToObject);
+
+            // Determines if it is time to fade in or out marker, based on fade distance
+            if (distanceToObject < Constants.DISTANCE_TO_FADE && marker.Faded == false)
+            {
+                marker.FadeMarkerOut();
+            }
+            else if (distanceToObject > Constants.DISTANCE_TO_FADE && marker.Faded == true)
+            {
+                marker.FadeMarkerIn();
+            }
         }
     }
 

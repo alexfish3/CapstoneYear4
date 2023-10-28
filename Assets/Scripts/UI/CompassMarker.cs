@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 ///<summary>
 /// To be added to any world object that we want to be tracked by compass
@@ -10,48 +11,9 @@ public class CompassMarker : MonoBehaviour
     public Sprite icon;
     PlayerInstantiate playerInstantiate;
 
-    public void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            GameObject playerParent = other.gameObject;
-
-            int indexOfObject = playerParent.GetComponent<Compass>().CompassMarkerObjects.IndexOf(this);
-
-            playerParent.GetComponent<Compass>().CompassUIObjects[indexOfObject].GetComponent<Animator>().SetTrigger("FadeOut");
-        }
-    }
-
-    public void OnTriggerExit(Collider other)
-    {
-        if (other.gameObject.tag == "Player")
-        {
-            GameObject playerParent = other.gameObject;
-
-            int indexOfObject = playerParent.GetComponent<Compass>().CompassMarkerObjects.IndexOf(this);
-
-            playerParent.GetComponent<Compass>().CompassUIObjects[indexOfObject].GetComponent<Animator>().SetTrigger("FadeIn");
-        }
-    }
-
     public void Start()
     {
         playerInstantiate = PlayerInstantiate.Instance;
-    }
-
-    public void Update()
-    {
-        // Adds to player on debug space button
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //foreach (PlayerInput player in playerInstantiate.PlayerInputs)
-            //{
-            //    if (player == null)
-            //        continue;
-
-            //    player.gameObject.GetComponent<Compass>().AddCompassMarker(this);
-            //}
-        }
     }
 
     ///<summary>
