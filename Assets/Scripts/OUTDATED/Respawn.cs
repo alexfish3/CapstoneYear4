@@ -19,7 +19,8 @@ public class Respawn : MonoBehaviour
         {
             secondPoint = gameObject.transform.position;
             //Debug.Log(secondPoint + " second");
-            RespawnPlayer();
+            // Commenting this as this currently causes issues with respawning player while grabbiung package
+            //RespawnPlayer();
         }
     }
 
@@ -34,6 +35,9 @@ public class Respawn : MonoBehaviour
 
     public void RespawnPlayer()
     {
+        Debug.Log("RESAWPN PLAYER");
+
+
         /*
         //Old stuff but keeping for some reason idk
         Vector3 direction = (secondPoint - firstPoint).normalized;

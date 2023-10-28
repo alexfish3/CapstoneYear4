@@ -42,7 +42,7 @@ public class OrderHandler : MonoBehaviour
                 order1 = inOrder;
                 order1.transform.position = order1Position.position;
             }
-            inOrder.Pickup();
+            inOrder.Pickup(this.gameObject);
             inOrder.transform.parent = this.transform;
         }
     }

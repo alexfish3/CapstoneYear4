@@ -14,7 +14,8 @@ public class Order : MonoBehaviour
     {
         Easy = 10,
         Medium = 20,
-        Hard = 50
+        Hard = 50,
+        Golden = 100
     }
 
     private Order_Value value;
@@ -26,6 +27,10 @@ public class Order : MonoBehaviour
     [Tooltip("Reference to the beacon prefab this class creates")]
     [SerializeField] private GameObject beaconPrefab;
     private OrderBeacon beacon;
+
+    [Tooltip("Reference to the compass marker component on this object")]
+    [SerializeField] CompassMarker compassMarker;
+    [SerializeField] Sprite[] possiblePackageTypes;
 
     /// <summary>
     /// This method initializes the order with passed in values and sets its default location. It also initializes the beacon for this order.
@@ -51,24 +56,35 @@ public class Order : MonoBehaviour
         {
             case Order_Value.Easy:
                 meshRenderer.material.color = Color.green;
+                compassMarker.icon = possiblePackageTypes[0];
                 break;
             case Order_Value.Medium:
                 meshRenderer.material.color = Color.yellow;
+                compassMarker.icon = possiblePackageTypes[1];
                 break;
             case Order_Value.Hard:
                 meshRenderer.material.color = Color.red;
+                compassMarker.icon = possiblePackageTypes[2];
+                break;
+            case Order_Value.Golden:
+                meshRenderer.material.color = Color.black;
+                compassMarker.icon = possiblePackageTypes[3];
                 break;
             default:
                 break;
         }
+
+        compassMarker.InitalizeCompassUIOnAllPlayers();
     }
     
     /// <summary>
     /// This method is called when the order is picked up by a player.
     /// </summary>
-    public void Pickup()
+    public void Pickup(GameObject Player)
     {
         beacon.SetDropoff(dropoff);
+
+        compassMarker.SwitchCompassUIForPlayers(true);
     }
 
     /// <summary>
@@ -87,6 +103,8 @@ public class Order : MonoBehaviour
     {
         Destroy(beaconPrefab);
         EraseOrder();
+        // Removes the ui from all players
+        compassMarker.RemoveCompassUIFromAllPlayers();
     }
 
     /// <summary>

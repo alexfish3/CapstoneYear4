@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Compass : MonoBehaviour
@@ -7,8 +8,14 @@ public class Compass : MonoBehaviour
     [SerializeField] RawImage compassImage;
     [SerializeField] Transform player;
 
+    [SerializeField] float iconHeight = -70;
+
     [SerializeField] GameObject iconPrefab;
-    [SerializeField] List<GameObject> compassMarkerObjects = new List<GameObject>();
+    [SerializeField] List<CompassIconUI> compassUIObjects = new List<CompassIconUI>();
+    public List<CompassIconUI> CompassUIObjects { get { return compassUIObjects; } }
+
+    [SerializeField] List<CompassMarker> compassMarkerObjects = new List<CompassMarker>();
+    public List<CompassMarker> CompassMarkerObjects { get { return compassMarkerObjects; } }
 
     float compassUnit;
 
@@ -24,12 +31,10 @@ public class Compass : MonoBehaviour
         compassImage.uvRect = new Rect(player.localEulerAngles.y / 360f, 0f, 1f, 1f);
 
         // Loops for all markers on player and updates their position on the compass ui
-        foreach (GameObject marker in compassMarkerObjects)
+        foreach (CompassIconUI marker in compassUIObjects)
         {
-            // TO-DO: Add calculation to render close markers over far markers. Right now just renders new over old
-
-            CompassIconUI compassIconUI = marker.GetComponent<CompassIconUI>();
-            compassIconUI.imageRect.rectTransform.anchoredPosition = GetPosOnCompass(compassIconUI.objectReference);
+            marker.imageRect.rectTransform.anchoredPosition = GetPosOnCompass(marker.objectReference);
+            marker.SetDistanceText(CalculateDistance(marker.objectReference));
         }
     }
 
@@ -44,7 +49,43 @@ public class Compass : MonoBehaviour
         newMarker.GetComponent<CompassIconUI>().objectReference = marker;
 
         // Adds to list
-        compassMarkerObjects.Add(newMarker);
+        compassMarkerObjects.Add(marker);
+        compassUIObjects.Add(newMarker.GetComponent<CompassIconUI>());
+    }
+
+    ///<summary>
+    /// Removes a compass marker from the player's compass and deletes the icon
+    ///</summary>
+    public void RemoveCompassMarker(CompassMarker marker)
+    {
+        Debug.Log("Removing Object");
+
+        int indexOfObject = compassMarkerObjects.IndexOf(marker);
+
+        if(indexOfObject > -1)
+        {
+            Debug.Log(indexOfObject);
+
+            // Cahces the ui icon to remove
+            GameObject objectToRemove = compassUIObjects[indexOfObject].gameObject;
+
+            // Removes from lists
+            compassMarkerObjects.RemoveAt(indexOfObject);
+            compassUIObjects.RemoveAt(indexOfObject);
+
+            // Deletes ui icon
+            Destroy(objectToRemove);
+        }
+    }
+
+    ///<summary>
+    /// Swaps the compass icon for one that displays the marker being carried by a player
+    /// isCarried indicates a scooter icon
+    /// !isCarried indicates a floor icon
+    ///</summary>
+    public void ChangeCompassMarkerIcon(CompassMarker marker, bool isCarried)
+    {
+        Debug.Log("Change Icon");
     }
 
     ///<summary>
@@ -70,6 +111,14 @@ public class Compass : MonoBehaviour
         // Adjust the angle to be negative when turning counterclockwise
         angleDegrees = (Vector3.Cross(playerForwardVector, playerToObjectVector).y < 0) ? -angleDegrees : angleDegrees;
 
-        return new Vector2(angleDegrees * compassUnit, 0);
+        return new Vector2(angleDegrees * compassUnit, iconHeight);
+    }
+
+    ///<summary>
+    /// Returns the distance of the marker to the player
+    ///</summary>
+    int CalculateDistance(CompassMarker marker)
+    {
+        return (int) Vector3.Distance(marker.transform.position, player.transform.position);
     }
 }
