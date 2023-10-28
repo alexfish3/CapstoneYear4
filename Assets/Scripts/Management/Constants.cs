@@ -11,6 +11,6 @@ public class Constants
     // Distance calculations
     public enum DistanceType { Meters, Feet};
     public const DistanceType DISTANCE_TYPE = DistanceType.Feet;
-    public const int DISTANCE_TO_FADE = 25;
+    public const int DISTANCE_TO_FADE = 20;
 
 }
