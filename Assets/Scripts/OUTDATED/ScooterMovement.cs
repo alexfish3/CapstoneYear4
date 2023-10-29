@@ -291,7 +291,7 @@ public class ScooterMovement : MonoBehaviour
     {
         if (other.tag == "TouchGrass")
         {
-            maxSpeed = 150;
+            maxSpeed = 135;
         }
         if (other.tag == "Boost")
         {
