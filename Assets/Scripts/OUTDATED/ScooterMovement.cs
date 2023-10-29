@@ -237,7 +237,7 @@ public class ScooterMovement : MonoBehaviour
                 heldPackage.Stolen(player);
             }
         }
-        if (other.tag == "DIRT")
+        if (other.tag == "TouchGrass")
         {
 
             maxSpeed = 50;
@@ -289,7 +289,7 @@ public class ScooterMovement : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "DIRT")
+        if (other.tag == "TouchGrass")
         {
             maxSpeed = 150;
         }
