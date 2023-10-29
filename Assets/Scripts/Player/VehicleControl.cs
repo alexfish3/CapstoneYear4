@@ -45,6 +45,13 @@ public class VehicleControl : MonoBehaviour
     private Quaternion frontWheelFacing;
     private Vector3 convertedFacing;
 
+    private Rigidbody rb;
+
+
+    void Start()
+    {
+            rb = GetComponent<Rigidbody>();
+    }
 
     /// <summary>
     /// Standard Update
@@ -59,13 +66,19 @@ public class VehicleControl : MonoBehaviour
 
         Accelerate();
         Steer();
-        Move();
+    }
+
+    void FixedUpdate()
+    {
+        rb.velocity = convertedFacing * speed * Time.fixedDeltaTime;
+
+        AlterFacing();
     }
 
     /// <summary>
     /// Updates the speed variable based on the triggers, and scales for framerate.
     /// </summary>
-    void Accelerate()
+    private void Accelerate()
     {
         float currentSpeed = speed;
 
@@ -107,9 +120,8 @@ public class VehicleControl : MonoBehaviour
     /// <summary>
     /// A primitive forward movement script, which will be adapted once steering is implemented.
     /// </summary>
-    private void Move()
+    private void AlterFacing()
     {
-        //Vector3 startPos = transform.position;
         Vector3 backWheelStartPos = backWheelLocation.position;
 
         transform.position += convertedFacing * speed * Time.deltaTime;
@@ -129,7 +141,7 @@ public class VehicleControl : MonoBehaviour
 
         if (speed != 0)
         {
-            transform.rotation = Quaternion.LookRotation(newDirection, transform.up);
+            rb.MoveRotation(Quaternion.LookRotation(newDirection, transform.up));
         }
     }
 }
