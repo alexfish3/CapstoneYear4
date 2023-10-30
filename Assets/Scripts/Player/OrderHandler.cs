@@ -11,12 +11,16 @@ public class OrderHandler : MonoBehaviour
 {
     private int score; // score of the player
     public int Score { get { return score; } }
-    private Order order1; // first order the player is holding
-    private Order order2; // second order the player is holding
+    [SerializeField] private Order order1; // first order the player is holding
+    [SerializeField] private Order order2; // second order the player is holding
 
     [Tooltip("Positions the orders will snap to on the back of the scooter")]
     [SerializeField] private Transform order1Position;
     [SerializeField] private Transform order2Position;
+
+    [Tooltip("Determines whether the player is boosting or not")]
+    [SerializeField] private bool isBoosting;
+    public bool IsBoosting { get { return IsBoosting; } }
 
     private void Start()
     {
@@ -29,21 +33,24 @@ public class OrderHandler : MonoBehaviour
     /// <param name="inOrder">Order the player is trying to pick up</param>
     public void AddOrder(Order inOrder)
     {
-        // will add order if it fits, elsewise will not do anything
-        if(order1 == null || order2 == null)
+        if (inOrder.CanPickup)
         {
-            if(order2 == null)
+            // will add order if it fits, elsewise will not do anything
+            if (order1 == null || order2 == null)
             {
-                order2 = inOrder;
-                order2.transform.position = order2Position.position;
+                if (order2 == null)
+                {
+                    order2 = inOrder;
+                    order2.transform.position = order2Position.position;
+                }
+                else
+                {
+                    order1 = inOrder;
+                    order1.transform.position = order1Position.position;
+                }
+                inOrder.Pickup(this.gameObject);
+                inOrder.transform.parent = this.transform;
             }
-            else
-            {
-                order1 = inOrder;
-                order1.transform.position = order1Position.position;
-            }
-            inOrder.Pickup(this.gameObject);
-            inOrder.transform.parent = this.transform;
         }
     }
 
@@ -124,10 +131,12 @@ public class OrderHandler : MonoBehaviour
     {
         if(inOrder == order1)
         {
+            order1.Drop();
             order1 = null;
         }
         else if(inOrder == order2)
         {
+            order2.Drop();
             order2 = null;
         }
     }
@@ -141,16 +150,31 @@ public class OrderHandler : MonoBehaviour
         Order newOrder = victimPlayer.GetBestOrder();
         if (newOrder != null)
         {
-            if (order1 == null)
-            {
-                order1 = newOrder;
-            }
-            else if (order2 == null)
-            {
-                order2 = newOrder;
-            }
             victimPlayer.LoseOrder(newOrder);
-            victimPlayer.DropEverything();
+            AddOrder(newOrder);
+        }
+        victimPlayer.DropEverything();
+    }
+
+    /// <summary>
+    /// Typical onCollisionEnter. Handles stealing orders from other players.
+    /// </summary>
+    /// <param name="other">Collision player has hit. Will attempt to steal if this hitbox is another player</param>
+    private void OnCollisionEnter(Collision other)
+    {
+        OrderHandler otherHandler;
+        try
+        {
+            otherHandler = other.gameObject.GetComponent<OrderHandler>();
+        }
+        catch
+        {
+            otherHandler = null;
+        }
+        if (otherHandler != null && isBoosting && !otherHandler.isBoosting)
+        {
+            StealOrder(otherHandler);
+            isBoosting = false;
         }
     }
 }

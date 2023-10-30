@@ -24,6 +24,11 @@ public class Order : MonoBehaviour
     private Transform pickup;
     private Transform dropoff;
 
+    [Tooltip("Time between a player dropping a package and being able to pick it back up again")]
+    [SerializeField] private int pickupCooldown = 3;
+    private bool canPickup = true; // if a player can pickup this order
+    public bool CanPickup { get { return canPickup; } }
+
     [Tooltip("Reference to the beacon prefab this class creates")]
     [SerializeField] private GameObject beaconPrefab;
     private OrderBeacon beacon;
@@ -32,6 +37,7 @@ public class Order : MonoBehaviour
     [SerializeField] CompassMarker compassMarker;
     [SerializeField] Sprite[] possiblePackageTypes;
 
+    private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
     /// <summary>
     /// This method initializes the order with passed in values and sets its default location. It also initializes the beacon for this order.
     /// </summary>
@@ -83,7 +89,7 @@ public class Order : MonoBehaviour
     public void Pickup(GameObject Player)
     {
         beacon.SetDropoff(dropoff);
-
+        
         compassMarker.SwitchCompassUIForPlayers(true);
     }
 
@@ -94,6 +100,7 @@ public class Order : MonoBehaviour
     {
         this.transform.parent = OrderManager.Instance.transform;
         beacon.ResetPickup();
+        StartPickupCooldownCoroutine();
     }
 
     /// <summary>
@@ -116,5 +123,35 @@ public class Order : MonoBehaviour
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);
         Destroy(this.gameObject);
+    }
+
+    private void StartPickupCooldownCoroutine()
+    {
+        if(pickupCooldownCoroutine == null)
+        {
+            pickupCooldownCoroutine = PickupCooldown();
+            StartCoroutine(pickupCooldownCoroutine);
+        }
+    }
+
+    private void StopPickupCountdownCoroutine()
+    {
+        if(pickupCooldownCoroutine != null)
+        {
+            StopCoroutine(pickupCooldownCoroutine);
+            pickupCooldownCoroutine = null;
+        }
+    }
+
+    /// <summary>
+    /// Coroutine that runs every time an order is knocked out of a player's possession. Will make the order ungrabbable for a predetermined time.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PickupCooldown()
+    {
+        canPickup = false;
+        yield return new WaitForSeconds(pickupCooldown);
+        canPickup = true;
+        StopPickupCountdownCoroutine();
     }
 }
