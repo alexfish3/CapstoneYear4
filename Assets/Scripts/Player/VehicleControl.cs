@@ -104,7 +104,8 @@ public class VehicleControl : MonoBehaviour
     {
         if (Mathf.Approximately(Time.fixedDeltaTime, 0f))
             return;
-        rb.velocity = convertedFacing.normalized * speed * 100 * Time.fixedDeltaTime;
+        //rb.velocity.x = (convertedFacing.normalized * speed * 100 * Time.fixedDeltaTime).x;
+        rb.AddForce(convertedFacing.normalized * speed * 10);
         backWheelStartPos = backWheelLocation.position;
     }
 
@@ -167,6 +168,7 @@ public class VehicleControl : MonoBehaviour
         //transform.position += convertedFacing * speed * Time.deltaTime;
 
         Vector3 newDirection = frontWheelLocation.position - backWheelStartPos;
+        newDirection.y = 0;
         newDirection.Normalize();
 
         if (speed == 0)
