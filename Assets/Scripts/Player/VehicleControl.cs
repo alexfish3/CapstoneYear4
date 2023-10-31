@@ -145,6 +145,10 @@ public class VehicleControl : MonoBehaviour
     private void Steer()
     {
         float targetAngle = leftStick * maxTurningAngle; //ranges from -maxTurningAngle to +maxTurningAngle
+        if (drifting)
+        {
+            targetAngle *= 1.5f;
+        }
         frontWheelFacing = Quaternion.AngleAxis(targetAngle, Vector3.up);
 
         convertedFacing = frontWheelFacing * transform.forward;
