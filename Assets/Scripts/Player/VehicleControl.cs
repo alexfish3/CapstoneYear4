@@ -71,6 +71,11 @@ public class VehicleControl : MonoBehaviour
 
     private OrderHandler orderHandler;
 
+    [Header("Phasing Controls")]
+    private bool phasing = false;
+    [SerializeField] GameObject mainCam;
+    [SerializeField] GameObject phaseCam;
+
     /// <summary>
     /// Standard Start
     /// Just gets references and subscribes to events
@@ -80,6 +85,7 @@ public class VehicleControl : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         inp.WestFaceEvent += DriftUpdate;
         inp.SouthFaceEvent += PrimitiveBoost;
+        inp.NorthFaceEvent += PhaseCam;
 
         orderHandler = GetComponent<OrderHandler>();
     }
@@ -142,7 +148,7 @@ public class VehicleControl : MonoBehaviour
         }
 
         speed += deltaSpeed * Time.deltaTime;
-        
+
         if (acceleration <= 0 && braking <= 0)
         {
             speed = Mathf.Abs(speed) < STOP_THRESHOLD ? 0 : speed; //clamps the speed to 0 when it's already very low; allows for reaching a complete stop, and prevents the bike from very slowly inching forward at low speeds
@@ -231,7 +237,7 @@ public class VehicleControl : MonoBehaviour
         boostTimeCoroutine = BoostTime();
         StartCoroutine(boostTimeCoroutine);
     }
-    
+
     private void StopBoostTime()
     {
         StopCoroutine(boostTimeCoroutine);
@@ -248,5 +254,21 @@ public class VehicleControl : MonoBehaviour
     {
         StopCoroutine(boostRechargeCoroutine);
         boostRechargeCoroutine = null;
+    }
+
+    private void PhaseCam(bool northFaceState)
+    {
+        phasing = !phasing;
+
+        if (phasing)
+        {
+            mainCam.SetActive(false);
+            phaseCam.SetActive(true);
+        }
+        else
+        {
+            mainCam.SetActive(true);
+            phaseCam.SetActive(false);
+        }
     }
 }

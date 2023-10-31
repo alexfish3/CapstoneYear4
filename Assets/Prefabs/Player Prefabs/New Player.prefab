@@ -804,9 +804,9 @@ MonoBehaviour:
     m_ActionName: Player/Drift[/XInputControllerWindows/buttonWest]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ScooterMovement, Assembly-CSharp
-        m_MethodName: OnSwapCamera
+      - m_Target: {fileID: 7240116012560737404}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: NorthFaceTrigger
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -853,13 +853,15 @@ MonoBehaviour:
   reverseDrag: 3
   brakingPower: 30
   driftBoost: 5
-  maxTurningAngle: 15
+  maxTurningAngle: 40
   frontWheelLocation: {fileID: 2085947172391996359}
   backWheelLocation: {fileID: 8865821111934823425}
   boostAmount: 50
   boostDuration: 2
   boostRechargeTime: 10
   drawNewDirection: 0
+  mainCam: {fileID: 2700908787672575881}
+  phaseCam: {fileID: 411573694202264150}
 --- !u!54 &3229914393322429173
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -869,7 +871,7 @@ Rigidbody:
   m_GameObject: {fileID: 4447557249903744733}
   serializedVersion: 4
   m_Mass: 5
-  m_Drag: 1
+  m_Drag: 1.5
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
