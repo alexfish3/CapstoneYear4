@@ -10,6 +10,9 @@ public class VehicleControl : MonoBehaviour
 {
     private const float STOP_THRESHOLD = 0.5f;
 
+    private IEnumerator boostTimeCoroutine;
+    private IEnumerator boostRechargeCoroutine;
+
     [Header("Setup")]
     [Tooltip("An input manager class, from the correlated InputReceiver object")]
     [SerializeField] private InputManager inp;
@@ -34,6 +37,14 @@ public class VehicleControl : MonoBehaviour
     [Tooltip("A transform of the relative position of the back wheel")]
     [SerializeField] private Transform backWheelLocation;
 
+    [Header("Boosting")]
+    [Tooltip("The amount of speed added when boosting")]
+    [SerializeField] private float boostAmount = 10.0f;
+    [Tooltip("How long the boost lasts")]
+    [SerializeField] private float boostDuration = 1.0f;
+    [Tooltip("How long it takes to recharge the boost, starting after it finishes")]
+    [SerializeField] private float boostRechargeTime = 10.0f;
+
     [Header("Debug")]
     [SerializeField] private bool drawNewDirection = false;
 
@@ -47,7 +58,9 @@ public class VehicleControl : MonoBehaviour
     private bool drifting = false;
     private bool driftDirection; //false for left, true for right
     private float driftTime = 0.0f;
-    private const float DRIFT_MIN = 1.0f;
+
+    private bool boostAvailable = true;
+    private bool boostActive = false;
 
     private Quaternion frontWheelFacing;
     private Vector3 convertedFacing;
@@ -62,6 +75,7 @@ public class VehicleControl : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         inp.WestFaceEvent += DriftUpdate;
+        inp.SouthFaceEvent += PrimitiveBoost;
     }
 
     /// <summary>
@@ -99,6 +113,10 @@ public class VehicleControl : MonoBehaviour
 
         float acceleration = rightTrig * accelerationPower; //accelerationpower is just a scalar since rightTrig is between 0 and 1
         float drag = (currentSpeed * currentSpeed) * dragForce; //drag increases with the square of speed, letting it function as a max
+        if (boostActive)
+        {
+            drag *= 0.5f;
+        }
         float braking = leftTrig * brakingPower; //same with brakingpower
 
         if (currentSpeed <= 0) //checks whether the player is trying to reverse
@@ -168,5 +186,53 @@ public class VehicleControl : MonoBehaviour
     private void DriftUpdate(bool westFaceState)
     {
         drifting = westFaceState;
+    }
+
+    private void PrimitiveBoost(bool southFaceState)
+    {
+        if (boostAvailable)
+        {
+            boostAvailable = false;
+            StartBoostTime();
+        }
+    }
+
+    private IEnumerator BoostTime()
+    {
+        speed += boostAmount;
+        boostActive = true;
+        yield return new WaitForSeconds(boostDuration);
+        boostActive = false;
+        StartBoostRecharge();
+    }
+
+    private IEnumerator BoostRecharge()
+    {
+        yield return new WaitForSeconds(boostRechargeTime);
+        boostAvailable = true;
+    }
+
+    private void StartBoostTime()
+    {
+        boostTimeCoroutine = BoostTime();
+        StartCoroutine(boostTimeCoroutine);
+    }
+    
+    private void StopBoostTime()
+    {
+        StopCoroutine(boostTimeCoroutine);
+        boostTimeCoroutine = null;
+    }
+
+    private void StartBoostRecharge()
+    {
+        boostRechargeCoroutine = BoostRecharge();
+        StartCoroutine(boostRechargeCoroutine);
+    }
+
+    private void StopBoostRecharge()
+    {
+        StopCoroutine(boostRechargeCoroutine);
+        boostRechargeCoroutine = null;
     }
 }
