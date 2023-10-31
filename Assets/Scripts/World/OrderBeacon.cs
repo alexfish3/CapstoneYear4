@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -13,9 +14,13 @@ public class OrderBeacon : MonoBehaviour
 
     private MeshRenderer meshRenderer; // renderer to change the color
     private Color color;
+
+    private CompassMarker compassMarker; // for the dropoff location on the compass marker
+    public CompassMarker CompassMarker { get { return compassMarker; } }
     private void Awake()
     {
         meshRenderer = this.gameObject.GetComponent<MeshRenderer>();
+        compassMarker = this.gameObject.GetComponent<CompassMarker>();
     }
 
     /// <summary>
@@ -55,6 +60,7 @@ public class OrderBeacon : MonoBehaviour
         this.transform.position = dropoff.position;
         meshRenderer.material.color = new Color(1,1,1,0.5f);
         isPickup = false;
+        order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
     }
 
     /// <summary>
@@ -65,8 +71,17 @@ public class OrderBeacon : MonoBehaviour
         this.transform.position = order.transform.position;
         meshRenderer.material.color = color;
         isPickup = true;
+        order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
     }
 
+    /// <summary>
+    /// This method erases the beacon and removes its dropoff marker from the player's UI.
+    /// </summary>
+    public void EraseBeacon()
+    {
+        order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
+        Destroy(gameObject);
+    }
     /// <summary>
     /// Basic OnTriggerEnter, will execute whenever something enters the beacon's light.
     /// </summary>

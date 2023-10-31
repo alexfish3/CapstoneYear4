@@ -24,6 +24,9 @@ public class Order : MonoBehaviour
     private Transform pickup;
     private Transform dropoff;
 
+    private OrderHandler playerHolding = null;
+    public OrderHandler PlayerHolding { get {  return playerHolding; } }
+
     [Tooltip("Time between a player dropping a package and being able to pick it back up again")]
     [SerializeField] private int pickupCooldown = 3;
     private bool canPickup = true; // if a player can pickup this order
@@ -86,20 +89,22 @@ public class Order : MonoBehaviour
     /// <summary>
     /// This method is called when the order is picked up by a player.
     /// </summary>
-    public void Pickup(GameObject Player)
+    public void Pickup(OrderHandler player)
     {
+        playerHolding = player;
         beacon.SetDropoff(dropoff);
         
         compassMarker.SwitchCompassUIForPlayers(true);
     }
 
     /// <summary>
-    /// This method drops an order at it's current location.
+    /// This method drops an order at its current location.
     /// </summary>
     public void Drop()
     {
-        this.transform.parent = OrderManager.Instance.transform;
         beacon.ResetPickup();
+        playerHolding = null;
+        this.transform.parent = OrderManager.Instance.transform;
         StartPickupCooldownCoroutine();
     }
 
@@ -108,7 +113,8 @@ public class Order : MonoBehaviour
     /// </summary>
     public void Deliver()
     {
-        Destroy(beaconPrefab);
+        beacon.EraseBeacon();
+        playerHolding = null;
         EraseOrder();
         // Removes the ui from all players
         compassMarker.RemoveCompassUIFromAllPlayers();
@@ -123,6 +129,18 @@ public class Order : MonoBehaviour
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);
         Destroy(this.gameObject);
+    }
+
+    /// <summary>
+    /// This method removes the beacon compass marker from the UI of playerHolding then sets playerHolding to null.
+    /// </summary>
+    public void RemovePlayerHolding()
+    {
+        if (playerHolding != null)
+        {
+            playerHolding.GetComponent<Compass>().RemoveCompassMarker(beacon.CompassMarker);
+        }
+        playerHolding = null;
     }
 
     private void StartPickupCooldownCoroutine()

@@ -49,7 +49,7 @@ public class OrderHandler : MonoBehaviour
                     order1 = inOrder;
                     order1.transform.position = order1Position.position;
                 }
-                inOrder.Pickup(this.gameObject);
+                inOrder.Pickup(this);
                 inOrder.transform.parent = this.transform;
             }
         }
@@ -132,10 +132,12 @@ public class OrderHandler : MonoBehaviour
     {
         if(inOrder == order1)
         {
+            order1.RemovePlayerHolding();
             order1 = null;
         }
         else if(inOrder == order2)
         {
+            order2.RemovePlayerHolding();
             order2 = null;
         }
     }
@@ -149,8 +151,8 @@ public class OrderHandler : MonoBehaviour
         Order newOrder = victimPlayer.GetBestOrder();
         if (newOrder != null)
         {
-            AddOrder(newOrder);
             victimPlayer.LoseOrder(newOrder);
+            AddOrder(newOrder);
         }
         victimPlayer.DropEverything();
     }
