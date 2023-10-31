@@ -268,6 +268,8 @@ MonoBehaviour:
   boostSpeed: 600
   boostDuration: 2
   boosting: 0
+  mainCamera: {fileID: 0}
+  phaseCamera: {fileID: 0}
   score: 0
   playerNumberType: 0
 --- !u!114 &3821771399049231832
@@ -850,9 +852,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: fd63513c35555094d81aa69587b79e3c, type: 2}
     - target: {fileID: -6874055695231266341, guid: 63c932e608368f34f94f598a84058071, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6874055695231266341, guid: 63c932e608368f34f94f598a84058071, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fd63513c35555094d81aa69587b79e3c, type: 2}
+      objectReference: {fileID: 2100000, guid: cd1a9634b1973cc4b911f5ec6c2d2ca0, type: 2}
+    - target: {fileID: -6874055695231266341, guid: 63c932e608368f34f94f598a84058071, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 40eb29903f6a04f48bf65dfbca76ea0a, type: 2}
     - target: {fileID: -5970065562095844912, guid: 63c932e608368f34f94f598a84058071, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
