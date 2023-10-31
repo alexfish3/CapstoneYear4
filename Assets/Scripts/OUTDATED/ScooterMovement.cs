@@ -7,8 +7,6 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class ScooterMovement : MonoBehaviour
 {
-
-
     private IEnumerator boostCoroutine;
 
     [SerializeField] PlayerInput playerInput;
@@ -46,8 +44,10 @@ public class ScooterMovement : MonoBehaviour
     [Header("Stealing Info")]
 
 
-
-    
+    [Header("Camera Swap Info")]
+    [SerializeField] GameObject mainCamera;
+    [SerializeField] GameObject phaseCamera;
+    bool phasing = false;
 
     // package info
     private Package heldPackage;
@@ -63,13 +63,33 @@ public class ScooterMovement : MonoBehaviour
         Player2,
     }
 
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         aud = GetComponent<AudioSource>();
         //GameManager.Instance.AddPlayer(this);
     }
+
+    public void OnSwapCamera(CallbackContext context)
+    {
+        if (context.performed)
+        {
+            // Phasing is true
+            if (phasing)
+            {
+                mainCamera.SetActive(true);
+                phaseCamera.SetActive(false);
+                phasing = false;
+            }
+            else
+            {
+                mainCamera.SetActive(false);
+                phaseCamera.SetActive(true);
+                phasing = true;
+            }
+        }
+    }
+
 
     private void FixedUpdate()
     {

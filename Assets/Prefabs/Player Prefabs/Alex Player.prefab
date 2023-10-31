@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6579886744142723642}
   - component: {fileID: 8849363309556651150}
   - component: {fileID: 1321332172460201094}
+  - component: {fileID: 1905953513880715965}
   m_Layer: 7
   m_Name: Phase Camera - Base
   m_TagString: Untagged
@@ -129,6 +130,15 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
+--- !u!45 &1905953513880715965
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 411573694202264150}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &846182762948192411
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,6 +473,8 @@ MonoBehaviour:
   boostSpeed: 600
   boostDuration: 2
   boosting: 0
+  mainCamera: {fileID: 2700908787672575881}
+  phaseCamera: {fileID: 411573694202264150}
   score: 0
   playerNumberType: 0
 --- !u!114 &3821771399049231832
@@ -638,6 +650,22 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e53579b4-c83b-4d8b-864d-bfd122dc9029
     m_ActionName: Player/Drift[/XInputControllerWindows/buttonWest]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 969263969667429436}
+        m_TargetAssemblyTypeName: ScooterMovement, Assembly-CSharp
+        m_MethodName: OnSwapCamera
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 95b54a1d-7466-4c34-9679-58958dd798c5
+    m_ActionName: Player/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
