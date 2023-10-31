@@ -16,13 +16,15 @@ public class VehicleControl : MonoBehaviour
 
     [Header("Speed Modifiers")]
     [Tooltip("A constant multiplier which affects how quickly the bike can accelerate")]
-    [SerializeField] private float accelerationPower = 10;
+    [SerializeField] private float accelerationPower = 10.0f;
     [Tooltip("A constant representing the drag force on the bike; higher values will lead to slower acceleration and faster deceleration")]
-    [SerializeField] private float dragForce = 5;
+    [SerializeField] private float dragForce = 5.0f;
     [Tooltip("A constant multipler applied to the dragforce when reversing to give it a lower max speed")]
-    [SerializeField] private float reverseDrag = 3;
+    [SerializeField] private float reverseDrag = 3.0f;
     [Tooltip("A constant multiplier which affects how quickly the bike can brake")]
-    [SerializeField] private float brakingPower = 15;
+    [SerializeField] private float brakingPower = 15.0f;
+    [Tooltip("An amount directly added to the speed when completing a successful drift")]
+    [SerializeField] private float driftBoost = 5.0f;
 
     [Header("Steering")]
     [Tooltip("The max amount that the bike can turn at once (the amount it turns if the stick is held fully left or right) measured in degrees")]
@@ -42,15 +44,24 @@ public class VehicleControl : MonoBehaviour
     private float deltaSpeed = 0;
     private float speed = 0;
 
+    private bool drifting = false;
+    private bool driftDirection; //false for left, true for right
+    private float driftTime = 0.0f;
+    private const float DRIFT_MIN = 1.0f;
+
     private Quaternion frontWheelFacing;
     private Vector3 convertedFacing;
 
     private Rigidbody rb;
 
-
+    /// <summary>
+    /// Standard Start
+    /// Just gets references and subscribes to events
+    /// </summary>
     void Start()
     {
-            rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
+        inp.WestFaceEvent += DriftUpdate;
     }
 
     /// <summary>
@@ -68,9 +79,13 @@ public class VehicleControl : MonoBehaviour
         Steer();
     }
 
+    /// <summary>
+    /// Standard FixedUpdate
+    /// Changes the velocity based on the calculated intended speed, then calls for the scooter to rotate based on steering.
+    /// </summary>
     void FixedUpdate()
     {
-        rb.velocity = convertedFacing * speed * Time.fixedDeltaTime;
+        rb.velocity = convertedFacing.normalized * speed * Time.fixedDeltaTime;
 
         AlterFacing();
     }
@@ -118,7 +133,8 @@ public class VehicleControl : MonoBehaviour
     }
 
     /// <summary>
-    /// A primitive forward movement script, which will be adapted once steering is implemented.
+    /// This script takes the desired facing direction determined by Steer and translates that into actual rotation.
+    /// It should be called once, at the end of FixedUpdate.
     /// </summary>
     private void AlterFacing()
     {
@@ -143,5 +159,14 @@ public class VehicleControl : MonoBehaviour
         {
             rb.MoveRotation(Quaternion.LookRotation(newDirection, transform.up));
         }
+    }
+
+    /// <summary>
+    /// Simple method to update the drifting status based on an event from InputManager
+    /// </summary>
+    /// <param name="westFaceState">The current state of the west face button, passed by the event</param>
+    private void DriftUpdate(bool westFaceState)
+    {
+        drifting = westFaceState;
     }
 }

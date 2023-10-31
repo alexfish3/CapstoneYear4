@@ -725,9 +725,25 @@ MonoBehaviour:
     m_ActionId: 9aa38074-808e-4fe8-9ec2-79830b7e5c41
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1772420999}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: WestFaceTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: e53579b4-c83b-4d8b-864d-bfd122dc9029
     m_ActionName: Player/Drift[/XInputControllerWindows/buttonWest]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 95b54a1d-7466-4c34-9679-58958dd798c5
+    m_ActionName: Player/SwapCameraDebug[/XInputControllerWindows/dpad/down]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -1320,6 +1336,7 @@ MonoBehaviour:
   dragForce: 0.1
   reverseDrag: 3
   brakingPower: 30
+  driftBoost: 5
   maxTurningAngle: 5
   frontWheelLocation: {fileID: 1173913371}
   backWheelLocation: {fileID: 31485589}
