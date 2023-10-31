@@ -546,15 +546,15 @@ MonoBehaviour:
   accelerationPower: 50
   dragForce: 0.1
   reverseDrag: 3
-  brakingPower: 30
+  brakingPower: 20
   driftBoost: 5
-  maxTurningAngle: 5
+  maxTurningAngle: 20
   frontWheelLocation: {fileID: 4652124489219091147}
   backWheelLocation: {fileID: 7727914894045951811}
-  boostAmount: 20
+  boostAmount: 50
   boostDuration: 2
   boostRechargeTime: 10
-  drawNewDirection: 0
+  drawNewDirection: 1
 --- !u!33 &1417616279885119597
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1302,7 +1302,7 @@ Transform:
   m_GameObject: {fileID: 9185913682305758791}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.179, z: -6.1}
+  m_LocalPosition: {x: 0, y: 0.72, z: -6.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1411,8 +1411,8 @@ Rigidbody:
   m_GameObject: {fileID: 9185913682305758791}
   serializedVersion: 4
   m_Mass: 5
-  m_Drag: 5
-  m_AngularDrag: 0.05
+  m_Drag: 0
+  m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}

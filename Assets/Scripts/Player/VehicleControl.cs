@@ -8,7 +8,7 @@ using UnityEngine;
 /// </summary>
 public class VehicleControl : MonoBehaviour
 {
-    private const float STOP_THRESHOLD = 0.5f;
+    private const float STOP_THRESHOLD = 1.0f;
 
     private IEnumerator boostTimeCoroutine;
     private IEnumerator boostRechargeCoroutine;
@@ -65,6 +65,7 @@ public class VehicleControl : MonoBehaviour
 
     private Quaternion frontWheelFacing;
     private Vector3 convertedFacing;
+    Vector3 backWheelStartPos;
 
     private Rigidbody rb;
 
@@ -92,6 +93,7 @@ public class VehicleControl : MonoBehaviour
 
         Accelerate();
         Steer();
+        AlterFacing();
     }
 
     /// <summary>
@@ -100,9 +102,10 @@ public class VehicleControl : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-        rb.velocity = convertedFacing.normalized * speed * Time.fixedDeltaTime;
-
-        AlterFacing();
+        if (Mathf.Approximately(Time.fixedDeltaTime, 0f))
+            return;
+        rb.velocity = convertedFacing.normalized * speed * 100 * Time.fixedDeltaTime;
+        backWheelStartPos = backWheelLocation.position;
     }
 
     /// <summary>
@@ -116,7 +119,7 @@ public class VehicleControl : MonoBehaviour
         float drag = (currentSpeed * currentSpeed) * dragForce; //drag increases with the square of speed, letting it function as a max
         if (boostActive)
         {
-            drag *= 0.5f;
+            drag *= 0.25f;
         }
         float braking = leftTrig * brakingPower; //same with brakingpower
 
@@ -161,9 +164,7 @@ public class VehicleControl : MonoBehaviour
     /// </summary>
     private void AlterFacing()
     {
-        Vector3 backWheelStartPos = backWheelLocation.position;
-
-        transform.position += convertedFacing * speed * Time.deltaTime;
+        //transform.position += convertedFacing * speed * Time.deltaTime;
 
         Vector3 newDirection = frontWheelLocation.position - backWheelStartPos;
         newDirection.Normalize();
