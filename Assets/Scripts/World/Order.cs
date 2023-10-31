@@ -107,24 +107,14 @@ public class Order : MonoBehaviour
         this.transform.parent = OrderManager.Instance.transform;
         StartPickupCooldownCoroutine();
     }
-
-    /// <summary>
-    /// This method is called when the player successfully delivers an order.
-    /// </summary>
-    public void Deliver()
-    {
-        beacon.EraseBeacon();
-        playerHolding = null;
-        EraseOrder();
-        // Removes the ui from all players
-        compassMarker.RemoveCompassUIFromAllPlayers();
-    }
-
     /// <summary>
     /// This method erases the order and adds its pickup and dropoff points back to the list in OrderManager.
     /// </summary>
-    private void EraseOrder()
+    public void EraseOrder()
     {
+        // Removes the ui from all players
+        compassMarker.RemoveCompassUIFromAllPlayers();
+        beacon.EraseBeacon();
         OrderManager.Instance.AddPickupDropoff(pickup, dropoff);
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);

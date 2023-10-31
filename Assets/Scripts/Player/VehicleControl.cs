@@ -69,6 +69,8 @@ public class VehicleControl : MonoBehaviour
 
     private Rigidbody rb;
 
+    private OrderHandler orderHandler;
+
     /// <summary>
     /// Standard Start
     /// Just gets references and subscribes to events
@@ -78,6 +80,8 @@ public class VehicleControl : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         inp.WestFaceEvent += DriftUpdate;
         inp.SouthFaceEvent += PrimitiveBoost;
+
+        orderHandler = GetComponent<OrderHandler>();
     }
 
     /// <summary>
@@ -87,6 +91,8 @@ public class VehicleControl : MonoBehaviour
     /// </summary>
     void Update()
     {
+        orderHandler.IsBoosting = boostActive;
+
         leftStick = inp.LeftStickValue;
         rightTrig = inp.RightTriggerValue;
         leftTrig = inp.LeftTriggerValue;

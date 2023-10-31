@@ -22978,9 +22978,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
   orderPrefab: {fileID: 6222648319098696450, guid: 72282afa5b461534eafcad89053a8e6c, type: 3}
-  maxEasy: 2
-  maxMedium: 2
-  maxHard: 1
+  maxEasy: 0500000003000000
+  maxMedium: 0400000002000000
+  maxHard: 0300000001000000
+  waveLengthInSeconds: 60
   cooldownTime: 5
   pickupWaypoints:
   - {fileID: 587767095}
@@ -23011,6 +23012,8 @@ MonoBehaviour:
   - {fileID: 605871925}
   - {fileID: 1125784397}
   - {fileID: 624613772}
+  goldenPickup: {fileID: 1924481226}
+  goldenDropoff: {fileID: 624613772}
   easyDistance: 10
   mediumDistance: 40
   hardDistance: 70

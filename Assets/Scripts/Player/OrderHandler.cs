@@ -19,9 +19,8 @@ public class OrderHandler : MonoBehaviour
     [SerializeField] private Transform order1Position;
     [SerializeField] private Transform order2Position;
 
-    [Tooltip("Determines whether the player is boosting or not. Exposed for testing purposes only.")]
     [SerializeField] private bool isBoosting;
-    public bool IsBoosting { get { return IsBoosting; } }
+    public bool IsBoosting { get { return IsBoosting; } set { isBoosting = value; } }
 
     private void Start()
     {
@@ -64,13 +63,13 @@ public class OrderHandler : MonoBehaviour
         if(order1 == rightOrder)
         {
             score += (int)order1.Value;
-            order1.Deliver();
+            order1.EraseOrder();
             order1 = null;
         }
         else if(order2 == rightOrder)
         {
             score += (int)order2.Value;
-            order2.Deliver();
+            order2.EraseOrder();
             order2 = null;
         }
     }
@@ -161,7 +160,7 @@ public class OrderHandler : MonoBehaviour
     /// Typical onCollisionEnter. Handles stealing orders from other players.
     /// </summary>
     /// <param name="other">Collision player has hit. Will attempt to steal if this hitbox is another player</param>
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         OrderHandler otherHandler;
         try

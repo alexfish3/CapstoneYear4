@@ -43,6 +43,9 @@ public class OrderBeacon : MonoBehaviour
             case Order.Order_Value.Hard:
                 color = new Color(1,0,0,0.5f);
                 break;
+            case Order.Order_Value.Golden:
+                color = new Color(0, 0, 0, 0.5f);
+                break;
             default:
                 break;
         }
@@ -79,8 +82,14 @@ public class OrderBeacon : MonoBehaviour
     /// </summary>
     public void EraseBeacon()
     {
-        order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
-        Destroy(gameObject);
+        if (order.PlayerHolding != null)
+        {
+            order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
+        }
+        if(gameObject != null)
+        {
+            Destroy(gameObject);
+        }
     }
     /// <summary>
     /// Basic OnTriggerEnter, will execute whenever something enters the beacon's light.

@@ -9,6 +9,7 @@ using TMPro;
 public class TESTScoreUpdater : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI waveText;
     private OrderHandler player;
 
     private void Start()
@@ -18,5 +19,13 @@ public class TESTScoreUpdater : MonoBehaviour
     private void Update()
     {
         scoreText.text = "$" + player.Score;
+        if (!OrderManager.Instance.FinalOrderActive)
+        {
+            waveText.text = OrderManager.Instance.WaveTimer.ToString("00.00");
+        }
+        else
+        {
+            waveText.text = "";
+        }
     }
 }

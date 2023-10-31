@@ -19,9 +19,15 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("Reference to the Order GameObject prefab")]
     [SerializeField] private GameObject orderPrefab;
 
-    [Tooltip("Maxium number of orders present in the scene at a time")]
+    [Tooltip("Maxium number of orders present in the scene at a time. Array represents different waves")]
     [SerializeField]
-    private int maxEasy, maxMedium, maxHard; // didn't think this variable name through
+    private int[] maxEasy, maxMedium, maxHard; // didn't think this variable name through
+
+    [Tooltip("Time it takes in seconds for a wave to be completed")]
+    [SerializeField] private float waveLengthInSeconds = 20f;
+    private int wave = 0;
+    private float waveTimer = 0f;
+    public float WaveTimer { get { return waveTimer; } }
 
     private int maxOrders; // total number of orders possible in a game
     private float easyPercentage, mediumPercentage, hardPercentage; // percentage of easy/medium/hard orders that should be in a game
@@ -39,6 +45,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("List of the dropoff points for deliveries")]
     [SerializeField] private List<Transform> dropoffWaypoints;
 
+    [Tooltip("Waypoints for golden order")]
+    [SerializeField] private Transform goldenPickup, goldenDropoff;
+    private bool finalOrderActive = false;
+    public bool FinalOrderActive { get { return finalOrderActive; } }
+
     private List<Order> orders = new List<Order>(); // list of all the orders in the game at any time
 
     [Tooltip("Minimum distances for respective difficulty")]
@@ -47,56 +58,87 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private IEnumerator easySpawnCoroutine, mediumSpawnCoroutine, hardSpawnCoroutine; // coroutines for managing cooldowns of the order spawns
 
+    // wave event stuff
+    private delegate void NewWaveDelegate();
+    private NewWaveDelegate NewWaveEvent;
+
     private void Start()
     {
-        // calculate the percentages and initialize the counters for each type of order
-        maxOrders = maxEasy + maxMedium + maxHard;
-        easyPercentage = (float)maxEasy / maxOrders;
-        mediumPercentage = (float)maxMedium / maxOrders;
-        hardPercentage = (float)maxHard / maxOrders;
-        currEasy = 0;
-        currMedium = 0;
-        currHard = 0;
+        InitWave();
     }
 
     private void Update()
     {
-        if (canSpawnOrders)
+        if (waveTimer > 0 && !finalOrderActive)
         {
-            if (orders.Count > 0)
+            if (canSpawnOrders)
             {
-                if (cooledDown)
+                if (orders.Count > 0)
                 {
-                    StopEasySpawn();
-                    StopMediumSpawn();
-                    StopHardSpawn();
-                    if ((float)currEasy / orders.Count() < easyPercentage || currEasy == 0) // if the number of easy orders is below the quota
+                    if (cooledDown)
                     {
-                        StartEasySpawn();
-                    }
-                    else if ((float)currMedium / orders.Count() < mediumPercentage || currMedium == 0) // same for the medium orders
-                    {
-                        StartMediumSpawn();
-                    }
-                    else if ((float)currHard / orders.Count() < hardPercentage || currHard == 0) // and the hard orders
-                    {
-                        StartHardSpawn();
+                        StopEasySpawn();
+                        StopMediumSpawn();
+                        StopHardSpawn();
+                        if ((float)currEasy / orders.Count() < easyPercentage || currEasy == 0) // if the number of easy orders is below the quota
+                        {
+                            StartEasySpawn();
+                        }
+                        else if ((float)currMedium / orders.Count() < mediumPercentage || currMedium == 0) // same for the medium orders
+                        {
+                            StartMediumSpawn();
+                        }
+                        else if ((float)currHard / orders.Count() < hardPercentage || currHard == 0) // and the hard orders
+                        {
+                            StartHardSpawn();
+                        }
                     }
                 }
+                else // to be executed for the first order
+                {
+                    StartEasySpawn();
+                }
             }
-            else // to be executed for the first order
+            else
             {
-                StartEasySpawn();
+                StopEasySpawn();
+                StopMediumSpawn();
+                StopHardSpawn();
+                cooledDown = true;
             }
+            canSpawnOrders = orders.Count() >= maxOrders ? false : true;
         }
-        else
+        else if(!finalOrderActive && waveTimer <= 0)
         {
-            StopEasySpawn();
-            StopMediumSpawn();
-            StopHardSpawn();
-            cooledDown = true;
+            ResetWave();
         }
-        canSpawnOrders = orders.Count() >= maxOrders ? false : true;
+        waveTimer -= Time.deltaTime;
+    }
+
+    private void InitWave()
+    {
+        waveTimer = waveLengthInSeconds;
+        try
+        {
+            // calculate the percentages and initialize the counters for each type of order
+            maxOrders = maxEasy[wave] + maxMedium[wave] + maxHard[wave];
+        }
+        catch
+        {
+            finalOrderActive = true;
+            SpawnFinalOrder();
+        }
+
+        if (!finalOrderActive)
+        {
+            easyPercentage = (float)maxEasy[wave] / maxOrders;
+            mediumPercentage = (float)maxMedium[wave] / maxOrders;
+            hardPercentage = (float)maxHard[wave] / maxOrders;
+        }
+
+        currEasy = 0;
+        currMedium = 0;
+        currHard = 0;
     }
 
     /// <summary>
@@ -108,6 +150,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(!orders.Contains(order))
         {
             orders.Add(order);
+            NewWaveEvent += order.EraseOrder;
         }
     }
 
@@ -120,6 +163,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(orders.Contains(order))
         {
             orders.Remove(order);
+            NewWaveEvent -= order.EraseOrder;
         }
     }
 
@@ -216,6 +260,30 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// Removes all packages and starts the next wave.
+    /// </summary>
+    private void ResetWave()
+    {
+        StopEasySpawn();
+        StopMediumSpawn();
+        StopHardSpawn();
+        cooledDown = true;
+        NewWaveEvent();
+        wave++;
+        InitWave();
+    }
+
+    /// <summary>
+    /// For spawning the final order.
+    /// </summary>
+    private void SpawnFinalOrder()
+    {
+        GameObject finalOrderGO = Instantiate(orderPrefab, goldenPickup);
+        Order finalOrder = finalOrderGO.GetComponent<Order>();
+        finalOrder.InitOrder(goldenPickup, goldenDropoff, Order.Order_Value.Golden);
     }
 
     // methods to start/stop coroutines
