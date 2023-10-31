@@ -7,6 +7,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [Header("Player Info")]
     [SerializeField] GameManager gameManager;
     [SerializeField] GameObject playerHolder;
+    [SerializeField] GameObject playerPrefab;
 
     [Space(10)]
     [SerializeField] bool allowPlayerSpawn = true;
@@ -52,14 +53,15 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             return;
         }
 
+        // Up the player count
         playerCount++;
 
+        // Update the naming scheme of the input reciever
         playerInput.gameObject.name = "Player " + playerCount.ToString();
-        Debug.Log("Spawned Player " + playerCount);
-
         playerInput.gameObject.transform.parent = playerHolder.transform;
 
         AddToPlayerArray(playerInput);
+
         // Temp, remove once we enable input ready up
         PlayerReady(playerInput);
     }

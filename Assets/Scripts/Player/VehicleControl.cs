@@ -16,6 +16,7 @@ public class VehicleControl : MonoBehaviour
     [Header("Setup")]
     [Tooltip("An input manager class, from the correlated InputReceiver object")]
     [SerializeField] private InputManager inp;
+    public InputManager Inp { set { inp = value; } }
 
     [Header("Speed Modifiers")]
     [Tooltip("A constant multiplier which affects how quickly the bike can accelerate")]

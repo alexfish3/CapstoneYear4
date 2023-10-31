@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &284356547448646710
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2085947172391996359}
+  m_Layer: 0
+  m_Name: FrontWheelLoc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2085947172391996359
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 284356547448646710}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1434788551553180094}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &411573694202264150
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,19 +564,19 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1434788551553180094}
-  - component: {fileID: 969263969667429436}
-  - component: {fileID: 3821771399049231832}
+  - component: {fileID: 1344613878865477213}
+  - component: {fileID: 7240116012560737404}
+  - component: {fileID: 2318255884642360135}
   - component: {fileID: 3229914393322429173}
   - component: {fileID: 4202306841560121670}
   - component: {fileID: 2306053711741843168}
-  - component: {fileID: 879494476696455638}
   - component: {fileID: 4618929444737251175}
   - component: {fileID: 3575159822553934967}
   - component: {fileID: 8011385876778193208}
   - component: {fileID: 3377648046507720766}
   - component: {fileID: 5437754346633320159}
   m_Layer: 7
-  m_Name: Alex Player
+  m_Name: New Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -570,42 +601,11 @@ Transform:
   - {fileID: 4130983111313296846}
   - {fileID: 5678907135865082877}
   - {fileID: 4114734156695200214}
+  - {fileID: 2085947172391996359}
+  - {fileID: 8865821111934823425}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &969263969667429436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4447557249903744733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2528059ef7a5d974c9ae94329b35a388, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerInput: {fileID: 3821771399049231832}
-  floorchecker: {fileID: 879494476696455638}
-  playerMovement: {x: 0, y: 0}
-  currentSpeed: 0
-  maxSpeed: 135
-  acceleration: 200
-  cameraHolder: {fileID: 5235467315359808553}
-  rotationControl: 0
-  turningValue: 5
-  wheel: {fileID: 0}
-  accelerating: 0
-  braking: 0
-  brakingSpeed: 500
-  boostCount: 3
-  boostSpeed: 600
-  boostDuration: 2
-  boosting: 0
-  mainCamera: {fileID: 2700908787672575881}
-  phaseCamera: {fileID: 411573694202264150}
-  score: 0
-  playerNumberType: 0
---- !u!114 &3821771399049231832
+--- !u!114 &1344613878865477213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -631,19 +631,7 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 969263969667429436}
-        m_TargetAssemblyTypeName: ScooterMovement, Assembly-CSharp
-        m_MethodName: OnMoveController
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
     m_ActionId: d473d571-f80d-4360-98ea-9d2dbed609c2
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
@@ -688,9 +676,9 @@ MonoBehaviour:
     m_ActionName: UI/TrackedDeviceOrientation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 969263969667429436}
-        m_TargetAssemblyTypeName: ScooterMovement, Assembly-CSharp
-        m_MethodName: OnSteer
+      - m_Target: {fileID: 7240116012560737404}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: LeftStickControl
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -704,7 +692,7 @@ MonoBehaviour:
     m_ActionName: Player/Steer[/XInputControllerWindows1/leftStick/x]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 969263969667429436}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ScooterMovement, Assembly-CSharp
         m_MethodName: OnAccelerate
         m_Mode: 0
@@ -720,7 +708,7 @@ MonoBehaviour:
     m_ActionName: Player/Accelerate[/XInputControllerWindows1/rightTrigger]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 969263969667429436}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ScooterMovement, Assembly-CSharp
         m_MethodName: OnBrake
         m_Mode: 0
@@ -736,7 +724,7 @@ MonoBehaviour:
     m_ActionName: Player/Brake[/XInputControllerWindows1/leftTrigger]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 969263969667429436}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ScooterMovement, Assembly-CSharp
         m_MethodName: OnCameraRotation
         m_Mode: 0
@@ -752,9 +740,9 @@ MonoBehaviour:
     m_ActionName: Player/Camera Rotation
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 969263969667429436}
-        m_TargetAssemblyTypeName: ScooterMovement, Assembly-CSharp
-        m_MethodName: OnBoost
+      - m_Target: {fileID: 7240116012560737404}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: SouthFaceTrigger
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -767,20 +755,56 @@ MonoBehaviour:
     m_ActionId: 0d619756-2bc7-4e17-b01b-aceb20a0cb59
     m_ActionName: Player/New action
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7240116012560737404}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: RightTriggerControl
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 699b60d5-b575-4fea-9d41-8b3321252383
     m_ActionName: Player/Accelerate[/XInputControllerWindows/rightTrigger]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7240116012560737404}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: LeftTriggerControl
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 1c874789-a3ee-4700-b06c-6d2c5648bcd0
     m_ActionName: Player/Brake[/XInputControllerWindows/leftTrigger]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7240116012560737404}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: WestFaceTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: e53579b4-c83b-4d8b-864d-bfd122dc9029
     m_ActionName: Player/Drift[/XInputControllerWindows/buttonWest]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 969263969667429436}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ScooterMovement, Assembly-CSharp
         m_MethodName: OnSwapCamera
         m_Mode: 0
@@ -799,6 +823,43 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 2608218144982105021}
+--- !u!114 &7240116012560737404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4447557249903744733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35dec2fde7a57294c9ad7c3ad12560e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2318255884642360135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4447557249903744733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 947aefbc532d9ff4885e7164f6718348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inp: {fileID: 7240116012560737404}
+  accelerationPower: 50
+  dragForce: 0.1
+  reverseDrag: 3
+  brakingPower: 30
+  driftBoost: 5
+  maxTurningAngle: 5
+  frontWheelLocation: {fileID: 2085947172391996359}
+  backWheelLocation: {fileID: 8865821111934823425}
+  boostAmount: 20
+  boostDuration: 2
+  boostRechargeTime: 10
+  drawNewDirection: 0
 --- !u!54 &3229914393322429173
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -943,19 +1004,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &879494476696455638
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4447557249903744733}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41833772e543ecc45ba7c464a1327bae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerBody: {fileID: 7225956542923617294}
 --- !u!114 &4618929444737251175
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1115,6 +1163,37 @@ MonoBehaviour:
   camerasToFollow:
   - {fileID: 8849363309556651150}
   viewPortRectDefault: {x: 0, y: 0, z: 1, w: 1}
+--- !u!1 &6062359405496541036
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8865821111934823425}
+  m_Layer: 0
+  m_Name: BackWheelLoc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8865821111934823425
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6062359405496541036}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.8000002}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1434788551553180094}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6094711238427576005
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,11 +1479,11 @@ PrefabInstance:
     - target: {fileID: -6902573867230041995, guid: 63c932e608368f34f94f598a84058071, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fd63513c35555094d81aa69587b79e3c, type: 2}
+      objectReference: {fileID: 2100000, guid: d5845425d33373b47a8ff08fec27f5aa, type: 2}
     - target: {fileID: -6874055695231266341, guid: 63c932e608368f34f94f598a84058071, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: fd63513c35555094d81aa69587b79e3c, type: 2}
+      objectReference: {fileID: 2100000, guid: d5845425d33373b47a8ff08fec27f5aa, type: 2}
     - target: {fileID: -6733177361254619370, guid: 63c932e608368f34f94f598a84058071, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -1468,11 +1547,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 63c932e608368f34f94f598a84058071, type: 3}
---- !u!1 &7225956542923617294 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 63c932e608368f34f94f598a84058071, type: 3}
-  m_PrefabInstance: {fileID: 7531893111200549215}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8001790001755942580 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 63c932e608368f34f94f598a84058071, type: 3}
