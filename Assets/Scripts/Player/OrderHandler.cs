@@ -11,6 +11,7 @@ public class OrderHandler : MonoBehaviour
 {
     private int score; // score of the player
     public int Score { get { return score; } }
+    [Tooltip("Exposed for testing purposes only!")]
     [SerializeField] private Order order1; // first order the player is holding
     [SerializeField] private Order order2; // second order the player is holding
 
@@ -18,7 +19,7 @@ public class OrderHandler : MonoBehaviour
     [SerializeField] private Transform order1Position;
     [SerializeField] private Transform order2Position;
 
-    [Tooltip("Determines whether the player is boosting or not")]
+    [Tooltip("Determines whether the player is boosting or not. Exposed for testing purposes only.")]
     [SerializeField] private bool isBoosting;
     public bool IsBoosting { get { return IsBoosting; } }
 
@@ -124,19 +125,17 @@ public class OrderHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// This method accepts an order as a parameter and checks if the player is holding it. If they are it will remove it from their possession.
+    /// This method accepts an order as a parameter and checks if the player is holding it. If they are it will remove it from their possession. Doesn't "drop" the order, intended for stealing.
     /// </summary>
     /// <param name="inOrder">Order to be removed</param>
     public void LoseOrder(Order inOrder)
     {
         if(inOrder == order1)
         {
-            order1.Drop();
             order1 = null;
         }
         else if(inOrder == order2)
         {
-            order2.Drop();
             order2 = null;
         }
     }
@@ -150,8 +149,8 @@ public class OrderHandler : MonoBehaviour
         Order newOrder = victimPlayer.GetBestOrder();
         if (newOrder != null)
         {
-            victimPlayer.LoseOrder(newOrder);
             AddOrder(newOrder);
+            victimPlayer.LoseOrder(newOrder);
         }
         victimPlayer.DropEverything();
     }
