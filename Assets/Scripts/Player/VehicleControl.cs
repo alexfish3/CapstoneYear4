@@ -76,12 +76,21 @@ public class VehicleControl : MonoBehaviour
     [SerializeField] GameObject mainCam;
     [SerializeField] GameObject phaseCam;
 
+    //////Taria
+    private float permDrag;
+    private float permAcc;
+    //
+
     /// <summary>
     /// Standard Start
     /// Just gets references and subscribes to events
     /// </summary>
     void Start()
     {
+        //Taria
+        permDrag = dragForce;
+        permAcc = accelerationPower;
+        //
         rb = GetComponent<Rigidbody>();
         inp.WestFaceEvent += DriftUpdate;
         inp.SouthFaceEvent += PrimitiveBoost;
@@ -269,6 +278,35 @@ public class VehicleControl : MonoBehaviour
         {
             mainCam.SetActive(true);
             phaseCam.SetActive(false);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "TouchGrass")
+        {
+            dragForce = permDrag;
+        }
+        if (other.tag == "Speed")
+        {
+
+            accelerationPower = permAcc;
+
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.tag == "TouchGrass")
+        {
+
+            dragForce = 0.28f;
+        }
+        if (other.tag == "Speed")
+        {
+
+            accelerationPower = 200;
         }
     }
 }
