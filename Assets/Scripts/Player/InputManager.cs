@@ -79,6 +79,10 @@ public class InputManager : MonoBehaviour
         WestFaceEvent(westFaceValue);
     }
 
+    /// <summary>
+    /// Takes input from the south face button (A on Xbox)
+    /// </summary>
+    /// <param name="context">boilerplate for Input Controller</param>
     public void SouthFaceTrigger(CallbackContext context)
     {
         southFaceValue = context.ReadValueAsButton();
