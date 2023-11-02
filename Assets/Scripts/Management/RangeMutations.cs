@@ -23,4 +23,20 @@ public static class RangeMutations
 
         return processedValue;
     }
+
+    /// <summary>
+    /// Remaps a value along a linear scale based on set parameters
+    /// </summary>
+    /// <param name="inp">The input value, which must lie between inMin and inMax</param>
+    /// <param name="inMin">The lower bound of the initial scale</param>
+    /// <param name="inMax">The upper bound of the initial scale</param>
+    /// <param name="outMin">The lower bound of the modified scale</param>
+    /// <param name="outMax">The upper bound of the modified scale</param>
+    /// <returns></returns>
+    public static float Map_Linear(float inp, float inMin, float inMax, float outMin, float outMax)
+    {
+        float processedValue = (inp - inMin) / (inMax - inMin) * (outMax - outMin) + outMin;
+
+        return processedValue;
+    }
 }

@@ -94,8 +94,16 @@ public class BallDriving : MonoBehaviour
 
         currentForce = (accelerationPower * rightTrig) - (brakingPower * leftTrig); //accelerating, braking, and reversing all in one! Oh my!
 
-        rotationAmount = leftStick * steeringPower;
-        rotationAmount *= RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower); //scales steering by speed so that moving at about 75% of max speed gives you the tightest turning radius
+        if (drifting)
+        {
+            rotationAmount = Drift();
+        }
+        else
+        {
+            rotationAmount = leftStick * steeringPower;
+            rotationAmount *= RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower); //scales steering by speed, though only when not drifting
+        }
+
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
 
         DebugUIUpdate();
@@ -116,7 +124,7 @@ public class BallDriving : MonoBehaviour
     }
 
     /// <summary>
-    /// Receives input as an event, telling the script what the state of the drift button is
+    /// Receives input as an event. Flags callToDrift and drifting depending on circumstance.
     /// </summary>
     /// <param name="WestFaceState">The state of the west face button, passed by the event</param>
     private void DriftFlag(bool WestFaceState)
@@ -150,6 +158,25 @@ public class BallDriving : MonoBehaviour
         driftDirection = leftStick < 0? -1 : 1;
     }
 
+    private float Drift()
+    {
+        float scaledInput;
+
+        if (driftDirection > 0)
+        {
+            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, 0, 2);
+        }
+        else
+        {
+            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, 2, 0);
+        }
+
+        return steeringPower * driftDirection * scaledInput;
+    }
+
+    /// <summary>
+    /// Updates various debug UI elements
+    /// </summary>
     private void DebugUIUpdate()
     {
         if (debugSpeedometerEnable)
