@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class BallDriving : MonoBehaviour
 {
     private const float STEERING_MODEL_ROTATION = 15.0f; //How far the model rotates when steering normally
-    private const float DRIFTING_MODEL_ROTATION = 15.0f; //How far the model rotates when drifting
+    private const float DRIFTING_MODEL_ROTATION = 20.0f; //How far the model rotates when drifting
     private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
 
     [Header("Setup")]
