@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 /// <summary>
 /// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position.
@@ -9,6 +10,10 @@ using UnityEngine;
 /// </summary>
 public class BallDriving : MonoBehaviour
 {
+    private const float STEERING_MODEL_ROTATION = 15.0f; //How far the model rotates when steering normally
+    private const float DRIFTING_MODEL_ROTATION = 15.0f; //How far the model rotates when drifting
+    private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
+
     [Header("Setup")]
     [Tooltip("Reference to the scooter model (specifically whatever empty is right above the first object with any actual mesh)")]
     [SerializeField] private Transform scooterModel;
@@ -31,6 +36,12 @@ public class BallDriving : MonoBehaviour
     [Header("Steering")]
     [Tooltip("The 'turning power'. A slightly abstract concept representing how well the scooter can turn. Higher values represent a tighter turning circle")]
     [SerializeField] private float steeringPower = 15.0f;
+    [Tooltip("The multiplier applied to turning when drifting. Always above 1 or there'll be no difference. Use caution when messing with this")]
+    [SerializeField] private float driftTurnScalar = 1.8f;
+    [Tooltip("How many 'drift points' are needed to achieve the drift boost. This is a semi-arbitrary unit, though if the drift boost is being based entirely on time, 100 drift points equals 1 second")]
+    [SerializeField] private float driftBoostThreshold = 100.0f;
+    [Tooltip("How much time vs turning amount is factored into drift boost. 0 is full time, 1 is full turning amount")]
+    [SerializeField] private float driftBoostMode = 0.0f;
 
     [Header("Boosting")]
     [Tooltip("The speed power of the boost")]
@@ -49,6 +60,10 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private bool debugDriftStateEnable = false;
     [Tooltip("Reference to the TMP for displaying the speed")]
     [SerializeField] private TextMeshProUGUI debugDriftStateText;
+    [Tooltip("Display debug drift completion")]
+    [SerializeField] private bool debugDriftCompleteEnable = false;
+    [Tooltip("Reference to the image for debug drift completion")]
+    [SerializeField] private Image debugDriftComplete;
 
     private Rigidbody sphereBody; //just reference to components of the sphere
     private Transform sphereTransform;
@@ -63,6 +78,9 @@ public class BallDriving : MonoBehaviour
     private bool callToDrift = false;
     private bool drifting = false;
     private int driftDirection;
+
+    private bool driftBoostAchieved = false;
+    private float driftPoints = 0.0f;
 
 
     /// <summary>
@@ -96,12 +114,22 @@ public class BallDriving : MonoBehaviour
 
         if (drifting)
         {
-            rotationAmount = Drift();
+            rotationAmount = Drift(); //determines the actual rotation of the larger object
+
+            //Rotates just the model; purely for effect
+            float driftTargetAmount = (driftDirection > 0) ? RangeMutations.Map_Linear(leftStick, -1, 1, 0.5f, driftTurnScalar) : RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnScalar, 0.5f);
+            float modelRotateAmount = 90 + driftTargetAmount * driftDirection * DRIFTING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower);
+            scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(0, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
         }
         else
         {
+            //determines the actual rotation of the larger object
             rotationAmount = leftStick * steeringPower;
             rotationAmount *= RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower); //scales steering by speed, though only when not drifting
+
+            //Rotates just the model; purely for effect
+            float modelRotateAmount = 90 + leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower);
+            scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(0, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
         }
 
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
@@ -114,7 +142,15 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        sphereBody.AddForce(transform.forward * currentForce, ForceMode.Acceleration);
+        float totalForce = currentForce;
+
+        if (driftBoostAchieved)
+        {
+            totalForce += driftBoost;
+            driftBoostAchieved = false;
+        }
+
+        sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);        
 
         //Clamping to make it easier to come to a complete stop
         if (sphereBody.velocity.magnitude < 1 && currentForce < 1)
@@ -124,7 +160,7 @@ public class BallDriving : MonoBehaviour
     }
 
     /// <summary>
-    /// Receives input as an event. Flags callToDrift and drifting depending on circumstance.
+    /// Receives input as an event. Flags callToDrift and drifting depending on circumstance. Applies the boost if applicable
     /// </summary>
     /// <param name="WestFaceState">The state of the west face button, passed by the event</param>
     private void DriftFlag(bool WestFaceState)
@@ -144,6 +180,12 @@ public class BallDriving : MonoBehaviour
         {
             callToDrift = false;
             drifting = false;
+
+            if (driftPoints >= driftBoostThreshold)
+            {
+                driftBoostAchieved = true;
+                driftPoints = 0.0f;
+            }
         }
     }
 
@@ -158,19 +200,25 @@ public class BallDriving : MonoBehaviour
         driftDirection = leftStick < 0? -1 : 1;
     }
 
+    /// <summary>
+    /// The function that actually handles drift. 
+    /// Scales the user input to be from 0 to driftTurnScalar instead of -1 to 1, enhancing the turning circle but restricting its direction
+    /// </summary>
+    /// <returns>A rotation amount</returns>
     private float Drift()
     {
         float scaledInput;
 
         if (driftDirection > 0)
         {
-            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, 0, 2);
+            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, 0, driftTurnScalar);
         }
         else
         {
-            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, 2, 0);
+            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnScalar, 0);
         }
 
+        driftPoints += Time.deltaTime * (1 - driftBoostMode) * 100.0f;
         return steeringPower * driftDirection * scaledInput;
     }
 
@@ -186,7 +234,19 @@ public class BallDriving : MonoBehaviour
 
         if (debugDriftStateEnable)
         {
-            debugDriftStateText.text = "Drifting: " + drifting;
+            debugDriftStateText.text = "Drifting: " + (drifting ? "Yes" : "No");
+        }
+
+        if (debugDriftCompleteEnable)
+        {
+            if (driftPoints >= driftBoostThreshold)
+            {
+                debugDriftComplete.enabled = true;
+            }
+            else
+            {
+                debugDriftComplete.enabled = false;
+            }
         }
     }
 }
