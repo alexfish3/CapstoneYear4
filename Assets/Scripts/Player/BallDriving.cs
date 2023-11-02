@@ -4,7 +4,8 @@ using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position
+/// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position.
+/// Drifting is slightly more complicated, and involves doing a bunch of math.
 /// </summary>
 public class BallDriving : MonoBehaviour
 {
@@ -44,6 +45,10 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private bool debugSpeedometerEnable = false;
     [Tooltip("Reference to the TMP for displaying the speed")]
     [SerializeField] private TextMeshProUGUI debugSpeedText;
+    [Tooltip("Display debug drift state")]
+    [SerializeField] private bool debugDriftStateEnable = false;
+    [Tooltip("Reference to the TMP for displaying the speed")]
+    [SerializeField] private TextMeshProUGUI debugDriftStateText;
 
     private Rigidbody sphereBody; //just reference to components of the sphere
     private Transform sphereTransform;
@@ -55,6 +60,10 @@ public class BallDriving : MonoBehaviour
     private float currentForce; //the amount of force to add to the speed on any given frame
     private float rotationAmount; //the amount to turn on any given frame
 
+    private bool callToDrift = false;
+    private bool drifting = false;
+    private int driftDirection;
+
 
     /// <summary>
     /// Standard Start. Just used to get references and subscribe to events
@@ -63,6 +72,8 @@ public class BallDriving : MonoBehaviour
     {
         sphereBody = sphere.GetComponent<Rigidbody>();
         sphereTransform = sphere.GetComponent<Transform>();
+
+        inp.WestFaceEvent += DriftFlag; //subscribes to WestFaceEvent
     }
 
     /// <summary>
@@ -74,9 +85,9 @@ public class BallDriving : MonoBehaviour
         leftTrig = inp.LeftTriggerValue;
         rightTrig = inp.RightTriggerValue;
 
-        if (debugSpeedometerEnable)
+        if (callToDrift && leftStick != 0)
         {
-            debugSpeedText.text = "" + sphereBody.velocity.magnitude;
+            AssignDriftState();
         }
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
@@ -84,8 +95,10 @@ public class BallDriving : MonoBehaviour
         currentForce = (accelerationPower * rightTrig) - (brakingPower * leftTrig); //accelerating, braking, and reversing all in one! Oh my!
 
         rotationAmount = leftStick * steeringPower;
-        rotationAmount *= RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower);
+        rotationAmount *= RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower); //scales steering by speed so that moving at about 75% of max speed gives you the tightest turning radius
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
+
+        DebugUIUpdate();
     }
 
     /// <summary>
@@ -98,7 +111,55 @@ public class BallDriving : MonoBehaviour
         //Clamping to make it easier to come to a complete stop
         if (sphereBody.velocity.magnitude < 1 && currentForce < 1)
         {
-            sphereBody.velocity = Vector3.zero;
+            sphereBody.velocity = new Vector3(0, sphereBody.velocity.y, 0);
+        }
+    }
+
+    /// <summary>
+    /// Receives input as an event, telling the script what the state of the drift button is
+    /// </summary>
+    /// <param name="WestFaceState">The state of the west face button, passed by the event</param>
+    private void DriftFlag(bool WestFaceState)
+    {
+        if (WestFaceState)
+        {
+            if (leftStick != 0)
+            {
+                AssignDriftState();
+            }
+            else
+            {
+                callToDrift = true; //can't drift without a selected direction, so it stows the request until a direction is selected
+            }
+        }
+        else
+        {
+            callToDrift = false;
+            drifting = false;
+        }
+    }
+
+    /// <summary>
+    /// Sets drifting to true and assings its direction based on the left stick.
+    /// </summary>
+    private void AssignDriftState()
+    {
+        callToDrift = false;
+        drifting = true;
+
+        driftDirection = leftStick < 0? -1 : 1;
+    }
+
+    private void DebugUIUpdate()
+    {
+        if (debugSpeedometerEnable)
+        {
+            debugSpeedText.text = "" + sphereBody.velocity.magnitude;
+        }
+
+        if (debugDriftStateEnable)
+        {
+            debugDriftStateText.text = "Drifting: " + drifting;
         }
     }
 }
