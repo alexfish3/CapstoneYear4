@@ -1,7 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position
+/// </summary>
 public class BallDriving : MonoBehaviour
 {
     [Header("Setup")]
@@ -25,7 +29,7 @@ public class BallDriving : MonoBehaviour
 
     [Header("Steering")]
     [Tooltip("The 'turning power'. A slightly abstract concept representing how well the scooter can turn. Higher values represent a tighter turning circle")]
-    [SerializeField] private float steeringPower = 80.0f;
+    [SerializeField] private float steeringPower = 15.0f;
 
     [Header("Boosting")]
     [Tooltip("The speed power of the boost")]
@@ -35,14 +39,21 @@ public class BallDriving : MonoBehaviour
     [Tooltip("How long it takes to recharge the boost, starting after it finishes")]
     [SerializeField] private float boostRechargeTime = 10.0f;
 
-    private Rigidbody sphereBody;
+    [Header("Debug")]
+    [Tooltip("Display debug speedometer")]
+    [SerializeField] private bool debugSpeedometerEnable = false;
+    [Tooltip("Reference to the TMP for displaying the speed")]
+    [SerializeField] private TextMeshProUGUI debugSpeedText;
+
+    private Rigidbody sphereBody; //just reference to components of the sphere
     private Transform sphereTransform;
 
-    private float leftStick;
-    private float leftTrig;
-    private float rightTrig;
+    private float leftStick; //left stick value, ranging from -1 to 1
+    private float leftTrig; //left trigger value, ranging from 0 to 1
+    private float rightTrig; //right trigger value, ranging from 0 to 1
 
-    private float currentForce;
+    private float currentForce; //the amount of force to add to the speed on any given frame
+    private float rotationAmount; //the amount to turn on any given frame
 
 
     /// <summary>
@@ -63,9 +74,18 @@ public class BallDriving : MonoBehaviour
         leftTrig = inp.LeftTriggerValue;
         rightTrig = inp.RightTriggerValue;
 
+        if (debugSpeedometerEnable)
+        {
+            debugSpeedText.text = "" + sphereBody.velocity.magnitude;
+        }
+
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
 
-        currentForce = (accelerationPower * rightTrig) - (brakingPower * leftTrig);
+        currentForce = (accelerationPower * rightTrig) - (brakingPower * leftTrig); //accelerating, braking, and reversing all in one! Oh my!
+
+        rotationAmount = leftStick * steeringPower;
+        rotationAmount *= RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower);
+        transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
     }
 
     /// <summary>
@@ -74,5 +94,11 @@ public class BallDriving : MonoBehaviour
     private void FixedUpdate()
     {
         sphereBody.AddForce(transform.forward * currentForce, ForceMode.Acceleration);
+
+        //Clamping to make it easier to come to a complete stop
+        if (sphereBody.velocity.magnitude < 1 && currentForce < 1)
+        {
+            sphereBody.velocity = Vector3.zero;
+        }
     }
 }
