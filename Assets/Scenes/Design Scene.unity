@@ -24806,9 +24806,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
   orderPrefab: {fileID: 6222648319098696450, guid: 72282afa5b461534eafcad89053a8e6c, type: 3}
-  maxEasy: 050000000300000003000000
+  maxEasy: 0500000003000000
   maxMedium: 0400000002000000
-  maxHard: 03000000
+  maxHard: 0300000001000000
   waveLengthInSeconds: 60
   cooldownTime: 5
   pickupWaypoints:
@@ -24857,11 +24857,12 @@ MonoBehaviour:
   - {fileID: 534051276}
   - {fileID: 1310798040}
   - {fileID: 248680907}
-  goldenPickup: {fileID: 0}
-  goldenDropoff: {fileID: 0}
+  goldenPickup: {fileID: 544104832}
+  goldenDropoff: {fileID: 248680907}
   easyDistance: 10
   mediumDistance: 40
   hardDistance: 70
+  waveResets: 1
 --- !u!4 &1350488419
 Transform:
   m_ObjectHideFlags: 0

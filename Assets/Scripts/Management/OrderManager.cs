@@ -62,6 +62,10 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     private delegate void NewWaveDelegate();
     private NewWaveDelegate NewWaveEvent;
 
+    [Header("Debug")]
+    [Tooltip("When checked will loop through waves so you can play forever")]
+    [SerializeField] private bool waveResets;
+
     private void Start()
     {
         InitWave();
@@ -115,7 +119,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         waveTimer -= Time.deltaTime;
     }
 
-    private void InitWave()
+    public void InitWave()
     {
         waveTimer = waveLengthInSeconds;
         try
@@ -125,8 +129,17 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         }
         catch
         {
-            finalOrderActive = true;
-            SpawnFinalOrder();
+            if (finalOrderActive && waveResets) // resets the wave if final order has been delivered
+            {
+                finalOrderActive = false;
+                wave = 0;
+                InitWave();
+            }
+            else if(!finalOrderActive)
+            {
+                finalOrderActive = true;
+                SpawnFinalOrder();
+            }
         }
 
         if (!finalOrderActive)

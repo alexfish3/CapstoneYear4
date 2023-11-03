@@ -118,6 +118,10 @@ public class Order : MonoBehaviour
         OrderManager.Instance.AddPickupDropoff(pickup, dropoff);
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);
+        if(value == Order_Value.Golden)
+        {
+            OrderManager.Instance.InitWave(); // sloppy way of looping the game indefinitely, will be removed eventually
+        }
         Destroy(this.gameObject);
     }
 
