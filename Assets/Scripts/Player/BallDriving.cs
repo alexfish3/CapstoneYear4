@@ -35,6 +35,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float brakingPower = 10.0f;
     [Tooltip("The amount of speed granted by a successful drift")]
     [SerializeField] private float driftBoost = 5.0f;
+    [Tooltip("The amount of drag while boosting (Exercise caution when changing this; ask Will before playing with it too much)")]
+    [SerializeField] private float boostingDrag = 1.0f;
 
     [Header("Steering")]
     [Tooltip("The 'turning power'. A slightly abstract concept representing how well the scooter can turn. Higher values represent a tighter turning circle")]
@@ -55,23 +57,18 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float boostRechargeTime = 10.0f;
 
     [Header("Debug")]
-    [Tooltip("Display debug speedometer")]
     [SerializeField] private bool debugSpeedometerEnable = false;
-    [Tooltip("Reference to the TMP for displaying the speed")]
     [SerializeField] private TextMeshProUGUI debugSpeedText;
-    [Tooltip("Display debug drift state")]
     [SerializeField] private bool debugDriftStateEnable = false;
-    [Tooltip("Reference to the TMP for displaying the speed")]
     [SerializeField] private TextMeshProUGUI debugDriftStateText;
-    [Tooltip("Display debug drift completion")]
     [SerializeField] private bool debugDriftCompleteEnable = false;
-    [Tooltip("Reference to the image for debug drift completion")]
     [SerializeField] private Image debugDriftComplete;
+    [SerializeField] private bool debugBoostabilityEnable = false;
+    [SerializeField] private Image debugBoostability;
 
     private Rigidbody sphereBody; //just reference to components of the sphere
     private Transform sphereTransform;
     private float startingDrag;
-    private float boostingDrag = 1.0f;
 
     private float leftStick, leftTrig, rightTrig; //stick ranges from -1 to 1, triggers range from 0 to 1
 
@@ -269,6 +266,36 @@ public class BallDriving : MonoBehaviour
     }
 
     /// <summary>
+    /// Sets boosting variables, waits, sets some of them back, then calls the cooldown
+    /// </summary>
+    /// <returns>IEnumerator boilerplate</returns>
+    private IEnumerator BoostActive()
+    {
+        boosting = true;
+        boostAble = false;
+        boostInitialburst = true;
+        sphereBody.drag = boostingDrag;
+
+        yield return new WaitForSeconds(boostDuration);
+
+        boosting = false;
+        sphereBody.drag = startingDrag;
+        
+        StartBoostCooldown();
+    }
+
+    /// <summary>
+    /// Waits for the recharge duration then enables boosting again
+    /// </summary>
+    /// <returns>IEnumerator boilerplate</returns>
+    private IEnumerator BoostCooldown()
+    {
+        yield return new WaitForSeconds(boostRechargeTime);
+
+        boostAble = true;
+    }
+
+    /// <summary>
     /// Updates various debug UI elements
     /// </summary>
     private void DebugUIUpdate()
@@ -294,28 +321,22 @@ public class BallDriving : MonoBehaviour
                 debugDriftComplete.enabled = false;
             }
         }
-    }
 
-    private IEnumerator BoostActive()
-    {
-        boosting = true;
-        boostAble = false;
-        boostInitialburst = true;
-        sphereBody.drag = boostingDrag;
-
-        yield return new WaitForSeconds(boostDuration);
-
-        boosting = false;
-        sphereBody.drag = startingDrag;
-        
-        StartBoostCooldown();
-    }
-
-    private IEnumerator BoostCooldown()
-    {
-        yield return new WaitForSeconds(boostRechargeTime);
-
-        boostAble = true;
+        if (debugBoostabilityEnable)
+        {
+            if (boostAble)
+            {
+                debugBoostability.color = Color.white;
+            }
+            else if (boosting)
+            {
+                debugBoostability.color = Color.yellow;
+            }
+            else
+            {
+                debugBoostability.color = Color.red;
+            }
+        }
     }
 
 

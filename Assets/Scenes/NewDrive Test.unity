@@ -180,7 +180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: 0.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1338,6 +1338,7 @@ RectTransform:
   - {fileID: 31800052}
   - {fileID: 2110605100}
   - {fileID: 807903477}
+  - {fileID: 1548970226}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1463,6 +1464,81 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &1548970225
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1548970226}
+  - component: {fileID: 1548970228}
+  - component: {fileID: 1548970227}
+  m_Layer: 5
+  m_Name: Boostability
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1548970226
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548970225}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.6875, y: 0.39998, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1292275922}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -618}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1548970227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548970225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1548970228
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548970225}
+  m_CullTransparentMesh: 1
 --- !u!1 &1817388610
 GameObject:
   m_ObjectHideFlags: 0
@@ -2523,39 +2599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 947aefbc532d9ff4885e7164f6718348, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inp: {fileID: 2949551772895808405}
-  accelerationPower: 50
-  dragForce: 0.1
-  reverseDrag: 3
-  brakingPower: 20
-  driftBoost: 5
-  maxTurningAngle: 20
-  frontWheelLocation: {fileID: 4652124489219091147}
-  backWheelLocation: {fileID: 7727914894045951811}
-  boostAmount: 50
-  boostDuration: 2
-  boostRechargeTime: 10
-  drawNewDirection: 1
-  leftStick: 0
-  rightTrig: 0
-  leftTrig: 0
-  deltaSpeed: 0
-  speed: 0
-  drifting: 0
-  driftDirection: 0
-  driftTime: 0
-  boostAvailable: 1
-  boostActive: 0
-  frontWheelFacing: {x: 0, y: 0, z: 0, w: 0}
-  convertedFacing: {x: 0, y: 0, z: 0}
-  backWheelStartPos: {x: 0, y: 0, z: 0}
-  rb: {fileID: 0}
-  orderHandler: {fileID: 0}
-  phasing: 0
-  mainCam: {fileID: 0}
-  phaseCam: {fileID: 0}
-  permDrag: 0
-  permAcc: 0
 --- !u!33 &1417616279885119597
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4660,6 +4703,8 @@ MonoBehaviour:
   debugDriftStateText: {fileID: 2110605101}
   debugDriftCompleteEnable: 1
   debugDriftComplete: {fileID: 807903478}
+  debugBoostabilityEnable: 1
+  debugBoostability: {fileID: 1548970227}
 --- !u!224 &5498703859380045287
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6410,6 +6455,7 @@ SceneRoots:
   - {fileID: 985984662}
   - {fileID: 2295389898098264653}
   - {fileID: 5923047178943839738}
+  - {fileID: 7326161761605950838}
   - {fileID: 1292275922}
   - {fileID: 172197765}
   - {fileID: 1205896782}
@@ -6421,4 +6467,3 @@ SceneRoots:
   - {fileID: 1850942319}
   - {fileID: 1243173276}
   - {fileID: 814136518}
-  - {fileID: 7326161761605950838}
