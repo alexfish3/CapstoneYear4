@@ -29,7 +29,7 @@ public class CompassMarker : MonoBehaviour
             if (player == null)
                 continue;
 
-            player.gameObject.GetComponent<Compass>().AddCompassMarker(this);
+            player.gameObject.GetComponentInChildren<Compass>().AddCompassMarker(this);
         }
     }
 
@@ -47,7 +47,7 @@ public class CompassMarker : MonoBehaviour
             if (player == null)
                 continue;
 
-            player.gameObject.GetComponent<Compass>().RemoveCompassMarker(this);
+            player.gameObject.GetComponentInChildren<Compass>().RemoveCompassMarker(this);
         }
     }
 
@@ -67,7 +67,7 @@ public class CompassMarker : MonoBehaviour
             if (player == null)
                 continue;
 
-            player.gameObject.GetComponent<Compass>().ChangeCompassMarkerIcon(this, isCarried);
+            player.gameObject.GetComponentInChildren<Compass>().ChangeCompassMarkerIcon(this, isCarried);
         }
     }
 }
