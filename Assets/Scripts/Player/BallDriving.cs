@@ -219,7 +219,7 @@ public class BallDriving : MonoBehaviour
         }
 
         driftPoints += Time.deltaTime * (1 - driftBoostMode) * 100.0f;
-        return steeringPower * driftDirection * scaledInput;
+        return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower);
     }
 
     /// <summary>
