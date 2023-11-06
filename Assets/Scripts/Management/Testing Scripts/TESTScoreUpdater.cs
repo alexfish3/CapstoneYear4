@@ -19,13 +19,16 @@ public class TESTScoreUpdater : MonoBehaviour
     private void Update()
     {
         scoreText.text = "$" + player.Score;
-        if (!OrderManager.Instance.FinalOrderActive)
+        if (OrderManager.Instance != null)
         {
-            waveText.text = OrderManager.Instance.WaveTimer.ToString("00.00");
-        }
-        else
-        {
-            waveText.text = "";
+            if (!OrderManager.Instance.FinalOrderActive)
+            {
+                waveText.text = OrderManager.Instance.WaveTimer.ToString("00.00");
+            }
+            else
+            {
+                waveText.text = "";
+            }
         }
     }
 }

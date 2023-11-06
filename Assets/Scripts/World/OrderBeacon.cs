@@ -97,15 +97,17 @@ public class OrderBeacon : MonoBehaviour
     /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<OrderHandler>() != null)
+        if (other.name == "Ball Of Fun")
         {
+            Transform parent = other.transform.parent;
+            OrderHandler orderHandler = parent.GetComponentInChildren<OrderHandler>();
             if (isPickup)
             {
-                other.GetComponent<OrderHandler>().AddOrder(order); // add the order if the beacon is a pickup beacon
+                orderHandler.AddOrder(order); // add the order if the beacon is a pickup beacon
             }
             else
             {
-                other.GetComponent<OrderHandler>().DeliverOrder(order); // deliver the order if the beacon is a dropoff beacon
+                orderHandler.DeliverOrder(order); // deliver the order if the beacon is a dropoff beacon
             }
         }
     }
