@@ -283,6 +283,23 @@ public class BallDriving : MonoBehaviour
 
     private void StartBoostActive()
     {
-        throw new System.NotImplementedException();
+        boostActiveCoroutine = BoostActive();
+        StartCoroutine(boostActiveCoroutine);
+    }
+    private void StopBoostActive()
+    {
+        StopCoroutine(boostActiveCoroutine);
+        boostActiveCoroutine = null;
+    }
+
+    private void StartBoostCooldown()
+    {
+        boostCooldownCoroutine = BoostCooldown();
+        StartCoroutine(boostCooldownCoroutine);
+    }
+    private void StopBoostCooldown()
+    {
+        StopCoroutine(boostCooldownCoroutine);
+        boostCooldownCoroutine = null;
     }
 }
