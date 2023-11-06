@@ -163,7 +163,12 @@ public class BallDriving : MonoBehaviour
             driftBoostAchieved = false;
         }
 
-        sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);        
+        if (drifting)
+            sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
+        else
+            sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
+
+                
 
         //Clamping to make it easier to come to a complete stop
         if (sphereBody.velocity.magnitude < 1 && currentForce < 1)
