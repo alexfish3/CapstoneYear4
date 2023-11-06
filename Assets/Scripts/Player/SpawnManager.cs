@@ -7,6 +7,7 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     GameManager gameManager;
     PlayerInstantiate playerInstantiate;
 
+    [Tooltip("The spawn positions of the players as they start the game")]
     [SerializeField] GameObject[] gameSpawnPositions = new GameObject[Constants.MAX_PLAYERS];
 
     ///<summary>
@@ -20,9 +21,6 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
         Debug.Log("Enable to add spawns");
         gameManager.OnSwapBegin += SpawnPlayersStartOfGame;
         gameManager.OnSwapFinalPackage += SpawnPlayersFinalPackage;
-
-        // Set game to begin upon loading into scene
-        gameManager.SetGameState(GameState.Begin);
     }
 
     ///<summary>
@@ -32,6 +30,12 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     {
         gameManager.OnSwapBegin -= SpawnPlayersStartOfGame;
         gameManager.OnSwapFinalPackage -= SpawnPlayersFinalPackage;
+    }
+
+    private void Start()
+    {
+        // Set game to begin upon loading into scene
+        gameManager.SetGameState(GameState.Begin);
     }
 
     ///<summary>
@@ -51,6 +55,9 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
             // Initalize the compass ui on each of the players
             playerInstantiate.PlayerInputs[i].gameObject.GetComponentInChildren<CompassMarker>().InitalizeCompassUIOnAllPlayers();
         }
+
+        // After players have been placed, begin main loop
+        gameManager.SetGameState(GameState.MainLoop);
     }
 
     ///<summary>

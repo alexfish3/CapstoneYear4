@@ -66,13 +66,41 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("When checked will loop through waves so you can play forever")]
     [SerializeField] private bool waveResets;
 
+    [SerializeField] bool spawnNormalPackages = false;
+
     private void Start()
     {
         InitWave();
     }
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapMainLoop += EnableSpawning;
+        GameManager.Instance.OnSwapFinalPackage += DisableSpawning;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapMainLoop -= EnableSpawning;
+        GameManager.Instance.OnSwapFinalPackage -= DisableSpawning;
+    }
+
+    private void EnableSpawning() 
+    { 
+        spawnNormalPackages = true; 
+    }
+    private void DisableSpawning()
+    {
+        ResetWave();
+        spawnNormalPackages = false; 
+    }
+
+
     private void Update()
     {
+        if (spawnNormalPackages == false)
+            return;
+
         if (waveTimer > 0 && !finalOrderActive)
         {
             if (canSpawnOrders)

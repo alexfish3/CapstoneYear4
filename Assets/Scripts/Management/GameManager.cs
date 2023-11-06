@@ -1,17 +1,19 @@
 using System;
 using UnityEngine;
 
-public enum GameState { Menu, PlayerSelect, Begin, Main, FinalPackage, Results, Default }
+public enum GameState { Menu, PlayerSelect, Begin, MainLoop, FinalPackage, Results, Paused, Default }
 
 public class GameManager : SingletonMonobehaviour<GameManager>
 {
     [SerializeField] GameState beginingGameState = GameState.PlayerSelect;
-    private GameState mainState = GameState.Default;
+
+    [Space(10)]
+    [SerializeField] private GameState mainState = GameState.Default;
 
     public event Action OnSwapMenu;
     public event Action OnSwapPlayerSelect;
     public event Action OnSwapBegin;
-    public event Action OnSwapMain;
+    public event Action OnSwapMainLoop;
     public event Action OnSwapFinalPackage;
     public event Action OnSwapResults;
 
@@ -40,8 +42,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
             case GameState.Begin:
                 OnSwapBegin?.Invoke();
                 break;
-            case GameState.Main:
-                OnSwapMain?.Invoke();
+            case GameState.MainLoop:
+                OnSwapMainLoop?.Invoke();
                 break;
             case GameState.FinalPackage:
                 OnSwapFinalPackage?.Invoke();
