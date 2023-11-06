@@ -71,22 +71,20 @@ public class BallDriving : MonoBehaviour
     private Rigidbody sphereBody; //just reference to components of the sphere
     private Transform sphereTransform;
     private float startingDrag;
-    private float boostingDrag = 1.5f;
+    private float boostingDrag = 1.0f;
 
-    private float leftStick; //left stick value, ranging from -1 to 1
-    private float leftTrig; //left trigger value, ranging from 0 to 1
-    private float rightTrig; //right trigger value, ranging from 0 to 1
+    private float leftStick, leftTrig, rightTrig; //stick ranges from -1 to 1, triggers range from 0 to 1
 
     private float currentForce; //the amount of force to add to the speed on any given frame
     private float rotationAmount; //the amount to turn on any given frame
 
-    private bool callToDrift = false;
+    private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
     private int driftDirection;
-
     private bool driftBoostAchieved = false;
     private float driftPoints = 0.0f;
 
+    private bool boostInitialburst = false;
     private bool boosting = false;
     public bool Boosting { get { return boosting; } }
     private bool boostAble = true;
@@ -157,18 +155,29 @@ public class BallDriving : MonoBehaviour
     {
         float totalForce = currentForce;
 
+        //Adds the boost from a successful drift
         if (driftBoostAchieved)
         {
             totalForce += driftBoost;
             driftBoostAchieved = false;
         }
 
-        if (drifting)
-            sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
-        else
-            sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
+        //Adds the boost from rocket boosting
+        if (boostInitialburst)
+        {
+            totalForce += boostPower;
+            boostInitialburst = false;
+        }
 
-                
+        //Creates a more intuitive direction for drift boosting
+        if (drifting)
+        {
+            sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
+        }
+        else
+        {
+            sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
+        }       
 
         //Clamping to make it easier to come to a complete stop
         if (sphereBody.velocity.magnitude < 1 && currentForce < 1)
@@ -212,10 +221,17 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void AssignDriftState()
     {
-        callToDrift = false;
-        drifting = true;
+        if (!boosting)
+        {
+            callToDrift = false;
+            drifting = true;
 
-        driftDirection = leftStick < 0? -1 : 1;
+            driftDirection = leftStick < 0 ? -1 : 1;
+        }
+        else
+        {
+            callToDrift = true;
+        }
     }
 
     /// <summary>
@@ -241,12 +257,15 @@ public class BallDriving : MonoBehaviour
     }
 
     /// <summary>
-    /// Receives input as an event. Flags callToDrift and drifting depending on circumstance. Applies the boost if applicable
+    /// Receives input as an event. Calls for a boost to be activated if possible
     /// </summary>
-    /// <param name="WestFaceState">The state of the west face button, passed by the event</param>
+    /// <param name="WestFaceState">The state of the south face button, passed by the event</param>
     private void BoostFlag(bool SouthFaceState)
     {
-
+        if (boostAble && !callToDrift && !drifting)
+        {
+            StartBoostActive();
+        }
     }
 
     /// <summary>
@@ -279,12 +298,24 @@ public class BallDriving : MonoBehaviour
 
     private IEnumerator BoostActive()
     {
-        throw new System.NotImplementedException();
+        boosting = true;
+        boostAble = false;
+        boostInitialburst = true;
+        sphereBody.drag = boostingDrag;
+
+        yield return new WaitForSeconds(boostDuration);
+
+        boosting = false;
+        sphereBody.drag = startingDrag;
+        
+        StartBoostCooldown();
     }
 
     private IEnumerator BoostCooldown()
     {
-        throw new System.NotImplementedException();
+        yield return new WaitForSeconds(boostRechargeTime);
+
+        boostAble = true;
     }
 
 
