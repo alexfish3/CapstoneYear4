@@ -42,11 +42,14 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
         // Loops for all spawned players
         for(int i = 0; i <= playerInstantiate.PlayerCount - 1; i++)
         {
+            // Resets the velocity of the players
+            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+
             playerInstantiate.PlayerInputs[i].gameObject.transform.position = gameSpawnPositions[i].transform.position;
             playerInstantiate.PlayerInputs[i].gameObject.transform.rotation = gameSpawnPositions[i].transform.rotation;
 
             // Initalize the compass ui on each of the players
-            playerInstantiate.PlayerInputs[i].gameObject.GetComponent<CompassMarker>().InitalizeCompassUIOnAllPlayers();
+            playerInstantiate.PlayerInputs[i].gameObject.GetComponentInChildren<CompassMarker>().InitalizeCompassUIOnAllPlayers();
         }
     }
 
