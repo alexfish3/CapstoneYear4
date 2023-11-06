@@ -5,9 +5,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class OrderManager : SingletonMonobehaviour<OrderManager>
@@ -68,25 +66,23 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     [SerializeField] bool spawnNormalPackages = false;
 
-    private void Start()
-    {
-        InitWave();
-    }
-
     private void OnEnable()
     {
         GameManager.Instance.OnSwapMainLoop += EnableSpawning;
         GameManager.Instance.OnSwapFinalPackage += DisableSpawning;
+        GameManager.Instance.OnSwapFinalPackage += SpawnFinalOrder;
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnSwapMainLoop -= EnableSpawning;
         GameManager.Instance.OnSwapFinalPackage -= DisableSpawning;
+        GameManager.Instance.OnSwapFinalPackage -= SpawnFinalOrder;
     }
 
     private void EnableSpawning() 
-    { 
+    {
+        InitWave();
         spawnNormalPackages = true; 
     }
     private void DisableSpawning()
@@ -157,17 +153,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         }
         catch
         {
-            if (finalOrderActive && waveResets) // resets the wave if final order has been delivered
-            {
-                finalOrderActive = false;
-                wave = 0;
-                InitWave();
-            }
-            else if(!finalOrderActive)
-            {
-                finalOrderActive = true;
-                SpawnFinalOrder();
-            }
+            GameManager.Instance.SetGameState(GameState.FinalPackage);
+            finalOrderActive = true;
         }
 
         if (!finalOrderActive)
@@ -308,11 +295,12 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void ResetWave()
     {
+        Debug.Log("wave reset");
         StopEasySpawn();
         StopMediumSpawn();
         StopHardSpawn();
         cooledDown = true;
-        NewWaveEvent();
+        //NewWaveEvent.Invoke();
         wave++;
         InitWave();
     }
