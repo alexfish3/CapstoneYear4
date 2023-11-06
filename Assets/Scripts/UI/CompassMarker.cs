@@ -24,7 +24,7 @@ public class CompassMarker : MonoBehaviour
             playerInstantiate = PlayerInstantiate.Instance;
 
         //To be used upon package spawning
-        foreach (PlayerInput player in playerInstantiate.PlayerInputs)
+        foreach (PlayerInput player in playerInstantiate.PlayerInputs )
         {
             if (player == null)
                 continue;
