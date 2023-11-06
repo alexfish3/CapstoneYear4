@@ -279,4 +279,10 @@ public class BallDriving : MonoBehaviour
     {
         throw new System.NotImplementedException();
     }
+
+
+    private void StartBoostActive()
+    {
+        throw new System.NotImplementedException();
+    }
 }
