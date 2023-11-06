@@ -89,7 +89,8 @@ public class BallDriving : MonoBehaviour
 
     private bool boosting = false;
     public bool Boosting { get { return boosting; } }
-    private bool 
+    private bool boostAble = true;
+    public bool BoostAble { set { boostAble = value; } }
 
 
     /// <summary>
