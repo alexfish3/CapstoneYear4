@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,9 @@ public class BallDriving : MonoBehaviour
     private const float DRIFTING_MODEL_ROTATION = 20.0f; //How far the model rotates when drifting
     private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
 
+    private IEnumerator boostActiveCoroutine;
+    private IEnumerator boostCooldownCoroutine;
+
     [Header("Setup")]
     [Tooltip("Reference to the scooter model (specifically whatever empty is right above the first object with any actual mesh)")]
     [SerializeField] private Transform scooterModel;
@@ -23,7 +27,6 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private GameObject sphere;
     [Tooltip("An input manager class, from the correlated InputReceiver object")]
     [SerializeField] private InputManager inp;
-    public InputManager Inp { set { inp = value; } }
 
     [Header("Speed Modifiers")]
     [Tooltip("A constant multiplier which affects how quickly the bike can accelerate")]
@@ -67,6 +70,8 @@ public class BallDriving : MonoBehaviour
 
     private Rigidbody sphereBody; //just reference to components of the sphere
     private Transform sphereTransform;
+    private float startingDrag;
+    private float boostingDrag = 1.5f;
 
     private float leftStick; //left stick value, ranging from -1 to 1
     private float leftTrig; //left trigger value, ranging from 0 to 1
@@ -82,16 +87,22 @@ public class BallDriving : MonoBehaviour
     private bool driftBoostAchieved = false;
     private float driftPoints = 0.0f;
 
+    private bool boosting = false;
+    public bool Boosting { get { return boosting; } }
+
 
     /// <summary>
-    /// Standard Start. Just used to get references and subscribe to events
+    /// Standard Start. Just used to get references, get initial values, and subscribe to events
     /// </summary>
     private void Start()
     {
         sphereBody = sphere.GetComponent<Rigidbody>();
         sphereTransform = sphere.GetComponent<Transform>();
 
+        startingDrag = sphereBody.drag;
+
         inp.WestFaceEvent += DriftFlag; //subscribes to WestFaceEvent
+        inp.SouthFaceEvent += BoostFlag; //subscribes to SouthFaceEvent
     }
 
     /// <summary>
@@ -223,6 +234,15 @@ public class BallDriving : MonoBehaviour
     }
 
     /// <summary>
+    /// Receives input as an event. Flags callToDrift and drifting depending on circumstance. Applies the boost if applicable
+    /// </summary>
+    /// <param name="WestFaceState">The state of the west face button, passed by the event</param>
+    private void BoostFlag(bool SouthFaceState)
+    {
+
+    }
+
+    /// <summary>
     /// Updates various debug UI elements
     /// </summary>
     private void DebugUIUpdate()
@@ -248,5 +268,15 @@ public class BallDriving : MonoBehaviour
                 debugDriftComplete.enabled = false;
             }
         }
+    }
+
+    private IEnumerator BoostActive()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    private IEnumerator BoostCooldown()
+    {
+        throw new System.NotImplementedException();
     }
 }
