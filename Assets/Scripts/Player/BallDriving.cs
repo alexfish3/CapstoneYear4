@@ -47,6 +47,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float driftBoostThreshold = 100.0f;
     [Tooltip("How much time vs turning amount is factored into drift boost. 0 is full time, 1 is full turning amount")]
     [SerializeField] private float driftBoostMode = 0.0f;
+    [Tooltip("A multipler applied to steering power while in a boost, which reduces your steering capability")]
+    [SerializeField] private float boostingSteerModifier = 0.4f;
 
     [Header("Boosting")]
     [Tooltip("The speed power of the boost")]
@@ -133,10 +135,11 @@ public class BallDriving : MonoBehaviour
         {
             //determines the actual rotation of the larger object
             rotationAmount = leftStick * steeringPower;
-            rotationAmount *= RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower); //scales steering by speed, though only when not drifting
+            rotationAmount *= RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower); //scales steering by speed (also prevents turning on the spot)
+            rotationAmount *= boosting ? boostingSteerModifier : 1.0f; //reduces steering if boosting
 
             //Rotates just the model; purely for effect
-            float modelRotateAmount = 90 + leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower);
+            float modelRotateAmount = 90 + (leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower) * (boosting ? boostingSteerModifier : 1.0f));
             scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(0, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
         }
 
@@ -250,7 +253,7 @@ public class BallDriving : MonoBehaviour
         }
 
         driftPoints += Time.deltaTime * (1 - driftBoostMode) * 100.0f;
-        return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower);
+        return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(currentForce, accelerationPower); //scales steering by speed (also prevents turning on the spot)
     }
 
     /// <summary>
