@@ -139,6 +139,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         else if(!finalOrderActive && waveTimer <= 0)
         {
             ResetWave();
+            InitWave();
         }
         waveTimer -= Time.deltaTime;
     }
@@ -302,7 +303,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         cooledDown = true;
         //NewWaveEvent.Invoke();
         wave++;
-        InitWave();
     }
 
     /// <summary>
