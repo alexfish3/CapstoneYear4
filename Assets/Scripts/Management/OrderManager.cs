@@ -3,6 +3,7 @@
 /// It is a Singleton and extends the SingletonMonobehaviour class
 /// </summary>
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [SerializeField] private float waveLengthInSeconds = 20f;
     private int wave = 0;
     private float waveTimer = 0f;
+
     public float WaveTimer { get { return waveTimer; } }
+    private bool spawnNormalPackages = false;
 
     private int maxOrders; // total number of orders possible in a game
     private float easyPercentage, mediumPercentage, hardPercentage; // percentage of easy/medium/hard orders that should be in a game
@@ -57,14 +60,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     private IEnumerator easySpawnCoroutine, mediumSpawnCoroutine, hardSpawnCoroutine; // coroutines for managing cooldowns of the order spawns
 
     // wave event stuff
-    private delegate void NewWaveDelegate();
-    private NewWaveDelegate NewWaveEvent;
+    private event Action onNewWave;
 
     [Header("Debug")]
     [Tooltip("When checked will loop through waves so you can play forever")]
     [SerializeField] private bool waveResets;
-
-    [SerializeField] bool spawnNormalPackages = false;
 
     private void OnEnable()
     {
@@ -179,7 +179,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(!orders.Contains(order))
         {
             orders.Add(order);
-            NewWaveEvent += order.EraseOrder;
+            onNewWave += order.EraseOrder;
         }
     }
 
@@ -192,7 +192,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(orders.Contains(order))
         {
             orders.Remove(order);
-            NewWaveEvent -= order.EraseOrder;
+            onNewWave -= order.EraseOrder;
         }
     }
 
@@ -242,7 +242,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             }
 
             // checks for a possible spawn and dropoff location
-            int startIndex = Random.Range(0, pickupWaypoints.Count / 2);
+            int startIndex = UnityEngine.Random.Range(0, pickupWaypoints.Count / 2);
             for(int i=startIndex; i<pickupWaypoints.Count; i++)
             {
                 Transform pickup = pickupWaypoints[i];
@@ -296,12 +296,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void ResetWave()
     {
-        Debug.Log("wave reset");
         StopEasySpawn();
         StopMediumSpawn();
         StopHardSpawn();
         cooledDown = true;
-        //NewWaveEvent.Invoke();
+        onNewWave?.Invoke();
         wave++;
     }
 
@@ -313,6 +312,24 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameObject finalOrderGO = Instantiate(orderPrefab, goldenPickup);
         Order finalOrder = finalOrderGO.GetComponent<Order>();
         finalOrder.InitOrder(goldenPickup, goldenDropoff, Order.Order_Value.Golden);
+    }
+
+    /// <summary>
+    /// Called from the golden order GO when the it's been delivered.
+    /// </summary>
+    public void GoldOrderDelivered()
+    {
+        finalOrderActive = false;
+        if(waveResets)
+        {
+            wave = 0;
+            GameManager.Instance.SetGameState(GameState.MainLoop);
+        }
+        else
+        {
+            // results to be implemented
+            //GameManager.Instance.SetGameState(GameState.Results);
+        }
     }
 
     // methods to start/stop coroutines

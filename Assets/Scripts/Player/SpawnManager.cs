@@ -65,6 +65,18 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     ///</summary>
     private void SpawnPlayersFinalPackage()
     {
+        // Loops for all spawned players
+        for (int i = 0; i <= playerInstantiate.PlayerCount - 1; i++)
+        {
+            // Resets the velocity of the players
+            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
 
+            // reset position and rotation of ball and controller
+            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = gameSpawnPositions[i].transform.position;
+            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = gameSpawnPositions[i].transform.rotation;
+
+            playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = gameSpawnPositions[i].transform.position;
+            playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = gameSpawnPositions[i].transform.rotation;
+        }
     }
 }

@@ -120,7 +120,7 @@ public class Order : MonoBehaviour
         OrderManager.Instance.RemoveOrder(this);
         if(value == Order_Value.Golden)
         {
-            OrderManager.Instance.InitWave(); // sloppy way of looping the game indefinitely, will be removed eventually
+            OrderManager.Instance.GoldOrderDelivered(); // lets the OM know the golden order has been delivered
         }
         Destroy(this.gameObject);
     }
