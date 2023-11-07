@@ -142,7 +142,7 @@ public class BallDriving : MonoBehaviour
         else if (reversing)
         {
             rotationAmount = leftStick * reverseSteeringPower;
-            rotationAmount *= RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), reversingPower);
+            rotationAmount *= -RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), reversingPower);
 
             float modelRotateAmount = 90 + (leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), reversingPower));
             scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(0, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
