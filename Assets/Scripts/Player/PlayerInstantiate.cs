@@ -7,7 +7,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [Header("Player Info")]
     [SerializeField] GameManager gameManager;
     [SerializeField] GameObject playerHolder;
-    [SerializeField] GameObject playerPrefab;
 
     [Space(10)]
     [SerializeField] bool allowPlayerSpawn = true;
@@ -55,6 +54,26 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         // Up the player count
         playerCount++;
+
+        GameObject ColliderObject = playerInput.gameObject.GetComponentInChildren<SphereCollider>().gameObject;
+
+        // Update tag of player
+        switch (playerCount)
+        {
+            case 1:
+                ColliderObject.layer = 10; // Player 1;
+                break;
+            case 2:
+                ColliderObject.layer = 11; // Player 2;
+                break;
+            case 3:
+                ColliderObject.layer = 12; // Player 3;
+                break;
+            case 4:
+                ColliderObject.layer = 13; // Player 4;
+                break;
+        }
+
 
         // Update the naming scheme of the input reciever
         playerInput.gameObject.name = "Player " + playerCount.ToString();
