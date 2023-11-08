@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 /// <summary>
 /// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position.
@@ -93,7 +94,9 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private bool boostAble = true;
     public bool BoostAble { set { boostAble = value; } }
 
-
+    // Can be implemeneted properly after
+    [Header("Alex shit")]
+    public int playerIndex;
     public PhaseIndicator phaseIndicator;
 
     /// <summary>
@@ -299,10 +302,6 @@ public class BallDriving : MonoBehaviour
         {
             StartBoostActive();
         }
-        else
-        {
-            Debug.Log("Cannot Boost");
-        }
     }
 
     /// <summary>
@@ -317,12 +316,36 @@ public class BallDriving : MonoBehaviour
         boostInitialburst = true;
         sphereBody.drag = boostingDrag;
 
+        // Where collision is disabled 
+        ToggleCollision(true);
+
         yield return new WaitForSeconds(boostDuration);
+
+        ToggleCollision(false);
 
         boosting = false;
         sphereBody.drag = startingDrag;
-        
+
         StartBoostCooldown();
+    }
+
+    private void ToggleCollision(bool toggle)
+    {
+        switch (playerIndex)
+        {
+            case 1:
+                Physics.IgnoreLayerCollision(9, 10, toggle);
+                break;
+            case 2:
+                Physics.IgnoreLayerCollision(9, 11, toggle);
+                break;
+            case 3:
+                Physics.IgnoreLayerCollision(9, 12, toggle);
+                break;
+            case 4:
+                Physics.IgnoreLayerCollision(9, 13, toggle);
+                break;
+        }
     }
 
     /// <summary>

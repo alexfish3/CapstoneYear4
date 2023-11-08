@@ -56,21 +56,26 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         playerCount++;
 
         GameObject ColliderObject = playerInput.gameObject.GetComponentInChildren<SphereCollider>().gameObject;
+        BallDriving ballDriving = playerInput.gameObject.GetComponentInChildren<BallDriving>();
 
         // Update tag of player
         switch (playerCount)
         {
             case 1:
                 ColliderObject.layer = 10; // Player 1;
+                ballDriving.playerIndex = 1;
                 break;
             case 2:
                 ColliderObject.layer = 11; // Player 2;
+                ballDriving.playerIndex = 2;
                 break;
             case 3:
                 ColliderObject.layer = 12; // Player 3;
+                ballDriving.playerIndex = 3;
                 break;
             case 4:
                 ColliderObject.layer = 13; // Player 4;
+                ballDriving.playerIndex = 4;
                 break;
         }
 
