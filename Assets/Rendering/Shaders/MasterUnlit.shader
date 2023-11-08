@@ -45,7 +45,7 @@ Shader "Skatanic/MasterUnlit"
             #pragma vertex Vert;
             #pragma fragment Frag;
 
-            #include "Assets/Shaders/HLSL/Unlit.hlsl"
+            #include "Assets/Rendering/Shaders/HLSL/Unlit.hlsl"
             ENDHLSL
         }
 
@@ -65,7 +65,7 @@ Shader "Skatanic/MasterUnlit"
             #pragma vertex InverseVert;
             #pragma fragment Outline;
 
-            #include "Assets/Shaders/HLSL/Unlit.hlsl"
+            #include "Assets/Rendering/Shaders/HLSL/Unlit.hlsl"
             ENDHLSL
         }
         
@@ -105,7 +105,7 @@ Shader "Skatanic/MasterUnlit"
             #pragma vertex Vert;
             #pragma fragment Frag;
 
-            #include "Assets/Shaders/HLSL/Unlit.hlsl"
+            #include "Assets/Rendering/Shaders/HLSL/Unlit.hlsl"
             ENDHLSL
         }
         // This pass is used when drawing to a _CameraNormalsTexture texture

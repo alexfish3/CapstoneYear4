@@ -1,7 +1,7 @@
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
 #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/Common.hlsl"
 #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-#include "Assets/Shaders/HLSL/Noise.hlsl"
+#include "Assets/Rendering/Shaders/HLSL/Noise.hlsl"
 
 TEXTURE2D(_MainTex);
 SAMPLER(sampler_MainTex);
