@@ -135,16 +135,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
   m_Name: Vignette
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   color:
     m_OverrideState: 1
-    m_Value: {r: 0, g: 0, b: 0, a: 1}
+    m_Value: {r: 0.033154633, g: 0.1981132, b: 0, a: 1}
   center:
     m_OverrideState: 1
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.064
+    m_Value: 0.384
   smoothness:
     m_OverrideState: 1
     m_Value: 0.875
@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   intensity:
     m_OverrideState: 1
     m_Value: 0.175
@@ -205,6 +205,47 @@ MonoBehaviour:
   dotsCutoff:
     m_OverrideState: 1
     m_Value: 0.441
+  scrollDirection:
+    m_OverrideState: 1
+    m_Value: {x: 0, y: 0}
+--- !u!114 &-2780583686616431237
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: BenDayBloomEffectComponent
+  m_EditorClassIdentifier: Assembly-CSharp::BenDayBloomEffectComponent
+  active: 1
+  threshold:
+    m_OverrideState: 1
+    m_Value: 0.9
+  intensity:
+    m_OverrideState: 1
+    m_Value: 1
+  scatter:
+    m_OverrideState: 1
+    m_Value: 0.7
+  clamp:
+    m_OverrideState: 1
+    m_Value: 65472
+  maxIterations:
+    m_OverrideState: 1
+    m_Value: 6
+  tint:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 0
+  dotsDensity:
+    m_OverrideState: 1
+    m_Value: -50
+  dotsCutoff:
+    m_OverrideState: 1
+    m_Value: 0.4
   scrollDirection:
     m_OverrideState: 1
     m_Value: {x: 0, y: 0}
@@ -262,10 +303,51 @@ MonoBehaviour:
   m_Name: VolumeProfile
   m_EditorClassIdentifier: 
   components:
+  - {fileID: -2780583686616431237}
   - {fileID: 849379129802519247}
   - {fileID: -7011558710299706105}
   - {fileID: -6836137532856480276}
-  - {fileID: -7947638684729094539}
+--- !u!114 &111048609333009509
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: BenDayBloomEffectComponent
+  m_EditorClassIdentifier: Assembly-CSharp::BenDayBloomEffectComponent
+  active: 1
+  threshold:
+    m_OverrideState: 1
+    m_Value: 2.1
+  intensity:
+    m_OverrideState: 1
+    m_Value: 9.17
+  scatter:
+    m_OverrideState: 1
+    m_Value: 0.434
+  clamp:
+    m_OverrideState: 1
+    m_Value: 65472
+  maxIterations:
+    m_OverrideState: 1
+    m_Value: 3
+  tint:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 0
+  dotsDensity:
+    m_OverrideState: 1
+    m_Value: 73
+  dotsCutoff:
+    m_OverrideState: 1
+    m_Value: 0.425
+  scrollDirection:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: 0}
 --- !u!114 &849379129802519247
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -306,3 +388,44 @@ MonoBehaviour:
   maxNits:
     m_OverrideState: 0
     m_Value: 1000
+--- !u!114 &6008299617357011173
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: BenDayBloomEffectComponent
+  m_EditorClassIdentifier: Assembly-CSharp::BenDayBloomEffectComponent
+  active: 1
+  threshold:
+    m_OverrideState: 1
+    m_Value: 1.94
+  intensity:
+    m_OverrideState: 1
+    m_Value: 3.25
+  scatter:
+    m_OverrideState: 1
+    m_Value: 0.099
+  clamp:
+    m_OverrideState: 1
+    m_Value: 65472
+  maxIterations:
+    m_OverrideState: 0
+    m_Value: 6
+  tint:
+    m_OverrideState: 0
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
+    hdr: 0
+  dotsDensity:
+    m_OverrideState: 1
+    m_Value: -50
+  dotsCutoff:
+    m_OverrideState: 1
+    m_Value: 0.464
+  scrollDirection:
+    m_OverrideState: 0
+    m_Value: {x: 0, y: 0}

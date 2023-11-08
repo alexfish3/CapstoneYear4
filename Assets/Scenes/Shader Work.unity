@@ -777,7 +777,7 @@ GameObject:
   - component: {fileID: 1043312638}
   - component: {fileID: 1043312637}
   m_Layer: 0
-  m_Name: Volume (1)
+  m_Name: Volume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1543,7 +1543,6 @@ MonoBehaviour:
   order2: {fileID: 0}
   order1Position: {fileID: 6028765629001819042}
   order2Position: {fileID: 8514274699793459863}
-  isBoosting: 0
 --- !u!1001 &584961727373185951
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1840,6 +1839,9 @@ MonoBehaviour:
   debugDriftComplete: {fileID: 0}
   debugBoostabilityEnable: 0
   debugBoostability: {fileID: 0}
+  boostAble: 1
+  playerIndex: 0
+  phaseIndicator: {fileID: 0}
 --- !u!20 &1142926582877304243
 Camera:
   m_ObjectHideFlags: 0
@@ -3942,8 +3944,8 @@ SceneRoots:
   - {fileID: 1202921220}
   - {fileID: 1228516833}
   - {fileID: 119466457}
-  - {fileID: 1523402771}
   - {fileID: 1043312639}
+  - {fileID: 1523402771}
   - {fileID: 1293975675}
   - {fileID: 101349416}
   - {fileID: 2574084288144884736}
