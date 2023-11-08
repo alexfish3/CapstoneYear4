@@ -10,9 +10,11 @@ public class PhaseIndicator : MonoBehaviour
     [SerializeField] float hornGlowValue = 0;
     public float hornValueMax = 3f;
 
-    [SerializeField] Color hornColor;
+    //[SerializeField] Color hornColor;
     [SerializeField] Color readyColor;
- 
+
+    [SerializeField] Gradient hornGlowGraident;
+  
     [Header("Material Info")]
     [SerializeField] Renderer ghostRenderer;
     [SerializeField] Material hornGlowRef;
@@ -43,7 +45,8 @@ public class PhaseIndicator : MonoBehaviour
         }
         else
         {
-            Color color = new Color(hornColor.r * factor, hornColor.g * factor, hornColor.b * factor);
+            Color currentColor = (hornGlowGraident.Evaluate(hornGlowValue / hornValueMax));
+            Color color = new Color(currentColor.r * factor, currentColor.g * factor, currentColor.b * factor);
             hornGlow.SetColor("_MainColor", color);
         }
 
