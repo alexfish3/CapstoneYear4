@@ -21,13 +21,14 @@ public class OrderHandler : MonoBehaviour
     [SerializeField] private Transform order1Position;
     [SerializeField] private Transform order2Position;
 
-    [SerializeField] private bool isBoosting;
-    public bool IsBoosting { get { return IsBoosting; } set { isBoosting = value; } }
+    private BallDriving ball;
+    public bool IsBoosting { get { return ball.Boosting; } }
 
     private void Start()
     {
         score = 0; // init score to 0
         ScoreManager.Instance.AddOrderHandler(this);
+        ball = transform.parent.GetComponentInChildren<BallDriving>();
     }
 
     /// <summary>
@@ -168,21 +169,12 @@ public class OrderHandler : MonoBehaviour
     /// Typical onCollisionEnter. Handles stealing orders from other players.
     /// </summary>
     /// <param name="other">Collision player has hit. Will attempt to steal if this hitbox is another player</param>
-    private void OnTriggerEnter(Collider other)
+    public void Collision(BallCollision otherCollider)
     {
-        OrderHandler otherHandler;
-        try
-        {
-            otherHandler = other.gameObject.GetComponent<OrderHandler>();
-        }
-        catch
-        {
-            otherHandler = null;
-        }
-        if (otherHandler != null && isBoosting && !otherHandler.isBoosting)
+        OrderHandler otherHandler = otherCollider.gameObject.transform.parent.GetComponentInChildren<OrderHandler>();
+        if (ball.Boosting && !otherHandler.IsBoosting)
         {
             StealOrder(otherHandler);
-            isBoosting = false;
         }
     }
 }

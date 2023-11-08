@@ -16,7 +16,7 @@ public class ScoreManager : SingletonMonobehaviour<ScoreManager>
     /// <param name="inOrderHandler">OrderHandler to be added</param>
     public void AddOrderHandler(OrderHandler inOrderHandler)
     {
-        if(!orderHandlers.Contains(inOrderHandler))
+        if (!orderHandlers.Contains(inOrderHandler))
         {
             orderHandlers.Add(inOrderHandler);
             UpdatePlacement();
@@ -30,17 +30,36 @@ public class ScoreManager : SingletonMonobehaviour<ScoreManager>
     public void UpdatePlacement()
     {
         orderHandlers.Sort((i, j) => j.Score.CompareTo(i.Score));
-        for(int i=0; i<orderHandlers.Count; i++)
+        for (int i = 0; i < orderHandlers.Count; i++)
         {
-            if(i>0)
+            if (i > 0)
             {
-                if (orderHandlers[i].Score == orderHandlers[i-1].Score) // checks if score is the same with previous OH, basically allows for ties
+                if (orderHandlers[i].Score == orderHandlers[i - 1].Score) // checks if score is the same with previous OH, basically allows for ties
                 {
-                    orderHandlers[i].Placement = orderHandlers[i-1].Placement;
+                    orderHandlers[i].Placement = orderHandlers[i - 1].Placement;
                     return;
                 }
             }
             orderHandlers[i].Placement = i + 1;
         }
+    }
+
+    /// <summary>
+    /// Returns an OrderHandler at a specific index, or null if index is invalid.
+    /// </summary>
+    /// <param name="index">Specified index</param>
+    /// <returns></returns>
+    public OrderHandler GetHandlerOfIndex(int index)
+    {
+        OrderHandler outHandler;
+        try
+        {
+            outHandler = orderHandlers[index];
+        }
+        catch
+        {
+            outHandler = null;
+        }
+        return outHandler;
     }
 }
