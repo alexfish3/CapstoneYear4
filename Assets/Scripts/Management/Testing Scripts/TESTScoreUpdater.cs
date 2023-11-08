@@ -10,6 +10,7 @@ public class TESTScoreUpdater : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI waveText;
+    [SerializeField] TextMeshProUGUI placementText;
     private OrderHandler player;
 
     private void Start()
@@ -19,6 +20,8 @@ public class TESTScoreUpdater : MonoBehaviour
     private void Update()
     {
         scoreText.text = "$" + player.Score;
+        // I figure in the future the placements will be individual sprites in an array or something so I didn't bother adding "st","nd","rd", etc...
+        placementText.text = "" + player.Placement;
         if (OrderManager.Instance != null)
         {
             if (!OrderManager.Instance.FinalOrderActive)

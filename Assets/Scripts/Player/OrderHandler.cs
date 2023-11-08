@@ -11,6 +11,8 @@ public class OrderHandler : MonoBehaviour
 {
     private int score; // score of the player
     public int Score { get { return score; } }
+    private int placement = 0;
+    public int Placement { get { return placement; }set { placement = value; } }
     [Tooltip("Exposed for testing purposes only!")]
     [SerializeField] private Order order1; // first order the player is holding
     [SerializeField] private Order order2; // second order the player is holding
@@ -25,6 +27,7 @@ public class OrderHandler : MonoBehaviour
     private void Start()
     {
         score = 0; // init score to 0
+        ScoreManager.Instance.AddOrderHandler(this);
     }
 
     /// <summary>
@@ -68,12 +71,14 @@ public class OrderHandler : MonoBehaviour
             score += (int)order1.Value;
             order1.EraseOrder();
             order1 = null;
+            ScoreManager.Instance.UpdatePlacement();
         }
         else if(order2 == rightOrder)
         {
             score += (int)order2.Value;
             order2.EraseOrder();
             order2 = null;
+            ScoreManager.Instance.UpdatePlacement();
         }
     }
 
