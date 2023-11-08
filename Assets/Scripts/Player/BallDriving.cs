@@ -79,7 +79,7 @@ public class BallDriving : MonoBehaviour
     private float currentForce; //the amount of force to add to the speed on any given frame
     private float rotationAmount; //the amount to turn on any given frame
 
-    private bool reversing, stopped;
+    private bool reversing;
 
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
@@ -209,16 +209,6 @@ public class BallDriving : MonoBehaviour
         {
             sphereBody.velocity = new Vector3(0, sphereBody.velocity.y, 0);
         }
-    }
-
-    private bool ReversingCheck()
-    {
-        if (leftTrig > 0.1f && leftTrig > rightTrig)
-        {
-            return true;
-        }
-
-        return false;
     }
 
     /// <summary>
