@@ -208,6 +208,7 @@ public class BallDriving : MonoBehaviour
         if (sphereBody.velocity.magnitude < 2 && currentForce < 2)
         {
             sphereBody.velocity = new Vector3(0, sphereBody.velocity.y, 0);
+            DirtyDriftDrop();
         }
     }
 
@@ -230,14 +231,12 @@ public class BallDriving : MonoBehaviour
         }
         else
         {
-            callToDrift = false;
-            drifting = false;
-
             if (driftPoints >= driftBoostThreshold)
             {
                 driftBoostAchieved = true;
-                driftPoints = 0.0f;
             }
+
+            DirtyDriftDrop();
         }
     }
 
@@ -282,6 +281,16 @@ public class BallDriving : MonoBehaviour
     }
 
     /// <summary>
+    /// Ends drifting; can work with or without boost.
+    /// </summary>
+    private void DirtyDriftDrop()
+    {
+        drifting = false;
+        callToDrift = false;
+        driftPoints = 0;
+    }
+
+    /// <summary>
     /// Receives input as an event. Calls for a boost to be activated if possible
     /// </summary>
     /// <param name="WestFaceState">The state of the south face button, passed by the event</param>
@@ -304,6 +313,7 @@ public class BallDriving : MonoBehaviour
         boostAble = false;
         boostInitialburst = true;
         sphereBody.drag = boostingDrag;
+        DirtyDriftDrop();
 
         // Where collision is disabled 
         ToggleCollision(true);
