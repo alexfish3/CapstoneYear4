@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// This class will respawn the player if they fall into the water.
+/// </summary>
 public class Respawn : MonoBehaviour
 {
     //Variables
@@ -15,40 +18,30 @@ public class Respawn : MonoBehaviour
 
     private bool isRotating = false;
 
-    public void OnTriggerEnter(Collider other)
+    /// <summary>
+    /// Starts the respawn coroutine. It's called from the BallCollision script and passes a reference to that GO to move.
+    /// </summary>
+    /// <param name="ballObj"></param>
+    public void RespawnPlayer(GameObject ballObj)
     {
-        if (other.tag == "Water")
-        {
-            StartCoroutine(RespawningPlayer());
-            //RespawnPlayer();
-        }
+        StartCoroutine(RespawningPlayer(ballObj));
     }
 
-    public void OnTriggerExit(Collider other)
+    /// <summary>
+    /// This method sets the respawn point. It's called when the player exits the respawn collider on the map. AKA falls off the edge.
+    /// </summary>
+    public void SetRespawnPoint()
     {
-        //save player location before they drive off land
-        if (other.tag == "RespawnCollider")
-        {
-            respawnPoint = gameObject.transform.position;
-            initialRotation = transform.rotation;
-        }
+        respawnPoint = gameObject.transform.position;
+        initialRotation = transform.rotation;
     }
 
-
-    public void RespawnPlayer()
-    {
-        Debug.Log("RESAWPN PLAYER");
-
-        //Debug.Log(respawnPoint + " respawn");
-
-        //teleport player back onto land
-        //gameObject.transform.position = respawnPoint;
-
-        
-
-    }
-
-    private IEnumerator RespawningPlayer()
+    /// <summary>
+    /// This coroutine lerps the player's position from their current position to the respawn point position + liftHeight.
+    /// </summary>
+    /// <param name="ballObj"></param>
+    /// <returns></returns>
+    private IEnumerator RespawningPlayer(GameObject ballObj)
     {
         isRotating = true;
         Quaternion endRotation = initialRotation * Quaternion.Euler(0, 180, 0); // Rotate 180 degrees from initial rotation
@@ -69,6 +62,8 @@ public class Respawn : MonoBehaviour
 
         transform.rotation = endRotation;
         transform.position = targetPosition;
+        ballObj.transform.position = targetPosition;
+        ballObj.transform.rotation = endRotation;
         isRotating = false;
     }
 }
