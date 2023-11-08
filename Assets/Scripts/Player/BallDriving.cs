@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -92,15 +90,20 @@ public class BallDriving : MonoBehaviour
     private bool boostInitialburst = false;
     private bool boosting = false;
     public bool Boosting { get { return boosting; } }
-    private bool boostAble = true;
+    [SerializeField] private bool boostAble = true;
     public bool BoostAble { set { boostAble = value; } }
 
+
+    public PhaseIndicator phaseIndicator;
 
     /// <summary>
     /// Standard Start. Just used to get references, get initial values, and subscribe to events
     /// </summary>
     private void Start()
     {
+        // Sets horn glow to max
+        phaseIndicator.SetHornGlow(phaseIndicator.hornValueMax);
+
         sphereBody = sphere.GetComponent<Rigidbody>();
         sphereTransform = sphere.GetComponent<Transform>();
 
@@ -296,6 +299,10 @@ public class BallDriving : MonoBehaviour
         {
             StartBoostActive();
         }
+        else
+        {
+            Debug.Log("Cannot Boost");
+        }
     }
 
     /// <summary>
@@ -304,6 +311,7 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostActive()
     {
+        phaseIndicator.SetHornGlow(0);
         boosting = true;
         boostAble = false;
         boostInitialburst = true;
@@ -323,8 +331,8 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostCooldown()
     {
+        StartCoroutine(phaseIndicator.beginHornGlow(boostRechargeTime));
         yield return new WaitForSeconds(boostRechargeTime);
-
         boostAble = true;
     }
 

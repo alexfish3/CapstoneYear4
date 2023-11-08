@@ -947,6 +947,7 @@ GameObject:
   - component: {fileID: 3278497301429678528}
   - component: {fileID: 4869093232798437028}
   - component: {fileID: 3919377703968431804}
+  - component: {fileID: 7577601631424315214}
   m_Layer: 7
   m_Name: Control
   m_TagString: Untagged
@@ -1010,6 +1011,7 @@ MonoBehaviour:
   debugDriftComplete: {fileID: 0}
   debugBoostabilityEnable: 0
   debugBoostability: {fileID: 0}
+  phaseIndicator: {fileID: 7577601631424315214}
 --- !u!114 &4326650806006209304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1040,7 +1042,6 @@ MonoBehaviour:
   order2: {fileID: 0}
   order1Position: {fileID: 1565360609101341508}
   order2Position: {fileID: 3475647452137908849}
-  isBoosting: 0
 --- !u!114 &3278497301429678528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1087,6 +1088,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: c28dde9b060ee6c4e83243d91e593417, type: 3}
+--- !u!114 &7577601631424315214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4669215135928708646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79df954a579c7344b9173ac5c7736604, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hornGlowValue: 0.04
+  hornValueMax: 3
+  hornColor: {r: 1, g: 0.93442965, b: 0, a: 1}
+  readyColor: {r: 0.21868706, g: 0, b: 1, a: 1}
+  ghostRenderer: {fileID: 5310133993018028932}
+  hornGlowRef: {fileID: 2100000, guid: a3f6a7172c4400847ab3098fcd8e05a4, type: 2}
+  hornGlow: {fileID: 0}
 --- !u!1 &5021183565526201731
 GameObject:
   m_ObjectHideFlags: 0
@@ -1899,6 +1919,7 @@ GameObject:
   - component: {fileID: 2368663802398359972}
   - component: {fileID: 3973440357772178646}
   - component: {fileID: 6686109433011598790}
+  - component: {fileID: 3604257200861226629}
   m_Layer: 10
   m_Name: Ball Of Fun
   m_TagString: Untagged
@@ -1969,6 +1990,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3604257200861226629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7457067986676169898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f85a943d627dc4149a95ff2bfbf98434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7798013324180380121
 GameObject:
   m_ObjectHideFlags: 0
@@ -3095,6 +3128,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a0cce62cbf407942ada07e0ab1beaf3, type: 3}
+--- !u!23 &5310133993018028932 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 8a0cce62cbf407942ada07e0ab1beaf3, type: 3}
+  m_PrefabInstance: {fileID: 6805210730836684544}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6483580821458323691 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8a0cce62cbf407942ada07e0ab1beaf3, type: 3}
