@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 /// </summary>
 public class ScoreManager : SingletonMonobehaviour<ScoreManager>
 {
-    private List<OrderHandler> orderHandlers = new List<OrderHandler>(); // list of order handlers in the scene
+    [SerializeField] private List<OrderHandler> orderHandlers = new List<OrderHandler>(); // list of order handlers in the scene
 
     /// <summary>
     /// Adds an OrderHandler to the list if they're not already in the list.
@@ -37,10 +37,16 @@ public class ScoreManager : SingletonMonobehaviour<ScoreManager>
                 if (orderHandlers[i].Score == orderHandlers[i - 1].Score) // checks if score is the same with previous OH, basically allows for ties
                 {
                     orderHandlers[i].Placement = orderHandlers[i - 1].Placement;
-                    return;
+                }
+                else
+                {
+                    orderHandlers[i].Placement = i + 1;
                 }
             }
-            orderHandlers[i].Placement = i + 1;
+            else
+            {
+                orderHandlers[i].Placement = i + 1;
+            }
         }
     }
 

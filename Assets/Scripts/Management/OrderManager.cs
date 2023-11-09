@@ -60,7 +60,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     private IEnumerator easySpawnCoroutine, mediumSpawnCoroutine, hardSpawnCoroutine; // coroutines for managing cooldowns of the order spawns
 
     // wave event stuff
-    private event Action onNewWave;
+    private event Action OnDeleteActiveOrders;
 
     [Header("Debug")]
     [Tooltip("When checked will loop through waves so you can play forever")]
@@ -179,7 +179,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(!orders.Contains(order))
         {
             orders.Add(order);
-            onNewWave += order.EraseOrder;
+            OnDeleteActiveOrders += order.EraseOrder;
         }
     }
 
@@ -192,7 +192,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(orders.Contains(order))
         {
             orders.Remove(order);
-            onNewWave -= order.EraseOrder;
+            OnDeleteActiveOrders -= order.EraseOrder;
         }
     }
 
@@ -300,7 +300,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         StopMediumSpawn();
         StopHardSpawn();
         cooledDown = true;
-        onNewWave?.Invoke();
         wave++;
     }
 
@@ -309,6 +308,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void SpawnFinalOrder()
     {
+        OnDeleteActiveOrders?.Invoke();
         GameObject finalOrderGO = Instantiate(orderPrefab, goldenPickup);
         Order finalOrder = finalOrderGO.GetComponent<Order>();
         finalOrder.InitOrder(goldenPickup, goldenDropoff, Order.Order_Value.Golden);
@@ -324,6 +324,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         {
             wave = 0;
             GameManager.Instance.SetGameState(GameState.MainLoop);
+            SpawnManager.Instance.SpawnPlayersFinalPackage(); // way to get the players back to the starting area after gold has been delivered
         }
         else
         {
