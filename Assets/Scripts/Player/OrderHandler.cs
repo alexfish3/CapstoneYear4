@@ -169,9 +169,17 @@ public class OrderHandler : MonoBehaviour
     /// Typical onCollisionEnter. Handles stealing orders from other players.
     /// </summary>
     /// <param name="other">Collision player has hit. Will attempt to steal if this hitbox is another player</param>
-    public void Collision(BallCollision otherCollider)
+    private void OnTriggerEnter(Collider other)
     {
-        OrderHandler otherHandler = otherCollider.gameObject.transform.parent.GetComponentInChildren<OrderHandler>();
+        OrderHandler otherHandler;
+        try
+        {
+            otherHandler = other.gameObject.transform.parent.GetComponentInChildren<OrderHandler>();
+        }
+        catch
+        {
+            return;
+        }
         if (ball.Boosting && !otherHandler.IsBoosting)
         {
             StealOrder(otherHandler);

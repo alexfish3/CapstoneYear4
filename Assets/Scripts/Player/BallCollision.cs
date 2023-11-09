@@ -17,15 +17,15 @@ public class BallCollision : MonoBehaviour
         respawnHandler = transform.parent.GetComponentInChildren<Respawn>();
     }
 
-    private void OnCollisionEnter(Collision collision)
+/*    private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.GetComponent<BallCollision>() != null)
         {
             orderHandler.Collision(collision.gameObject.GetComponent<BallCollision>());
         }
-    }
+    }*/
 
-    private void OnTriggerEnter(Collider other)
+/*    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Water") // player falls in water
         {
@@ -38,5 +38,5 @@ public class BallCollision : MonoBehaviour
         {
             respawnHandler.SetRespawnPoint();
         }
-    }
+    }*/
 }
