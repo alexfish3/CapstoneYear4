@@ -63,7 +63,7 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     ///<summary>
     /// This is executed when the OnSwapFinalPackage event is called
     ///</summary>
-    private void SpawnPlayersFinalPackage()
+    public void SpawnPlayersFinalPackage()
     {
         // Loops for all spawned players
         for (int i = 0; i <= playerInstantiate.PlayerCount - 1; i++)
