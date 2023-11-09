@@ -6,7 +6,7 @@ Shader "Hidden/CompositeShader"
     }
 
         SubShader{
-            Tags { "Queue" = "Opaque" "RenderPipeline" = "UniversalPipeline"}
+            Tags {"RenderPipeline" = "UniversalPipeline"}
 
             Pass 
             {

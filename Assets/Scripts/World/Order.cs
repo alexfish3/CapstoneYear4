@@ -40,6 +40,9 @@ public class Order : MonoBehaviour
     [SerializeField] CompassMarker compassMarker;
     [SerializeField] Sprite[] possiblePackageTypes;
 
+    [Tooltip("The hdr color options for the different tiers of packages")]
+    [SerializeField][ColorUsageAttribute(true, true)]public Color[] packageColors;
+
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
     /// <summary>
     /// This method initializes the order with passed in values and sets its default location. It also initializes the beacon for this order.
@@ -57,31 +60,33 @@ public class Order : MonoBehaviour
 
         beaconPrefab = Instantiate(beaconPrefab);
         beacon = beaconPrefab.GetComponent<OrderBeacon>();
-        beacon.InitBeacon(this);
         
         // setting the color of the order
         meshRenderer = GetComponent<MeshRenderer>();
+
+        // Determines the pacakge type value based on the order type
+        int packageType = 0;
         switch (value)
         {
             case Order_Value.Easy:
-                meshRenderer.material.color = Color.green;
-                compassMarker.icon = possiblePackageTypes[0];
+                packageType = 0;
                 break;
             case Order_Value.Medium:
-                meshRenderer.material.color = Color.yellow;
-                compassMarker.icon = possiblePackageTypes[1];
+                packageType = 1;
                 break;
             case Order_Value.Hard:
-                meshRenderer.material.color = Color.red;
-                compassMarker.icon = possiblePackageTypes[2];
+                packageType = 2;
                 break;
             case Order_Value.Golden:
-                meshRenderer.material.color = Color.black;
-                compassMarker.icon = possiblePackageTypes[3];
-                break;
-            default:
+                packageType = 3;
                 break;
         }
+
+        meshRenderer.material.color = packageColors[packageType];
+
+        Color beaconColor = new Color(packageColors[packageType].r, packageColors[packageType].g, packageColors[packageType].b, 0.3f);
+        beacon.InitBeacon(this, beaconColor);
+        compassMarker.icon = possiblePackageTypes[packageType];
 
         compassMarker.InitalizeCompassUIOnAllPlayers();
     }

@@ -27,28 +27,12 @@ public class OrderBeacon : MonoBehaviour
     /// This method initializes the beacon. It sets the order the beacon is tracking, sets the color, and the position.
     /// </summary>
     /// <param name="inOrder">Order the beacon will track</param>
-    public void InitBeacon(Order inOrder)
+    public void InitBeacon(Order inOrder, Color beaconColor)
     {
         this.transform.parent = OrderManager.Instance.transform;
         order = inOrder;
 
-        switch(order.Value)
-        {
-            case Order.Order_Value.Easy:
-                color = new Color(0,1,0,0.5f);
-                break;
-            case Order.Order_Value.Medium:
-                color = new Color(1,1,0,0.5f);
-                break;
-            case Order.Order_Value.Hard:
-                color = new Color(1,0,0,0.5f);
-                break;
-            case Order.Order_Value.Golden:
-                color = new Color(0, 0, 0, 0.5f);
-                break;
-            default:
-                break;
-        }
+        color = beaconColor;
 
         meshRenderer.material.color = color;
         this.transform.position = order.transform.position;
