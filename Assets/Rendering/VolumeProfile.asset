@@ -147,7 +147,7 @@ MonoBehaviour:
     m_Value: 0.384
   smoothness:
     m_OverrideState: 1
-    m_Value: 0.875
+    m_Value: 0.485
   rounded:
     m_OverrideState: 1
     m_Value: 0
@@ -163,10 +163,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81180773991d8724ab7f2d216912b564, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   intensity:
     m_OverrideState: 1
     m_Value: 0.175
+--- !u!114 &-6015258064583874045
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3345e9a813c9bd54ea2e6236e77d0439, type: 3}
+  m_Name: CustomVignette
+  m_EditorClassIdentifier: 
+  active: 1
+  radius:
+    m_OverrideState: 1
+    m_Value: 0.8
+  feather:
+    m_OverrideState: 1
+    m_Value: 0.83
+  color:
+    m_OverrideState: 1
+    m_Value: {r: 0.46827713, g: 0, b: 0.6886792, a: 1}
+  vignetteTexture:
+    m_OverrideState: 1
+    m_Value: {fileID: 2800000, guid: b3cc4ebc465894140acd8f79cd43c5cb, type: 3}
+    dimension: 1
 --- !u!114 &-4520914038529948424
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -348,6 +374,8 @@ MonoBehaviour:
   - {fileID: -7011558710299706105}
   - {fileID: -6836137532856480276}
   - {fileID: -986112137725958182}
+  - {fileID: 8930676171534077055}
+  - {fileID: -6015258064583874045}
 --- !u!114 &111048609333009509
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -470,3 +498,22 @@ MonoBehaviour:
   scrollDirection:
     m_OverrideState: 0
     m_Value: {x: 0, y: 0}
+--- !u!114 &8930676171534077055
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 122a896eef4dcc349900a9e263d07a94, type: 3}
+  m_Name: CustomPostScreenTint
+  m_EditorClassIdentifier: 
+  active: 1
+  tintIntensity:
+    m_OverrideState: 1
+    m_Value: 1
+  tintColor:
+    m_OverrideState: 1
+    m_Value: {r: 1, g: 1, b: 1, a: 1}
