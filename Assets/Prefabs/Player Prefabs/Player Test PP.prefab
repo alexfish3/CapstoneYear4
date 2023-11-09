@@ -944,12 +944,12 @@ GameObject:
   m_Component:
   - component: {fileID: 7393508319600699636}
   - component: {fileID: 5390000224177745540}
-  - component: {fileID: 4326650806006209304}
   - component: {fileID: 4701012300698348498}
   - component: {fileID: 3278497301429678528}
   - component: {fileID: 4869093232798437028}
   - component: {fileID: 3919377703968431804}
   - component: {fileID: 7577601631424315214}
+  - component: {fileID: 3390048225118155467}
   m_Layer: 7
   m_Name: Control
   m_TagString: Untagged
@@ -1016,20 +1016,6 @@ MonoBehaviour:
   boostAble: 1
   playerIndex: 0
   phaseIndicator: {fileID: 7577601631424315214}
---- !u!114 &4326650806006209304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4669215135928708646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87855907a691e8d4ba39a82096eb29d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  liftHeight: 5
-  respawnDuration: 2
 --- !u!114 &4701012300698348498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1140,6 +1126,27 @@ MonoBehaviour:
   ghostRenderer: {fileID: 5310133993018028932}
   hornGlowRef: {fileID: 2100000, guid: a3f6a7172c4400847ab3098fcd8e05a4, type: 2}
   hornGlow: {fileID: 0}
+--- !u!65 &3390048225118155467
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4669215135928708646}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 2, z: 2}
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &4861582924111310894
 GameObject:
   m_ObjectHideFlags: 0
@@ -2091,7 +2098,7 @@ GameObject:
   - component: {fileID: 2368663802398359972}
   - component: {fileID: 3973440357772178646}
   - component: {fileID: 6686109433011598790}
-  - component: {fileID: 3604257200861226629}
+  - component: {fileID: 969288985942601659}
   m_Layer: 10
   m_Name: Ball Of Fun
   m_TagString: Untagged
@@ -2162,7 +2169,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3604257200861226629
+--- !u!114 &969288985942601659
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2171,9 +2178,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7457067986676169898}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f85a943d627dc4149a95ff2bfbf98434, type: 3}
+  m_Script: {fileID: 11500000, guid: 87855907a691e8d4ba39a82096eb29d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  liftHeight: 5
+  respawnDuration: 2
+  control: {fileID: 4669215135928708646}
 --- !u!1 &7798013324180380121
 GameObject:
   m_ObjectHideFlags: 0
