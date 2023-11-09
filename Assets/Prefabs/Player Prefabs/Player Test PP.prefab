@@ -991,20 +991,20 @@ MonoBehaviour:
   scooterNormal: {fileID: 7479402709765608183}
   sphere: {fileID: 7457067986676169898}
   inp: {fileID: 1944650257930108146}
-  accelerationPower: 40
+  accelerationPower: 45
   brakingPower: 40
-  reversingPower: 30
-  steeringPower: 100
-  reverseSteeringPower: 40
-  driftTurnScalar: 1.4
+  reversingPower: 28
+  steeringPower: 90
+  reverseSteeringPower: 90
+  driftTurnScalar: 1.6
   driftBoostThreshold: 100
   driftBoostMode: 0
-  driftBoost: 590
+  driftBoost: 560
   boostPower: 50
-  boostDuration: 1
+  boostDuration: 1.6
   boostRechargeTime: 10
-  boostingDrag: 0.86
-  boostingSteerModifier: 0.4
+  boostingDrag: 0.88
+  boostingSteerModifier: 0.6
   debugSpeedometerEnable: 0
   debugSpeedText: {fileID: 0}
   debugDriftStateEnable: 0
@@ -1652,13 +1652,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5912864584795451152}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2525435, y: -0.000000029802333, z: -0.00000002746584, w: 0.96758556}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.17386319, y: -0.000000027495517, z: -0.000000029774954, w: 0.9847698}
+  m_LocalPosition: {x: 0, y: 1.14, z: -0.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5549706323314271097}
-  m_LocalEulerAnglesHint: {x: 29.256, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 20.025, y: 0, z: 0}
 --- !u!20 &3253891723875983122
 Camera:
   m_ObjectHideFlags: 0
@@ -2151,7 +2151,7 @@ Rigidbody:
   m_GameObject: {fileID: 7457067986676169898}
   serializedVersion: 4
   m_Mass: 300
-  m_Drag: 2
+  m_Drag: 1.85
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
