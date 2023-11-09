@@ -79,15 +79,64 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 break;
         }
 
-
         // Update the naming scheme of the input reciever
         playerInput.gameObject.name = "Player " + playerCount.ToString();
         playerInput.gameObject.transform.parent = playerHolder.transform;
 
         AddToPlayerArray(playerInput);
 
+        // Updates all the player's cameras due to this new player
+        UpdatePlayerCameraRects(playerCount);
+
         // Temp, remove once we enable input ready up
         PlayerReady(playerInput);
+    }
+
+    ///<summary>
+    /// Updates the camera rects on all players in scenes
+    ///</summary>
+    private void UpdatePlayerCameraRects(int playerCount)
+    {
+        Rect[] cameraRects = CalculateRects(playerCount);
+
+        for(int i = 0; i < cameraRects.Length; i++)
+        {
+            PlayerInputs[i].camera.rect = cameraRects[i];
+        }
+    }
+
+    ///<summary>
+    /// Calculates the camera rects for when there are 1 - 4 players
+    ///</summary>
+    private Rect[] CalculateRects(int playerCount)
+    {
+        Rect[] viewportRects = new Rect[playerCount];
+        
+        // 1 Player
+        if(playerCount == 1)
+        {
+            viewportRects[0] = new Rect(0, 0, 1, 1);
+        }
+        else if (playerCount == 2)
+        {
+            viewportRects[0] = new Rect(0.25f, 0.5f, 0.5f, 0.5f);
+            viewportRects[1] = new Rect(0.25f, 0, 0.5f, 0.5f);
+        }
+        else if (playerCount == 3)
+        {
+            viewportRects[0] = new Rect(0, 0.5f, 0.5f, 0.5f);
+            viewportRects[1] = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
+            viewportRects[2] = new Rect(0.25f, 0, 0.5f, 0.5f);
+        }
+        else if (playerCount == 4)
+        {
+            viewportRects[0] = new Rect(0, 0.5f, 0.5f, 0.5f);
+            viewportRects[1] = new Rect(0.5f, 0.5f, 0.5f, 0.5f);
+            viewportRects[2] = new Rect(0, 0, 0.5f, 0.5f);
+            viewportRects[3] = new Rect(0.5f, 0, 0.5f, 0.5f);
+        }
+
+        return viewportRects;
     }
 
     ///<summary>
