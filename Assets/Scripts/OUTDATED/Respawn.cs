@@ -11,13 +11,23 @@ public class Respawn : MonoBehaviour
     //Variables
     private Vector3 respawnPoint;
     private Quaternion initialRotation;
+    private Quaternion endRotation;
     private Quaternion controlRotation;
 
     [Tooltip("The height to lift the player above the map.")]
     [SerializeField] private float liftHeight = 5.0f; // The height to lift the player above the map
 
+    [Tooltip("The height to start the lift at. (Should be below the ground)")]
+    [SerializeField] private float startingLiftHeight = -2.0f; // The height to start the lift at
+
     [Tooltip("The time it takes to rotate 180 degrees.")]
     [SerializeField] private float respawnDuration = 2.0f; // The time it takes to rotate 180 degrees
+
+    [Tooltip("The time it takes to lift the player between startingLiftHeight to liftHeight.")]
+    [SerializeField] private float liftDuration = 2.0f; // The time it takes to lift the player above the ground
+
+    [Tooltip("The prefab for the gravestone model.)")]
+    [SerializeField] private GameObject respawnGravestone;
 
     private bool isRotating = false;
 
@@ -41,11 +51,11 @@ public class Respawn : MonoBehaviour
     private IEnumerator RespawningPlayer()
     {
         isRotating = true;
-        Quaternion endRotation = initialRotation * Quaternion.Euler(0, 180, 0); // Rotate 180 degrees from initial rotation
+        endRotation = initialRotation * Quaternion.Euler(0, 180, 0); // Rotate 180 degrees from initial rotation
         Quaternion endControlRotation = controlRotation * Quaternion.Euler(0, 180, 0);
         float elapsedTime = 0;
         Vector3 initialPosition = transform.position;
-        Vector3 targetPosition = respawnPoint + Vector3.up * liftHeight; // Lift the player
+        Vector3 targetPosition = respawnPoint + Vector3.up * startingLiftHeight; // Change height to position before lifting
 
 
         while (elapsedTime < respawnDuration)
@@ -71,6 +81,7 @@ public class Respawn : MonoBehaviour
         Debug.Log("Collider: " + other.tag);
         if(other.tag == "Water")
         {
+            Instantiate(respawnGravestone, respawnPoint - new Vector3(0, 1, 0), new Quaternion(0, transform.eulerAngles.y, 0, 0));
             StartCoroutine(RespawningPlayer());
         }
     }
