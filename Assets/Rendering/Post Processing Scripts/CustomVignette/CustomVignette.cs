@@ -9,6 +9,7 @@ public class CustomVignette : VolumeComponent, IPostProcessComponent
     public FloatParameter radius = new FloatParameter(1);
     public FloatParameter feather = new FloatParameter(1);
     public ColorParameter color = new ColorParameter(Color.black);
+
     public TextureParameter vignetteTexture = new TextureParameter(null);
 
     public bool IsActive()

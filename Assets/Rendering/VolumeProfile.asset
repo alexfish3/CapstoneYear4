@@ -123,34 +123,6 @@ MonoBehaviour:
   scrollDirection:
     m_OverrideState: 1
     m_Value: {x: 0, y: 0}
---- !u!114 &-7011558710299706105
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 899c54efeace73346a0a16faa3afe726, type: 3}
-  m_Name: Vignette
-  m_EditorClassIdentifier: 
-  active: 0
-  color:
-    m_OverrideState: 1
-    m_Value: {r: 0.033154633, g: 0.1981132, b: 0, a: 1}
-  center:
-    m_OverrideState: 1
-    m_Value: {x: 0.5, y: 0.5}
-  intensity:
-    m_OverrideState: 1
-    m_Value: 0.384
-  smoothness:
-    m_OverrideState: 1
-    m_Value: 0.485
-  rounded:
-    m_OverrideState: 1
-    m_Value: 0
 --- !u!114 &-6836137532856480276
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -182,16 +154,16 @@ MonoBehaviour:
   active: 1
   radius:
     m_OverrideState: 1
-    m_Value: 0.8
+    m_Value: 0.78
   feather:
     m_OverrideState: 1
-    m_Value: 0.83
+    m_Value: 1.05
   color:
     m_OverrideState: 1
-    m_Value: {r: 0.46827713, g: 0, b: 0.6886792, a: 1}
+    m_Value: {r: 0.6761365, g: 0, b: 1, a: 1}
   vignetteTexture:
     m_OverrideState: 1
-    m_Value: {fileID: 2800000, guid: b3cc4ebc465894140acd8f79cd43c5cb, type: 3}
+    m_Value: {fileID: 8400000, guid: e1c32a28c974f8b4d99cc81517ff91aa, type: 2}
     dimension: 1
 --- !u!114 &-4520914038529948424
 MonoBehaviour:
@@ -370,8 +342,6 @@ MonoBehaviour:
   m_Name: VolumeProfile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: 849379129802519247}
-  - {fileID: -7011558710299706105}
   - {fileID: -6836137532856480276}
   - {fileID: -986112137725958182}
   - {fileID: 8930676171534077055}
@@ -417,46 +387,6 @@ MonoBehaviour:
   scrollDirection:
     m_OverrideState: 0
     m_Value: {x: 0, y: 0}
---- !u!114 &849379129802519247
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
-  m_Name: Tonemapping
-  m_EditorClassIdentifier: 
-  active: 0
-  mode:
-    m_OverrideState: 1
-    m_Value: 1
-  neutralHDRRangeReductionMode:
-    m_OverrideState: 0
-    m_Value: 2
-  acesPreset:
-    m_OverrideState: 0
-    m_Value: 3
-  hueShiftAmount:
-    m_OverrideState: 0
-    m_Value: 0
-  detectPaperWhite:
-    m_OverrideState: 0
-    m_Value: 0
-  paperWhite:
-    m_OverrideState: 0
-    m_Value: 300
-  detectBrightnessLimits:
-    m_OverrideState: 0
-    m_Value: 1
-  minNits:
-    m_OverrideState: 0
-    m_Value: 0.005
-  maxNits:
-    m_OverrideState: 0
-    m_Value: 1000
 --- !u!114 &6008299617357011173
 MonoBehaviour:
   m_ObjectHideFlags: 3
