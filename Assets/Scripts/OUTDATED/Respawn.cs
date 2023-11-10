@@ -81,7 +81,7 @@ public class Respawn : MonoBehaviour
         Debug.Log("Collider: " + other.tag);
         if(other.tag == "Water")
         {
-            Instantiate(respawnGravestone, respawnPoint - new Vector3(0, 1, 0), Quaternion.Euler(0, transform.eulerAngles.y, 0));
+            Instantiate(respawnGravestone, (respawnPoint - new Vector3(0, 1, 0)), controlRotation * Quaternion.Euler(0,180,0));
             StartCoroutine(RespawningPlayer());
         }
     }
