@@ -68,6 +68,8 @@ public class BallDriving : MonoBehaviour
     [Tooltip("Toggle to check phase status")]
     [SerializeField] bool checkPhaseStatus = false;
     [SerializeField] GameObject[] phaseRaycastPositions;
+    [Tooltip("Whether the current map is set up for phase testing; Will uses this for things dwai")]
+    [SerializeField] bool phaseSetMap = true;
 
     [Header("Debug")]
     [SerializeField] private bool debugSpeedometerEnable = false;
@@ -88,7 +90,7 @@ public class BallDriving : MonoBehaviour
     private float currentForce; //the amount of force to add to the speed on any given frame
     private float rotationAmount; //the amount to turn on any given frame
 
-    private bool reversing;
+    private bool reversing, grounded;
 
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
@@ -200,17 +202,20 @@ public class BallDriving : MonoBehaviour
         }
 
         //Adds the force to move forward
-        if (drifting)
+        if (grounded)
         {
-            sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
-        }
-        else if (reversing)
-        {
-            sphereBody.AddForce(scooterModel.transform.right * totalForce, ForceMode.Acceleration);
-        }
-        else
-        {
-            sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
+            if (drifting)
+            {
+                sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
+            }
+            else if (reversing)
+            {
+                sphereBody.AddForce(scooterModel.transform.right * totalForce, ForceMode.Acceleration);
+            }
+            else
+            {
+                sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
+            }
         }
 
         //Clamping to make it easier to come to a complete stop
@@ -221,7 +226,7 @@ public class BallDriving : MonoBehaviour
         }
 
         // Enables raycasting for boosting while in a phase
-        if (checkPhaseStatus)
+        if (checkPhaseStatus && phaseSetMap)
         {
             int layerMask = 1 << 9;
             RaycastHit hit1, hit2;
@@ -256,16 +261,30 @@ public class BallDriving : MonoBehaviour
         GroundCheck();
     }
 
+    /// <summary>
+    /// Used a short raycast to check whether there's a driveable surface beneath the scooter, as well as find its slope
+    /// Flags grounded if there's a surface, and matches the scooter to its angle if so
+    /// </summary>
     private void GroundCheck()
     {
         int lm = 513; //layers 0 and 9
         RaycastHit hit;
 
-        Physics.Raycast(transform.position, Vector3.down, out hit, 2.0f, lm);
-        Debug.DrawRay(transform.position, Vector3.down * 2.0f, Color.blue);
+        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, 1.5f, lm))
+        {
+            grounded = true;
+        }
+        else
+        {
+            grounded = false;
+        }
+        Debug.DrawRay(transform.position + Vector3.up, Vector3.down * 1.5f, Color.blue);
 
-        scooterNormal.up = Vector3.Lerp(scooterNormal.up, hit.normal, Time.fixedDeltaTime * 10.0f);
-        scooterNormal.Rotate(0, transform.eulerAngles.y, 0);
+        if (grounded)
+        {
+            scooterNormal.up = Vector3.Lerp(scooterNormal.up, hit.normal, Time.fixedDeltaTime * 10.0f);
+            scooterNormal.Rotate(0, transform.eulerAngles.y, 0);
+        }
     }
 
     /// <summary>
@@ -301,7 +320,7 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void AssignDriftState()
     {
-        if (!boosting && !reversing)
+        if (!boosting && !reversing && grounded)
         {
             callToDrift = false;
             drifting = true;
