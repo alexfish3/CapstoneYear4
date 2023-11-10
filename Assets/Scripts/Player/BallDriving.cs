@@ -153,6 +153,8 @@ public class BallDriving : MonoBehaviour
         }
         else if (reversing)
         {
+            DirtyDriftDrop(); //only needed like 1% of the time but fixes a weird little collision behavior
+            
             rotationAmount = leftStick * reverseSteeringPower;
             rotationAmount *= -RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), reversingPower);
 
