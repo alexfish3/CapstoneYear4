@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1258984918617694929}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: ScooterBlockOut_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,6 +40,8 @@ Transform:
   - {fileID: 6624770273072667785}
   - {fileID: 1565360609101341508}
   - {fileID: 3475647452137908849}
+  - {fileID: 8061647696748171378}
+  - {fileID: 3666125168942146944}
   m_Father: {fileID: 726876279030194752}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1419263688064103656
@@ -208,6 +210,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &1451805001008371978
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8061647696748171378}
+  m_Layer: 0
+  m_Name: Raycast Front
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8061647696748171378
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451805001008371978}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.65, y: -0.13, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1258984918617694929}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1981907356813080360
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,7 +282,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3475647452137908849}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: OrderPos (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -484,7 +517,6 @@ MonoBehaviour:
   camerasToFollow:
   - {fileID: 369374283456175948}
   - {fileID: 418238106139402944}
-  - {fileID: 0}
   viewPortRectDefault: {x: 0, y: 0, z: 1, w: 1}
 --- !u!1 &2914911640050602401
 GameObject:
@@ -578,7 +610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1565360609101341508}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: OrderPos (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -679,9 +711,14 @@ MonoBehaviour:
   debugDriftComplete: {fileID: 0}
   debugBoostabilityEnable: 0
   debugBoostability: {fileID: 0}
+  boosting: 0
   boostAble: 1
   playerIndex: 0
   phaseIndicator: {fileID: 7577601631424315214}
+  checkPhaseStatus: 0
+  phaseRaycastPositions:
+  - {fileID: 1451805001008371978}
+  - {fileID: 7137561607679182206}
 --- !u!114 &4701012300698348498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1375,6 +1412,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7137561607679182206
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3666125168942146944}
+  m_Layer: 0
+  m_Name: Raycast Back
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3666125168942146944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7137561607679182206}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.58, y: -0.03, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1258984918617694929}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7457067986676169898
 GameObject:
   m_ObjectHideFlags: 0

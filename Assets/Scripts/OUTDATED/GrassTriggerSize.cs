@@ -10,7 +10,7 @@ public class GrassTriggerSize : MonoBehaviour
 
     void Start()
     {
-        gameObject.GetComponent<BoxCollider>().size = new Vector3 (10 - gameObject.transform.localScale.z * grassTriggerScale, 3, 10 - gameObject.transform.localScale.x * grassTriggerScale);
+        //gameObject.GetComponent<BoxCollider>().size = new Vector3 (10 - gameObject.transform.localScale.z * grassTriggerScale, 3, 10 - gameObject.transform.localScale.x * grassTriggerScale);
     }
 
 }

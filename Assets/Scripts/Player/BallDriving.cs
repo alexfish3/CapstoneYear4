@@ -88,15 +88,22 @@ public class BallDriving : MonoBehaviour
     private float driftPoints = 0.0f;
 
     private bool boostInitialburst = false;
-    private bool boosting = false;
+    [SerializeField] private bool boosting = false;
     public bool Boosting { get { return boosting; } }
     [SerializeField] private bool boostAble = true;
     public bool BoostAble { set { boostAble = value; } }
 
-    // Can be implemeneted properly after
-    [Header("Alex shit")]
+    // All information for the phasing
+    [Header("Phasing Information")]
+    [Tooltip("The player index is what allows only the certain player to phase")]
     public int playerIndex;
+    [Tooltip("This is the reference to the horn phase indicator")]
     public PhaseIndicator phaseIndicator;
+    [Tooltip("Toggle to check phase status")]
+    [SerializeField] bool checkPhaseStatus = false;
+
+    [SerializeField] GameObject[] phaseRaycastPositions;
+
 
     /// <summary>
     /// Standard Start. Just used to get references, get initial values, and subscribe to events
@@ -202,13 +209,43 @@ public class BallDriving : MonoBehaviour
         else
         {
             sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
-        }       
+        }
 
         //Clamping to make it easier to come to a complete stop
         if (sphereBody.velocity.magnitude < 2 && currentForce < 2)
         {
             sphereBody.velocity = new Vector3(0, sphereBody.velocity.y, 0);
             DirtyDriftDrop();
+        }
+
+        // Enables raycasting for boosting while in a phase
+        if (checkPhaseStatus)
+        {
+            int layerMask = 1 << 9;
+            RaycastHit hit1, hit2;
+
+            // First raycast
+            bool hit1Success = Physics.Raycast(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down), out hit1, Mathf.Infinity, layerMask);
+
+            // Second raycast
+            bool hit2Success = Physics.Raycast(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down), out hit2, Mathf.Infinity, layerMask);
+
+            // Check if either raycast hit
+            if (hit1Success == true && hit2Success == true)
+            {
+                Debug.Log("Inside Building");
+                Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
+                Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
+            }
+            else if(hit1Success == false && hit2Success == false)
+            {
+                Debug.Log("Not Inside Building");
+                Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
+                Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
+
+                ToggleCollision(false);
+                checkPhaseStatus = false;
+            }
         }
     }
 
@@ -320,7 +357,8 @@ public class BallDriving : MonoBehaviour
 
         yield return new WaitForSeconds(boostDuration);
 
-        ToggleCollision(false);
+        // Toggles to check phase status
+        checkPhaseStatus = true;
 
         boosting = false;
         sphereBody.drag = startingDrag;
