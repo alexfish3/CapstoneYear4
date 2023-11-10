@@ -10,7 +10,7 @@ using UnityEngine;
 public class OrderHandler : MonoBehaviour
 {
     private int score; // score of the player
-    public int Score { get { return score; } }
+    public int Score { get { return score; } set { score = value; } }
     private int placement = 0;
     public int Placement { get { return placement; }set { placement = value; } }
     [Tooltip("Exposed for testing purposes only!")]

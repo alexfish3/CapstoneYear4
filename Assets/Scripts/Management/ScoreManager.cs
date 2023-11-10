@@ -10,6 +10,17 @@ public class ScoreManager : SingletonMonobehaviour<ScoreManager>
 {
     [SerializeField] private List<OrderHandler> orderHandlers = new List<OrderHandler>(); // list of order handlers in the scene
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapMenu += ResetScore;
+        GameManager.Instance.OnSwapBegin += ResetScore;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapMenu -= ResetScore;
+        GameManager.Instance.OnSwapBegin -= ResetScore;
+    }
     /// <summary>
     /// Adds an OrderHandler to the list if they're not already in the list.
     /// </summary>
@@ -67,5 +78,17 @@ public class ScoreManager : SingletonMonobehaviour<ScoreManager>
             outHandler = null;
         }
         return outHandler;
+    }
+
+    /// <summary>
+    /// This method resets the score of all players and recalculates their placements.
+    /// </summary>
+    private void ResetScore()
+    {
+        foreach(OrderHandler handler in orderHandlers)
+        {
+            handler.Score = 0;
+        }
+        UpdatePlacement();
     }
 }
