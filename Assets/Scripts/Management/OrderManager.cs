@@ -32,7 +32,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private int maxOrders; // total number of orders possible in a game
     private float easyPercentage, mediumPercentage, hardPercentage; // percentage of easy/medium/hard orders that should be in a game
-    private int currEasy, currMedium, currHard; // the current number of easy/medium/hard orders in the game
+    [SerializeField] private int currEasy, currMedium, currHard; // the current number of easy/medium/hard orders in the game
 
     private bool cooledDown = true;
 
@@ -65,13 +65,14 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Header("Debug")]
     [Tooltip("When checked will loop through waves so you can play forever")]
     [SerializeField] private bool waveResets;
+    [Tooltip("On means the max orders are the only orders spawned in the wave, off means new orders will spawn as they are delivered")]
+    [SerializeField] private bool scarcityMode;
 
     private void OnEnable()
     {
         GameManager.Instance.OnSwapMainLoop += EnableSpawning;
         GameManager.Instance.OnSwapFinalPackage += DisableSpawning;
         GameManager.Instance.OnSwapFinalPackage += SpawnFinalOrder;
-        GameManager.Instance.OnSwapResults += ShowResults;
     }
 
     private void OnDisable()
@@ -79,7 +80,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapMainLoop -= EnableSpawning;
         GameManager.Instance.OnSwapFinalPackage -= DisableSpawning;
         GameManager.Instance.OnSwapFinalPackage -= SpawnFinalOrder;
-        GameManager.Instance.OnSwapResults -= ShowResults;
     }
 
     private void Update()
@@ -91,7 +91,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         {
             if (canSpawnOrders)
             {
-                if (orders.Count > 0)
+                if (orders.Count >= 0)
                 {
                     if (cooledDown)
                     {
@@ -114,7 +114,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 }
                 else // to be executed for the first order
                 {
-                    StartEasySpawn();
+                    //StartEasySpawn();
                 }
             }
             else
@@ -283,6 +283,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// <param name="amount">Amount you want to increment by (typically +1 or -1)</param>
     public void IncrementCounters(Order.Order_Value value, int amount)
     {
+        if(amount == -1 && scarcityMode) { return; } // won't let you count down orders on scarcity mode
         switch(value)
         {
             case Order.Order_Value.Easy:
@@ -331,19 +332,13 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(waveResets)
         {
             wave = 0;
-            GameManager.Instance.SetGameState(GameState.MainLoop);
-            SpawnManager.Instance.SpawnPlayersFinalPackage(); // way to get the players back to the starting area after gold has been delivered
+            GameManager.Instance.SetGameState(GameState.Begin);
         }
         else
         {
             // results to be implemented
             GameManager.Instance.SetGameState(GameState.Results);
         }
-    }
-
-    public void ShowResults()
-    {
-
     }
 
     // methods to start/stop coroutines

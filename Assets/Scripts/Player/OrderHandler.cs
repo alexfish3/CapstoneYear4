@@ -157,7 +157,7 @@ public class OrderHandler : MonoBehaviour
     void StealOrder(OrderHandler victimPlayer)
     {
         Order newOrder = victimPlayer.GetBestOrder();
-        if (newOrder != null)
+        if (newOrder != null && (order1 == null || order2 == null))
         {
             victimPlayer.LoseOrder(newOrder);
             AddOrder(newOrder);
