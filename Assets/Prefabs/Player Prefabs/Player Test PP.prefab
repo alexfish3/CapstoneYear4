@@ -693,6 +693,7 @@ MonoBehaviour:
   accelerationPower: 45
   brakingPower: 40
   reversingPower: 28
+  fallingDrag: 1
   steeringPower: 90
   reverseSteeringPower: 90
   driftTurnScalar: 1.6
@@ -778,7 +779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   compassImage: {fileID: 6837548339216748312}
   player: {fileID: 7393508319600699636}
-  iconHeight: -70
+  iconHeight: -65
   iconPrefab: {fileID: 3691895907627439231, guid: 13f91f37558f51643ac77d60dac451e9, type: 3}
   compassUIObjects: []
   compassMarkerObjects: []
@@ -1551,10 +1552,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87855907a691e8d4ba39a82096eb29d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  liftHeight: 5
+  liftHeight: 2.2
   startingLiftHeight: -2
   respawnDuration: 2
-  liftDuration: 2
+  liftDuration: 0.5
   respawnGravestone: {fileID: 1814084137873696000, guid: c0504eb1c67f9e64fba2f42512ae7199, type: 3}
   control: {fileID: 4669215135928708646}
 --- !u!1 &7798013324180380121
