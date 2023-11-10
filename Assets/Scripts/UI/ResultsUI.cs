@@ -16,7 +16,7 @@ public class ResultsUI : MonoBehaviour
             OrderHandler currHandler = ScoreManager.Instance.GetHandlerOfIndex(i);
             if(currHandler != null)
             {
-                displayText[i].text = currHandler.Placement + ". " + currHandler.gameObject.transform.parent.name + " $" + currHandler.Score;
+                displayText[i].text = currHandler.Placement + ". " + currHandler.gameObject.transform.parent.name + " | $" + currHandler.Score;
             }
         }
         returnButton.onClick.AddListener(ResetGame);
