@@ -233,6 +233,10 @@ public class BallDriving : MonoBehaviour
                 sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
             }
         }
+        else if (boosting) //allows boosting in mid-air. bit of a weird implementation; possibly refactor in the future.
+        {
+            sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
+        }
 
         //Clamping to make it easier to come to a complete stop
         if (sphereBody.velocity.magnitude < 2 && currentForce < 2)
@@ -301,6 +305,11 @@ public class BallDriving : MonoBehaviour
             scooterNormal.up = Vector3.Lerp(scooterNormal.up, hit.normal, Time.fixedDeltaTime * 10.0f);
             scooterNormal.Rotate(0, transform.eulerAngles.y, 0);
         }
+    }
+
+    private void GroundBoost(float boostAmount)
+    {
+
     }
 
     /// <summary>
