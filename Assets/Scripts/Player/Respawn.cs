@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -27,7 +28,7 @@ public class Respawn : MonoBehaviour
     [SerializeField] private float liftDuration = 2.0f; // The time it takes to lift the player above the ground
 
     [Tooltip("The prefab for the gravestone model.)")]
-    [SerializeField] private GameObject respawnGravestone;
+    [SerializeField] private GameObject respawnGravestone; // Gravestone model to spawn in during respawn
 
     private bool isRotating = false;
 
@@ -58,6 +59,7 @@ public class Respawn : MonoBehaviour
         Vector3 targetPosition = respawnPoint + Vector3.up * startingLiftHeight; // Change height to position before lifting
 
 
+        // Moving player to respawn position below ground
         while (elapsedTime < respawnDuration)
         {
             transform.rotation = Quaternion.Slerp(initialRotation, endRotation, elapsedTime / respawnDuration);
@@ -74,6 +76,26 @@ public class Respawn : MonoBehaviour
 
         isRotating = false;
 
+
+        // Resetting variables
+        elapsedTime = 0;
+        initialPosition = transform.position;
+        targetPosition = initialPosition + Vector3.up * liftHeight;
+
+        // Lifting player above ground
+        while (elapsedTime < liftDuration)
+        {
+            transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / liftDuration);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Turn gravity and collider back on
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<SphereCollider>().enabled = true;
+
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -81,7 +103,13 @@ public class Respawn : MonoBehaviour
         Debug.Log("Collider: " + other.tag);
         if(other.tag == "Water")
         {
-            Instantiate(respawnGravestone, (respawnPoint - new Vector3(0, 1, 0)), controlRotation * Quaternion.Euler(1,180,0));
+            // Turning these off fixes camera jittering on respawn
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<SphereCollider>().enabled = false;
+
+
+
+            Instantiate(respawnGravestone, (respawnPoint - new Vector3(0, 1, 0)), controlRotation * Quaternion.Euler(1,180,0)); // spawn respawn gravestone
             StartCoroutine(RespawningPlayer());
         }
     }
