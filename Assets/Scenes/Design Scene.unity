@@ -23669,6 +23669,59 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 659870017}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &660664406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 660664407}
+  - component: {fileID: 660664408}
+  m_Layer: 0
+  m_Name: WaterTrigger (1)
+  m_TagString: Water
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &660664407
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660664406}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 15, y: -1, z: -666}
+  m_LocalScale: {x: 847.5961, y: 0.8245855, z: 681.3708}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2129575581}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &660664408
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 660664406}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.91699016, y: 1, z: 1.0598423}
+  m_Center: {x: -0.1629296, y: 0, z: 0.02992193}
 --- !u!1 &661311437
 GameObject:
   m_ObjectHideFlags: 0
@@ -47321,10 +47374,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 0
   orderPrefab: {fileID: 6222648319098696450, guid: 72282afa5b461534eafcad89053a8e6c, type: 3}
-  maxEasy: 0500000003000000
-  maxMedium: 0400000002000000
-  maxHard: 0300000001000000
-  waveLengthInSeconds: 2
+  maxEasy: 030000000200000001000000
+  maxMedium: 020000000300000002000000
+  maxHard: 010000000200000003000000
+  waveLengthInSeconds: 60
   wave: 0
   cooldownTime: 5
   pickupWaypoints:
@@ -62327,8 +62380,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 1, z: 0.9016438}
+  m_Center: {x: 0, y: 0, z: 0.04917615}
 --- !u!1 &1810580947
 GameObject:
   m_ObjectHideFlags: 0
@@ -64294,6 +64347,59 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1848802810}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1851567086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1851567087}
+  - component: {fileID: 1851567088}
+  m_Layer: 0
+  m_Name: WaterTrigger (2)
+  m_TagString: Water
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1851567087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851567086}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.0684098, y: -0, z: -0, w: 0.99765736}
+  m_LocalPosition: {x: -25.220001, y: 52, z: -764.1}
+  m_LocalScale: {x: 600.74225, y: 0.8245855, z: 356.5642}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2129575581}
+  m_LocalEulerAnglesHint: {x: 7.845, y: 0, z: 0}
+--- !u!65 &1851567088
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1851567086}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.91699016, y: 1, z: 1.0598423}
+  m_Center: {x: -0.1629296, y: 0, z: 0.02992193}
 --- !u!1 &1854557157
 GameObject:
   m_ObjectHideFlags: 0
@@ -75672,6 +75778,8 @@ Transform:
   - {fileID: 606543881}
   - {fileID: 896005168}
   - {fileID: 1810504597}
+  - {fileID: 660664407}
+  - {fileID: 1851567087}
   m_Father: {fileID: 1767700035}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2133874082
