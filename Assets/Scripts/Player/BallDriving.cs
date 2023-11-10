@@ -12,6 +12,7 @@ public class BallDriving : MonoBehaviour
     private const float STEERING_MODEL_ROTATION = 15.0f; //How far the model rotates when steering normally
     private const float DRIFTING_MODEL_ROTATION = 20.0f; //How far the model rotates when drifting
     private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
+    private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
 
     private IEnumerator boostActiveCoroutine;
     private IEnumerator boostCooldownCoroutine;
@@ -35,6 +36,10 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float reversingPower = 10.0f;
     [Tooltip("The amount of drag while falling. Improves the feel of the physics")]
     [SerializeField] private float fallingDrag = 1.0f;
+    [Tooltip("The amount of speed that a ground boost patch gives")]
+    [SerializeField] private float groundBoostAmount = 100.0f;
+    [Tooltip("The multiplier applied to speed when in a ground slow patch")]
+    [SerializeField] private float slowPatchMultiplier = 0.75f;
 
     [Header("Steering")]
     [Tooltip("The 'turning power'. A slightly abstract concept representing how well the scooter can turn. Higher values represent a tighter turning circle")]
@@ -99,6 +104,9 @@ public class BallDriving : MonoBehaviour
     private int driftDirection;
     private bool driftBoostAchieved = false;
     private float driftPoints = 0.0f;
+
+    private bool groundBoostFlag = false;
+    private bool groundSlowFlag = false;
 
     private bool boostInitialburst = false;
     private bool boosting = false;
@@ -217,6 +225,20 @@ public class BallDriving : MonoBehaviour
             boostInitialburst = false;
         }
 
+        //Adds the boost from ground boosts
+        if (groundBoostFlag)
+        {
+            totalForce += groundBoostAmount;
+            groundBoostFlag = false;
+        }
+
+        //Applies slow from grass patches
+        if (groundSlowFlag)
+        {
+            totalForce *= slowPatchMultiplier;
+            groundSlowFlag = false;
+        }
+
         //Adds the force to move forward
         if (grounded)
         {
@@ -290,7 +312,7 @@ public class BallDriving : MonoBehaviour
         int lm = 513; //layers 0 and 9
         RaycastHit hit;
 
-        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, 1.5f, lm))
+        if (Physics.Raycast(transform.position + Vector3.up, Vector3.down, out hit, GROUNDCHECK_DISTANCE, lm))
         {
             grounded = true;
         }
@@ -298,12 +320,22 @@ public class BallDriving : MonoBehaviour
         {
             grounded = false;
         }
-        Debug.DrawRay(transform.position + Vector3.up, Vector3.down * 1.5f, Color.blue);
+        Debug.DrawRay(transform.position + Vector3.up, Vector3.down * GROUNDCHECK_DISTANCE, Color.blue);
 
         if (grounded)
         {
             scooterNormal.up = Vector3.Lerp(scooterNormal.up, hit.normal, Time.fixedDeltaTime * 10.0f);
             scooterNormal.Rotate(0, transform.eulerAngles.y, 0);
+
+            if (hit.collider.tag == "Speed")
+            {
+                groundBoostFlag = true;
+            }
+
+            if (hit.collider.tag == "TouchGrass")
+            {
+                groundSlowFlag = true;
+            }
         }
     }
 
