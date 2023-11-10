@@ -57,6 +57,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         GameObject ColliderObject = playerInput.gameObject.GetComponentInChildren<SphereCollider>().gameObject;
         BallDriving ballDriving = playerInput.gameObject.GetComponentInChildren<BallDriving>();
+        Camera baseCam = playerInput.camera;
 
         // Update tag of player
         switch (playerCount)
@@ -64,18 +65,22 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             case 1:
                 ColliderObject.layer = 10; // Player 1;
                 ballDriving.playerIndex = 1;
+                baseCam.cullingMask |= (1<<10);
                 break;
             case 2:
                 ColliderObject.layer = 11; // Player 2;
                 ballDriving.playerIndex = 2;
+                baseCam.cullingMask |= (1 << 11);
                 break;
             case 3:
                 ColliderObject.layer = 12; // Player 3;
                 ballDriving.playerIndex = 3;
+                baseCam.cullingMask |= (1 << 12);
                 break;
             case 4:
                 ColliderObject.layer = 13; // Player 4;
                 ballDriving.playerIndex = 4;
+                baseCam.cullingMask |= (1 << 13);
                 break;
         }
 

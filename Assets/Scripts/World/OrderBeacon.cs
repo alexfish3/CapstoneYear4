@@ -48,6 +48,7 @@ public class OrderBeacon : MonoBehaviour
         meshRenderer.material.color = new Color(1,1,1,0.5f);
         isPickup = false;
         order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
+        gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer;
     }
 
     /// <summary>
@@ -59,6 +60,7 @@ public class OrderBeacon : MonoBehaviour
         meshRenderer.material.color = color;
         isPickup = true;
         order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
+        gameObject.layer = 0; // reset to default layer
     }
 
     /// <summary>
