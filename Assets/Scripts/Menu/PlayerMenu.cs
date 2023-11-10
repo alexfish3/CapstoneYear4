@@ -10,13 +10,15 @@ public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
     {
         playerInstantiate = PlayerInstantiate.Instance;
         playerInstantiate.OnReadiedUp += LoadGameScene;
-        GameManager.Instance.OnSwapResults += LoadMenuScene;
+        GameManager.Instance.OnSwapResults += LoadResultsScene;
+        GameManager.Instance.OnSwapMenu += LoadMenuScene;
     }
 
     private void OnDisable()
     {
         playerInstantiate.OnReadiedUp -= LoadGameScene;
-        GameManager.Instance.OnSwapResults -= LoadMenuScene;
+        GameManager.Instance.OnSwapResults -= LoadResultsScene;
+        GameManager.Instance.OnSwapMenu -= LoadMenuScene;
     }
 
     ///<summary>
@@ -34,6 +36,11 @@ public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
     {
         Debug.Log("Load menu");
         StartCoroutine(LoadSceneAsync(0));
+    }
+    private void LoadResultsScene()
+    {
+        Debug.Log("Load results");
+        StartCoroutine(LoadSceneAsync(2));
     }
 
     ///<summary>

@@ -22,9 +22,11 @@ public class ResultsUI : MonoBehaviour
         returnButton.onClick.AddListener(ResetGame);
     }
 
+    /// <summary>
+    /// This method resets the game by setting the GameManager game state to menu.
+    /// </summary>
     private void ResetGame()
     {
-        SceneManager.LoadSceneAsync(0, LoadSceneMode.Single);
-        GameManager.Instance.SetGameState(GameState.Begin);
+        GameManager.Instance.SetGameState(GameState.Menu);
     }
 }
