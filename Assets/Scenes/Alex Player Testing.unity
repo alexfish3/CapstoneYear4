@@ -263,6 +263,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   playerReadyUp: 00000000
+  isReadedUp: 0
 --- !u!4 &128304938
 Transform:
   m_ObjectHideFlags: 0
@@ -828,7 +829,7 @@ GameObject:
   - component: {fileID: 1202921220}
   - component: {fileID: 1202921221}
   m_Layer: 0
-  m_Name: Player Menu Manager
+  m_Name: Scene Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -861,8 +862,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42a30c16318957240ac553cfe74b77b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dontDestroyOnLoad: 0
-  playerInstantiate: {fileID: 0}
+  dontDestroyOnLoad: 1
+  playerInstantiate: {fileID: 128304937}
 --- !u!1 &1228516831
 GameObject:
   m_ObjectHideFlags: 0

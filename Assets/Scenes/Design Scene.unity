@@ -21373,6 +21373,7 @@ Transform:
   - {fileID: 1310798040}
   - {fileID: 248680907}
   - {fileID: 2100221519}
+  - {fileID: 698630938}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &596376203
@@ -25853,6 +25854,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 694748006}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &698630937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 698630938}
+  m_Layer: 0
+  m_Name: Golden Dropoff (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &698630938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698630937}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 16, y: 11.28, z: -150}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 592657889}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &699337202
 GameObject:
   m_ObjectHideFlags: 0
@@ -47292,7 +47324,8 @@ MonoBehaviour:
   maxEasy: 0500000003000000
   maxMedium: 0400000002000000
   maxHard: 0300000001000000
-  waveLengthInSeconds: 60
+  waveLengthInSeconds: 2
+  wave: 0
   cooldownTime: 5
   pickupWaypoints:
   - {fileID: 587767095}
@@ -47339,11 +47372,11 @@ MonoBehaviour:
   - {fileID: 1310798040}
   - {fileID: 248680907}
   goldenPickup: {fileID: 1258767910}
-  goldenDropoff: {fileID: 2100221519}
+  goldenDropoff: {fileID: 698630938}
   easyDistance: 35
   mediumDistance: 60
   hardDistance: 90
-  waveResets: 1
+  waveResets: 0
 --- !u!4 &1350488419
 Transform:
   m_ObjectHideFlags: 0
@@ -73617,7 +73650,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2100221519}
   m_Layer: 0
-  m_Name: Golden Dropoff
+  m_Name: Golden Dropoff (Good)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

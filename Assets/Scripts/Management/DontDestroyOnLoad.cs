@@ -4,7 +4,7 @@ public class DontDestroyOnLoad : MonoBehaviour
 {
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
+        DontDestroyOnLoad(this);
     }
 
     // I wanna kill myself

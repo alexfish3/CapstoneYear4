@@ -20,6 +20,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [SerializeField] bool[] playerReadyUp = new bool[Constants.MAX_PLAYERS];
     public event Action OnReadiedUp;
     int readyUpCounter = 0;
+    [SerializeField] bool isReadedUp = false;
 
     ///<summary>
     /// OnEnable, where i set event methods
@@ -28,6 +29,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         gameManager.OnSwapPlayerSelect += EnablePlayerSpawn;
         gameManager.OnSwapBegin += DisablePlayerSpawn;
+        gameManager.OnSwapResults += DisableReadiedUp;
     }
 
     ///<summary>
@@ -37,6 +39,17 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         gameManager.OnSwapPlayerSelect -= EnablePlayerSpawn;
         gameManager.OnSwapBegin -= DisablePlayerSpawn;
+        gameManager.OnSwapResults += DisableReadiedUp;
+    }
+
+    public void Update()
+    {
+        if(isReadedUp == true)
+        {
+            return;
+        }
+
+        CheckReadyUpCount();
     }
 
     ///<summary>
@@ -245,7 +258,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             }
 
             Debug.Log("Properly Readied Up");
-
+            isReadedUp = true;
             OnReadiedUp?.Invoke();
         }
         else
@@ -263,5 +276,16 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     /// Disables the ability to spawn players
     ///</summary>
     public void DisablePlayerSpawn() { allowPlayerSpawn = false; }
+
+    public void DisableReadiedUp() 
+    { 
+        isReadedUp = false;
+        
+        for(int i = 0; i < Constants.MAX_PLAYERS; i++)
+        {
+            playerReadyUp[i] = false;
+        }
+
+    }
 
 }

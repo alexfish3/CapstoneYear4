@@ -24,7 +24,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     [Tooltip("Time it takes in seconds for a wave to be completed")]
     [SerializeField] private float waveLengthInSeconds = 20f;
-    private int wave = 0;
+    [SerializeField] int wave = 0;
     private float waveTimer = 0f;
 
     public float WaveTimer { get { return waveTimer; } }
@@ -71,6 +71,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapMainLoop += EnableSpawning;
         GameManager.Instance.OnSwapFinalPackage += DisableSpawning;
         GameManager.Instance.OnSwapFinalPackage += SpawnFinalOrder;
+        GameManager.Instance.OnSwapResults += ShowResults;
     }
 
     private void OnDisable()
@@ -78,19 +79,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapMainLoop -= EnableSpawning;
         GameManager.Instance.OnSwapFinalPackage -= DisableSpawning;
         GameManager.Instance.OnSwapFinalPackage -= SpawnFinalOrder;
+        GameManager.Instance.OnSwapResults -= ShowResults;
     }
-
-    private void EnableSpawning() 
-    {
-        InitWave();
-        spawnNormalPackages = true; 
-    }
-    private void DisableSpawning()
-    {
-        ResetWave();
-        spawnNormalPackages = false; 
-    }
-
 
     private void Update()
     {
@@ -168,6 +158,24 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         currEasy = 0;
         currMedium = 0;
         currHard = 0;
+    }
+
+    /// <summary>
+    /// Enables the spawning of pacakges
+    /// </summary>
+    private void EnableSpawning()
+    {
+        InitWave();
+        spawnNormalPackages = true;
+    }
+
+    /// <summary>
+    /// Disables the spawning of pacakges
+    /// </summary>
+    private void DisableSpawning()
+    {
+        ResetWave();
+        spawnNormalPackages = false;
     }
 
     /// <summary>
@@ -329,8 +337,13 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         else
         {
             // results to be implemented
-            //GameManager.Instance.SetGameState(GameState.Results);
+            GameManager.Instance.SetGameState(GameState.Results);
         }
+    }
+
+    public void ShowResults()
+    {
+
     }
 
     // methods to start/stop coroutines
@@ -342,7 +355,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             StartCoroutine(easySpawnCoroutine);
         }
     }
-
     private void StopEasySpawn()
     {
         if(easySpawnCoroutine != null)
@@ -360,7 +372,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             StartCoroutine(mediumSpawnCoroutine);
         }
     }
-
     private void StopMediumSpawn()
     {
         if (mediumSpawnCoroutine != null)
@@ -378,7 +389,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             StartCoroutine(hardSpawnCoroutine);
         }
     }
-
     private void StopHardSpawn()
     {
         if(hardSpawnCoroutine != null)
