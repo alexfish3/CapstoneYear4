@@ -9,6 +9,7 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
 
     [Tooltip("The spawn positions of the players as they start the game")]
     [SerializeField] GameObject[] gameSpawnPositions = new GameObject[Constants.MAX_PLAYERS];
+    [SerializeField] GameObject[] goldenPackageSpawnPositions = new GameObject[Constants.MAX_PLAYERS];
 
     ///<summary>
     /// On Enable of Script
@@ -72,11 +73,11 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
             playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
 
             // reset position and rotation of ball and controller
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = gameSpawnPositions[i].transform.position;
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = gameSpawnPositions[i].transform.rotation;
+            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = goldenPackageSpawnPositions[i].transform.position;
+            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = goldenPackageSpawnPositions[i].transform.rotation;
 
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = gameSpawnPositions[i].transform.position;
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = gameSpawnPositions[i].transform.rotation;
+            playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = goldenPackageSpawnPositions[i].transform.position;
+            playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = goldenPackageSpawnPositions[i].transform.rotation;
         }
     }
 }
