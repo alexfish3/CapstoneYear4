@@ -117,6 +117,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         // Updates all the player's cameras due to this new player
         UpdatePlayerCameraRects(playerCount);
+
+        SwapPlayerControlSchemeToUI();
     }
 
     ///<summary>
@@ -256,18 +258,15 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 readyUpCounter++;
         }
 
-        // Checks if number of readied up is greater then or equal to required amount
-        if (readyUpCounter >= Constants.MAX_REQUIRED_READY_UP)
+        // Checks if players are greater then 1 and all players are readied up
+        if (readyUpCounter >= playerCount && playerCount >= 1)
         {
-            // Requires max players and does not have max
-            if (Constants.REQUIRE_MAX_PLAYERS && readyUpCounter < Constants.MAX_PLAYERS)
-            {
-                Debug.Log("Not Enough Readied Up");
-                return;
-            }
-
             if(readyUpCountdown == null)
                 readyUpCountdown = StartCoroutine(ReadyUpCountdown());
+        }
+        else
+        {
+            return;
         }
     }
 

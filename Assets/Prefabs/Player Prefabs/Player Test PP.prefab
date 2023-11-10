@@ -704,6 +704,13 @@ MonoBehaviour:
   boostRechargeTime: 10
   boostingDrag: 0.88
   boostingSteerModifier: 0.6
+  playerIndex: 0
+  phaseIndicator: {fileID: 7577601631424315214}
+  checkPhaseStatus: 0
+  phaseRaycastPositions:
+  - {fileID: 1451805001008371978}
+  - {fileID: 7137561607679182206}
+  phaseSetMap: 1
   debugSpeedometerEnable: 0
   debugSpeedText: {fileID: 0}
   debugDriftStateEnable: 0
@@ -712,14 +719,6 @@ MonoBehaviour:
   debugDriftComplete: {fileID: 0}
   debugBoostabilityEnable: 0
   debugBoostability: {fileID: 0}
-  boosting: 0
-  boostAble: 1
-  playerIndex: 0
-  phaseIndicator: {fileID: 7577601631424315214}
-  checkPhaseStatus: 0
-  phaseRaycastPositions:
-  - {fileID: 1451805001008371978}
-  - {fileID: 7137561607679182206}
 --- !u!114 &5517452657135899239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2047,7 +2046,7 @@ MonoBehaviour:
     m_ActionName: UI/UnReadyUp[/DualShock4GamepadHID/buttonEast]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
-  m_DefaultActionMap: UI
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 3253891723875983122}
 --- !u!114 &1944650257930108146
