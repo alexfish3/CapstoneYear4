@@ -252,6 +252,20 @@ public class BallDriving : MonoBehaviour
                 checkPhaseStatus = false;
             }
         }
+
+        GroundCheck();
+    }
+
+    private void GroundCheck()
+    {
+        int lm = 513; //layers 0 and 9
+        RaycastHit hit;
+
+        Physics.Raycast(transform.position, Vector3.down, out hit, 2.0f, lm);
+        Debug.DrawRay(transform.position, Vector3.down * 2.0f, Color.blue);
+
+        scooterNormal.up = Vector3.Lerp(scooterNormal.up, hit.normal, Time.fixedDeltaTime * 10.0f);
+        scooterNormal.Rotate(0, transform.eulerAngles.y, 0);
     }
 
     /// <summary>
