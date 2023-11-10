@@ -33,6 +33,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float brakingPower = 30.0f;
     [Tooltip("An amorphous representation of how quickly the bike can reverse")]
     [SerializeField] private float reversingPower = 10.0f;
+    [Tooltip("The amount of drag while falling. Improves the feel of the physics")]
+    [SerializeField] private float fallingDrag = 1.0f;
 
     [Header("Steering")]
     [Tooltip("The 'turning power'. A slightly abstract concept representing how well the scooter can turn. Higher values represent a tighter turning circle")]
@@ -135,6 +137,20 @@ public class BallDriving : MonoBehaviour
         if (callToDrift && leftStick != 0)
         {
             AssignDriftState();
+        }
+
+        //Assigns drag
+        if (!grounded)
+        {
+            sphereBody.drag = fallingDrag;
+        }
+        else if (boosting)
+        {
+            sphereBody.drag = boostingDrag;
+        }
+        else
+        {
+            sphereBody.drag = startingDrag;
         }
 
         float velocityTransformDot = Vector3.Dot(-scooterModel.transform.right, sphereBody.velocity);
@@ -387,7 +403,6 @@ public class BallDriving : MonoBehaviour
         boosting = true;
         boostAble = false;
         boostInitialburst = true;
-        sphereBody.drag = boostingDrag;
         DirtyDriftDrop();
 
         // Where collision is disabled 
@@ -406,7 +421,6 @@ public class BallDriving : MonoBehaviour
         }
 
         boosting = false;
-        sphereBody.drag = startingDrag;
         StartBoostCooldown();
     }
 
