@@ -28,8 +28,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public void OnEnable()
     {
         gameManager.OnSwapPlayerSelect += EnablePlayerSpawn;
+
         gameManager.OnSwapBegin += DisablePlayerSpawn;
+        gameManager.OnSwapBegin += SwapPlayerControlSchemeToDrive;
+
         gameManager.OnSwapResults += DisableReadiedUp;
+        gameManager.OnSwapResults += SwapPlayerControlSchemeToUI;
     }
 
     ///<summary>
@@ -38,8 +42,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public void OnDisable()
     {
         gameManager.OnSwapPlayerSelect -= EnablePlayerSpawn;
+
         gameManager.OnSwapBegin -= DisablePlayerSpawn;
-        gameManager.OnSwapResults += DisableReadiedUp;
+        gameManager.OnSwapBegin -= SwapPlayerControlSchemeToDrive;
+
+        gameManager.OnSwapResults -= DisableReadiedUp;
+        gameManager.OnSwapResults -= SwapPlayerControlSchemeToUI;
     }
 
     public void Update()
@@ -261,10 +269,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             isReadedUp = true;
             OnReadiedUp?.Invoke();
         }
-        else
-        {
-            Debug.Log("Not Enough Readied Up");
-        }
     }
 
     ///<summary>
@@ -277,6 +281,28 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void DisablePlayerSpawn() { allowPlayerSpawn = false; }
 
+    public void SwapPlayerControlSchemeToUI()
+    {
+        for (int i = 0; i < playerCount; i++)
+        {
+            avaliblePlayerInputs[i].actions.FindActionMap("UI").Enable();
+            avaliblePlayerInputs[i].actions.FindActionMap("Player").Disable();
+        }
+    }
+
+    public void SwapPlayerControlSchemeToDrive()
+    {
+        for (int i = 0; i < playerCount; i++)
+        {
+            avaliblePlayerInputs[i].actions.FindActionMap("UI").Disable();
+            avaliblePlayerInputs[i].actions.FindActionMap("Player").Enable();
+        }
+    }
+
+
+    ///<summary>
+    /// Disables all player's bools of readied up
+    ///</summary>
     public void DisableReadiedUp() 
     { 
         isReadedUp = false;
