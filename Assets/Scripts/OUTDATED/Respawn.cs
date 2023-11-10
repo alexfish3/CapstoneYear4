@@ -51,8 +51,8 @@ public class Respawn : MonoBehaviour
     private IEnumerator RespawningPlayer()
     {
         isRotating = true;
-        endRotation = initialRotation * Quaternion.Euler(0, 180, 0); // Rotate 180 degrees from initial rotation
-        Quaternion endControlRotation = controlRotation * Quaternion.Euler(0, 180, 0);
+        endRotation = initialRotation * Quaternion.Euler(1, 180, 0); // Rotate 180 degrees from initial rotation
+        Quaternion endControlRotation = controlRotation * Quaternion.Euler(1, 180, 0);
         float elapsedTime = 0;
         Vector3 initialPosition = transform.position;
         Vector3 targetPosition = respawnPoint + Vector3.up * startingLiftHeight; // Change height to position before lifting
@@ -81,7 +81,7 @@ public class Respawn : MonoBehaviour
         Debug.Log("Collider: " + other.tag);
         if(other.tag == "Water")
         {
-            Instantiate(respawnGravestone, (respawnPoint - new Vector3(0, 1, 0)), controlRotation * Quaternion.Euler(0,180,0));
+            Instantiate(respawnGravestone, (respawnPoint - new Vector3(0, 1, 0)), controlRotation * Quaternion.Euler(1,180,0));
             StartCoroutine(RespawningPlayer());
         }
     }
