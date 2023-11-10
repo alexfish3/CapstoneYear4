@@ -60,6 +60,15 @@ public class BallDriving : MonoBehaviour
     [Tooltip("A multipler applied to steering power while in a boost, which reduces your steering capability")]
     [SerializeField] private float boostingSteerModifier = 0.4f;
 
+    [Header("Phasing Information")]
+    [Tooltip("The player index is what allows only the certain player to phase")]
+    public int playerIndex;
+    [Tooltip("This is the reference to the horn phase indicator")]
+    public PhaseIndicator phaseIndicator;
+    [Tooltip("Toggle to check phase status")]
+    [SerializeField] bool checkPhaseStatus = false;
+    [SerializeField] GameObject[] phaseRaycastPositions;
+
     [Header("Debug")]
     [SerializeField] private bool debugSpeedometerEnable = false;
     [SerializeField] private TextMeshProUGUI debugSpeedText;
@@ -88,21 +97,11 @@ public class BallDriving : MonoBehaviour
     private float driftPoints = 0.0f;
 
     private bool boostInitialburst = false;
-    [SerializeField] private bool boosting = false;
+    private bool boosting = false;
     public bool Boosting { get { return boosting; } }
-    [SerializeField] private bool boostAble = true;
+    private bool boostAble = true;
     public bool BoostAble { set { boostAble = value; } }
-
-    // All information for the phasing
-    [Header("Phasing Information")]
-    [Tooltip("The player index is what allows only the certain player to phase")]
-    public int playerIndex;
-    [Tooltip("This is the reference to the horn phase indicator")]
-    public PhaseIndicator phaseIndicator;
-    [Tooltip("Toggle to check phase status")]
-    [SerializeField] bool checkPhaseStatus = false;
-
-    [SerializeField] GameObject[] phaseRaycastPositions;
+    private bool phasing = false;
 
 
     /// <summary>
@@ -141,6 +140,7 @@ public class BallDriving : MonoBehaviour
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
         currentForce = reversing ? (reversingPower * leftTrig) - (reversingPower * rightTrig) : (accelerationPower * rightTrig) - (brakingPower * leftTrig); //accelerating, braking, reversing
+        currentForce = boosting ? accelerationPower : currentForce;
 
         if (drifting)
         {
@@ -238,6 +238,8 @@ public class BallDriving : MonoBehaviour
                 Debug.Log("Inside Building");
                 Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
                 Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
+                
+                phasing = true;
             }
             else if(hit1Success == false && hit2Success == false)
             {
@@ -245,6 +247,7 @@ public class BallDriving : MonoBehaviour
                 Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
                 Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
 
+                phasing = false;
                 ToggleCollision(false);
                 checkPhaseStatus = false;
             }
@@ -362,9 +365,15 @@ public class BallDriving : MonoBehaviour
         // Toggles to check phase status
         checkPhaseStatus = true;
 
+        yield return new WaitForFixedUpdate();
+
+        while (phasing)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
         boosting = false;
         sphereBody.drag = startingDrag;
-
         StartBoostCooldown();
     }
 
