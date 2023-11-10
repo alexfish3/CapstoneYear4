@@ -12,9 +12,9 @@ public class Order : MonoBehaviour
     /// </summary>
     public enum Order_Value
     {
-        Easy = 10,
-        Medium = 20,
-        Hard = 50,
+        Easy = 20,
+        Medium = 40,
+        Hard = 60,
         Golden = 100
     }
 
