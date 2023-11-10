@@ -11,13 +11,24 @@ using static UnityEngine.InputSystem.InputAction;
 public class InputManager : MonoBehaviour
 {
     public delegate void NorthFaceDelegate(bool northFaceState);
-    public event SouthFaceDelegate NorthFaceEvent;
+    public event NorthFaceDelegate NorthFaceEvent;
+    private bool northFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
+    public bool NorthFaceValue { get { return northFaceValue; } }
 
-    public delegate void WestFaceDelegate(bool westFaceState);
-    public event WestFaceDelegate WestFaceEvent;
+    public delegate void EastFaceDelegate(bool eastFaceState);
+    public event EastFaceDelegate EastFaceEvent;
+    private bool eastFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
+    public bool EastFaceValue { get { return eastFaceValue; } }
 
     public delegate void SouthFaceDelegate(bool southFaceState);
     public event SouthFaceDelegate SouthFaceEvent;
+    private bool southFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
+    public bool SouthFaceValue { get { return southFaceValue; } }
+
+    public delegate void WestFaceDelegate(bool westFaceState);
+    public event WestFaceDelegate WestFaceEvent;
+    private bool westFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
+    public bool WestFaceValue { get { return westFaceValue; } }
 
     private float leftStickValue; //a value from -1 to 1, which represents the horizontal position of the left stick
     public float LeftStickValue { get { return leftStickValue; } }
@@ -25,12 +36,6 @@ public class InputManager : MonoBehaviour
     public float RightTriggerValue { get { return rightTriggerValue; } }
     private float leftTriggerValue; //a value from 0 to 1, which represents the pull of the left trigger
     public float LeftTriggerValue { get { return leftTriggerValue; } }
-    private bool northFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
-    public bool NorthFaceValue { get { return northFaceValue; } }
-    private bool westFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
-    public bool WestFaceValue { get { return westFaceValue; } }
-    private bool southFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
-    public bool SouthFaceValue { get { return southFaceValue; } }
 
     /// <summary>
     /// Takes input from the left stick's horizontal position, driven by Input Controller

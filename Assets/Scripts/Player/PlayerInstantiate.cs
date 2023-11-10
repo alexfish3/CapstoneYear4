@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,6 +22,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public event Action OnReadiedUp;
     int readyUpCounter = 0;
     [SerializeField] bool isReadedUp = false;
+    [SerializeField] float countdownTimer = 5f;
+    Coroutine readyUpCountdown;
+        
 
     ///<summary>
     /// OnEnable, where i set event methods
@@ -113,9 +117,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         // Updates all the player's cameras due to this new player
         UpdatePlayerCameraRects(playerCount);
-
-        // Temp, remove once we enable input ready up
-        PlayerReady(playerInput);
     }
 
     ///<summary>
@@ -265,11 +266,25 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 return;
             }
 
-            Debug.Log("Properly Readied Up");
-            isReadedUp = true;
-            OnReadiedUp?.Invoke();
+            if(readyUpCountdown == null)
+                readyUpCountdown = StartCoroutine(ReadyUpCountdown());
         }
     }
+
+    private IEnumerator ReadyUpCountdown()
+    {
+        for(float i = countdownTimer; i > 0; i--)
+        {
+            Debug.Log(i);
+            yield return new WaitForSeconds(countdownTimer / countdownTimer);
+        }
+
+        Debug.Log("Properly Readied Up");
+        isReadedUp = true;
+        OnReadiedUp?.Invoke();
+        readyUpCountdown = null;
+    }
+
 
     ///<summary>
     /// Enables the ability to spawn players
@@ -281,6 +296,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void DisablePlayerSpawn() { allowPlayerSpawn = false; }
 
+    ///<summary>
+    /// Swaps all player's control schemes to UI
+    ///</summary>
     public void SwapPlayerControlSchemeToUI()
     {
         for (int i = 0; i < playerCount; i++)
@@ -290,6 +308,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
     }
 
+    ///<summary>
+    /// Swaps all player's control schemes to "Driving" Player movement
+    ///</summary>
     public void SwapPlayerControlSchemeToDrive()
     {
         for (int i = 0; i < playerCount; i++)
@@ -299,6 +320,20 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
     }
 
+    public void readyUp(int playerIndexToReadyUp) 
+    { 
+        playerReadyUp[playerIndexToReadyUp] = true;
+        CheckReadyUpCount();
+    }
+    public void unreadyUp(int playerIndexToReadyUp) 
+    { 
+        playerReadyUp[playerIndexToReadyUp] = false; 
+        if(readyUpCountdown != null)
+        {
+            StopCoroutine(readyUpCountdown);
+            readyUpCountdown = null;
+        }
+    }
 
     ///<summary>
     /// Disables all player's bools of readied up
