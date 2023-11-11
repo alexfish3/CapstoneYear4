@@ -341,6 +341,28 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         }
     }
 
+    /// <summary>
+    /// Will return the value of an order that will spawn given a specific distance. RETURNS GOLDEN IF DISTANCE IS INVALID.
+    /// </summary>
+    /// <param name="distance">Distance to be tested.</param>
+    /// <returns></returns>
+    public Order.Order_Value GetValueOfDistance(float distance)
+    {
+        if (distance > easyDistance && distance < mediumDistance)
+        {
+            return Order.Order_Value.Easy;
+        }
+        else if (distance > mediumDistance && distance < hardDistance)
+        {
+            return Order.Order_Value.Medium;
+        }
+        else if (distance > hardDistance)
+        {
+            return Order.Order_Value.Hard;
+        } 
+        return Order.Order_Value.Golden;
+    }
+
     // methods to start/stop coroutines
     private void StartEasySpawn()
     {
