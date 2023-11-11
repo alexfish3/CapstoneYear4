@@ -35,14 +35,29 @@ public class Respawn : MonoBehaviour
     [Tooltip("Reference to the control game object.")]
     [SerializeField] private GameObject control;
 
-    /// <summary>
-    /// This method sets the respawn point. It's called when the player exits the respawn collider on the map. AKA falls off the edge.
-    /// </summary>
-    public void SetRespawnPoint()
+    private Rigidbody body;
+
+    private void Start()
     {
-        respawnPoint = gameObject.transform.position;
-        initialRotation = transform.rotation;
-        controlRotation = control.transform.rotation;
+        body = GetComponent<Rigidbody>();
+    }
+    /// <summary>
+    /// This method sets the respawn point.
+    /// </summary>
+    public void SetRespawnPoint(bool reversing)
+    {
+        if (reversing)
+        {
+            respawnPoint = gameObject.transform.position + control.transform.forward * 5;
+            initialRotation = transform.rotation * Quaternion.Euler(1,180,0);
+            controlRotation = control.transform.rotation * Quaternion.Euler(1,180,0);
+        }
+        else
+        {
+            respawnPoint = gameObject.transform.position + control.transform.forward * -5;
+            initialRotation = transform.rotation;
+            controlRotation = control.transform.rotation;
+        }
     }
 
     /// <summary>
@@ -118,7 +133,7 @@ public class Respawn : MonoBehaviour
         Debug.Log("leaving respawn Collider");
         if(other.tag == "RespawnCollider")
         {
-            SetRespawnPoint();
+            //SetRespawnPoint();
         }
     }
 }
