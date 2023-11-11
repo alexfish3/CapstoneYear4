@@ -6,6 +6,8 @@ using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerUIHandler : MonoBehaviour
 {
+    public GameObject MenuCanvas;
+
     public delegate void NorthFaceDelegate(bool northFaceState);
     public event NorthFaceDelegate NorthFaceEvent;
     private bool northFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)

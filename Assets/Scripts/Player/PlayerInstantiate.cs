@@ -49,6 +49,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapBegin += SwapPlayerControlSchemeToDrive;
 
         gameManager.OnSwapResults += DisableReadiedUp;
+        gameManager.OnSwapResults += ResetPlayerCanvas;
         gameManager.OnSwapResults += SwapPlayerControlSchemeToUI;
     }
 
@@ -63,6 +64,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapBegin -= SwapPlayerControlSchemeToDrive;
 
         gameManager.OnSwapResults -= DisableReadiedUp;
+        gameManager.OnSwapResults -= ResetPlayerCanvas;
         gameManager.OnSwapResults -= SwapPlayerControlSchemeToUI;
     }
 
@@ -81,6 +83,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void AddPlayerReference(PlayerInput playerInput)
     {
+        Debug.Log("Added PLayer");
+
         // If player spawn is disabled
         if(allowPlayerSpawn == false && Constants.SPAWN_MID_MATCH == false)
         {
@@ -95,7 +99,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         GameObject ColliderObject = playerInput.gameObject.GetComponentInChildren<SphereCollider>().gameObject;
         BallDriving ballDriving = playerInput.gameObject.GetComponentInChildren<BallDriving>();
         Camera baseCam = playerInput.camera;
-        PlayerCameraResizer playerCameraResizer = ballDriving.gameObject.GetComponentInChildren<PlayerCameraResizer>();
+        PlayerCameraResizer playerCameraResizer = playerInput.gameObject.GetComponentInChildren<PlayerCameraResizer>();
 
         // Update tag of player
         switch (playerCount)
@@ -314,6 +318,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         for (int i = 0; i < playerCount; i++)
         {
+            avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().SwapCanvas(true);
+
             avaliblePlayerInputs[i].actions.FindActionMap("UI").Enable();
             avaliblePlayerInputs[i].actions.FindActionMap("Player").Disable();
         }
@@ -326,6 +332,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         for (int i = 0; i < playerCount; i++)
         {
+            avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().SwapCanvas(false);
+
             avaliblePlayerInputs[i].actions.FindActionMap("UI").Disable();
             avaliblePlayerInputs[i].actions.FindActionMap("Player").Enable();
         }
@@ -363,6 +371,17 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         for(int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
             playerReadyUp[i] = false;
+        }
+    }
+
+    ///<summary>
+    /// Resets player canvas' when loading into scene
+    ///</summary>
+    public void ResetPlayerCanvas()
+    {
+        for (int i = 0; i < playerCount; i++)
+        {
+            avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().ResetCanvas();
         }
     }
 

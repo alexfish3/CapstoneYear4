@@ -18,6 +18,9 @@ public class PlayerCameraResizer : MonoBehaviour
 
     [Tooltip("This reference is to the camera outputing to the render textures")]
     [SerializeField] Camera playerRenderCamera;
+
+    [SerializeField] Camera menuUICamera;
+    [SerializeField] Camera drivingUICamera;
     public Camera PlayerRenderCamera { get { return playerRenderCamera; } }
 
     bool initalized = false;
@@ -43,6 +46,25 @@ public class PlayerCameraResizer : MonoBehaviour
             }
 
             initalized = true;
+        }
+    }
+
+    ///<summary>
+    /// Toggles to swap canvas on player. True sets menu canvas on
+    ///</summary>
+    public void SwapCanvas(bool menuCanvasOn)
+    {
+        if (menuCanvasOn)
+        {
+            menuUICamera.enabled = true;
+            drivingUICamera.enabled = false;
+            //drivingCanvas.SetActive(false);
+        }
+        else 
+        {
+            menuUICamera.enabled = false;
+            drivingUICamera.enabled = true;
+            //drivingCanvas.SetActive(true);
         }
     }
 }
