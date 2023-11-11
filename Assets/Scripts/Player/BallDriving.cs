@@ -117,7 +117,7 @@ public class BallDriving : MonoBehaviour
     public bool BoostAble { set { boostAble = value; } }
     private bool phasing = false;
 
-
+    private Respawn respawn; // used to update the respawn point when grounded
     /// <summary>
     /// Standard Start. Just used to get references, get initial values, and subscribe to events
     /// </summary>
@@ -133,6 +133,8 @@ public class BallDriving : MonoBehaviour
 
         inp.WestFaceEvent += DriftFlag; //subscribes to WestFaceEvent
         inp.SouthFaceEvent += BoostFlag; //subscribes to SouthFaceEvent
+
+        respawn = sphere.GetComponent<Respawn>(); // get respawn component
     }
 
     /// <summary>
@@ -147,6 +149,12 @@ public class BallDriving : MonoBehaviour
         if (callToDrift && leftStick != 0)
         {
             AssignDriftState();
+        }
+
+        // sets respawn point when grounded
+        if(grounded)
+        {
+            respawn.SetRespawnPoint(reversing);
         }
 
         //Assigns drag
