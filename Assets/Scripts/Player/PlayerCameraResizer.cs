@@ -16,6 +16,10 @@ public class PlayerCameraResizer : MonoBehaviour
     [Tooltip("This is a vector4 value indicating the default rect of a camera. the four values are xPos, yPos, Width and Height")]
     [SerializeField] Vector4 viewPortRectDefault;
 
+    [Tooltip("This reference is to the camera outputing to the render textures")]
+    [SerializeField] Camera playerRenderCamera;
+    public Camera PlayerRenderCamera { get { return playerRenderCamera; } }
+
     bool initalized = false;
 
     // Update is called once per frame

@@ -23,6 +23,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [Tooltip("The indexed array of player spawn positions")]
     [SerializeField] GameObject[] menuSpawnPositions = new GameObject[Constants.MAX_PLAYERS];
 
+    [Tooltip("The indexed array of player render texutres")]
+    [SerializeField] RenderTexture[] playerRenderTextures = new RenderTexture[Constants.MAX_PLAYERS];
+
     [Header("Ready Up Information")]
     [Tooltip("The indexed array tracking players' ready up status")]
     [SerializeField] bool[] playerReadyUp = new bool[Constants.MAX_PLAYERS];
@@ -92,6 +95,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         GameObject ColliderObject = playerInput.gameObject.GetComponentInChildren<SphereCollider>().gameObject;
         BallDriving ballDriving = playerInput.gameObject.GetComponentInChildren<BallDriving>();
         Camera baseCam = playerInput.camera;
+        PlayerCameraResizer playerCameraResizer = ballDriving.gameObject.GetComponentInChildren<PlayerCameraResizer>();
 
         // Update tag of player
         switch (playerCount)
@@ -100,21 +104,25 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 ColliderObject.layer = 10; // Player 1;
                 ballDriving.playerIndex = 1;
                 baseCam.cullingMask |= (1<<10);
+                playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[0];
                 break;
             case 2:
                 ColliderObject.layer = 11; // Player 2;
                 ballDriving.playerIndex = 2;
                 baseCam.cullingMask |= (1 << 11);
+                playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[1];
                 break;
             case 3:
                 ColliderObject.layer = 12; // Player 3;
                 ballDriving.playerIndex = 3;
                 baseCam.cullingMask |= (1 << 12);
+                playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[2];
                 break;
             case 4:
                 ColliderObject.layer = 13; // Player 4;
                 ballDriving.playerIndex = 4;
                 baseCam.cullingMask |= (1 << 13);
+                playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[3];
                 break;
         }
 

@@ -1115,7 +1115,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ea978cf54de1af644afc35f0f35cc412, type: 2}
+  - {fileID: 2100000, guid: d9e1abcca9e00c74ab216951bed2cf3b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1681,7 +1681,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: ea978cf54de1af644afc35f0f35cc412, type: 2}
+  - {fileID: 2100000, guid: d9e1abcca9e00c74ab216951bed2cf3b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2073,9 +2073,13 @@ MonoBehaviour:
   accelerationPower: 45
   brakingPower: 40
   reversingPower: 28
+  fallingDrag: 1
+  groundBoostAmount: 100
+  slowPatchMultiplier: 0.75
   steeringPower: 90
   reverseSteeringPower: 90
   driftTurnScalar: 1.6
+  driftTurnMinimum: 0
   driftBoostThreshold: 100
   driftBoostMode: 0
   driftBoost: 560
@@ -2084,6 +2088,11 @@ MonoBehaviour:
   boostRechargeTime: 10
   boostingDrag: 0.88
   boostingSteerModifier: 0.6
+  playerIndex: 0
+  phaseIndicator: {fileID: 1302466766}
+  checkPhaseStatus: 0
+  phaseRaycastPositions: []
+  phaseSetMap: 1
   debugSpeedometerEnable: 0
   debugSpeedText: {fileID: 0}
   debugDriftStateEnable: 0
@@ -2092,9 +2101,6 @@ MonoBehaviour:
   debugDriftComplete: {fileID: 0}
   debugBoostabilityEnable: 0
   debugBoostability: {fileID: 0}
-  boostAble: 1
-  playerIndex: 0
-  phaseIndicator: {fileID: 1302466766}
 --- !u!1 &1336803782
 GameObject:
   m_ObjectHideFlags: 0
@@ -3958,9 +3964,13 @@ MonoBehaviour:
   accelerationPower: 40
   brakingPower: 40
   reversingPower: 30
+  fallingDrag: 1
+  groundBoostAmount: 100
+  slowPatchMultiplier: 0.75
   steeringPower: 95
   reverseSteeringPower: 40
   driftTurnScalar: 1.4
+  driftTurnMinimum: 0
   driftBoostThreshold: 100
   driftBoostMode: 0
   driftBoost: 590
@@ -3969,6 +3979,11 @@ MonoBehaviour:
   boostRechargeTime: 10
   boostingDrag: 0.86
   boostingSteerModifier: 0.4
+  playerIndex: 0
+  phaseIndicator: {fileID: 0}
+  checkPhaseStatus: 0
+  phaseRaycastPositions: []
+  phaseSetMap: 1
   debugSpeedometerEnable: 0
   debugSpeedText: {fileID: 0}
   debugDriftStateEnable: 0
@@ -3977,9 +3992,6 @@ MonoBehaviour:
   debugDriftComplete: {fileID: 0}
   debugBoostabilityEnable: 0
   debugBoostability: {fileID: 0}
-  boostAble: 1
-  playerIndex: 0
-  phaseIndicator: {fileID: 0}
 --- !u!114 &969288984619752539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5404,9 +5416,13 @@ MonoBehaviour:
   accelerationPower: 45
   brakingPower: 40
   reversingPower: 28
+  fallingDrag: 1
+  groundBoostAmount: 100
+  slowPatchMultiplier: 0.75
   steeringPower: 90
   reverseSteeringPower: 90
   driftTurnScalar: 1.6
+  driftTurnMinimum: 0
   driftBoostThreshold: 100
   driftBoostMode: 0
   driftBoost: 560
@@ -5415,6 +5431,11 @@ MonoBehaviour:
   boostRechargeTime: 10
   boostingDrag: 0.88
   boostingSteerModifier: 0.6
+  playerIndex: 0
+  phaseIndicator: {fileID: 7577601632277122222}
+  checkPhaseStatus: 0
+  phaseRaycastPositions: []
+  phaseSetMap: 1
   debugSpeedometerEnable: 0
   debugSpeedText: {fileID: 0}
   debugDriftStateEnable: 0
@@ -5423,9 +5444,6 @@ MonoBehaviour:
   debugDriftComplete: {fileID: 0}
   debugBoostabilityEnable: 0
   debugBoostability: {fileID: 0}
-  boostAble: 1
-  playerIndex: 0
-  phaseIndicator: {fileID: 7577601632277122222}
 --- !u!4 &5477889336603288230
 Transform:
   m_ObjectHideFlags: 0
