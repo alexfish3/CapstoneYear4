@@ -48,6 +48,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float reverseSteeringPower = 40.0f;
     [Tooltip("The multiplier applied to turning when drifting. Always above 1 or there'll be no difference. Use caution when messing with this")]
     [SerializeField] private float driftTurnScalar = 1.8f;
+    [Tooltip("The minimum multipler applied to drifting. It's hard to explain exactly what this is but you'll get a feel for it. ALWAYS KEEP IT LESS THAN DRIFTTURNSCALAR")]
+    [SerializeField] private float driftTurnMinimum = 0.0f;
     [Tooltip("How many 'drift points' are needed to achieve the drift boost. This is a semi-arbitrary unit, though if the drift boost is being based entirely on time, 100 drift points equals 1 second")]
     [SerializeField] private float driftBoostThreshold = 100.0f;
     [Tooltip("How much time vs turning amount is factored into drift boost. 0 is full time, 1 is full turning amount")]
@@ -339,11 +341,6 @@ public class BallDriving : MonoBehaviour
         }
     }
 
-    private void GroundBoost(float boostAmount)
-    {
-
-    }
-
     /// <summary>
     /// Receives input as an event. Flags callToDrift and drifting depending on circumstance. Applies the boost if applicable
     /// </summary>
@@ -401,11 +398,11 @@ public class BallDriving : MonoBehaviour
 
         if (driftDirection > 0)
         {
-            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, 0, driftTurnScalar);
+            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnMinimum, driftTurnScalar);
         }
         else
         {
-            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnScalar, 0);
+            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnScalar, driftTurnMinimum);
         }
 
         driftPoints += Time.deltaTime * (1 - driftBoostMode) * 100.0f;
