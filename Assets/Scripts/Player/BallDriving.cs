@@ -405,7 +405,7 @@ public class BallDriving : MonoBehaviour
             scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnScalar, driftTurnMinimum);
         }
 
-        driftPoints += Time.deltaTime * (1 - driftBoostMode) * 100.0f;
+        driftPoints += (Time.deltaTime * (1 - driftBoostMode)) + (Time.deltaTime * scaledInput * driftBoostMode) * 100.0f;
         return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), accelerationPower); //scales steering by speed (also prevents turning on the spot)
     }
 
