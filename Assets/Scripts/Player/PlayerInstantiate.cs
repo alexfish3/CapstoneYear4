@@ -10,22 +10,31 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [SerializeField] GameObject playerHolder;
 
     [Space(10)]
+    [Tooltip("Enables or disables the ability for players to spawn into the lobby")]
     [SerializeField] bool allowPlayerSpawn = true;
+
+    [Tooltip("This value is our current player count, ie the # of players in match")]
     [SerializeField] int playerCount = 0;
     public int PlayerCount { get { return playerCount; } }
 
+    [Tooltip("the list of avalible player input class objects")]
     [SerializeField] PlayerInput[] avaliblePlayerInputs = new PlayerInput[Constants.MAX_PLAYERS];
     public PlayerInput[] PlayerInputs { get { return avaliblePlayerInputs; } }
+    [Tooltip("The indexed array of player spawn positions")]
+    [SerializeField] GameObject[] menuSpawnPositions = new GameObject[Constants.MAX_PLAYERS];
 
     [Header("Ready Up Information")]
+    [Tooltip("The indexed array tracking players' ready up status")]
     [SerializeField] bool[] playerReadyUp = new bool[Constants.MAX_PLAYERS];
     public event Action OnReadiedUp;
+
     int readyUpCounter = 0;
-    [SerializeField] bool isReadedUp = false;
+    [Tooltip("Set to true when all players are readied up")]
+    [SerializeField] bool isAllReadedUp = false;
+    [Tooltip("The time it takes to start the match")]
     [SerializeField] float countdownTimer = 5f;
     Coroutine readyUpCountdown;
-        
-
+       
     ///<summary>
     /// OnEnable, where i set event methods
     ///</summary>
@@ -56,7 +65,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
     public void Update()
     {
-        if(isReadedUp == true)
+        if(isAllReadedUp == true)
         {
             return;
         }
@@ -118,7 +127,33 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         // Updates all the player's cameras due to this new player
         UpdatePlayerCameraRects(playerCount);
 
+        // Swaps the player's control scheme to UI
         SwapPlayerControlSchemeToUI();
+
+        // Sets the player's spawn point above ground on map
+        SetAllPlayerSpawn();
+    }
+
+    ///<summary>
+    /// Spawns each player at a set position
+    ///</summary>
+    public void SetAllPlayerSpawn()
+    {
+        Debug.Log("Spawn Players at right positions");
+
+        // Loops for all spawned players
+        for (int i = 0; i <= playerCount - 1; i++)
+        {
+            // Resets the velocity of the players
+            avaliblePlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+
+            // reset position and rotation of ball and controller
+            avaliblePlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = menuSpawnPositions[i].transform.position;
+            avaliblePlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = menuSpawnPositions[i].transform.rotation;
+
+            avaliblePlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = menuSpawnPositions[i].transform.position;
+            avaliblePlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = menuSpawnPositions[i].transform.rotation;
+        }
     }
 
     ///<summary>
@@ -213,39 +248,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     }
 
     ///<summary>
-    /// Allows Player To Ready
-    ///</summary>
-    public void PlayerReady(PlayerInput playerInput)
-    {
-        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
-        {
-            if (avaliblePlayerInputs[i] == playerInput)
-            {
-                playerReadyUp[i] = true;
-                break;
-            }
-        }
-
-        // After readying up player, check if you can start game
-        CheckReadyUpCount();
-    }
-
-    ///<summary>
-    /// Allows Player To Not Ready
-    ///</summary>
-    public void PlayerNotReady(PlayerInput playerInput)
-    {
-        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
-        {
-            if (avaliblePlayerInputs[i] == playerInput)
-            {
-                playerReadyUp[i] = false;
-                return;
-            }
-        }
-    }
-
-    ///<summary>
     /// Checks for how many players are readied up
     ///</summary>
     public void CheckReadyUpCount()
@@ -270,6 +272,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
     }
 
+    ///<summary>
+    /// The countdown ready-up coroutine that begins the game
+    ///</summary>
     private IEnumerator ReadyUpCountdown()
     {
         for(float i = countdownTimer; i > 0; i--)
@@ -279,11 +284,10 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
 
         Debug.Log("Properly Readied Up");
-        isReadedUp = true;
+        isAllReadedUp = true;
         OnReadiedUp?.Invoke();
         readyUpCountdown = null;
     }
-
 
     ///<summary>
     /// Enables the ability to spawn players
@@ -319,12 +323,19 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
     }
 
-    public void readyUp(int playerIndexToReadyUp) 
+    ///<summary>
+    /// Sets the index player to ready
+    ///</summary>
+    public void ReadyUp(int playerIndexToReadyUp) 
     { 
         playerReadyUp[playerIndexToReadyUp] = true;
         CheckReadyUpCount();
     }
-    public void unreadyUp(int playerIndexToReadyUp) 
+
+    ///<summary>
+    /// Sets the index player to unready
+    ///</summary>
+    public void UnreadyUp(int playerIndexToReadyUp) 
     { 
         playerReadyUp[playerIndexToReadyUp] = false; 
         if(readyUpCountdown != null)
@@ -339,13 +350,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void DisableReadiedUp() 
     { 
-        isReadedUp = false;
+        isAllReadedUp = false;
         
         for(int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
             playerReadyUp[i] = false;
         }
-
     }
 
 }

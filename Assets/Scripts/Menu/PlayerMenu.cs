@@ -1,4 +1,5 @@
 using System.Collections;
+using Udar.SceneManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,19 +7,37 @@ public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
 {
     [SerializeField] PlayerInstantiate playerInstantiate;
 
+    [SerializeField] SceneField PlayerSelectScene;
+    [SerializeField] SceneField GameScene;
+    [SerializeField] SceneField ResultsScene;
+
     private void Start()
     {
         playerInstantiate = PlayerInstantiate.Instance;
         playerInstantiate.OnReadiedUp += LoadGameScene;
         GameManager.Instance.OnSwapResults += LoadResultsScene;
-        GameManager.Instance.OnSwapMenu += LoadMenuScene;
+        GameManager.Instance.OnSwapPlayerSelect += LoadPlayerSelectScene;
     }
 
     private void OnDisable()
     {
         playerInstantiate.OnReadiedUp -= LoadGameScene;
         GameManager.Instance.OnSwapResults -= LoadResultsScene;
-        GameManager.Instance.OnSwapMenu -= LoadMenuScene;
+        GameManager.Instance.OnSwapPlayerSelect -= LoadPlayerSelectScene;
+    }
+
+    ///<summary>
+    /// Main method that loads the player select scene
+    ///</summary>
+    private void LoadPlayerSelectScene()
+    {
+        Debug.Log("Load menu");
+
+        if (SceneManager.GetActiveScene().buildIndex != PlayerSelectScene.BuildIndex)
+            StartCoroutine(LoadSceneAsync(PlayerSelectScene.BuildIndex));
+
+        // Once menu scene is loaded, set players to spawn, if there are any
+        playerInstantiate.SetAllPlayerSpawn();
     }
 
     ///<summary>
@@ -26,21 +45,19 @@ public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
     ///</summary>
     private void LoadGameScene()
     {
-        StartCoroutine(LoadSceneAsync(1));
+        if(SceneManager.GetActiveScene().buildIndex != GameScene.BuildIndex)
+            StartCoroutine(LoadSceneAsync(GameScene.BuildIndex));
     }
 
     ///<summary>
-    /// Main method that loads the menu
+    /// Main method that loads the results screen
     ///</summary>
-    private void LoadMenuScene()
-    {
-        Debug.Log("Load menu");
-        StartCoroutine(LoadSceneAsync(0));
-    }
     private void LoadResultsScene()
     {
         Debug.Log("Load results");
-        StartCoroutine(LoadSceneAsync(2));
+
+        if (SceneManager.GetActiveScene().buildIndex != ResultsScene.BuildIndex)
+            StartCoroutine(LoadSceneAsync(ResultsScene.BuildIndex));
     }
 
     ///<summary>

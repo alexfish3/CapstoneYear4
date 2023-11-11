@@ -21,11 +21,11 @@ public class MenuInteractions : MonoBehaviour
 
     public void playerReadyUp(bool button)
     {
-        PlayerInstantiate.Instance.readyUp(ballDriving.playerIndex - 1);
+        PlayerInstantiate.Instance.ReadyUp(ballDriving.playerIndex - 1);
     }
     public void playerUnreadyUp(bool button)
     {
-        PlayerInstantiate.Instance.unreadyUp(ballDriving.playerIndex - 1);
+        PlayerInstantiate.Instance.UnreadyUp(ballDriving.playerIndex - 1);
     }
 
 }

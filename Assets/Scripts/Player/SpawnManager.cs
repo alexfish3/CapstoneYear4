@@ -44,8 +44,6 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     ///</summary>
     private void SpawnPlayersStartOfGame()
     {
-        Debug.Log("Spawn at start");
-
         // Loops for all spawned players
         for (int i = 0; i <= playerInstantiate.PlayerCount - 1; i++)
         {
@@ -72,8 +70,6 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     ///</summary>
     public void SpawnPlayersFinalPackage()
     {
-        Debug.Log("Spawn at final package");
-
         // Loops for all spawned players
         for (int i = 0; i <= playerInstantiate.PlayerCount - 1; i++)
         {
