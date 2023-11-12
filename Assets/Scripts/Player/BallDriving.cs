@@ -13,6 +13,7 @@ public class BallDriving : MonoBehaviour
     private const float DRIFTING_MODEL_ROTATION = 20.0f; //How far the model rotates when drifting
     private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
     private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
+    private const float CSV_RATIO = 0.35f; //Don't touch
 
     private IEnumerator boostActiveCoroutine;
     private IEnumerator boostCooldownCoroutine;
@@ -89,14 +90,20 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private Image debugDriftComplete;
     [SerializeField] private bool debugBoostabilityEnable = false;
     [SerializeField] private Image debugBoostability;
+    [SerializeField] private bool debugCSVEnable = false;
+    [SerializeField] private TextMeshProUGUI debugCSV;
 
     private Rigidbody sphereBody; //just reference to components of the sphere
     private Transform sphereTransform;
+    private Respawn respawn; // used to update the respawn point when grounded
     private float startingDrag;
 
     private float leftStick, leftTrig, rightTrig; //stick ranges from -1 to 1, triggers range from 0 to 1
 
     private float currentForce; //the amount of force to add to the speed on any given frame
+    private float scaledVelocityMax; //a complicated variable derived from a bunch of testing and math which really just boils down to accelerationPower * 0.35
+    private float currentVelocity; //just shorthand for the sphere's current velocity magnitude
+
     private float rotationAmount; //the amount to turn on any given frame
 
     private bool reversing, grounded;
@@ -117,7 +124,9 @@ public class BallDriving : MonoBehaviour
     public bool BoostAble { set { boostAble = value; } }
     private bool phasing = false;
 
-    private Respawn respawn; // used to update the respawn point when grounded
+    private float csv;
+
+
     /// <summary>
     /// Standard Start. Just used to get references, get initial values, and subscribe to events
     /// </summary>
@@ -133,6 +142,8 @@ public class BallDriving : MonoBehaviour
 
         inp.WestFaceEvent += DriftFlag; //subscribes to WestFaceEvent
         inp.SouthFaceEvent += BoostFlag; //subscribes to SouthFaceEvent
+
+        scaledVelocityMax = accelerationPower * CSV_RATIO;
 
         respawn = sphere.GetComponent<Respawn>(); // get respawn component
     }
@@ -152,7 +163,7 @@ public class BallDriving : MonoBehaviour
         }
 
         // sets respawn point when grounded
-        if(grounded)
+        if(grounded && respawn != null)
         {
             respawn.SetRespawnPoint(reversing);
         }
@@ -177,6 +188,11 @@ public class BallDriving : MonoBehaviour
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
         currentForce = reversing ? (reversingPower * leftTrig) - (reversingPower * rightTrig) : (accelerationPower * rightTrig) - (brakingPower * leftTrig); //accelerating, braking, reversing
         currentForce = boosting ? accelerationPower : currentForce;
+        currentVelocity = sphereBody.velocity.magnitude;
+        if (currentVelocity != 0)
+        {
+            csv = currentForce / currentVelocity;
+        }
 
         if (drifting)
         {
@@ -184,7 +200,7 @@ public class BallDriving : MonoBehaviour
 
             //Rotates just the model; purely for effect
             float driftTargetAmount = (driftDirection > 0) ? RangeMutations.Map_Linear(leftStick, -1, 1, 0.5f, driftTurnScalar) : RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnScalar, 0.5f);
-            float modelRotateAmount = 90 + driftTargetAmount * driftDirection * DRIFTING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), accelerationPower);
+            float modelRotateAmount = 90 + driftTargetAmount * driftDirection * DRIFTING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax);
             scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(0, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
         }
         else if (reversing)
@@ -192,20 +208,20 @@ public class BallDriving : MonoBehaviour
             DirtyDriftDrop(); //only needed like 1% of the time but fixes a weird little collision behavior
             
             rotationAmount = leftStick * reverseSteeringPower;
-            rotationAmount *= -RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), reversingPower);
+            rotationAmount *= -RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax);
 
-            float modelRotateAmount = 90 + (leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), reversingPower));
+            float modelRotateAmount = 90 + (leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax));
             scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(0, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
         }
         else
         {
             //determines the actual rotation of the larger object
             rotationAmount = leftStick * steeringPower;
-            rotationAmount *= RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), accelerationPower); //scales steering by speed (also prevents turning on the spot)
+            rotationAmount *= RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax + (boosting ? boostPower * CSV_RATIO : 0)); //scales steering by speed (also prevents turning on the spot)
             rotationAmount *= boosting ? boostingSteerModifier : 1.0f; //reduces steering if boosting
 
             //Rotates just the model; purely for effect
-            float modelRotateAmount = 90 + (leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), accelerationPower) * (boosting ? boostingSteerModifier : 1.0f));
+            float modelRotateAmount = 90 + (leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax) * (boosting ? boostingSteerModifier : 1.0f));
             scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(0, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
         }
 
@@ -414,7 +430,7 @@ public class BallDriving : MonoBehaviour
         }
 
         driftPoints += (Time.deltaTime * (1 - driftBoostMode)) + (Time.deltaTime * scaledInput * driftBoostMode) * 100.0f;
-        return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(Mathf.Abs(currentForce), accelerationPower); //scales steering by speed (also prevents turning on the spot)
+        return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax); //scales steering by speed (also prevents turning on the spot)
     }
 
     /// <summary>
@@ -541,6 +557,11 @@ public class BallDriving : MonoBehaviour
             {
                 debugBoostability.color = Color.red;
             }
+        }
+
+        if (debugCSVEnable)
+        {
+            debugCSV.text = "CS/V: " + csv;
         }
     }
 

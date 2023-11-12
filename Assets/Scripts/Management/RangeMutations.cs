@@ -19,9 +19,13 @@ public static class RangeMutations
     public static float Map_SpeedToSteering(float inp, float maxSpeed)
     {
         float processedValue = inp / maxSpeed;
-        processedValue = (-Mathf.Pow(((1.4f * processedValue) - 0.65f), 2.0f)) + processedValue + 0.408f; //Applies a "simple" parabolic function. I use way too many parentheses
+        float numerator = 1.65f * processedValue;
+        float denominator = Mathf.Pow(((2.0f * processedValue) -1),2) + 1.0f;
+        processedValue = numerator / denominator; //shame on me, using division...
 
         return processedValue;
+
+        //processedValue = (-Mathf.Pow(((1.4f * processedValue) - 0.65f), 2.0f)) + processedValue + 0.408f; //An old version; just keeping it here in case I need it for some reason
     }
 
     /// <summary>
