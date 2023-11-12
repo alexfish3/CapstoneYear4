@@ -182,7 +182,7 @@ public class BallDriving : MonoBehaviour
             sphereBody.drag = startingDrag;
         }
 
-        float velocityTransformDot = Vector3.Dot(-scooterModel.transform.right, sphereBody.velocity);
+        float velocityTransformDot = Vector3.Dot(-scooterModel.transform.right, sphereBody.velocity.normalized);
         reversing = velocityTransformDot < -0.5f ? true : false;
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
