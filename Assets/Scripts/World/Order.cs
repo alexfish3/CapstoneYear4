@@ -23,7 +23,8 @@ public class Order : MonoBehaviour
     private MeshRenderer meshRenderer;
     private Transform pickup;
     private Transform dropoff;
-
+    private Transform lastGrounded;
+    public Transform LastGrounded { get { return lastGrounded; } set { lastGrounded = value;} }
     private OrderHandler playerHolding = null;
     public OrderHandler PlayerHolding { get {  return playerHolding; } }
 
@@ -31,6 +32,8 @@ public class Order : MonoBehaviour
     [SerializeField] private int pickupCooldown = 3;
     private bool canPickup = true; // if a player can pickup this order
     public bool CanPickup { get { return canPickup; } }
+    [Tooltip("Default height of the order")]
+    [SerializeField] private float height = 4.43f;
 
     [Tooltip("Reference to the beacon prefab this class creates")]
     [SerializeField] private GameObject beaconPrefab;
@@ -105,11 +108,12 @@ public class Order : MonoBehaviour
     /// <summary>
     /// This method drops an order at its current location.
     /// </summary>
-    public void Drop()
+    public void Drop(Vector3 newPosition)
     {
+        transform.position = newPosition;// new Vector3(newPosition.x, height, newPosition.z);
+        this.transform.parent = OrderManager.Instance.transform;
         beacon.ResetPickup();
         playerHolding = null;
-        this.transform.parent = OrderManager.Instance.transform;
         StartPickupCooldownCoroutine();
     }
     /// <summary>

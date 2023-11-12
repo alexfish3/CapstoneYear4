@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -34,13 +35,13 @@ public class Respawn : MonoBehaviour
 
     [Tooltip("Reference to the control game object.")]
     [SerializeField] private GameObject control;
-
-    private Rigidbody body;
+    private OrderHandler orderHandler;
 
     private void Start()
     {
-        body = GetComponent<Rigidbody>();
+        orderHandler = control.GetComponent<OrderHandler>();
     }
+
     /// <summary>
     /// This method sets the respawn point.
     /// </summary>
@@ -72,8 +73,6 @@ public class Respawn : MonoBehaviour
         float elapsedTime = 0;
         Vector3 initialPosition = transform.position;
         Vector3 targetPosition = respawnPoint + Vector3.up * startingLiftHeight; // Change height to position before lifting
-
-
         // Moving player to respawn position below ground
         while (elapsedTime < respawnDuration)
         {
@@ -121,19 +120,10 @@ public class Respawn : MonoBehaviour
             // Turning these off fixes camera jittering on respawn
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<SphereCollider>().enabled = false;
+            orderHandler.DropEverything(respawnPoint);
 
-
-
-            Instantiate(respawnGravestone, (respawnPoint - new Vector3(0, 1, 0)), controlRotation * Quaternion.Euler(1,180,0)); // spawn respawn gravestone
+            Instantiate(respawnGravestone, (respawnPoint), controlRotation * Quaternion.Euler(1,180,0)); // spawn respawn gravestone
             StartCoroutine(RespawningPlayer());
-        }
-    }
-    private void OnTriggerExit(Collider other)
-    {
-        Debug.Log("leaving respawn Collider");
-        if(other.tag == "RespawnCollider")
-        {
-            //SetRespawnPoint();
         }
     }
 }

@@ -13,9 +13,9 @@ public class OrderHandler : MonoBehaviour
     public int Score { get { return score; } set { score = value; } }
     private int placement = 0;
     public int Placement { get { return placement; }set { placement = value; } }
-    [Tooltip("Exposed for testing purposes only!")]
-    [SerializeField] private Order order1; // first order the player is holding
-    [SerializeField] private Order order2; // second order the player is holding
+    
+    private Order order1 = null; // first order the player is holding
+    private Order order2 = null; // second order the player is holding
 
     [Tooltip("Positions the orders will snap to on the back of the scooter")]
     [SerializeField] private Transform order1Position;
@@ -86,16 +86,19 @@ public class OrderHandler : MonoBehaviour
     /// <summary>
     /// This method is for when the player "spins" out. It will drop all the orders the player is currently holding.
     /// </summary>
-    public void DropEverything()
+    /// <param name="basePos">The position of the order before adding the offset of the specific orderPosition.</param>
+    public void DropEverything(Vector3 basePos)
     {
         if(order1 != null)
         {
-            order1.Drop();
+            basePos += order1Position.localPosition;
+            order1.Drop(basePos);
             order1 = null;
         }
         if(order2 != null)
         {
-            order2.Drop();
+            basePos += order2Position.localPosition;
+            order2.Drop(basePos);
             order2 = null;
         }
     }
@@ -154,7 +157,7 @@ public class OrderHandler : MonoBehaviour
     /// This method steals the best order from a victim player. It will then make the victim drop their other order if they have one.
     /// </summary>
     /// <param name="victimPlayer">Player being stolen from</param>
-    void StealOrder(OrderHandler victimPlayer)
+    private void StealOrder(OrderHandler victimPlayer)
     {
         Order newOrder = victimPlayer.GetBestOrder();
         if (newOrder != null && (order1 == null || order2 == null))
@@ -162,7 +165,7 @@ public class OrderHandler : MonoBehaviour
             victimPlayer.LoseOrder(newOrder);
             AddOrder(newOrder);
         }
-        victimPlayer.DropEverything();
+        victimPlayer.DropEverything(victimPlayer.transform.position);
     }
 
     /// <summary>
