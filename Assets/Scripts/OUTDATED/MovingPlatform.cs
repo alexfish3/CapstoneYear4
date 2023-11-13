@@ -44,6 +44,7 @@ public class MovingPlatform : MonoBehaviour
 
             yield return null;
         }
+       // yield return null;
 
     }
 
