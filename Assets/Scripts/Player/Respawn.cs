@@ -12,8 +12,6 @@ public class Respawn : MonoBehaviour
 {
     //Variables
     private Vector3 respawnPoint;
-    private Quaternion initialRotation;
-    private Quaternion endRotation;
     private Quaternion controlRotation;
 
     [Tooltip("The height to lift the player above the map.")]
@@ -26,7 +24,7 @@ public class Respawn : MonoBehaviour
     [SerializeField] private float respawnDuration = 2.0f; // The time it takes to rotate 180 degrees
 
     [Tooltip("The time it takes to lift the player between startingLiftHeight to liftHeight.")]
-    [SerializeField] private float liftDuration = 2.0f; // The time it takes to lift the player above the ground
+    [SerializeField] private float liftDuration = 5.0f; // The time it takes to lift the player above the ground
 
     [Tooltip("The prefab for the gravestone model.)")]
     [SerializeField] private GameObject respawnGravestone; // Gravestone model to spawn in during respawn
@@ -45,20 +43,9 @@ public class Respawn : MonoBehaviour
     /// <summary>
     /// This method sets the respawn point.
     /// </summary>
-    public void SetRespawnPoint(bool reversing)
+    public void SetRespawnPoint()
     {
-        if (reversing)
-        {
-            respawnPoint = gameObject.transform.position + control.transform.forward * 5;
-            initialRotation = transform.rotation * Quaternion.Euler(1,180,0);
-            controlRotation = control.transform.rotation * Quaternion.Euler(1,180,0);
-        }
-        else
-        {
-            respawnPoint = gameObject.transform.position + control.transform.forward * -5;
-            initialRotation = transform.rotation;
-            controlRotation = control.transform.rotation;
-        }
+        respawnPoint = gameObject.transform.position;
     }
 
     /// <summary>
@@ -68,27 +55,28 @@ public class Respawn : MonoBehaviour
     private IEnumerator RespawningPlayer()
     {
         isRotating = true;
-        endRotation = initialRotation * Quaternion.Euler(1, 180, 0); // Rotate 180 degrees from initial rotation
-        Quaternion endControlRotation = controlRotation * Quaternion.Euler(1, 180, 0);
+        transform.rotation = Quaternion.LookRotation((respawnPoint - transform.position)) * Quaternion.Euler(0,180,0);
+        control.transform.rotation = Quaternion.LookRotation((respawnPoint - control.transform.position)) * Quaternion.Euler(0, 180, 0);
         float elapsedTime = 0;
         Vector3 initialPosition = transform.position;
-        Vector3 targetPosition = respawnPoint + Vector3.up * startingLiftHeight; // Change height to position before lifting
+        respawnPoint += transform.forward * -5;
+        Vector3 targetPosition = respawnPoint;// + Vector3.up * startingLiftHeight; // Change height to position before lifting
+        Instantiate(respawnGravestone, (respawnPoint), controlRotation * Quaternion.Euler(1, 180, 0)); // spawn respawn gravestone
+
+
         // Moving player to respawn position below ground
         while (elapsedTime < respawnDuration)
         {
-            transform.rotation = Quaternion.Slerp(initialRotation, endRotation, elapsedTime / respawnDuration);
             transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / respawnDuration);
-            control.transform.rotation = Quaternion.Slerp(controlRotation, endControlRotation, elapsedTime / respawnDuration);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        transform.rotation = endRotation;
+        //transform.rotation = endRotation;
         transform.position = targetPosition;
-        control.transform.rotation = endControlRotation;
-
         isRotating = false;
+        control.GetComponent<BallDriving>().enabled = true;
 
 
         // Resetting variables
@@ -108,8 +96,6 @@ public class Respawn : MonoBehaviour
         // Turn gravity and collider back on
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<SphereCollider>().enabled = true;
-
-
     }
 
     private void OnTriggerEnter(Collider other)
@@ -120,9 +106,9 @@ public class Respawn : MonoBehaviour
             // Turning these off fixes camera jittering on respawn
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<SphereCollider>().enabled = false;
+            control.GetComponent<BallDriving>().enabled = false;
             orderHandler.DropEverything(respawnPoint);
 
-            Instantiate(respawnGravestone, (respawnPoint), controlRotation * Quaternion.Euler(1,180,0)); // spawn respawn gravestone
             StartCoroutine(RespawningPlayer());
         }
     }
