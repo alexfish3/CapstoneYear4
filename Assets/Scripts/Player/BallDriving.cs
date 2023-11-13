@@ -71,6 +71,7 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float boostingSteerModifier = 0.4f;
 
     [Header("Phasing Information")]
+    [SerializeField] PlayerCameraResizer cameraResizer;
     [Tooltip("The player index is what allows only the certain player to phase")]
     public int playerIndex;
     [Tooltip("This is the reference to the horn phase indicator")]
@@ -320,6 +321,8 @@ public class BallDriving : MonoBehaviour
                 Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
                 Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
 
+                cameraResizer.SwapCameraRendering(true);
+
                 phasing = false;
                 ToggleCollision(false);
                 checkPhaseStatus = false;
@@ -469,6 +472,8 @@ public class BallDriving : MonoBehaviour
 
         // Where collision is disabled 
         ToggleCollision(true);
+
+        cameraResizer.SwapCameraRendering(false);
 
         yield return new WaitForSeconds(boostDuration);
 

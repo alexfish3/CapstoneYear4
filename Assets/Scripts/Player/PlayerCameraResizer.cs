@@ -9,19 +9,22 @@ public class PlayerCameraResizer : MonoBehaviour
 {
     [Tooltip("This is the camera in which if changed, other cameras will also change to match")]
     [SerializeField] Camera referenceCam;
-
     [Tooltip("This is the camera array in which all will resize to the main upon main being changed")]
     [SerializeField] Camera[] camerasToFollow;
-
     [Tooltip("This is a vector4 value indicating the default rect of a camera. the four values are xPos, yPos, Width and Height")]
     [SerializeField] Vector4 viewPortRectDefault;
 
     [Tooltip("This reference is to the camera outputing to the render textures")]
     [SerializeField] Camera playerRenderCamera;
+    public Camera PlayerRenderCamera { get { return playerRenderCamera; } }
 
+    [Header("Canvas References")]
     [SerializeField] Camera menuUICamera;
     [SerializeField] Camera drivingUICamera;
-    public Camera PlayerRenderCamera { get { return playerRenderCamera; } }
+
+    [Header("Phase Cam References")]
+    [SerializeField] Camera mainCamera;
+    [SerializeField] Camera phaseCamera;
 
     bool initalized = false;
 
@@ -65,6 +68,23 @@ public class PlayerCameraResizer : MonoBehaviour
             menuUICamera.enabled = false;
             drivingUICamera.enabled = true;
             //drivingCanvas.SetActive(true);
+        }
+    }
+
+    ///<summary>
+    /// Toggles to swap player camera rendering to and from phase camera
+    ///</summary>
+    public void SwapCameraRendering(bool mainCameraOn)
+    {
+        if (mainCameraOn)
+        {
+            mainCamera.enabled = true;
+            phaseCamera.enabled = false;
+        }
+        else
+        {
+            mainCamera.enabled = false;
+            phaseCamera.enabled = true;
         }
     }
 }
