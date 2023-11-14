@@ -934,8 +934,8 @@ MonoBehaviour:
   accelerationPower: 45
   brakingPower: 30
   reversingPower: 28
-  fallingDrag: 1
-  groundBoostAmount: 100
+  fallingDrag: 0.85
+  groundBoostAmount: 160
   slowPatchMultiplier: 0.5
   steeringPower: 90
   reverseSteeringPower: 90
@@ -1784,7 +1784,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   liftHeight: 5
-  startingLiftHeight: -2
   respawnDuration: 2
   liftDuration: 0.5
   ledgeOffset: -10
