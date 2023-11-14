@@ -26,10 +26,12 @@ public class Respawn : MonoBehaviour
     [Tooltip("The time it takes to lift the player between startingLiftHeight to liftHeight.")]
     [SerializeField] private float liftDuration = 5.0f; // The time it takes to lift the player above the ground
 
+    [Tooltip("How far back from the ledge the player respawns | MUST BE NEGATIVE")]
+    [SerializeField] private float ledgeOffset = -10f;
+    private float newOffset;
+
     [Tooltip("The prefab for the gravestone model.)")]
     [SerializeField] private GameObject respawnGravestone; // Gravestone model to spawn in during respawn
-
-    private bool isRotating = false;
 
     [Tooltip("Reference to the control game object.")]
     [SerializeField] private GameObject control;
@@ -38,6 +40,10 @@ public class Respawn : MonoBehaviour
     private void Start()
     {
         orderHandler = control.GetComponent<OrderHandler>();
+        if(Mathf.Sign(ledgeOffset) != -1)
+        {
+            ledgeOffset = -ledgeOffset;
+        }
     }
 
     /// <summary>
@@ -49,19 +55,46 @@ public class Respawn : MonoBehaviour
     }
 
     /// <summary>
+    /// This method checks if the respawn point is valid by modifying the newOffset value.
+    /// </summary>
+    private void CheckRespawnPoint()
+    {
+        LayerMask lm = LayerMask.GetMask("IsPhaseable");
+        RaycastHit hit;
+        newOffset = ledgeOffset;
+        for(int i=0;i<100;i++)
+        {
+            
+            if(Physics.Raycast(respawnPoint + transform.forward * newOffset, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity, lm))
+            {
+                float newNewOffset = newOffset - 5; // check a position in front of the player to make sure they don't spawn in front of water
+                RaycastHit newHit;
+                if(Physics.Raycast(respawnPoint + transform.forward * newNewOffset, transform.TransformDirection(Vector3.down), out newHit, Mathf.Infinity, ~lm))
+                {
+                    return;
+                }
+            }
+            else
+            {
+                newOffset--;
+            }
+        }
+        newOffset = 0; // if all else fails, just spawn player at their last ground pos
+    }
+
+    /// <summary>
     /// This coroutine lerps the player's position from their current position to the respawn point position + liftHeight.
     /// </summary>
     /// <returns></returns>
     private IEnumerator RespawningPlayer()
     {
-        isRotating = true;
         Vector3 rotationRespawn = new Vector3(respawnPoint.x, transform.position.y, respawnPoint.z);
         Vector3 rotationControl = new Vector3(respawnPoint.x, control.transform.position.y, respawnPoint.z);
         float elapsedTime = 0;
         Vector3 initialPosition = transform.position;
         transform.rotation = Quaternion.LookRotation((rotationRespawn - transform.position)) * Quaternion.Euler(0, 180, 0);
-
-        respawnPoint += transform.forward * -10;
+        CheckRespawnPoint();
+        respawnPoint += transform.forward * newOffset;
         Vector3 targetPosition = respawnPoint;// + Vector3.up * startingLiftHeight; // Change height to position before lifting
         control.transform.rotation = Quaternion.LookRotation((rotationControl - control.transform.position)) * Quaternion.Euler(0, 180, 0);
 
@@ -78,7 +111,6 @@ public class Respawn : MonoBehaviour
         Instantiate(respawnGravestone, (respawnPoint), control.transform.rotation); // spawn respawn gravestone
 
         transform.position = targetPosition;
-        isRotating = false;
         control.GetComponent<BallDriving>().enabled = true;
 
 
@@ -116,4 +148,6 @@ public class Respawn : MonoBehaviour
             StartCoroutine(RespawningPlayer());
         }
     }
+
+
 }

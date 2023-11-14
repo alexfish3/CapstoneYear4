@@ -24,7 +24,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     [Tooltip("Time it takes in seconds for a wave to be completed")]
     [SerializeField] private float waveLengthInSeconds = 20f;
-    [SerializeField] int wave = 0;
+    private int wave = 0;
     private float waveTimer = 0f;
 
     public float WaveTimer { get { return waveTimer; } }
@@ -32,7 +32,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private int maxOrders; // total number of orders possible in a game
     private float easyPercentage, mediumPercentage, hardPercentage; // percentage of easy/medium/hard orders that should be in a game
-    [SerializeField] private int currEasy, currMedium, currHard; // the current number of easy/medium/hard orders in the game
+    private int currEasy, currMedium, currHard; // the current number of easy/medium/hard orders in the game
 
     private bool cooledDown = true;
 
@@ -73,6 +73,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapMainLoop += EnableSpawning;
         GameManager.Instance.OnSwapFinalPackage += DisableSpawning;
         GameManager.Instance.OnSwapFinalPackage += SpawnFinalOrder;
+        HotKeys.Instance.onIncrementWave += IncrementWave;
+        HotKeys.Instance.onDecrementWave += DecrementWave;
     }
 
     private void OnDisable()
@@ -80,6 +82,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapMainLoop -= EnableSpawning;
         GameManager.Instance.OnSwapFinalPackage -= DisableSpawning;
         GameManager.Instance.OnSwapFinalPackage -= SpawnFinalOrder;
+        HotKeys.Instance.onIncrementWave -= IncrementWave;
+        HotKeys.Instance.onDecrementWave -= DecrementWave;
+
     }
 
     private void Update()
@@ -310,6 +315,18 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         StopHardSpawn();
         cooledDown = true;
         wave++;
+    }
+
+    private void IncrementWave()
+    {
+        ResetWave();
+        InitWave();
+    }
+    private void DecrementWave()
+    {
+        ResetWave();
+        wave -= 2; // never expected to have to decrease waves
+        InitWave();
     }
 
     /// <summary>
