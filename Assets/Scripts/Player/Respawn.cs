@@ -105,20 +105,22 @@ public class Respawn : MonoBehaviour
         transform.rotation = Quaternion.LookRotation((rotationRespawn - transform.position)) * Quaternion.Euler(0, 180, 0);
         CheckRespawnPoint();
         respawnPoint += transform.forward * newOffset;
-        Vector3 targetPosition = respawnPoint;// + Vector3.up * startingLiftHeight; // Change height to position before lifting
+        Vector3 targetPosition = new Vector3(respawnPoint.x,transform.position.y,respawnPoint.z);// + Vector3.up * startingLiftHeight; // Change height to position before lifting
         control.transform.rotation = Quaternion.LookRotation((rotationControl - control.transform.position)) * Quaternion.Euler(0, 180, 0);
+        Quaternion initialRotation = control.transform.rotation;
+        Quaternion targetRotation = control.transform.rotation * Quaternion.Euler(0,180,0);
+        Instantiate(respawnGravestone, (respawnPoint), targetRotation); // spawn respawn gravestone
 
         // Moving player to respawn position below ground
         while (elapsedTime < respawnDuration)
         {
             transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / respawnDuration);
-
+            control.transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / respawnDuration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        control.transform.rotation *= Quaternion.Euler(0,180,0);
-        Instantiate(respawnGravestone, (respawnPoint), control.transform.rotation); // spawn respawn gravestone
+        control.transform.rotation = targetRotation;
 
         transform.position = targetPosition;
         control.GetComponent<BallDriving>().enabled = true;
@@ -152,7 +154,7 @@ public class Respawn : MonoBehaviour
             GetComponent<Rigidbody>().velocity = Vector3.zero; // set velocity to 0 on respawn
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<SphereCollider>().enabled = false;
-            control.GetComponent<BallDriving>().enabled = false; // disable player control on respawn
+            //control.GetComponent<BallDriving>().enabled = false; // disable player control on respawn
             orderHandler.DropEverything(respawnPoint);
 
             StartCoroutine(RespawningPlayer());
