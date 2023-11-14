@@ -30,7 +30,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [Tooltip("The indexed array tracking players' ready up status")]
     [SerializeField] bool[] playerReadyUp = new bool[Constants.MAX_PLAYERS];
     public event Action OnReadiedUp;
-
     int readyUpCounter = 0;
     [Tooltip("Set to true when all players are readied up")]
     [SerializeField] bool isAllReadedUp = false;
@@ -289,13 +288,14 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     private IEnumerator ReadyUpCountdown()
     {
-        for(float i = countdownTimer; i > 0; i--)
+        for(float i = countdownTimer; i >= 0; i--)
         {
-            Debug.Log(i);
-            yield return new WaitForSeconds(countdownTimer / countdownTimer);
+            PlayerSelectCanvas.Instance.UpdateCountdown(i + 1);
+            yield return new WaitForSeconds(1f);
         }
 
         Debug.Log("Properly Readied Up");
+        PlayerSelectCanvas.Instance.UpdateCountdown(0);
         isAllReadedUp = true;
         OnReadiedUp?.Invoke();
         readyUpCountdown = null;
@@ -356,6 +356,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         playerReadyUp[playerIndexToReadyUp] = false; 
         if(readyUpCountdown != null)
         {
+            PlayerSelectCanvas.Instance.StopCountdown();
             StopCoroutine(readyUpCountdown);
             readyUpCountdown = null;
         }
