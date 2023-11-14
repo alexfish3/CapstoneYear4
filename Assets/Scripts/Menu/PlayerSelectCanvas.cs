@@ -1,31 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class PlayerSelectCanvas : MonoBehaviour
+public class PlayerSelectCanvas : SingletonMonobehaviour<PlayerSelectCanvas>
 {
+    [Header("Countdown")]
+    [SerializeField] TMP_Text countdownText;
 
-
-    // Start is called before the first frame update
-    void Start()
+    public void UpdateCountdown(float countdown)
     {
-        
+        countdownText.text = countdown.ToString();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StopCountdown()
     {
-        
+        countdownText.text = "";
     }
 
-    public void PlayerSpawn(int playerIndex)
-    {
 
-    }
 
-    public void PlayerLeft(int playerIndex)
-    {
 
-    }
 
 }

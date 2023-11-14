@@ -117,6 +117,7 @@ public class BallDriving : MonoBehaviour
 
     private bool groundBoostFlag = false;
     private bool groundSlowFlag = false;
+    private bool onMovingPlatform = false; // tells whether the player is on a moving platform
 
     private bool boostInitialburst = false;
     private bool boosting = false;
@@ -161,12 +162,6 @@ public class BallDriving : MonoBehaviour
         if (callToDrift && leftStick != 0)
         {
             AssignDriftState();
-        }
-
-        // sets respawn point when grounded
-        if(grounded && respawn != null)
-        {
-            respawn.SetRespawnPoint(reversing);
         }
 
         //Assigns drag
@@ -269,6 +264,10 @@ public class BallDriving : MonoBehaviour
         //Adds the force to move forward
         if (grounded)
         {
+            if (!boosting && !onMovingPlatform)
+            {
+                respawn.SetRespawnPoint();
+            }
             if (drifting)
             {
                 sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
@@ -364,6 +363,16 @@ public class BallDriving : MonoBehaviour
             if (hit.collider.tag == "TouchGrass")
             {
                 groundSlowFlag = true;
+            }
+
+            // checks moving platform and adjusts accordingly
+            if(hit.collider.tag == "MovingPlatform")
+            {
+                onMovingPlatform = true;
+            }
+            else
+            {
+                onMovingPlatform = false;
             }
         }
     }

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1687784848556681852}
   m_Layer: 0
   m_Name: MovingPlatform
-  m_TagString: Untagged
+  m_TagString: MovingPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,6 +121,8 @@ MonoBehaviour:
   startingPos: {fileID: 8524953707567148677}
   endPos: {fileID: 690567310175920318}
   speed: 16
+  waitAtEnd: 0
+  secondsToWaitFor: 1
 --- !u!1 &7385054467581640860
 GameObject:
   m_ObjectHideFlags: 0
@@ -132,7 +134,7 @@ GameObject:
   - component: {fileID: 5407665569371676656}
   m_Layer: 0
   m_Name: MovingPlatformGroup
-  m_TagString: Untagged
+  m_TagString: MovingPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -166,7 +168,7 @@ GameObject:
   - component: {fileID: 690567310175920318}
   m_Layer: 0
   m_Name: Point2
-  m_TagString: Untagged
+  m_TagString: MovingPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -197,7 +199,7 @@ GameObject:
   - component: {fileID: 8524953707567148677}
   m_Layer: 0
   m_Name: Point1
-  m_TagString: Untagged
+  m_TagString: MovingPlatform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
