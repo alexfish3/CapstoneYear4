@@ -264,10 +264,11 @@ public class BallDriving : MonoBehaviour
         //Adds the force to move forward
         if (grounded)
         {
-            if (!boosting && !onMovingPlatform)
+            if (!boosting && !onMovingPlatform && respawn != null)
             {
                 respawn.SetRespawnPoint();
             }
+
             if (drifting)
             {
                 sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
