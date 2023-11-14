@@ -27,7 +27,7 @@ public class Respawn : MonoBehaviour
     [SerializeField] private float liftDuration = 5.0f; // The time it takes to lift the player above the ground
 
     [Tooltip("How far back from the ledge the player respawns | MUST BE NEGATIVE")]
-    [SerializeField] private float ledgeOffset = -10f;
+    [SerializeField] private float ledgeOffset = -5f;
     private float newOffset;
 
     [Tooltip("The prefab for the gravestone model.)")]
@@ -36,10 +36,12 @@ public class Respawn : MonoBehaviour
     [Tooltip("Reference to the control game object.")]
     [SerializeField] private GameObject control;
     private OrderHandler orderHandler;
+    private BallDriving ballDriving;
 
     private void Start()
     {
         orderHandler = control.GetComponent<OrderHandler>();
+        ballDriving = control.GetComponent<BallDriving>();
         if(Mathf.Sign(ledgeOffset) != -1)
         {
             ledgeOffset = -ledgeOffset;
@@ -54,23 +56,30 @@ public class Respawn : MonoBehaviour
         respawnPoint = gameObject.transform.position;
     }
 
+    private void Update()
+    {
+        Debug.DrawRay(respawnPoint + transform.forward * newOffset, Vector3.down * 200, Color.blue);
+    }
     /// <summary>
     /// This method checks if the respawn point is valid by modifying the newOffset value.
     /// </summary>
     private void CheckRespawnPoint()
     {
-        LayerMask lm = LayerMask.GetMask("IsPhaseable");
+        int lm = (1 << 9 | 1 << 2);
         RaycastHit hit;
         newOffset = ledgeOffset;
-        for(int i=0;i<100;i++)
+        for(int i=0;i>ledgeOffset*2;i--)
         {
             
-            if(Physics.Raycast(respawnPoint + transform.forward * newOffset, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity, lm))
+            if(Physics.Raycast(respawnPoint + transform.forward * newOffset, Vector3.down, out hit, Mathf.Infinity, ~lm))
             {
-                float newNewOffset = newOffset - 5; // check a position in front of the player to make sure they don't spawn in front of water
+                Debug.Log($"offset hit: {hit.collider.name}");
+                float newNewOffset = newOffset - 1; // check a position in front of the player to make sure they don't spawn in front of water
                 RaycastHit newHit;
-                if(Physics.Raycast(respawnPoint + transform.forward * newNewOffset, transform.TransformDirection(Vector3.down), out newHit, Mathf.Infinity, ~lm))
+                if(Physics.Raycast(respawnPoint + transform.forward * newNewOffset, Vector3.down, out newHit, Mathf.Infinity, ~lm))
                 {
+                    Debug.Log($"new offset hit: {newHit.collider.name}");
+                    Debug.Log($"New offset: {newOffset}");
                     return;
                 }
             }
@@ -79,6 +88,7 @@ public class Respawn : MonoBehaviour
                 newOffset--;
             }
         }
+        Debug.Log("Offset is 0");
         newOffset = 0; // if all else fails, just spawn player at their last ground pos
     }
 
