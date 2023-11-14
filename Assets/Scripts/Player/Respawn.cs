@@ -17,9 +17,6 @@ public class Respawn : MonoBehaviour
     [Tooltip("The height to lift the player above the map.")]
     [SerializeField] private float liftHeight = 5.0f; // The height to lift the player above the map
 
-    [Tooltip("The height to start the lift at. (Should be below the ground)")]
-    [SerializeField] private float startingLiftHeight = -2.0f; // The height to start the lift at
-
     [Tooltip("The time it takes to rotate 180 degrees.")]
     [SerializeField] private float respawnDuration = 2.0f; // The time it takes to rotate 180 degrees
 
