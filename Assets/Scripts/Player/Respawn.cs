@@ -55,14 +55,15 @@ public class Respawn : MonoBehaviour
     private IEnumerator RespawningPlayer()
     {
         isRotating = true;
-        transform.rotation = Quaternion.LookRotation((respawnPoint - transform.position)) * Quaternion.Euler(0,180,0);
-        control.transform.rotation = Quaternion.LookRotation((respawnPoint - control.transform.position)) * Quaternion.Euler(0, 180, 0);
+        Vector3 rotationRespawn = new Vector3(respawnPoint.x, transform.position.y, respawnPoint.z);
+        Vector3 rotationControl = new Vector3(respawnPoint.x, control.transform.position.y, respawnPoint.z);
         float elapsedTime = 0;
         Vector3 initialPosition = transform.position;
-        respawnPoint += transform.forward * -5;
-        Vector3 targetPosition = respawnPoint;// + Vector3.up * startingLiftHeight; // Change height to position before lifting
-        Instantiate(respawnGravestone, (respawnPoint), controlRotation * Quaternion.Euler(1, 180, 0)); // spawn respawn gravestone
+        transform.rotation = Quaternion.LookRotation((rotationRespawn - transform.position)) * Quaternion.Euler(0, 180, 0);
 
+        respawnPoint += transform.forward * -10;
+        Vector3 targetPosition = respawnPoint;// + Vector3.up * startingLiftHeight; // Change height to position before lifting
+        control.transform.rotation = Quaternion.LookRotation((rotationControl - control.transform.position)) * Quaternion.Euler(0, 180, 0);
 
         // Moving player to respawn position below ground
         while (elapsedTime < respawnDuration)
@@ -73,7 +74,9 @@ public class Respawn : MonoBehaviour
             yield return null;
         }
 
-        //transform.rotation = endRotation;
+        control.transform.rotation *= Quaternion.Euler(0,180,0);
+        Instantiate(respawnGravestone, (respawnPoint), control.transform.rotation); // spawn respawn gravestone
+
         transform.position = targetPosition;
         isRotating = false;
         control.GetComponent<BallDriving>().enabled = true;
@@ -104,9 +107,10 @@ public class Respawn : MonoBehaviour
         if(other.tag == "Water")
         {
             // Turning these off fixes camera jittering on respawn
+            GetComponent<Rigidbody>().velocity = Vector3.zero; // set velocity to 0 on respawn
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<SphereCollider>().enabled = false;
-            control.GetComponent<BallDriving>().enabled = false;
+            control.GetComponent<BallDriving>().enabled = false; // disable player control on respawn
             orderHandler.DropEverything(respawnPoint);
 
             StartCoroutine(RespawningPlayer());
