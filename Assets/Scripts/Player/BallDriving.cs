@@ -27,6 +27,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private GameObject sphere;
     [Tooltip("An input manager class, from the correlated InputReceiver object")]
     [SerializeField] private InputManager inp;
+    [Tooltip("Reference to the order manager object")]
+    [SerializeField] private OrderManager orderManager;
 
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
@@ -41,6 +43,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float groundBoostAmount = 100.0f;
     [Tooltip("The multiplier applied to speed when in a ground slow patch")]
     [SerializeField] private float slowPatchMultiplier = 0.75f;
+    [Tooltip("The multiplier applied to speed when holding the golden order")]
+    [SerializeField] private float goldenOrderMultiplier = 0.95f;
 
     [Header("Steering")]
     [Tooltip("The 'turning power'. A slightly abstract concept representing how well the scooter can turn. Higher values represent a tighter turning circle")]
@@ -259,6 +263,12 @@ public class BallDriving : MonoBehaviour
         {
             totalForce *= slowPatchMultiplier;
             groundSlowFlag = false;
+        }
+
+        //Applies slow from holding the golden order
+        if (orderManager.HasGoldenOrder)
+        {
+            totalForce *= goldenOrderMultiplier;
         }
 
         //Adds the force to move forward
