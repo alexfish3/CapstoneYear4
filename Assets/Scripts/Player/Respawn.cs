@@ -178,6 +178,7 @@ public class Respawn : MonoBehaviour
         // Turn gravity and collider back on
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<SphereCollider>().enabled = true;
+        StopRespawnCoroutine();
     }
 
     private void OnTriggerEnter(Collider other)
