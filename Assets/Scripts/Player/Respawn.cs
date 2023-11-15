@@ -26,6 +26,9 @@ public class Respawn : MonoBehaviour
 
     [Tooltip("How far back from the ledge the player respawns | MUST BE NEGATIVE")]
     [SerializeField] private float ledgeOffset = -5f;
+
+    [Tooltip("Distance between tombstone spawn and player spawn | MUST BE POSITIVE")]
+    [SerializeField] private float tombstoneOffset = 5f;
     private float newOffset;
 
     [Tooltip("The prefab for the gravestone model.)")]
@@ -83,7 +86,19 @@ public class Respawn : MonoBehaviour
                 Physics.Raycast(respawnPoint + transform.forward * newNewOffset, Vector3.down, out newHit, Mathf.Infinity, water)
                 && !Physics.Raycast(respawnPoint + transform.forward * newNewOffset, Vector3.down, out newHit, Mathf.Infinity, buildingCheck))
                 {
-                    return;
+                    RaycastHit tombstoneBlues; // i am going insane
+                    Vector3 potentialRespawn = respawnPoint + transform.forward * newOffset;
+                    // NOW we check if the tombstone will spawn weirdly. If it doesn't we can finally return.
+                    if (Physics.Raycast(potentialRespawn + transform.forward * (tombstoneOffset+1), Vector3.down, out tombstoneBlues, Mathf.Infinity, ground) &&
+                    Physics.Raycast(potentialRespawn + transform.forward * (tombstoneOffset + 1), Vector3.down, out tombstoneBlues, Mathf.Infinity, water)
+                    && !Physics.Raycast(potentialRespawn + transform.forward * (tombstoneOffset + 1), Vector3.down, out tombstoneBlues, Mathf.Infinity, buildingCheck))
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        newOffset--;
+                    }
                 }
                 else
                 {
@@ -117,7 +132,7 @@ public class Respawn : MonoBehaviour
         control.transform.rotation = Quaternion.LookRotation((rotationControl - control.transform.position)) * Quaternion.Euler(0, 180, 0);
         Quaternion initialRotation = control.transform.rotation;
         Quaternion targetRotation = control.transform.rotation * Quaternion.Euler(0,180,0);
-        Instantiate(respawnGravestone, (respawnPoint), targetRotation); // spawn respawn gravestone
+        Instantiate(respawnGravestone, respawnPoint + transform.forward * tombstoneOffset, targetRotation); // spawn respawn gravestone
 
         // Moving player to respawn position below ground
         while (elapsedTime < respawnDuration)

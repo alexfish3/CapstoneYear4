@@ -27,6 +27,8 @@ public class Order : MonoBehaviour
     public Transform LastGrounded { get { return lastGrounded; } set { lastGrounded = value;} }
     private OrderHandler playerHolding = null;
     public OrderHandler PlayerHolding { get {  return playerHolding; } }
+    private OrderHandler playerDropped; // for cooldown with losing an order
+    public OrderHandler PlayerDropped { get {  return playerDropped; } }
 
     [Tooltip("Time between a player dropping a package and being able to pick it back up again")]
     [SerializeField] private int pickupCooldown = 3;
@@ -103,6 +105,8 @@ public class Order : MonoBehaviour
     public void Pickup(OrderHandler player)
     {
         playerHolding = player;
+        playerDropped = null;
+        StopPickupCountdownCoroutine();
         beacon.SetDropoff(dropoff);
         
         compassMarker.SwitchCompassUIForPlayers(true);
@@ -139,6 +143,7 @@ public class Order : MonoBehaviour
         transform.position = newPosition;
         this.transform.parent = OrderManager.Instance.transform;
         beacon.ResetPickup();
+        playerDropped = playerHolding;
         playerHolding = null;
         StartPickupCooldownCoroutine();
     }
@@ -199,6 +204,7 @@ public class Order : MonoBehaviour
         canPickup = false;
         yield return new WaitForSeconds(pickupCooldown);
         canPickup = true;
+        playerDropped = null;
         StopPickupCountdownCoroutine();
     }
 }

@@ -26,12 +26,13 @@ Transform:
   m_GameObject: {fileID: 1814084137873696000}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 71.607445, y: 1.04, z: 141.975}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5394743685151458211}
   - {fileID: 5551996524041700394}
+  - {fileID: 6524818890337416985}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &537429226657661278
@@ -142,7 +143,7 @@ GameObject:
   - component: {fileID: 9170661492368489252}
   - component: {fileID: 4849059129468882905}
   m_Layer: 0
-  m_Name: Gravestone (1)
+  m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157,11 +158,11 @@ Transform:
   m_GameObject: {fileID: 3104195189125492339}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5118, z: -0.000013866544}
-  m_LocalScale: {x: 0.58241, y: 0.023742806, z: 1}
+  m_LocalPosition: {x: 0, y: 1.33, z: -0}
+  m_LocalScale: {x: 0.67576134, y: 0.3010786, z: 0.36941123}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5551996524041700394}
+  m_Father: {fileID: 7029670393405457648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9170661492368489252
 MeshFilter:
@@ -225,7 +226,7 @@ GameObject:
   - component: {fileID: 4464360357870324917}
   - component: {fileID: 589311948988152291}
   m_Layer: 0
-  m_Name: Gravestone
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -240,11 +241,10 @@ Transform:
   m_GameObject: {fileID: 6770098959716133012}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.00000029802322, y: -5, z: -1.794}
-  m_LocalScale: {x: 1.1602846, y: 12.680834, z: 0.36941123}
+  m_LocalPosition: {x: 0, y: -2.5281, z: 0}
+  m_LocalScale: {x: 1.1602846, y: 7.6252465, z: 0.36941123}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6524818890337416985}
+  m_Children: []
   m_Father: {fileID: 7029670393405457648}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4464360357870324917

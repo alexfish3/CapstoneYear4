@@ -37,7 +37,7 @@ public class OrderHandler : MonoBehaviour
     /// <param name="inOrder">Order the player is trying to pick up</param>
     public void AddOrder(Order inOrder)
     {
-        if (inOrder.CanPickup)
+        if (inOrder.CanPickup || inOrder.PlayerDropped != this)
         {
             // will add order if it fits, elsewise will not do anything
             if (order1 == null || order2 == null)
