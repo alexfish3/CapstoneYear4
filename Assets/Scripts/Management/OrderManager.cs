@@ -40,6 +40,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("Cooldown between order spawns")]
     [SerializeField] private float cooldownTime = 5f;
 
+    [Tooltip("Multiplyer for final order increment. 1 will have it add a dollar to the value every second.")]
+    [SerializeField] private float goldIncrementMultiplyer = 1f;
+
     [Header("World Information")]
     [Tooltip("List of the pickup points for deliveries")]
     [SerializeField] private List<Transform> pickupWaypoints;
@@ -51,6 +54,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [SerializeField] private Transform goldenPickup, goldenDropoff;
     private bool finalOrderActive = false;
     public bool FinalOrderActive { get { return finalOrderActive; } }
+    private float finalOrderValue = (float)Order.Order_Value.Golden;
+    public int FinalOrderValue { get { return (int)finalOrderValue; } }
 
     private List<Order> orders = new List<Order>(); // list of all the orders in the game at any time
 
@@ -90,6 +95,13 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void Update()
     {
+        if (finalOrder != null)
+        {
+            if (finalOrderActive && finalOrder.PlayerHolding != null)
+            {
+                finalOrderValue += Time.deltaTime;
+            }
+        }
         if (!spawnNormalPackages) { return; }
 
         if (waveTimer > 0 && !finalOrderActive)
@@ -353,6 +365,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void SpawnFinalOrder()
     {
+        finalOrderValue = (int)Order.Order_Value.Golden;
         finalOrderActive = true;
         OnDeleteActiveOrders?.Invoke();
         if(finalOrder != null)

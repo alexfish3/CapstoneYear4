@@ -10,6 +10,7 @@ public class TESTScoreUpdater : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI waveText;
+    [SerializeField] TextMeshProUGUI finalOrderText;
     [SerializeField] TextMeshProUGUI placementText;
     private OrderHandler player;
 
@@ -27,10 +28,12 @@ public class TESTScoreUpdater : MonoBehaviour
             if (!OrderManager.Instance.FinalOrderActive)
             {
                 waveText.text = OrderManager.Instance.WaveTimer.ToString("00.00");
+                finalOrderText.text = "";
             }
             else
             {
                 waveText.text = "";
+                finalOrderText.text = $"Gold Order Value: ${OrderManager.Instance.FinalOrderValue}";
             }
         }
     }
