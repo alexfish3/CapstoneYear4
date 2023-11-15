@@ -472,7 +472,7 @@ public class BallDriving : MonoBehaviour
     /// <param name="WestFaceState">The state of the south face button, passed by the event</param>
     private void BoostFlag(bool SouthFaceState)
     {
-        if (boostAble && !callToDrift && !drifting)
+        if (boostAble && !callToDrift && !drifting && !reversing) //& by Tally Hall
         {
             StartBoostActive();
         }
