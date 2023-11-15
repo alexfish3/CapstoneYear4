@@ -259,7 +259,7 @@ public class BallDriving : MonoBehaviour
         }
 
         //Applies slow from grass patches
-        if (groundSlowFlag)
+        if (groundSlowFlag && !boosting)
         {
             totalForce *= slowPatchMultiplier;
             groundSlowFlag = false;
