@@ -4,6 +4,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 /// <summary>
 /// This class will respawn the player if they fall into the water.
@@ -35,6 +36,9 @@ public class Respawn : MonoBehaviour
     private OrderHandler orderHandler;
     private BallDriving ballDriving;
 
+    [Tooltip("Layermasks for respawn logic. Should be set to building phase checker, water (ignore raycast), and ground")]
+    [SerializeField] LayerMask water, ground, buildingCheck;
+
     private void Start()
     {
         orderHandler = control.GetComponent<OrderHandler>();
@@ -62,23 +66,29 @@ public class Respawn : MonoBehaviour
     /// </summary>
     private void CheckRespawnPoint()
     {
-        int lm = (1 << 9 | 1 << 2);
         RaycastHit hit;
         newOffset = ledgeOffset;
         for(int i=0;i>ledgeOffset*2;i--)
         {
-            
-            if(Physics.Raycast(respawnPoint + transform.forward * newOffset, Vector3.down, out hit, Mathf.Infinity, ~lm))
+            // checks if the player is hitting the ground and water (water collider is under the ground) and not the building
+            if(Physics.Raycast(respawnPoint + transform.forward * newOffset, Vector3.down, out hit, Mathf.Infinity, ground) && 
+            Physics.Raycast(respawnPoint + transform.forward * newOffset, Vector3.down, out hit, Mathf.Infinity, water)
+            && !Physics.Raycast(respawnPoint + transform.forward * newOffset , Vector3.down, out hit, Mathf.Infinity, buildingCheck))
             {
-                Debug.Log($"offset hit: {hit.collider.name}");
-                float newNewOffset = newOffset - 1; // check a position in front of the player to make sure they don't spawn in front of water
+                float newNewOffset = newOffset - 2f; // check a position in front of the player to make sure they don't spawn in front of water
                 RaycastHit newHit;
-                if(Physics.Raycast(respawnPoint + transform.forward * newNewOffset, Vector3.down, out newHit, Mathf.Infinity, ~lm))
+
+                // same thing for position slightly infront of player (so that they don't spawn on an edge or something)
+                if(Physics.Raycast(respawnPoint + transform.forward * newNewOffset, Vector3.down, out newHit, Mathf.Infinity, ground) &&
+                Physics.Raycast(respawnPoint + transform.forward * newNewOffset, Vector3.down, out newHit, Mathf.Infinity, water)
+                && !Physics.Raycast(respawnPoint + transform.forward * newNewOffset, Vector3.down, out newHit, Mathf.Infinity, buildingCheck))
                 {
-                    Debug.Log($"new offset hit: {newHit.collider.name}");
-                    Debug.Log($"New offset: {newOffset}");
                     return;
                 }
+                else
+                {
+                    newOffset--;
+                }    
             }
             else
             {
@@ -102,7 +112,8 @@ public class Respawn : MonoBehaviour
         transform.rotation = Quaternion.LookRotation((rotationRespawn - transform.position)) * Quaternion.Euler(0, 180, 0);
         CheckRespawnPoint();
         respawnPoint += transform.forward * newOffset;
-        Vector3 targetPosition = new Vector3(respawnPoint.x,transform.position.y,respawnPoint.z);// + Vector3.up * startingLiftHeight; // Change height to position before lifting
+        orderHandler.DropEverything(respawnPoint);
+        Vector3 targetPosition = new Vector3(respawnPoint.x,respawnPoint.y - liftHeight,respawnPoint.z); // Change height to position before lifting
         control.transform.rotation = Quaternion.LookRotation((rotationControl - control.transform.position)) * Quaternion.Euler(0, 180, 0);
         Quaternion initialRotation = control.transform.rotation;
         Quaternion targetRotation = control.transform.rotation * Quaternion.Euler(0,180,0);
@@ -152,7 +163,6 @@ public class Respawn : MonoBehaviour
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<SphereCollider>().enabled = false;
             //control.GetComponent<BallDriving>().enabled = false; // disable player control on respawn
-            orderHandler.DropEverything(respawnPoint);
 
             StartCoroutine(RespawningPlayer());
         }

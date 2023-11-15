@@ -46,6 +46,9 @@ public class Order : MonoBehaviour
     [Tooltip("The hdr color options for the different tiers of packages")]
     [SerializeField][ColorUsageAttribute(true, true)]public Color[] packageColors;
 
+    [Tooltip("Layermasks for respawn logic. Should be set to building phase checker, water (ignore raycast), and ground")]
+    [SerializeField] LayerMask water,ground,buildingCheck;
+
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
     /// <summary>
     /// This method initializes the order with passed in values and sets its default location. It also initializes the beacon for this order.
@@ -110,7 +113,30 @@ public class Order : MonoBehaviour
     /// </summary>
     public void Drop(Vector3 newPosition)
     {
-        transform.position = newPosition;// new Vector3(newPosition.x, height, newPosition.z);
+        RaycastHit hit;
+        bool foundSpot = false;
+        transform.LookAt(Vector3.zero);
+        //transform.rotation = Quaternion.Euler(0,transform.rotation.y,0);
+        // adjusts position if necessary
+        for (int i = 0; i < 10; i++)
+        {
+            if(Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, ground) && Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, water)
+                && !Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, buildingCheck))
+            {
+                foundSpot = true;
+                break;
+            }
+            else
+            {
+                newPosition += transform.forward;
+                Instantiate(beaconPrefab);
+            }
+        }
+        if (!foundSpot) // spawns at pickup if couldn't find another spot
+        {
+            newPosition = pickup.position;
+        }
+        transform.position = newPosition;
         this.transform.parent = OrderManager.Instance.transform;
         beacon.ResetPickup();
         playerHolding = null;
