@@ -106,6 +106,10 @@ public class Order : MonoBehaviour
     public void Pickup(OrderHandler player)
     {
         playerHolding = player;
+        if(value == Order_Value.Golden)
+        {
+            playerHolding.HasGoldenOrder = true;
+        }
         playerDropped = null;
         StopPickupCountdownCoroutine();
         beacon.SetDropoff(dropoff);
@@ -143,6 +147,10 @@ public class Order : MonoBehaviour
         transform.position = newPosition;
         this.transform.parent = OrderManager.Instance.transform;
         beacon.ResetPickup();
+        if(value == Order_Value.Golden)
+        {
+            playerHolding.HasGoldenOrder = false;
+        }
         playerDropped = playerHolding;
         playerHolding = null;
         StartPickupCooldownCoroutine();
@@ -160,6 +168,7 @@ public class Order : MonoBehaviour
         if(value == Order_Value.Golden)
         {
             OrderManager.Instance.GoldOrderDelivered(); // lets the OM know the golden order has been delivered
+            playerHolding.HasGoldenOrder = false;
         }
         else
         {
@@ -174,6 +183,7 @@ public class Order : MonoBehaviour
     public void EraseGoldWithoutDelivering()
     {
         // Removes the ui from all players
+        playerHolding.HasGoldenOrder = false;
         compassMarker.RemoveCompassUIFromAllPlayers();
         beacon.EraseBeacon();
         OrderManager.Instance.IncrementCounters(value, -1);

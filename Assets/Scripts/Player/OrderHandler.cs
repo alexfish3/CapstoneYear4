@@ -23,7 +23,8 @@ public class OrderHandler : MonoBehaviour
 
     private BallDriving ball;
     public bool IsBoosting { get { return ball.Boosting; } }
-
+    private bool hasGoldenOrder;
+    public bool HasGoldenOrder { get { return hasGoldenOrder; } set { hasGoldenOrder = value; } }
     private void Start()
     {
         score = 0; // init score to 0
