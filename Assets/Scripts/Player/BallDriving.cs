@@ -28,7 +28,7 @@ public class BallDriving : MonoBehaviour
     [Tooltip("An input manager class, from the correlated InputReceiver object")]
     [SerializeField] private InputManager inp;
     [Tooltip("Reference to the order manager object")]
-    [SerializeField] private OrderManager orderManager;
+    [SerializeField] private OrderHandler orderHandler;
 
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
@@ -266,7 +266,7 @@ public class BallDriving : MonoBehaviour
         }
 
         //Applies slow from holding the golden order
-        if (orderManager.HasGoldenOrder)
+        if (orderHandler.HasGoldenOrder)
         {
             totalForce *= goldenOrderMultiplier;
         }
