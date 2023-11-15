@@ -52,6 +52,7 @@ public class Order : MonoBehaviour
     [SerializeField] LayerMask water,ground,buildingCheck;
 
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
+
     /// <summary>
     /// This method initializes the order with passed in values and sets its default location. It also initializes the beacon for this order.
     /// </summary>
@@ -133,7 +134,6 @@ public class Order : MonoBehaviour
             else
             {
                 newPosition += transform.forward;
-                Instantiate(beaconPrefab);
             }
         }
         if (!foundSpot) // spawns at pickup if couldn't find another spot
@@ -155,13 +155,29 @@ public class Order : MonoBehaviour
         // Removes the ui from all players
         compassMarker.RemoveCompassUIFromAllPlayers();
         beacon.EraseBeacon();
-        OrderManager.Instance.AddPickupDropoff(pickup, dropoff);
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);
         if(value == Order_Value.Golden)
         {
             OrderManager.Instance.GoldOrderDelivered(); // lets the OM know the golden order has been delivered
         }
+        else
+        {
+            OrderManager.Instance.AddPickupDropoff(pickup, dropoff);
+        }
+        Destroy(this.gameObject);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void EraseGoldWithoutDelivering()
+    {
+        // Removes the ui from all players
+        compassMarker.RemoveCompassUIFromAllPlayers();
+        beacon.EraseBeacon();
+        OrderManager.Instance.IncrementCounters(value, -1);
+        OrderManager.Instance.RemoveOrder(this);
         Destroy(this.gameObject);
     }
 

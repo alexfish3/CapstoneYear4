@@ -11,7 +11,7 @@ public class HotKeys : SingletonMonobehaviour<HotKeys>
     {
         if(Input.GetKeyDown(KeyCode.Alpha4))
         {
-            GameManager.Instance.SetGameState(GameState.MainLoop);
+            GameManager.Instance.SetGameState(GameState.Begin);
         }
         if(Input.GetKeyDown(KeyCode.Alpha5))
         {

@@ -11,6 +11,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 /// </summary>
 public class Respawn : MonoBehaviour
 {
+    IEnumerator respawnCoroutine;
     //Variables
     private Vector3 respawnPoint;
     private Quaternion controlRotation;
@@ -41,6 +42,16 @@ public class Respawn : MonoBehaviour
 
     [Tooltip("Layermasks for respawn logic. Should be set to building phase checker, water (ignore raycast), and ground")]
     [SerializeField] LayerMask water, ground, buildingCheck;
+
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapFinalPackage += StopRespawnCoroutine;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapFinalPackage -= StopRespawnCoroutine;
+    }
 
     private void Start()
     {
@@ -114,6 +125,7 @@ public class Respawn : MonoBehaviour
         newOffset = 0; // if all else fails, just spawn player at their last ground pos
     }
 
+
     /// <summary>
     /// This coroutine lerps the player's position from their current position to the respawn point position + liftHeight.
     /// </summary>
@@ -179,9 +191,25 @@ public class Respawn : MonoBehaviour
             GetComponent<SphereCollider>().enabled = false;
             //control.GetComponent<BallDriving>().enabled = false; // disable player control on respawn
 
-            StartCoroutine(RespawningPlayer());
+            StartRespawnCoroutine();
         }
     }
 
+    private void StartRespawnCoroutine()
+    {
+        if(respawnCoroutine == null)
+        {
+            respawnCoroutine = RespawningPlayer();
+        }
+        StartCoroutine(respawnCoroutine);
+    }
 
+    private void StopRespawnCoroutine()
+    {
+        if (respawnCoroutine != null)
+        {
+            StopCoroutine(respawnCoroutine);
+        }
+        respawnCoroutine = null;
+    }
 }

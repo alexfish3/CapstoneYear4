@@ -904,8 +904,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4669215135928708646}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0.00000011920929, y: 19.967503, z: 1.1625025}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1787,6 +1787,7 @@ MonoBehaviour:
   respawnDuration: 2
   liftDuration: 0.5
   ledgeOffset: -10
+  tombstoneOffset: 5
   respawnGravestone: {fileID: 1814084137873696000, guid: c0504eb1c67f9e64fba2f42512ae7199, type: 3}
   control: {fileID: 4669215135928708646}
   water:
@@ -2338,6 +2339,7 @@ MonoBehaviour:
   drivingUICamera: {fileID: 369374283456175948}
   mainCamera: {fileID: 3253891723875983122}
   phaseCamera: {fileID: 4613849132705967980}
+  enableCameraSwap: 0
 --- !u!1 &9060324008592530389
 GameObject:
   m_ObjectHideFlags: 0

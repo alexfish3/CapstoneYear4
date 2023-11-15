@@ -17,7 +17,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Header("Game Information")]
     [Tooltip("Reference to the Order GameObject prefab")]
     [SerializeField] private GameObject orderPrefab;
-
+    private GameObject finalOrderGO;
+    private Order finalOrder;
     [Tooltip("Maxium number of orders present in the scene at a time. Array represents different waves")]
     [SerializeField]
     private int[] maxEasy, maxMedium, maxHard; // didn't think this variable name through
@@ -70,7 +71,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapMainLoop += EnableSpawning;
+        GameManager.Instance.OnSwapBegin += InitGame;
         GameManager.Instance.OnSwapFinalPackage += DisableSpawning;
         GameManager.Instance.OnSwapFinalPackage += SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave += IncrementWave;
@@ -79,7 +80,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapMainLoop -= EnableSpawning;
+        GameManager.Instance.OnSwapBegin -= InitGame;
         GameManager.Instance.OnSwapFinalPackage -= DisableSpawning;
         GameManager.Instance.OnSwapFinalPackage -= SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave -= IncrementWave;
@@ -89,8 +90,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void Update()
     {
-        if (spawnNormalPackages == false)
-            return;
+        if (!spawnNormalPackages) { return; }
 
         if (waveTimer > 0 && !finalOrderActive)
         {
@@ -139,6 +139,26 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         waveTimer -= Time.deltaTime;
     }
 
+    /// <summary>
+    /// Calls when the Begin/MainLoop sequence begins
+    /// </summary>
+    private void InitGame()
+    {
+        finalOrderActive = false;
+        spawnNormalPackages = true;
+        waveTimer = waveLengthInSeconds;
+        wave = 0;
+        canSpawnOrders = true;
+        EnableSpawning();
+        if(finalOrder != null)
+        {
+            finalOrder.EraseGoldWithoutDelivering();
+        }
+    }
+
+    /// <summary>
+    /// Initializes the wave.
+    /// </summary>
     public void InitWave()
     {
         waveTimer = waveLengthInSeconds;
@@ -150,7 +170,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         catch
         {
             GameManager.Instance.SetGameState(GameState.FinalPackage);
-            finalOrderActive = true;
         }
 
         if (!finalOrderActive)
@@ -334,9 +353,15 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void SpawnFinalOrder()
     {
+        finalOrderActive = true;
         OnDeleteActiveOrders?.Invoke();
-        GameObject finalOrderGO = Instantiate(orderPrefab, goldenPickup);
-        Order finalOrder = finalOrderGO.GetComponent<Order>();
+        if(finalOrder != null)
+        {
+            finalOrder.EraseGoldWithoutDelivering();
+            Destroy(finalOrderGO);
+        }
+        finalOrderGO = Instantiate(orderPrefab, goldenPickup);
+        finalOrder = finalOrderGO.GetComponent<Order>();
         finalOrder.InitOrder(goldenPickup, goldenDropoff, Order.Order_Value.Golden);
     }
 
@@ -353,7 +378,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         }
         else
         {
-            // results to be implemented
             GameManager.Instance.SetGameState(GameState.Results);
         }
     }

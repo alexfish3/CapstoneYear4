@@ -27,7 +27,7 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] Camera phaseCamera;
 
     bool initalized = false;
-
+    [SerializeField] bool enableCameraSwap = true;
     // Update is called once per frame
     void Update()
     {
@@ -76,6 +76,10 @@ public class PlayerCameraResizer : MonoBehaviour
     ///</summary>
     public void SwapCameraRendering(bool mainCameraOn)
     {
+        if (!enableCameraSwap)
+        {
+            return;
+        }
         if (mainCameraOn)
         {
             mainCamera.enabled = true;
