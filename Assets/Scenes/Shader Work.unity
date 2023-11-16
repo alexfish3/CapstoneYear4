@@ -759,6 +759,11 @@ MonoBehaviour:
   - {fileID: 7729728}
   - {fileID: 1792322166}
   viewPortRectDefault: {x: 0, y: 0, z: 1, w: 1}
+  playerRenderCamera: {fileID: 0}
+  menuUICamera: {fileID: 0}
+  drivingUICamera: {fileID: 0}
+  mainCamera: {fileID: 0}
+  phaseCamera: {fileID: 0}
 --- !u!1 &785556342
 GameObject:
   m_ObjectHideFlags: 0
@@ -1073,7 +1078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &857065272
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1639,7 +1644,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1293975672
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2050,8 +2055,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b3aa2688b1d364ea6b3b29c8e65a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order1: {fileID: 0}
-  order2: {fileID: 0}
   order1Position: {fileID: 1709578442}
   order2Position: {fileID: 92915519}
 --- !u!114 &1302466771
@@ -2088,6 +2091,7 @@ MonoBehaviour:
   boostRechargeTime: 10
   boostingDrag: 0.88
   boostingSteerModifier: 0.6
+  cameraResizer: {fileID: 0}
   playerIndex: 0
   phaseIndicator: {fileID: 1302466766}
   checkPhaseStatus: 0
@@ -2101,6 +2105,8 @@ MonoBehaviour:
   debugDriftComplete: {fileID: 0}
   debugBoostabilityEnable: 0
   debugBoostability: {fileID: 0}
+  debugCSVEnable: 0
+  debugCSV: {fileID: 0}
 --- !u!1 &1336803782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2594,7 +2600,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Color: {r: 1, g: 0.97809476, b: 0.7122642, a: 1}
   m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
@@ -3401,44 +3407,12 @@ MonoBehaviour:
     m_ActionName: Player/SwapCameraDebug[/XInputControllerWindows/dpad/down]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0d36002c-bac2-4e22-9321-a29007ea3bc4
-    m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/rightStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/rightStick/right,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+    m_ActionId: 7149b41a-3622-401e-8b8b-c637bed053dc
+    m_ActionName: UI/ReadyUp[/DualShock4GamepadHID/buttonSouth,/Keyboard/space]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 32dcf77c-5dbc-4755-a0d6-b28bb1eec00d
-    m_ActionName: UI/Submit[/Keyboard/enter,/XInputControllerWindows/buttonSouth]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 95455c07-4d2c-4a81-a88a-d2ab1c78e210
-    m_ActionName: UI/Cancel[/Keyboard/escape,/XInputControllerWindows/buttonEast]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 647d0c16-a30a-4e1f-bcab-426e44bf198e
-    m_ActionName: UI/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c758784d-6a0b-4e90-bf94-0d715dfba062
-    m_ActionName: UI/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8a0e1e84-063c-4c99-9051-18ae8cfc2ccf
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7d6234a1-ee47-4ea5-bcb6-b4e1474962d3
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 04715e4b-0d58-4c0c-aaff-aad684010928
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0d351e01-e5b3-4481-993a-299d207be88d
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9aa38074-808e-4fe8-9ec2-79830b7e5c41
-    m_ActionName: UI/TrackedDeviceOrientation
+    m_ActionId: c2fb24e1-e280-4486-9ec7-97f8b55ac6a5
+    m_ActionName: UI/UnReadyUp[/DualShock4GamepadHID/buttonEast,/Keyboard/backspace]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -3615,8 +3589,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b3aa2688b1d364ea6b3b29c8e65a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order1: {fileID: 0}
-  order2: {fileID: 0}
   order1Position: {fileID: 0}
   order2Position: {fileID: 0}
 --- !u!114 &526234125001943078
@@ -3979,6 +3951,7 @@ MonoBehaviour:
   boostRechargeTime: 10
   boostingDrag: 0.86
   boostingSteerModifier: 0.4
+  cameraResizer: {fileID: 0}
   playerIndex: 0
   phaseIndicator: {fileID: 0}
   checkPhaseStatus: 0
@@ -3992,6 +3965,8 @@ MonoBehaviour:
   debugDriftComplete: {fileID: 0}
   debugBoostabilityEnable: 0
   debugBoostability: {fileID: 0}
+  debugCSVEnable: 0
+  debugCSV: {fileID: 0}
 --- !u!114 &969288984619752539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4333,6 +4308,11 @@ MonoBehaviour:
   camerasToFollow:
   - {fileID: 0}
   viewPortRectDefault: {x: 0, y: 0, z: 1, w: 1}
+  playerRenderCamera: {fileID: 0}
+  menuUICamera: {fileID: 0}
+  drivingUICamera: {fileID: 0}
+  mainCamera: {fileID: 0}
+  phaseCamera: {fileID: 0}
 --- !u!1 &2219798652496916153
 GameObject:
   m_ObjectHideFlags: 0
@@ -4973,8 +4953,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b3aa2688b1d364ea6b3b29c8e65a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order1: {fileID: 0}
-  order2: {fileID: 0}
   order1Position: {fileID: 1565360610494173348}
   order2Position: {fileID: 3475647451280497041}
 --- !u!1 &4861582923259265998
@@ -5270,44 +5248,12 @@ MonoBehaviour:
     m_ActionName: Player/SwapCameraDebug[/XInputControllerWindows/dpad/down]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0d36002c-bac2-4e22-9321-a29007ea3bc4
-    m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/rightStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/rightStick/right,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+    m_ActionId: 7149b41a-3622-401e-8b8b-c637bed053dc
+    m_ActionName: UI/ReadyUp[/DualShock4GamepadHID/buttonSouth,/Keyboard/space]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 32dcf77c-5dbc-4755-a0d6-b28bb1eec00d
-    m_ActionName: UI/Submit[/Keyboard/enter,/XInputControllerWindows/buttonSouth]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 95455c07-4d2c-4a81-a88a-d2ab1c78e210
-    m_ActionName: UI/Cancel[/Keyboard/escape,/XInputControllerWindows/buttonEast]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 647d0c16-a30a-4e1f-bcab-426e44bf198e
-    m_ActionName: UI/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c758784d-6a0b-4e90-bf94-0d715dfba062
-    m_ActionName: UI/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8a0e1e84-063c-4c99-9051-18ae8cfc2ccf
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7d6234a1-ee47-4ea5-bcb6-b4e1474962d3
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 04715e4b-0d58-4c0c-aaff-aad684010928
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0d351e01-e5b3-4481-993a-299d207be88d
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9aa38074-808e-4fe8-9ec2-79830b7e5c41
-    m_ActionName: UI/TrackedDeviceOrientation
+    m_ActionId: c2fb24e1-e280-4486-9ec7-97f8b55ac6a5
+    m_ActionName: UI/UnReadyUp[/DualShock4GamepadHID/buttonEast,/Keyboard/backspace]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -5431,6 +5377,7 @@ MonoBehaviour:
   boostRechargeTime: 10
   boostingDrag: 0.88
   boostingSteerModifier: 0.6
+  cameraResizer: {fileID: 0}
   playerIndex: 0
   phaseIndicator: {fileID: 7577601632277122222}
   checkPhaseStatus: 0
@@ -5444,6 +5391,8 @@ MonoBehaviour:
   debugDriftComplete: {fileID: 0}
   debugBoostabilityEnable: 0
   debugBoostability: {fileID: 0}
+  debugCSVEnable: 0
+  debugCSV: {fileID: 0}
 --- !u!4 &5477889336603288230
 Transform:
   m_ObjectHideFlags: 0
@@ -5832,6 +5781,11 @@ MonoBehaviour:
   - {fileID: 418238104810524960}
   - {fileID: 8580955959752859882}
   viewPortRectDefault: {x: 0, y: 0, z: 1, w: 1}
+  playerRenderCamera: {fileID: 0}
+  menuUICamera: {fileID: 0}
+  drivingUICamera: {fileID: 0}
+  mainCamera: {fileID: 0}
+  phaseCamera: {fileID: 0}
 --- !u!4 &6624770273829416809
 Transform:
   m_ObjectHideFlags: 0
@@ -5965,7 +5919,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 8a0cce62cbf407942ada07e0ab1beaf3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 386b78d51ba69154dab24d7a6015b32b, type: 2}
+      objectReference: {fileID: 2100000, guid: 8c482109e8a15ce4e8a058fcd04f8f96, type: 2}
     - target: {fileID: -7511558181221131132, guid: 8a0cce62cbf407942ada07e0ab1beaf3, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
@@ -6010,7 +5964,7 @@ Transform:
   m_GameObject: {fileID: 9005196849430893904}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -7.5, y: 0, z: 11.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
