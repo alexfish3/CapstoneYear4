@@ -15,7 +15,7 @@ public class Order : MonoBehaviour
         Easy = 20,
         Medium = 40,
         Hard = 60,
-        Golden = 100
+        Golden = 69
     }
 
     private Order_Value value;
