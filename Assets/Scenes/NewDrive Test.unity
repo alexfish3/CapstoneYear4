@@ -2435,44 +2435,12 @@ MonoBehaviour:
     m_ActionName: Player/SwapCameraDebug[/XInputControllerWindows/dpad/down]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0d36002c-bac2-4e22-9321-a29007ea3bc4
-    m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/rightStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/rightStick/right,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+    m_ActionId: 7149b41a-3622-401e-8b8b-c637bed053dc
+    m_ActionName: UI/ReadyUp[/XInputControllerWindows/buttonSouth,/Keyboard/space]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 32dcf77c-5dbc-4755-a0d6-b28bb1eec00d
-    m_ActionName: UI/Submit[/Keyboard/enter,/XInputControllerWindows/buttonSouth]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 95455c07-4d2c-4a81-a88a-d2ab1c78e210
-    m_ActionName: UI/Cancel[/Keyboard/escape,/XInputControllerWindows/buttonEast]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 647d0c16-a30a-4e1f-bcab-426e44bf198e
-    m_ActionName: UI/Point[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: c758784d-6a0b-4e90-bf94-0d715dfba062
-    m_ActionName: UI/Click[/Mouse/leftButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8a0e1e84-063c-4c99-9051-18ae8cfc2ccf
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 7d6234a1-ee47-4ea5-bcb6-b4e1474962d3
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 04715e4b-0d58-4c0c-aaff-aad684010928
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 0d351e01-e5b3-4481-993a-299d207be88d
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9aa38074-808e-4fe8-9ec2-79830b7e5c41
-    m_ActionName: UI/TrackedDeviceOrientation
+    m_ActionId: c2fb24e1-e280-4486-9ec7-97f8b55ac6a5
+    m_ActionName: UI/UnReadyUp[/XInputControllerWindows/buttonEast,/Keyboard/backspace]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -3847,6 +3815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 5238646187092691461}
   waveText: {fileID: 2465534123998500044}
+  finalOrderText: {fileID: 0}
   placementText: {fileID: 2959407385693783006}
 --- !u!114 &3390802178836790205
 MonoBehaviour:
@@ -4298,11 +4267,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   liftHeight: 5
-  startingLiftHeight: -2
   respawnDuration: 2
   liftDuration: 2
+  ledgeOffset: -5
+  tombstoneOffset: 5
   respawnGravestone: {fileID: 0}
   control: {fileID: 0}
+  water:
+    serializedVersion: 2
+    m_Bits: 0
+  ground:
+    serializedVersion: 2
+    m_Bits: 0
+  buildingCheck:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &4443948003217886006
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4546,8 +4525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b3aa2688b1d364ea6b3b29c8e65a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  order1: {fileID: 0}
-  order2: {fileID: 0}
   order1Position: {fileID: 1565360610327409082}
   order2Position: {fileID: 3475647451447179407}
 --- !u!1 &4861582923426013904
@@ -5037,12 +5014,14 @@ MonoBehaviour:
   scooterNormal: {fileID: 7479402710954377225}
   sphere: {fileID: 7457067987333213780}
   inp: {fileID: 1944650258619330060}
+  orderHandler: {fileID: 4701012299743639852}
   accelerationPower: 40
   brakingPower: 40
   reversingPower: 30
   fallingDrag: 1
   groundBoostAmount: 100
   slowPatchMultiplier: 0.5
+  goldenOrderMultiplier: 0.95
   steeringPower: 100
   reverseSteeringPower: 40
   driftTurnScalar: 1.4
@@ -5055,6 +5034,7 @@ MonoBehaviour:
   boostRechargeTime: 1
   boostingDrag: 0.86
   boostingSteerModifier: 0.4
+  cameraResizer: {fileID: 0}
   playerIndex: 1
   phaseIndicator: {fileID: 7577601632378858928}
   checkPhaseStatus: 0
@@ -5560,6 +5540,9 @@ MonoBehaviour:
   playerRenderCamera: {fileID: 0}
   menuUICamera: {fileID: 0}
   drivingUICamera: {fileID: 0}
+  mainCamera: {fileID: 0}
+  phaseCamera: {fileID: 0}
+  enableCameraSwap: 1
 --- !u!4 &6624770273729810039
 Transform:
   m_ObjectHideFlags: 0

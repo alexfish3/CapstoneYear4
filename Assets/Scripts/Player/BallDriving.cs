@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class BallDriving : MonoBehaviour
 {
     private const float STEERING_MODEL_ROTATION = 15.0f; //How far the model rotates when steering normally
-    private const float DRIFTING_MODEL_ROTATION = 20.0f; //How far the model rotates when drifting
+    private const float DRIFTING_MODEL_ROTATION = 25.0f; //How far the model rotates when drifting
     private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
     private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
     private const float CSV_RATIO = 0.35f; //Don't touch
@@ -194,36 +194,44 @@ public class BallDriving : MonoBehaviour
             csv = currentForce / currentVelocity;
         }
 
+        float modelRotateAmount;
         if (drifting)
         {
-            rotationAmount = Drift(); //determines the actual rotation of the larger object
+            //Determines the actual rotation of the larger object
+            rotationAmount = Drift();
 
-            //Rotates just the model; purely for effect
+            //Determines model rotation
             float driftTargetAmount = (driftDirection > 0) ? RangeMutations.Map_Linear(leftStick, -1, 1, 0.5f, driftTurnScalar) : RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnScalar, 0.5f);
-            float modelRotateAmount = 90 + driftTargetAmount * driftDirection * DRIFTING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax);
-            scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(0, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
+            modelRotateAmount = 90 + driftTargetAmount * driftDirection * DRIFTING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax);
         }
         else if (reversing)
         {
             DirtyDriftDrop(); //only needed like 1% of the time but fixes a weird little collision behavior
             
+            //Determines actual rotation
             rotationAmount = leftStick * reverseSteeringPower;
             rotationAmount *= -RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax);
 
-            float modelRotateAmount = 90 + (leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax));
-            scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(0, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
+            //Determines model rotation
+            modelRotateAmount = 90 + (leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax));
         }
         else
         {
-            //determines the actual rotation of the larger object
+            //Determines the actual rotation of the larger object
             rotationAmount = leftStick * steeringPower;
             rotationAmount *= RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax + (boosting ? boostPower * CSV_RATIO : 0)); //scales steering by speed (also prevents turning on the spot)
             rotationAmount *= boosting ? boostingSteerModifier : 1.0f; //reduces steering if boosting
 
-            //Rotates just the model; purely for effect
-            float modelRotateAmount = 90 + (leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax) * (boosting ? boostingSteerModifier : 1.0f));
-            scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(0, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
+            //Determines model rotation
+            modelRotateAmount = 90 + (leftStick * STEERING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax) * (boosting ? boostingSteerModifier : 1.0f));
         }
+
+        //Applies model rotation
+        Quaternion intendedRotation = Quaternion.Euler(0, modelRotateAmount, scooterModel.localEulerAngles.z);
+        Quaternion newRotation = Quaternion.Lerp(scooterModel.localRotation, intendedRotation, 0.2f);
+        scooterModel.localRotation = newRotation;
+
+        //scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(89, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
 
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
 
@@ -493,7 +501,10 @@ public class BallDriving : MonoBehaviour
         // Where collision is disabled 
         ToggleCollision(true);
 
-        cameraResizer.SwapCameraRendering(false);
+        if (cameraResizer != null)
+        {
+            cameraResizer.SwapCameraRendering(false);
+        }
 
         yield return new WaitForSeconds(boostDuration);
 
