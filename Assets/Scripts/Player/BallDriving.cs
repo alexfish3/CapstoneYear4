@@ -11,6 +11,7 @@ public class BallDriving : MonoBehaviour
 {
     private const float STEERING_MODEL_ROTATION = 15.0f; //How far the model rotates when steering normally
     private const float DRIFTING_MODEL_ROTATION = 25.0f; //How far the model rotates when drifting
+    private const float MODEL_TILT_MULTIPLIER = 0.5f; //How much the model tilts compared to rotates
     private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
     private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
     private const float CSV_RATIO = 0.35f; //Don't touch
@@ -227,12 +228,11 @@ public class BallDriving : MonoBehaviour
         }
 
         //Applies model rotation
-        Quaternion intendedRotation = Quaternion.Euler(0, modelRotateAmount, scooterModel.localEulerAngles.z);
-        Quaternion newRotation = Quaternion.Lerp(scooterModel.localRotation, intendedRotation, 0.2f);
+        Quaternion intendedRotation = Quaternion.Euler((modelRotateAmount - 90f) * MODEL_TILT_MULTIPLIER, modelRotateAmount, 0);
+        Quaternion newRotation = Quaternion.Lerp(scooterModel.localRotation, intendedRotation, MODEL_ROTATION_TIME);
         scooterModel.localRotation = newRotation;
 
-        //scooterModel.localEulerAngles = Vector3.Lerp(scooterModel.localEulerAngles, new Vector3(89, modelRotateAmount, scooterModel.localEulerAngles.z), 0.2f);
-
+        //Rotates the control object
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
 
         DebugUIUpdate();
