@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 /// <summary>
 /// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position.
@@ -10,9 +11,12 @@ using UnityEngine.UI;
 public class BallDriving : MonoBehaviour
 {
     private const float STEERING_MODEL_ROTATION = 15.0f; //How far the model rotates when steering normally
-    private const float DRIFTING_MODEL_ROTATION = 25.0f; //How far the model rotates when drifting
+    private const float DRIFTING_MODEL_ROTATION = 30.0f; //How far the model rotates when drifting
     private const float MODEL_TILT_MULTIPLIER = 0.5f; //How much the model tilts compared to rotates
+    private const float DRIFTING_MODEL_TILT_MULTIPLIER = 0.8f; //How much again the model tilts compared to rotates when drifting (compounded with the regular one; stops the scooter from just leaning all the way over)
     private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
+    private const float DRIFT_HOP_AMOUNT = 0.25f; //How high the little pre-drift hop is
+    private const float DRIFT_HOP_TIME = 0.4f; //How fast the little hop is in seconds
     private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
     private const float CSV_RATIO = 0.35f; //Don't touch
 
@@ -228,7 +232,7 @@ public class BallDriving : MonoBehaviour
         }
 
         //Applies model rotation
-        Quaternion intendedRotation = Quaternion.Euler((modelRotateAmount - 90f) * MODEL_TILT_MULTIPLIER, modelRotateAmount, 0);
+        Quaternion intendedRotation = Quaternion.Euler((modelRotateAmount - 90f) * MODEL_TILT_MULTIPLIER * (drifting ? DRIFTING_MODEL_TILT_MULTIPLIER : 1), modelRotateAmount, 0);
         Quaternion newRotation = Quaternion.Lerp(scooterModel.localRotation, intendedRotation, MODEL_ROTATION_TIME);
         scooterModel.localRotation = newRotation;
 
@@ -367,7 +371,7 @@ public class BallDriving : MonoBehaviour
         {
             grounded = false;
         }
-        Debug.DrawRay(transform.position + Vector3.up, Vector3.down * GROUNDCHECK_DISTANCE, Color.blue);
+        Debug.DrawRay(transform.position + Vector3.up, Vector3.down * GROUNDCHECK_DISTANCE, Color.red);
 
         if (grounded)
         {
@@ -435,6 +439,10 @@ public class BallDriving : MonoBehaviour
             drifting = true;
 
             driftDirection = leftStick < 0 ? -1 : 1;
+
+            //Does a little hop does a little jump does a little skip
+            scooterModel.parent.DOComplete();
+            scooterModel.parent.DOPunchPosition(transform.up * DRIFT_HOP_AMOUNT, DRIFT_HOP_TIME, 5, 0);
         }
         else
         {
@@ -460,7 +468,7 @@ public class BallDriving : MonoBehaviour
             scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnScalar, driftTurnMinimum);
         }
 
-        driftPoints += (Time.deltaTime * (1 - driftBoostMode)) + (Time.deltaTime * scaledInput * driftBoostMode) * 100.0f;
+        driftPoints += (2 * Time.deltaTime * (1 - driftBoostMode)) + (Time.deltaTime * scaledInput * driftBoostMode) * 100.0f;
         return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax); //scales steering by speed (also prevents turning on the spot)
     }
 
