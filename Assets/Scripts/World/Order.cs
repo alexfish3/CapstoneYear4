@@ -30,6 +30,9 @@ public class Order : MonoBehaviour
     private OrderHandler playerDropped; // for cooldown with losing an order
     public OrderHandler PlayerDropped { get {  return playerDropped; } }
 
+    [Tooltip("Arrow that points to the dropoff")]
+    [SerializeField] private GameObject arrow;
+
     [Tooltip("Time between a player dropping a package and being able to pick it back up again")]
     [SerializeField] private int pickupCooldown = 3;
     private bool canPickup = true; // if a player can pickup this order
@@ -53,6 +56,13 @@ public class Order : MonoBehaviour
 
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
 
+    private void Update()
+    {
+        Vector3 newDir = arrow.transform.position - dropoff.position;
+        arrow.transform.rotation = Quaternion.LookRotation(newDir, Vector3.up);
+    }
+
+
     /// <summary>
     /// This method initializes the order with passed in values and sets its default location. It also initializes the beacon for this order.
     /// </summary>
@@ -61,6 +71,7 @@ public class Order : MonoBehaviour
     /// <param name="inValue">Value of the order</param>
     public void InitOrder(Transform inPickup, Transform inDropoff, Order_Value inValue)
     {
+        arrow.SetActive(false);
         pickup = inPickup;
         dropoff = inDropoff;
         value = inValue;
@@ -105,6 +116,7 @@ public class Order : MonoBehaviour
     /// </summary>
     public void Pickup(OrderHandler player)
     {
+        arrow.SetActive(true);
         playerHolding = player;
         if(value == Order_Value.Golden)
         {
@@ -122,6 +134,7 @@ public class Order : MonoBehaviour
     /// </summary>
     public void Drop(Vector3 newPosition)
     {
+        arrow.SetActive(false);
         RaycastHit hit;
         bool foundSpot = false;
         transform.LookAt(Vector3.zero);
