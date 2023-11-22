@@ -65,8 +65,12 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float driftBoostThreshold = 100.0f;
     [Tooltip("How much time vs turning amount is factored into drift boost. 0 is full time, 1 is full turning amount")]
     [SerializeField] private float driftBoostMode = 0.0f;
-    [Tooltip("The amount of speed granted by a successful drift")]
-    [SerializeField] private float driftBoost = 5.0f;
+    [Tooltip("The amount of speed granted by a first-tier successful drift")]
+    [SerializeField] private float driftBoost1 = 5.0f;
+    [Tooltip("The amount of speed granted by a second-tier successful drift")]
+    [SerializeField] private float driftBoost2 = 10.0f;
+    [Tooltip("The amount of speed granted by a second-tier successful drift")]
+    [SerializeField] private float driftBoost3 = 15.0f;
 
     [Header("Boosting")]
     [Tooltip("The speed power of the boost")]
@@ -124,6 +128,8 @@ public class BallDriving : MonoBehaviour
     private int driftDirection;
     private bool driftBoostAchieved = false;
     private float driftPoints = 0.0f;
+    private float driftBoost = 0.0f;
+    private int driftTier = 0;
 
     private bool groundBoostFlag = false;
     private bool groundSlowFlag = false;
@@ -262,8 +268,21 @@ public class BallDriving : MonoBehaviour
         //Adds the boost from a successful drift
         if (driftBoostAchieved)
         {
+            switch (driftTier)
+            {
+                case 1:
+                    driftBoost = driftBoost1;
+                    break;
+                case 2:
+                    driftBoost = driftBoost2;
+                    break;
+                case 3:
+                    driftBoost = driftBoost3;
+                    break;
+            }
             totalForce += driftBoost;
             driftBoostAchieved = false;
+            driftTier = 0;
         }
 
         //Adds the boost from rocket boosting
@@ -446,7 +465,7 @@ public class BallDriving : MonoBehaviour
         }
         else
         {
-            if (driftPoints >= driftBoostThreshold)
+            if (driftTier > 0)
             {
                 driftBoostAchieved = true;
             }
@@ -496,6 +515,20 @@ public class BallDriving : MonoBehaviour
         }
 
         driftPoints += (2 * Time.deltaTime * (1 - driftBoostMode)) + (Time.deltaTime * scaledInput * driftBoostMode) * 100.0f;
+
+        if (driftPoints > driftBoostThreshold) 
+        {
+            driftTier = 1;
+        }
+        if (driftPoints > (driftBoostThreshold * 2))
+        {
+            driftTier = 2;
+        }
+        if (driftPoints > (driftBoostThreshold * 3))
+        {
+            driftTier = 3;
+        }
+
         return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax); //scales steering by speed (also prevents turning on the spot)
     }
 
@@ -604,13 +637,23 @@ public class BallDriving : MonoBehaviour
 
         if (debugDriftCompleteEnable)
         {
-            if (driftPoints >= driftBoostThreshold)
+            switch (driftTier)
             {
-                debugDriftComplete.enabled = true;
-            }
-            else
-            {
-                debugDriftComplete.enabled = false;
+                case 1:
+                    debugDriftComplete.enabled = true;
+                    debugDriftComplete.color = Color.yellow;
+                    break;
+                case 2:
+                    debugDriftComplete.enabled = true;
+                    debugDriftComplete.color = Color.red;
+                    break;
+                case 3:
+                    debugDriftComplete.enabled = true;
+                    debugDriftComplete.color = Color.magenta;
+                    break;
+                default:
+                    debugDriftComplete.enabled = false;
+                    break;
             }
         }
 
