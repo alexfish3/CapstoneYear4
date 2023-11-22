@@ -195,6 +195,10 @@ public class BallDriving : MonoBehaviour
         {
             reversing = (rightTrig < leftTrig);
         }
+        if (reversing && rightTrig > leftTrig)
+        {
+            reversing = false;
+        }
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
         currentForce = reversing ? (reversingPower * leftTrig * (1 - rightTrig)) : (accelerationPower * rightTrig * (1 - leftTrig));
