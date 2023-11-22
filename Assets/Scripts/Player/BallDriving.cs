@@ -29,7 +29,8 @@ public class BallDriving : MonoBehaviour
     [Tooltip("Reference to the empty used for checking the scooter's normal to the ground")]
     [SerializeField] private Transform scooterNormal;
     [Tooltip("Reference to the movement sphere")]
-    [SerializeField] private GameObject sphere;
+    [SerializeField] private GameObject sphere; 
+    public GameObject Sphere { get { return sphere; } }
     [Tooltip("An input manager class, from the correlated InputReceiver object")]
     [SerializeField] private InputManager inp;
     [Tooltip("Reference to the order manager object")]
@@ -126,7 +127,10 @@ public class BallDriving : MonoBehaviour
 
     private bool groundBoostFlag = false;
     private bool groundSlowFlag = false;
-    private bool onMovingPlatform = false; // tells whether the player is on a moving platform
+
+    private bool onMovingPlatform = false; //tells whether the player is on a moving platform
+    private MovingPlatform currentMovingPlatform;
+    private int movingPlatformIndex; //a local copy of the index that the current moving platform recognizes this scooter as
 
     private bool boostInitialburst = false;
     private bool boosting = false;
@@ -378,25 +382,66 @@ public class BallDriving : MonoBehaviour
             scooterNormal.up = Vector3.Lerp(scooterNormal.up, hit.normal, Time.fixedDeltaTime * 10.0f);
             scooterNormal.Rotate(0, transform.eulerAngles.y, 0);
 
-            if (hit.collider.tag == "Speed")
+            switch (hit.collider.tag)
             {
-                groundBoostFlag = true;
+                case "Speed":
+                    groundBoostFlag = true;
+                    break;
+
+                case "TouchGrass":
+                    groundSlowFlag = true;
+                    break;
+
+                case "MovingPlatform":
+                    if (currentMovingPlatform == null)
+                    {
+                        onMovingPlatform = true;
+                        currentMovingPlatform = hit.collider.gameObject.GetComponent<MovingPlatform>();
+                        if ((movingPlatformIndex = currentMovingPlatform.AddToScooterList(this)) == -1)
+                        {
+                            Debug.LogError("Invalid Platform Index");
+                        }
+                    }
+                    break;
+
+                default:
+                    if (currentMovingPlatform != null)
+                    {
+                        onMovingPlatform = false;
+                        currentMovingPlatform.RemoveFromScooterList(movingPlatformIndex);
+                        currentMovingPlatform = null;
+                    }
+                    break;
             }
 
-            if (hit.collider.tag == "TouchGrass")
-            {
-                groundSlowFlag = true;
-            }
+            //if (hit.collider.tag == "Speed")
+            //{
+            //    groundBoostFlag = true;
+            //}
+            
+            //if (hit.collider.tag == "TouchGrass")
+            //{
+            //    groundSlowFlag = true;
+            //}
 
-            // checks moving platform and adjusts accordingly
-            if(hit.collider.tag == "MovingPlatform")
-            {
-                onMovingPlatform = true;
-            }
-            else
-            {
-                onMovingPlatform = false;
-            }
+            //// checks moving platform and adjusts accordingly
+            //if(hit.collider.tag == "MovingPlatform")
+            //{
+            //    onMovingPlatform = true;
+
+            //    currentMovingPlatform = hit.collider.gameObject.GetComponent<MovingPlatform>();
+            //    movingPlatformIndex = currentMovingPlatform.AddToScooterList(this);
+            //}
+            //else
+            //{
+            //    onMovingPlatform = false;
+
+            //    if (currentMovingPlatform != null)
+            //    {
+            //        currentMovingPlatform.RemoveFromScooterList(movingPlatformIndex);
+            //        currentMovingPlatform = null;
+            //    }
+            //}
         }
     }
 
