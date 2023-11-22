@@ -35,6 +35,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private InputManager inp;
     [Tooltip("Reference to the order manager object")]
     [SerializeField] private OrderHandler orderHandler;
+    [Tooltip("The boost trail component to enable and disable when boosting")]
+    [SerializeField] private TrailRenderer trailRenderer;
 
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
@@ -560,6 +562,7 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostActive()
     {
+        trailRenderer.enabled = true;
         phaseIndicator.SetHornGlow(0);
         boosting = true;
         boostAble = false;
@@ -586,6 +589,7 @@ public class BallDriving : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
+        trailRenderer.enabled = false;
         boosting = false;
         StartBoostCooldown();
     }
