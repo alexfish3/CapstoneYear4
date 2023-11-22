@@ -117,7 +117,7 @@ public class BallDriving : MonoBehaviour
 
     private float rotationAmount; //the amount to turn on any given frame
 
-    private bool reversing, grounded;
+    private bool stopped, reversing, grounded;
 
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
@@ -191,11 +191,13 @@ public class BallDriving : MonoBehaviour
             sphereBody.drag = startingDrag;
         }
 
-        float velocityTransformDot = Vector3.Dot(-scooterModel.transform.right, sphereBody.velocity.normalized);
-        reversing = velocityTransformDot < -0.5f ? true : false;
+        if (stopped)
+        {
+            reversing = (rightTrig < leftTrig);
+        }
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
-        currentForce = reversing ? (reversingPower * leftTrig) - (reversingPower * rightTrig) : (accelerationPower * rightTrig) - (brakingPower * leftTrig); //accelerating, braking, reversing
+        currentForce = reversing ? (reversingPower * leftTrig * (1 - rightTrig)) : (accelerationPower * rightTrig * (1 - leftTrig));
         currentForce = boosting ? accelerationPower : currentForce;
         currentVelocity = sphereBody.velocity.magnitude;
         if (currentVelocity != 0)
@@ -318,6 +320,11 @@ public class BallDriving : MonoBehaviour
         {
             sphereBody.velocity = new Vector3(0, sphereBody.velocity.y, 0);
             DirtyDriftDrop();
+            stopped = true;
+        }
+        else
+        {
+            stopped = false;
         }
 
         // Enables raycasting for boosting while in a phase
@@ -413,35 +420,6 @@ public class BallDriving : MonoBehaviour
                     }
                     break;
             }
-
-            //if (hit.collider.tag == "Speed")
-            //{
-            //    groundBoostFlag = true;
-            //}
-            
-            //if (hit.collider.tag == "TouchGrass")
-            //{
-            //    groundSlowFlag = true;
-            //}
-
-            //// checks moving platform and adjusts accordingly
-            //if(hit.collider.tag == "MovingPlatform")
-            //{
-            //    onMovingPlatform = true;
-
-            //    currentMovingPlatform = hit.collider.gameObject.GetComponent<MovingPlatform>();
-            //    movingPlatformIndex = currentMovingPlatform.AddToScooterList(this);
-            //}
-            //else
-            //{
-            //    onMovingPlatform = false;
-
-            //    if (currentMovingPlatform != null)
-            //    {
-            //        currentMovingPlatform.RemoveFromScooterList(movingPlatformIndex);
-            //        currentMovingPlatform = null;
-            //    }
-            //}
         }
     }
 
