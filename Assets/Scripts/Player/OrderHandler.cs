@@ -48,14 +48,12 @@ public class OrderHandler : MonoBehaviour
                     order2 = inOrder;
                     order2.transform.position = order2Position.position;
                     order2.transform.parent = order2Position;
-                    order2.transform.rotation = order2Position.rotation;
                 }
                 else
                 {
                     order1 = inOrder;
                     order1.transform.position = order1Position.position;
                     order1.transform.parent = order1Position;
-                    order1.transform.rotation = order1Position.rotation;
                 }
                 inOrder.Pickup(this);
             }

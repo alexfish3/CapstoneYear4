@@ -30,7 +30,7 @@ public class Order : MonoBehaviour
     private OrderHandler playerDropped; // for cooldown with losing an order
     public OrderHandler PlayerDropped { get {  return playerDropped; } }
 
-    [Tooltip("Arrow that points to the dropoff")]
+    [Tooltip("Arrow that points to the dropoff.")]
     [SerializeField] private GameObject arrow;
 
     [Tooltip("Time between a player dropping a package and being able to pick it back up again")]
@@ -58,8 +58,14 @@ public class Order : MonoBehaviour
 
     private void Update()
     {
-        Vector3 newDir = arrow.transform.position - dropoff.position;
-        arrow.transform.rotation = Quaternion.LookRotation(newDir, Vector3.up);
+        if (playerHolding != null)
+        {
+            this.gameObject.transform.forward = playerHolding.transform.forward;
+        }
+
+        Vector3 newDir = (arrow.transform.position - dropoff.position);
+        newDir = new Vector3(newDir.x, 0, newDir.z);
+        arrow.transform.rotation = Quaternion.LookRotation(newDir, Vector3.up) * Quaternion.Euler(0,1,0);
     }
 
 
@@ -116,6 +122,7 @@ public class Order : MonoBehaviour
     /// </summary>
     public void Pickup(OrderHandler player)
     {
+        this.gameObject.transform.rotation = Quaternion.identity;
         arrow.SetActive(true);
         playerHolding = player;
         if(value == Order_Value.Golden)
