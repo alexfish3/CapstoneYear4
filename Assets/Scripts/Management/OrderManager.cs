@@ -26,6 +26,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("Time it takes in seconds for a wave to be completed")]
     [SerializeField] private float waveLengthInSeconds = 20f;
     private int wave = 0;
+    public int Wave { get { return wave; } }
+    private int maxWave = 0;
+    public int MaxWave { get { return maxWave; } }
     private float waveTimer = 0f;
 
     public float WaveTimer { get { return waveTimer; } }
@@ -81,6 +84,10 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapFinalPackage += SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave += IncrementWave;
         HotKeys.Instance.onDecrementWave += DecrementWave;
+
+        int[] waves = {maxEasy.Length, maxMedium.Length, maxHard.Length};
+
+        maxWave = Mathf.Max(waves);
     }
 
     private void OnDisable()

@@ -1021,7 +1021,6 @@ MonoBehaviour:
   ghostRenderer: {fileID: 5310133993018028932}
   hornGlowRef: {fileID: 2100000, guid: a3f6a7172c4400847ab3098fcd8e05a4, type: 2}
   hornGlow: {fileID: 0}
-  trailRenderer: {fileID: 0}
 --- !u!114 &4701012300698348498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,6 +1049,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 5238646187748661499}
   waveText: {fileID: 2465534125224953394}
+  centerText: {fileID: 2489381287605435643}
   finalOrderText: {fileID: 2675045052423948669}
   placementText: {fileID: 2959407384467460384}
 --- !u!114 &4869093232798437028
@@ -2712,6 +2712,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7818532403728478082, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_text
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2725,6 +2729,17 @@ RectTransform:
 --- !u!114 &2465534125224953394 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7798643448814703947, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+  m_PrefabInstance: {fileID: 5624167849911391097}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2489381287605435643 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7818532403728478082, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
   m_PrefabInstance: {fileID: 5624167849911391097}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
