@@ -6,13 +6,14 @@ using Unity.VisualScripting;
 
 public class PhaseIndicator : MonoBehaviour
 {
-    [Range(0f, 3f)]
+
+    [SerializeField] float intensity = 3;
+
+    [Range(0f, 2f)]
     [SerializeField] float hornGlowValue = 0;
-    public float hornValueMax = 6f;
+    public float hornValueMax;
 
-    //[SerializeField] Color hornColor;
     [SerializeField] Color readyColor;
-
     [SerializeField] Gradient hornGlowGraident;
   
     [Header("Material Info")]
@@ -35,7 +36,7 @@ public class PhaseIndicator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float factor = Mathf.Pow(2, hornGlowValue);
+        float factor = Mathf.Pow(2, (hornGlowValue + intensity));
 
         // Ready boost color
         if (hornGlowValue >= hornValueMax - 0.01f)
