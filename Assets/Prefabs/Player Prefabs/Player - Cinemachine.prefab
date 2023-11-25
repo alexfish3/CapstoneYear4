@@ -144,13 +144,13 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2706977427480764783}
+  - {fileID: 3495660167286010803}
   - {fileID: 6904994907174394890}
   - {fileID: 5087469707645805696}
   - {fileID: 4105836804644281271}
   - {fileID: 1641834967648323288}
   - {fileID: 5515579067765994065}
   - {fileID: 415302538325244934}
-  - {fileID: 3495660167286010803}
   m_Father: {fileID: 5289018042734306124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &978174962275233661
@@ -163,7 +163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3495660167286010803}
   - component: {fileID: 3058203835693817179}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CM vcam1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1147,7 +1147,7 @@ GameObject:
   - component: {fileID: 7119968728075224463}
   - component: {fileID: 8941434443825448304}
   - component: {fileID: 2789763561936170332}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: cm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1705,6 +1705,7 @@ Transform:
   - {fileID: 9073679027257769206}
   - {fileID: 3891876976613540359}
   - {fileID: 2456079110098798624}
+  - {fileID: 4091663344943761556}
   m_Father: {fileID: 2487563408603273116}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3575753304509721870
@@ -1856,7 +1857,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compassImage: {fileID: 2395950110701783665}
+  compassCalc: {fileID: 4091663344943761556}
   player: {fileID: 5289018042734306124}
+  playerCam: {fileID: 7941610147128612290}
   iconHeight: -65
   iconPrefab: {fileID: 3691895907627439231, guid: 13f91f37558f51643ac77d60dac451e9, type: 3}
   compassUIObjects: []
@@ -2088,6 +2091,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6734786119333763508
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4091663344943761556}
+  m_Layer: 7
+  m_Name: Compass Calc
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4091663344943761556
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6734786119333763508}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.35, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5289018042734306124}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6876966305405918322
 GameObject:
   m_ObjectHideFlags: 0
@@ -2594,8 +2628,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8501127692924196179}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.1546695, y: -0.050692823, z: 0.007946861, w: -0.98663294}
-  m_LocalPosition: {x: 44.804543, y: 3.293374, z: 98.09298}
+  m_LocalRotation: {x: -0.15487324, y: 0.000000012618358, z: -0.000000001978112, w: -0.98793435}
+  m_LocalPosition: {x: 0.00000017881439, y: 2.25, z: -4.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

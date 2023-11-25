@@ -11,6 +11,7 @@ public class CompassIconUI : MonoBehaviour
     public CompassMarker objectReference;
     public TMP_Text distanceText;
     public Animator animator;
+    public int distance;
 
     [Tooltip("Keeps track if the value has been faded on the ui or not")]
     [SerializeField] bool faded = false;
@@ -37,7 +38,7 @@ public class CompassIconUI : MonoBehaviour
     ///<summary>
     /// Updates the distance text on the icon, appends the m on the int distance. Josh's Idea
     ///</summary>
-    public void SetDistanceText(int distance)
+    public void SetDistanceText()
     {
         if(Constants.DISTANCE_TYPE == Constants.DistanceType.Meters)
         {
