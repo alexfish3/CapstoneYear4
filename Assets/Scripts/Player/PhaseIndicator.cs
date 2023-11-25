@@ -8,7 +8,7 @@ public class PhaseIndicator : MonoBehaviour
 {
     [Range(0f, 3f)]
     [SerializeField] float hornGlowValue = 0;
-    public float hornValueMax = 3f;
+    public float hornValueMax = 6f;
 
     //[SerializeField] Color hornColor;
     [SerializeField] Color readyColor;
