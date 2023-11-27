@@ -106,7 +106,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             case 1:
                 ColliderObject.layer = 10; // Player 1;
                 ballDriving.playerIndex = 1;
-                baseCam.cullingMask |= (1<<10);
+                baseCam.cullingMask |= (1 << 10);
                 playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[0];
                 break;
             case 2:
@@ -128,6 +128,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[3];
                 break;
         }
+
+        // Updates the virtual cameras based on the player number
+        playerCameraResizer.UpdateVirtualCameras(playerCount);
 
         // Update the naming scheme of the input reciever
         playerInput.gameObject.name = "Player " + playerCount.ToString();

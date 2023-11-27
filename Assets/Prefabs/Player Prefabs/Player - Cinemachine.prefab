@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 3495660167286010803}
   - component: {fileID: 3058203835693817179}
   m_Layer: 2
-  m_Name: CM vcam1
+  m_Name: Virtual Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -614,6 +614,8 @@ MonoBehaviour:
   - {fileID: 6388722889421940149}
   viewPortRectDefault: {x: 0, y: 0, z: 1, w: 1}
   playerRenderCamera: {fileID: 9215628373192665516}
+  virtualCameras:
+  - {fileID: 978174962275233661}
   menuUICamera: {fileID: 4808158917890122173}
   drivingUICamera: {fileID: 3121335639242540451}
   mainCamera: {fileID: 7941610147128612290}
@@ -2746,7 +2748,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowDebugText: 0
-  m_ShowCameraFrustum: 1
+  m_ShowCameraFrustum: 0
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
   m_UpdateMethod: 2

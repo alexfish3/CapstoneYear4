@@ -18,6 +18,9 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] Camera playerRenderCamera;
     public Camera PlayerRenderCamera { get { return playerRenderCamera; } }
 
+    [Header("Cinemachine Info")]
+    [SerializeField] GameObject[] virtualCameras;
+
     [Header("Canvas References")]
     [SerializeField] Camera menuUICamera;
     [SerializeField] Camera drivingUICamera;
@@ -28,6 +31,7 @@ public class PlayerCameraResizer : MonoBehaviour
 
     bool initalized = false;
     [SerializeField] bool enableCameraSwap = true;
+
     // Update is called once per frame
     void Update()
     {
@@ -50,6 +54,28 @@ public class PlayerCameraResizer : MonoBehaviour
 
             initalized = true;
         }
+    }
+
+    public void UpdateVirtualCameras(int playerNumber)
+    {
+        int cameraLayer = 0;
+
+        // Gets camera layer based on player
+        if (playerNumber == 1)
+            cameraLayer = 17;
+        else if (playerNumber == 2)
+            cameraLayer = 18;
+        else if (playerNumber == 3)
+            cameraLayer = 19;
+        else if (playerNumber == 4)
+            cameraLayer = 20;
+
+        // Loops and sets all virtual cams to layer
+        foreach(GameObject virtualCam in virtualCameras)
+            virtualCam.layer = cameraLayer;
+
+        // Add via bitwise to include the camera layer
+        referenceCam.cullingMask |= (1 << cameraLayer);
     }
 
     ///<summary>
