@@ -29,7 +29,8 @@ public class OrderBeacon : MonoBehaviour
     /// <param name="inOrder">Order the beacon will track</param>
     public void InitBeacon(Order inOrder, Color beaconColor)
     {
-        this.transform.parent = OrderManager.Instance.transform;
+        meshRenderer.enabled = true;
+        //this.transform.parent = OrderManager.Instance.transform;
         order = inOrder;
 
         color = beaconColor;
@@ -45,6 +46,7 @@ public class OrderBeacon : MonoBehaviour
     public void SetDropoff(Transform dropoff)
     {
         this.transform.position = dropoff.position;
+        this.transform.parent = OrderManager.Instance.transform;
         meshRenderer.material.color = new Color(1,1,1,0.5f);
         isPickup = false;
         order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
@@ -72,10 +74,8 @@ public class OrderBeacon : MonoBehaviour
         {
             order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
         }
-        if(gameObject != null)
-        {
-            Destroy(gameObject);
-        }
+        meshRenderer.enabled = false;
+        isPickup = true;
     }
     /// <summary>
     /// Basic OnTriggerEnter, will execute whenever something enters the beacon's light.

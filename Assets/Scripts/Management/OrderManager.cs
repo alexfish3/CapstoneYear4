@@ -15,10 +15,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     public bool CanSpawnOrders { get { return canSpawnOrders; } set { canSpawnOrders = value; } }
 
     [Header("Game Information")]
-    [Tooltip("Reference to the Order GameObject prefab")]
-    [SerializeField] private GameObject orderPrefab;
-    private GameObject finalOrderGO;
-    private Order finalOrder;
+    [SerializeField] private Order finalOrder;
     [Tooltip("Maxium number of orders present in the scene at a time. Array represents different waves")]
     [SerializeField]
     private int[] maxEasy, maxMedium, maxHard; // didn't think this variable name through
@@ -46,25 +43,25 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("Multiplyer for final order increment. 1 will have it add a dollar to the value every second.")]
     [SerializeField] private float goldIncrementMultiplyer = 1f;
 
+    [Tooltip("The master list of all orders in the game.")]
+    [SerializeField] private List<Order> totalOrders;
+    [SerializeField] private List<Order> easy;
+    [SerializeField] private List<Order> medium;
+    [SerializeField] private List<Order> hard;
+
     [Header("World Information")]
-    [Tooltip("List of the pickup points for deliveries")]
-    [SerializeField] private List<Transform> pickupWaypoints;
-
-    [Tooltip("List of the dropoff points for deliveries")]
-    [SerializeField] private List<Transform> dropoffWaypoints;
-
     [Tooltip("Waypoints for golden order")]
     [SerializeField] private Transform goldenPickup, goldenDropoff;
     private bool finalOrderActive = false;
     public bool FinalOrderActive { get { return finalOrderActive; } }
-    private float finalOrderValue = (float)Order.Order_Value.Golden;
-    public int FinalOrderValue { get { return (int)finalOrderValue; } }
+    private float finalOrderValue = (float)Constants.OrderValue.Golden;
+    public int FinalOrderValue { get { return (int)finalOrderValue; } set { finalOrderValue = (float)value; } }
 
-    private List<Order> orders = new List<Order>(); // list of all the orders in the game at any time
+    private List<Order> activeOrders = new List<Order>(); // list of all the orders in the game at any time
 
-    [Tooltip("Minimum distances for respective difficulty")]
+/*    [Tooltip("Minimum distances for respective difficulty")]
     [SerializeField]
-    private int easyDistance, mediumDistance, hardDistance;
+    private int easyDistance, mediumDistance, hardDistance;*/
 
     private IEnumerator easySpawnCoroutine, mediumSpawnCoroutine, hardSpawnCoroutine; // coroutines for managing cooldowns of the order spawns
 
@@ -84,10 +81,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapFinalPackage += SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave += IncrementWave;
         HotKeys.Instance.onDecrementWave += DecrementWave;
-
-        int[] waves = {maxEasy.Length, maxMedium.Length, maxHard.Length};
-
-        maxWave = Mathf.Max(waves);
     }
 
     private void OnDisable()
@@ -97,7 +90,30 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapFinalPackage -= SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave -= IncrementWave;
         HotKeys.Instance.onDecrementWave -= DecrementWave;
+    }
 
+    private void Start()
+    {
+        int[] waves = { maxEasy.Length, maxMedium.Length, maxHard.Length };
+        maxWave = Mathf.Max(waves);
+
+        for(int i=0;i<totalOrders.Count();i++)
+        {
+            switch (totalOrders[i].Value)
+            {
+                case Constants.OrderValue.Easy:
+                    easy.Add(totalOrders[i]);
+                    break;
+                case Constants.OrderValue.Medium:
+                    medium.Add(totalOrders[i]); 
+                    break;
+                case Constants.OrderValue.Hard:
+                    hard.Add(totalOrders[i]);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     private void Update()
@@ -115,30 +131,26 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         {
             if (canSpawnOrders)
             {
-                if (orders.Count >= 0)
+                if (activeOrders.Count >= 0)
                 {
                     if (cooledDown)
                     {
                         StopEasySpawn();
                         StopMediumSpawn();
                         StopHardSpawn();
-                        if ((float)currEasy / orders.Count() < easyPercentage || currEasy == 0) // if the number of easy orders is below the quota
+                        if (easy.Count > 0 && ((float)currEasy / activeOrders.Count() < easyPercentage || currEasy == 0)) // if the number of easy orders is below the quota
                         {
                             StartEasySpawn();
                         }
-                        else if ((float)currMedium / orders.Count() < mediumPercentage || currMedium == 0) // same for the medium orders
+                        else if (medium.Count > 0 && ((float)currMedium / activeOrders.Count() < mediumPercentage || currMedium == 0)) // same for the medium orders
                         {
                             StartMediumSpawn();
                         }
-                        else if ((float)currHard / orders.Count() < hardPercentage || currHard == 0) // and the hard orders
+                        else if (hard.Count > 0 && ((float)currHard / activeOrders.Count() < hardPercentage || currHard == 0)) // and the hard orders
                         {
                             StartHardSpawn();
                         }
                     }
-                }
-                else // to be executed for the first order
-                {
-                    //StartEasySpawn();
                 }
             }
             else
@@ -148,7 +160,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 StopHardSpawn();
                 cooledDown = true;
             }
-            canSpawnOrders = orders.Count() >= maxOrders ? false : true;
+            canSpawnOrders = activeOrders.Count() >= maxOrders ? false : true;
         }
         else if(!finalOrderActive && waveTimer <= 0)
         {
@@ -163,16 +175,13 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void InitGame()
     {
+        finalOrder.EraseGoldWithoutDelivering();
         finalOrderActive = false;
         spawnNormalPackages = true;
         waveTimer = waveLengthInSeconds;
         wave = 0;
         canSpawnOrders = true;
         EnableSpawning();
-        if(finalOrder != null)
-        {
-            finalOrder.EraseGoldWithoutDelivering();
-        }
     }
 
     /// <summary>
@@ -227,9 +236,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// <param name="order">Order to be added to the list</param>
     public void AddOrder(Order order)
     {
-        if(!orders.Contains(order))
+        if(!activeOrders.Contains(order))
         {
-            orders.Add(order);
+            activeOrders.Add(order);
             OnDeleteActiveOrders += order.EraseOrder;
         }
     }
@@ -240,27 +249,25 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// <param name="order">Order to be removed</param>
     public void RemoveOrder(Order order)
     {
-        if(orders.Contains(order))
+        if(activeOrders.Contains(order))
         {
-            orders.Remove(order);
+            switch(order.Value)
+            {
+                case Constants.OrderValue.Easy:
+                    easy.Add(order);
+                    break;
+                case Constants.OrderValue.Medium:
+                    medium.Add(order); 
+                    break;
+                case Constants.OrderValue.Hard:
+                    hard.Add(order);
+                    break;
+                default:
+                    break;
+            }
+            order.transform.parent = this.transform;
+            activeOrders.Remove(order);
             OnDeleteActiveOrders -= order.EraseOrder;
-        }
-    }
-
-    /// <summary>
-    /// This method adds a pickup and dropoff waypoint to their respective lists if they aren't already in the lists. Meant to be used when destroying an order so another could use those waypoints.
-    /// </summary>
-    /// <param name="pickup">Pickup waypoint to be added to pickup list</param>
-    /// <param name="dropoff">Dropoff waypoint to be added to dropoff list</param>
-    public void AddPickupDropoff(Transform pickup, Transform dropoff)
-    {
-        if(!pickupWaypoints.Contains(pickup))
-        {
-            pickupWaypoints.Add(pickup);
-        }
-        if(!dropoffWaypoints.Contains(dropoff))
-        {
-            dropoffWaypoints.Add(dropoff);
         }
     }
 
@@ -268,55 +275,39 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// This method attempts to spawn an order based on a random pickup waypoint and its proximity to other dropoff waypoints. If it fails it will return without doing anything.
     /// </summary>
     /// <param name="value">Value of the package to be spawned (Easy, Medium, or Hard)</param>
-    private void SpawnOrder(Order.Order_Value value)
+    private void SpawnOrder(Constants.OrderValue value)
     {
-        Debug.Log(value + " order being spawned"); // FOR TESTING
-        float minDist, maxDist; // maximum and minimum distances to the dropoff waypoints
-        GameObject newOrderGO = null; // the GameObject we're creating
-
-        while (newOrderGO == null)
+        Order nextOrder;
+        switch (value)
         {
-            switch (value) // determines max and min distances based on passed in value
-            {
-                case Order.Order_Value.Easy:
-                    maxDist = mediumDistance;
-                    minDist = easyDistance;
-                    break;
-                case Order.Order_Value.Medium:
-                    maxDist = hardDistance;
-                    minDist = mediumDistance;
-                    break;
-                default:
-                    maxDist = Mathf.Infinity;
-                    minDist = hardDistance;
-                    break;
-            }
-
-            // checks for a possible spawn and dropoff location
-            int startIndex = UnityEngine.Random.Range(0, pickupWaypoints.Count / 2);
-            for(int i=startIndex; i<pickupWaypoints.Count; i++)
-            {
-                Transform pickup = pickupWaypoints[i];
-                foreach (Transform dropoff in dropoffWaypoints)
+            case (Constants.OrderValue.Easy):
+                if (easy.Count == 0)
                 {
-                    float distance = Vector3.Distance(pickup.position, dropoff.position);
-                    if (distance >= minDist && distance <= maxDist)
-                    {
-                        newOrderGO = Instantiate(orderPrefab, this.transform); // creates a new order, sets this as its parent
-                        Order newOrder = newOrderGO.GetComponent<Order>(); // orderPrefab should have an Order script on it
-                        newOrder.InitOrder(pickup, dropoff, value); // next couple of lines are just initialization of the new order
-                        AddOrder(newOrder);
-                        dropoffWaypoints.Remove(dropoff);
-                        pickupWaypoints.Remove(pickup);
-                        IncrementCounters(value, 1);
-                        Debug.Log(value + " order successfully spawned"); // FOR TESTING
-                        return; // since we've spawned and initialized the order, we can return
-                    }
+                    return;
                 }
-            }
-            Debug.Log(value + " order failed to spawn"); // FOR TESTING
-            return; // since we've ran through every possible spawn, return without spawning anything
+                nextOrder = easy[0];
+                easy.Remove(nextOrder);
+                break;
+            case (Constants.OrderValue.Medium):
+                if (medium.Count == 0)
+                {
+                    return;
+                }
+                nextOrder = medium[0];
+                medium.Remove(nextOrder);
+                break;
+            case (Constants.OrderValue.Hard):
+                if(hard.Count == 0)
+                {
+                    return;
+                }
+                nextOrder = hard[0];
+                hard.Remove(nextOrder);
+                break;
+            default: // placeholder ?
+                return;
         }
+        nextOrder.InitOrder();
     }
 
     /// <summary>
@@ -324,18 +315,18 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     /// <param name="value">Value of the counter you want to increment (Easy, Medium, Hard)</param>
     /// <param name="amount">Amount you want to increment by (typically +1 or -1)</param>
-    public void IncrementCounters(Order.Order_Value value, int amount)
+    public void IncrementCounters(Constants.OrderValue value, int amount)
     {
         if(amount == -1 && scarcityMode) { return; } // won't let you count down orders on scarcity mode
         switch(value)
         {
-            case Order.Order_Value.Easy:
+            case Constants.OrderValue.Easy:
                 currEasy+=amount;
                 break;
-            case Order.Order_Value.Medium:
+            case Constants.OrderValue.Medium:
                 currMedium+=amount;
                 break;
-            case Order.Order_Value.Hard:
+            case Constants.OrderValue.Hard:
                 currHard+=amount;
                 break;
             default:
@@ -372,17 +363,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void SpawnFinalOrder()
     {
-        finalOrderValue = (int)Order.Order_Value.Golden;
-        finalOrderActive = true;
         OnDeleteActiveOrders?.Invoke();
-        if(finalOrder != null)
-        {
-            finalOrder.EraseGoldWithoutDelivering();
-            Destroy(finalOrderGO);
-        }
-        finalOrderGO = Instantiate(orderPrefab, goldenPickup);
-        finalOrder = finalOrderGO.GetComponent<Order>();
-        finalOrder.InitOrder(goldenPickup, goldenDropoff, Order.Order_Value.Golden);
+        finalOrderActive = true;
+        finalOrder.InitOrder();
     }
 
     /// <summary>
@@ -400,28 +383,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         {
             GameManager.Instance.SetGameState(GameState.Results);
         }
-    }
-
-    /// <summary>
-    /// Will return the value of an order that will spawn given a specific distance. RETURNS GOLDEN IF DISTANCE IS INVALID.
-    /// </summary>
-    /// <param name="distance">Distance to be tested.</param>
-    /// <returns></returns>
-    public Order.Order_Value GetValueOfDistance(float distance)
-    {
-        if (distance > easyDistance && distance < mediumDistance)
-        {
-            return Order.Order_Value.Easy;
-        }
-        else if (distance > mediumDistance && distance < hardDistance)
-        {
-            return Order.Order_Value.Medium;
-        }
-        else if (distance > hardDistance)
-        {
-            return Order.Order_Value.Hard;
-        } 
-        return Order.Order_Value.Golden;
     }
 
     // methods to start/stop coroutines
@@ -484,7 +445,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     {
         cooledDown = false;
         yield return new WaitForSeconds(cooldownTime);
-        SpawnOrder(Order.Order_Value.Easy);
+        SpawnOrder(Constants.OrderValue.Easy);
         cooledDown = true;
     }
 
@@ -496,7 +457,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     {
         cooledDown = false;
         yield return new WaitForSeconds(cooldownTime);
-        SpawnOrder(Order.Order_Value.Medium);
+        SpawnOrder(Constants.OrderValue.Medium);
         cooledDown = true;
     }
 
@@ -508,7 +469,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     {
         cooledDown = false;
         yield return new WaitForSeconds(cooldownTime);
-        SpawnOrder(Order.Order_Value.Hard);
+        SpawnOrder(Constants.OrderValue.Hard);
         cooledDown = true;
     }
 }

@@ -7,22 +7,17 @@ using UnityEngine;
 /// </summary>
 public class Order : MonoBehaviour
 {
-    /// <summary>
-    /// Value of an order.
-    /// </summary>
-    public enum Order_Value
-    {
-        Easy = 20,
-        Medium = 40,
-        Hard = 60,
-        Golden = 69
-    }
 
-    private Order_Value value;
-    public Order_Value Value { get { return value; } }
+    [SerializeField] private Constants.OrderValue value;
+    public Constants.OrderValue Value { get { return value; } }
+
+    [SerializeField] private bool isActive = false;
+    public bool IsActive { get { return isActive; } set { isActive = value; } }
     private MeshRenderer meshRenderer;
-    private Transform pickup;
-    private Transform dropoff;
+
+    
+    [SerializeField] private Transform pickup;
+    [SerializeField] private Transform dropoff;
     private Transform lastGrounded;
     public Transform LastGrounded { get { return lastGrounded; } set { lastGrounded = value;} }
     private OrderHandler playerHolding = null;
@@ -40,15 +35,14 @@ public class Order : MonoBehaviour
     [Tooltip("Default height of the order")]
     [SerializeField] private float height = 4.43f;
 
-    [Tooltip("Reference to the beacon prefab this class creates")]
-    [SerializeField] private GameObject beaconPrefab;
-    private OrderBeacon beacon;
+    [Tooltip("Reference to the beacon on this prefab")]
+    [SerializeField] private OrderBeacon beacon;
 
     [Tooltip("Reference to the compass marker component on this object")]
     [SerializeField] CompassMarker compassMarker;
     [SerializeField] Sprite[] possiblePackageTypes;
 
-    [Tooltip("The hdr color options for the different tiers of packages")]
+    [Tooltip("The HDR color options for the different tiers of packages")]
     [SerializeField][ColorUsageAttribute(true, true)]public Color[] packageColors;
 
     [Tooltip("Layermasks for respawn logic. Should be set to building phase checker, water (ignore raycast), and ground")]
@@ -56,8 +50,14 @@ public class Order : MonoBehaviour
 
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
 
+    private void Start()
+    {
+        meshRenderer = GetComponent<MeshRenderer>();
+    }
     private void Update()
     {
+        meshRenderer.enabled = isActive;
+        beacon.gameObject.SetActive(isActive);
         if (playerHolding != null)
         {
             this.gameObject.transform.forward = playerHolding.transform.forward;
@@ -75,17 +75,12 @@ public class Order : MonoBehaviour
     /// <param name="inPickup">Order's pickup point</param>
     /// <param name="inDropoff">Order's dropoff point</param>
     /// <param name="inValue">Value of the order</param>
-    public void InitOrder(Transform inPickup, Transform inDropoff, Order_Value inValue)
+    public void InitOrder()
     {
+        OrderManager.Instance.AddOrder(this);
+        isActive = true;
         arrow.SetActive(false);
-        pickup = inPickup;
-        dropoff = inDropoff;
-        value = inValue;
-
         this.transform.position = pickup.position;
-
-        beaconPrefab = Instantiate(beaconPrefab);
-        beacon = beaconPrefab.GetComponent<OrderBeacon>();
         
         // setting the color of the order
         meshRenderer = GetComponent<MeshRenderer>();
@@ -94,16 +89,16 @@ public class Order : MonoBehaviour
         int packageType = 0;
         switch (value)
         {
-            case Order_Value.Easy:
+            case Constants.OrderValue.Easy:
                 packageType = 0;
                 break;
-            case Order_Value.Medium:
+            case Constants.OrderValue.Medium:
                 packageType = 1;
                 break;
-            case Order_Value.Hard:
+            case Constants.OrderValue.Hard:
                 packageType = 2;
                 break;
-            case Order_Value.Golden:
+            case Constants.OrderValue.Golden:
                 packageType = 3;
                 break;
         }
@@ -113,7 +108,6 @@ public class Order : MonoBehaviour
         Color beaconColor = new Color(packageColors[packageType].r, packageColors[packageType].g, packageColors[packageType].b, 0.3f);
         beacon.InitBeacon(this, beaconColor);
         compassMarker.icon = possiblePackageTypes[packageType];
-
         compassMarker.InitalizeCompassUIOnAllPlayers();
     }
     
@@ -125,7 +119,7 @@ public class Order : MonoBehaviour
         this.gameObject.transform.rotation = Quaternion.identity;
         arrow.SetActive(true);
         playerHolding = player;
-        if(value == Order_Value.Golden)
+        if(value == Constants.OrderValue.Golden)
         {
             playerHolding.HasGoldenOrder = true;
         }
@@ -145,9 +139,9 @@ public class Order : MonoBehaviour
         RaycastHit hit;
         bool foundSpot = false;
         transform.LookAt(Vector3.zero);
-        //transform.rotation = Quaternion.Euler(0,transform.rotation.y,0);
+
         // adjusts position if necessary
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 20; i++)
         {
             if(Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, ground) && Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, water)
                 && !Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, buildingCheck))
@@ -167,7 +161,7 @@ public class Order : MonoBehaviour
         transform.position = newPosition;
         this.transform.parent = OrderManager.Instance.transform;
         beacon.ResetPickup();
-        if(value == Order_Value.Golden)
+        if(value == Constants.OrderValue.Golden)
         {
             playerHolding.HasGoldenOrder = false;
         }
@@ -180,40 +174,42 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseOrder()
     {
+        Debug.Log("erasing order");
+        arrow.SetActive(false);
         // Removes the ui from all players
         compassMarker.RemoveCompassUIFromAllPlayers();
         beacon.EraseBeacon();
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);
-        if(value == Order_Value.Golden)
+        if(value == Constants.OrderValue.Golden)
         {
             OrderManager.Instance.GoldOrderDelivered(); // lets the OM know the golden order has been delivered
-            playerHolding.Score += OrderManager.Instance.FinalOrderValue - (int)Order.Order_Value.Golden;
+            playerHolding.Score += OrderManager.Instance.FinalOrderValue - (int)Constants.OrderValue.Golden;
             playerHolding.HasGoldenOrder = false;
         }
-        else
-        {
-            OrderManager.Instance.AddPickupDropoff(pickup, dropoff);
-        }
-        Destroy(this.gameObject);
+        playerHolding = null;
+        isActive = false;
     }
 
     /// <summary>
-    /// 
+    /// This method erases the golden order without it being "delivered". Used for hotkey functionality.
     /// </summary>
     public void EraseGoldWithoutDelivering()
     {
-        // Removes the ui from all players
-        if (playerHolding != null)
+        OrderManager.Instance.FinalOrderValue = (int)Constants.OrderValue.Golden;
+        if (value == Constants.OrderValue.Golden)
         {
-            playerHolding.HasGoldenOrder = false;
-            playerHolding = null;
+            // Removes the ui from all players
+            if (playerHolding != null)
+            {
+                playerHolding.HasGoldenOrder = false;
+                playerHolding = null;
+            }
+            compassMarker.RemoveCompassUIFromAllPlayers();
+            OrderManager.Instance.IncrementCounters(value, -1);
+            OrderManager.Instance.RemoveOrder(this);
+            isActive = false;
         }
-        compassMarker.RemoveCompassUIFromAllPlayers();
-        beacon.EraseBeacon();
-        OrderManager.Instance.IncrementCounters(value, -1);
-        OrderManager.Instance.RemoveOrder(this);
-        Destroy(this.gameObject);
     }
 
     /// <summary>
