@@ -47,8 +47,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("The final order in the game.")]
     [SerializeField] private Order finalOrder;
 
-    [SerializeField] private List<Order> easy;// = new List<Order>();
-    [SerializeField] private List<Order> medium;// = new List<Order>();
+    // lists for each of the types of orders in each game (minus golden ofc)
+    [SerializeField] private List<Order> easy;
+    [SerializeField] private List<Order> medium;
     [SerializeField] private List<Order> hard;
 
     private bool finalOrderActive = false;
@@ -68,6 +69,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [SerializeField] private bool waveResets;
     [Tooltip("On means the max orders are the only orders spawned in the wave, off means new orders will spawn as they are delivered")]
     [SerializeField] private bool scarcityMode;
+/*    [Tooltip("When true will randomize initial spawn order of all orders.")]
+    [SerializeField] private bool randomizeWaves; to be implemented, I have a graphics assignment due*/
 
     private void OnEnable()
     {
@@ -89,28 +92,32 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void Start()
     {
-/*        easy = new List<Order>();
-        medium = new List<Order>();
-        hard = new List<Order>();*/
-
         int[] waves = { maxEasy.Length, maxMedium.Length, maxHard.Length };
         maxWave = Mathf.Max(waves);
 
         for(int i=0;i<normalOrders.Count();i++)
         {
-            switch (normalOrders[i].Value)
+            if (normalOrders[i].IsActive)
             {
-                case Constants.OrderValue.Easy:
-                    easy.Add(normalOrders[i]);
-                    break;
-                case Constants.OrderValue.Medium:
-                    medium.Add(normalOrders[i]); 
-                    break;
-                case Constants.OrderValue.Hard:
-                    hard.Add(normalOrders[i]);
-                    break;
-                default:
-                    break;
+                activeOrders.Add(normalOrders[i]);
+                normalOrders[i].InitOrder();
+            }
+            else
+            {
+                switch (normalOrders[i].Value)
+                {
+                    case Constants.OrderValue.Easy:
+                        easy.Add(normalOrders[i]);
+                        break;
+                    case Constants.OrderValue.Medium:
+                        medium.Add(normalOrders[i]);
+                        break;
+                    case Constants.OrderValue.Hard:
+                        hard.Add(normalOrders[i]);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -175,6 +182,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     private void InitGame()
     {
         finalOrder.EraseGoldWithoutDelivering();
+        OnDeleteActiveOrders?.Invoke();
         finalOrderActive = false;
         spawnNormalPackages = true;
         waveTimer = waveLengthInSeconds;

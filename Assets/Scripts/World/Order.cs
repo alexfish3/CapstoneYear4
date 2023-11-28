@@ -11,7 +11,7 @@ public class Order : MonoBehaviour
     [SerializeField] private Constants.OrderValue value;
     public Constants.OrderValue Value { get { return value; } }
 
-    private bool isActive = false;
+    [SerializeField] private bool isActive = false;
     public bool IsActive { get { return isActive; } set { isActive = value; } }
     private MeshRenderer meshRenderer;
 
