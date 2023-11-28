@@ -15,7 +15,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     public bool CanSpawnOrders { get { return canSpawnOrders; } set { canSpawnOrders = value; } }
 
     [Header("Game Information")]
-    [SerializeField] private Order finalOrder;
     [Tooltip("Maxium number of orders present in the scene at a time. Array represents different waves")]
     [SerializeField]
     private int[] maxEasy, maxMedium, maxHard; // didn't think this variable name through
@@ -43,25 +42,21 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("Multiplyer for final order increment. 1 will have it add a dollar to the value every second.")]
     [SerializeField] private float goldIncrementMultiplyer = 1f;
 
-    [Tooltip("The master list of all orders in the game.")]
-    [SerializeField] private List<Order> totalOrders;
-    [SerializeField] private List<Order> easy;
-    [SerializeField] private List<Order> medium;
+    [Tooltip("The master list of all non-golden orders in the game.")]
+    [SerializeField] private List<Order> normalOrders;
+    [Tooltip("The final order in the game.")]
+    [SerializeField] private Order finalOrder;
+
+    [SerializeField] private List<Order> easy;// = new List<Order>();
+    [SerializeField] private List<Order> medium;// = new List<Order>();
     [SerializeField] private List<Order> hard;
 
-    [Header("World Information")]
-    [Tooltip("Waypoints for golden order")]
-    [SerializeField] private Transform goldenPickup, goldenDropoff;
     private bool finalOrderActive = false;
     public bool FinalOrderActive { get { return finalOrderActive; } }
     private float finalOrderValue = (float)Constants.OrderValue.Golden;
     public int FinalOrderValue { get { return (int)finalOrderValue; } set { finalOrderValue = (float)value; } }
 
     private List<Order> activeOrders = new List<Order>(); // list of all the orders in the game at any time
-
-/*    [Tooltip("Minimum distances for respective difficulty")]
-    [SerializeField]
-    private int easyDistance, mediumDistance, hardDistance;*/
 
     private IEnumerator easySpawnCoroutine, mediumSpawnCoroutine, hardSpawnCoroutine; // coroutines for managing cooldowns of the order spawns
 
@@ -94,21 +89,25 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void Start()
     {
+/*        easy = new List<Order>();
+        medium = new List<Order>();
+        hard = new List<Order>();*/
+
         int[] waves = { maxEasy.Length, maxMedium.Length, maxHard.Length };
         maxWave = Mathf.Max(waves);
 
-        for(int i=0;i<totalOrders.Count();i++)
+        for(int i=0;i<normalOrders.Count();i++)
         {
-            switch (totalOrders[i].Value)
+            switch (normalOrders[i].Value)
             {
                 case Constants.OrderValue.Easy:
-                    easy.Add(totalOrders[i]);
+                    easy.Add(normalOrders[i]);
                     break;
                 case Constants.OrderValue.Medium:
-                    medium.Add(totalOrders[i]); 
+                    medium.Add(normalOrders[i]); 
                     break;
                 case Constants.OrderValue.Hard:
-                    hard.Add(totalOrders[i]);
+                    hard.Add(normalOrders[i]);
                     break;
                 default:
                     break;
@@ -265,10 +264,14 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 default:
                     break;
             }
-            order.transform.parent = this.transform;
             activeOrders.Remove(order);
-            OnDeleteActiveOrders -= order.EraseOrder;
         }
+        if(order.Value == Constants.OrderValue.Golden)
+        {
+            finalOrderActive = false;
+        }
+        order.transform.parent = this.transform;
+        OnDeleteActiveOrders -= order.EraseOrder;
     }
 
     /// <summary>

@@ -70,9 +70,13 @@ public class OrderBeacon : MonoBehaviour
     /// </summary>
     public void EraseBeacon()
     {
-        if (order.PlayerHolding != null)
+        gameObject.layer = 0;
+        if (order != null)
         {
-            order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
+            if (order.PlayerHolding != null)
+            {
+                order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
+            }
         }
         meshRenderer.enabled = false;
         isPickup = true;

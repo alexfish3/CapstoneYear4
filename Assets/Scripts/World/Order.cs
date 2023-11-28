@@ -11,7 +11,7 @@ public class Order : MonoBehaviour
     [SerializeField] private Constants.OrderValue value;
     public Constants.OrderValue Value { get { return value; } }
 
-    [SerializeField] private bool isActive = false;
+    private bool isActive = false;
     public bool IsActive { get { return isActive; } set { isActive = value; } }
     private MeshRenderer meshRenderer;
 
@@ -170,7 +170,7 @@ public class Order : MonoBehaviour
         StartPickupCooldownCoroutine();
     }
     /// <summary>
-    /// This method erases the order and adds its pickup and dropoff points back to the list in OrderManager.
+    /// This method erases the order and adds it back to the list of "to be used" orders.
     /// </summary>
     public void EraseOrder()
     {
@@ -187,8 +187,12 @@ public class Order : MonoBehaviour
             playerHolding.Score += OrderManager.Instance.FinalOrderValue - (int)Constants.OrderValue.Golden;
             playerHolding.HasGoldenOrder = false;
         }
-        playerHolding = null;
+        if(playerHolding != null) 
+        {
+            playerHolding.LoseOrder(this);
+        }
         isActive = false;
+        transform.position = pickup.position;
     }
 
     /// <summary>
@@ -196,20 +200,21 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseGoldWithoutDelivering()
     {
+        beacon.EraseBeacon();
         OrderManager.Instance.FinalOrderValue = (int)Constants.OrderValue.Golden;
         if (value == Constants.OrderValue.Golden)
         {
-            // Removes the ui from all players
             if (playerHolding != null)
             {
                 playerHolding.HasGoldenOrder = false;
-                playerHolding = null;
+                playerHolding.LoseOrder(this);
             }
             compassMarker.RemoveCompassUIFromAllPlayers();
             OrderManager.Instance.IncrementCounters(value, -1);
             OrderManager.Instance.RemoveOrder(this);
             isActive = false;
         }
+        transform.position = pickup.position;
     }
 
     /// <summary>
