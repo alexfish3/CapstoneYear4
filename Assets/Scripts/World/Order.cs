@@ -184,8 +184,11 @@ public class Order : MonoBehaviour
         if(value == Constants.OrderValue.Golden)
         {
             OrderManager.Instance.GoldOrderDelivered(); // lets the OM know the golden order has been delivered
-            playerHolding.Score += OrderManager.Instance.FinalOrderValue - (int)Constants.OrderValue.Golden;
-            playerHolding.HasGoldenOrder = false;
+            if (playerHolding != null)
+            {
+                playerHolding.Score += OrderManager.Instance.FinalOrderValue - (int)Constants.OrderValue.Golden;
+                playerHolding.HasGoldenOrder = false;
+            }
         }
         if(playerHolding != null) 
         {
