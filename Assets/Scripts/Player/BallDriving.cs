@@ -23,6 +23,9 @@ public class BallDriving : MonoBehaviour
     private IEnumerator boostActiveCoroutine;
     private IEnumerator boostCooldownCoroutine;
 
+    public delegate void BoostDelegate(); // boost event stuff for the trail
+    public BoostDelegate OnBoostStart;
+
     [Header("Setup")]
     [Tooltip("Reference to the scooter model (specifically whatever empty is right above the first object with any actual mesh)")]
     [SerializeField] private Transform scooterModel;
@@ -35,8 +38,6 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private InputManager inp;
     [Tooltip("Reference to the order manager object")]
     [SerializeField] private OrderHandler orderHandler;
-    [Tooltip("The boost trail component to enable and disable when boosting")]
-    [SerializeField] private TrailRenderer trailRenderer;
 
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
@@ -553,6 +554,7 @@ public class BallDriving : MonoBehaviour
         if (boostAble && !callToDrift && !drifting && !reversing) //& by Tally Hall
         {
             StartBoostActive();
+            OnBoostStart?.Invoke();
         }
     }
 
@@ -562,7 +564,6 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostActive()
     {
-        trailRenderer.enabled = true;
         phaseIndicator.SetHornGlow(0);
         boosting = true;
         boostAble = false;
@@ -589,7 +590,6 @@ public class BallDriving : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        trailRenderer.enabled = false;
         boosting = false;
         StartBoostCooldown();
     }
