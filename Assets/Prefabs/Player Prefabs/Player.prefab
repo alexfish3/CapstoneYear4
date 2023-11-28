@@ -945,11 +945,11 @@ MonoBehaviour:
   reverseSteeringPower: 90
   driftTurnScalar: 1.6
   driftTurnMinimum: 0.3
-  driftBoostThreshold: 100
-  driftBoostMode: 0
-  driftBoost1: 5
-  driftBoost2: 10
-  driftBoost3: 15
+  driftBoostThreshold: 200
+  driftBoostMode: 0.6
+  driftBoost1: 200
+  driftBoost2: 400
+  driftBoost3: 600
   boostPower: 50
   boostDuration: 1.6
   boostRechargeTime: 10
@@ -985,6 +985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79df954a579c7344b9173ac5c7736604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  intensity: 3
   hornGlowValue: 0.04
   hornValueMax: 3
   readyColor: {r: 0.21868706, g: 0, b: 1, a: 1}
@@ -1065,11 +1066,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compassImage: {fileID: 6837548339216748312}
+  compassCalc: {fileID: 0}
   player: {fileID: 7393508319600699636}
+  playerCam: {fileID: 0}
   iconHeight: -65
   iconPrefab: {fileID: 3691895907627439231, guid: 13f91f37558f51643ac77d60dac451e9, type: 3}
   compassUIObjects: []
   compassMarkerObjects: []
+  compassUnit: 0
 --- !u!114 &3919377703968431804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2488,6 +2492,7 @@ MonoBehaviour:
   - {fileID: 4613849132705967980}
   viewPortRectDefault: {x: 0, y: 0, z: 1, w: 1}
   playerRenderCamera: {fileID: 7940844964692443380}
+  virtualCameras: []
   menuUICamera: {fileID: 7529911540303774075}
   drivingUICamera: {fileID: 369374283456175948}
   mainCamera: {fileID: 3253891723875983122}
