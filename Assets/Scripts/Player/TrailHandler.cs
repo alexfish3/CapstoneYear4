@@ -62,6 +62,7 @@ public class TrailHandler : MonoBehaviour
         {
             yield return null;
         }
+
         while(trail.time > 0)
         {
             trail.time = Mathf.Lerp(maxTime, startTime, elapsedTime);

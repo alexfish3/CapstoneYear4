@@ -1317,7 +1317,7 @@ TrailRenderer:
     numCornerVertices: 0
     numCapVertices: 0
     alignment: 0
-    textureMode: 0
+    textureMode: 1
     textureScale: {x: 1, y: 1}
     shadowBias: 1
     generateLightingData: 0
@@ -1872,14 +1872,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5658162030410249734}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.0000001192093, y: 1.3100005, z: -2.9842795e-13}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
+  m_LocalPosition: {x: 3.31, y: 1.3100005, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4360914292371093501}
   m_Father: {fileID: 8267366762298391490}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!96 &2665638251925027266
 TrailRenderer:
   serializedVersion: 3
@@ -2067,7 +2067,7 @@ MonoBehaviour:
   rightSlipstreamTrail: {fileID: 9151232230960598756}
   driftTrail: {fileID: 2183154093536438603}
   accelerationPower: 45
-  brakingPower: 30
+  brakingFriction: 1
   reversingPower: 28
   fallingDrag: 0.85
   groundBoostAmount: 160
