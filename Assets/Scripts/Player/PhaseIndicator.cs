@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
+using UnityEngine.UI;
 
 public class PhaseIndicator : MonoBehaviour
 {
-
+    [SerializeField] Slider hornSlider;
     [SerializeField] float intensity = 3;
 
     [Range(0f, 2f)]
@@ -61,10 +62,16 @@ public class PhaseIndicator : MonoBehaviour
 
     public IEnumerator beginHornGlow(float cooldown)
     {
+        hornSlider.value = 0f;
+
         float hornGlowStep = hornValueMax / 100;
 
         for (int i = 0; i < 100; i++)
         {
+            float progress = i / 100f;  // Calculate the progress from 0 to 1
+            hornSlider.value = Mathf.Lerp(0f, 1f, progress);  // Set the slider value based on the progress
+
+
             hornGlowValue += hornGlowStep;
             yield return new WaitForSeconds(cooldown / 100);
         }
