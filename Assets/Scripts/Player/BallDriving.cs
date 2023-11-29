@@ -317,6 +317,7 @@ public class BallDriving : MonoBehaviour
 
         //Adds the boost from slipstream
         totalForce += Slipstream(); //most of the time Slipstream just returns 0
+        SetSlipstreamTrails(leftSlipstreamTrail.time - Time.fixedDeltaTime);
 
         //Adds the boost from ground boosts
         if (groundBoostFlag)
@@ -692,12 +693,12 @@ public class BallDriving : MonoBehaviour
         if (slipstreamPortion == slipstreamTime)
         {
             slipstreamPortion = 0.0f;
-            if (caddy != null) caddy.SetSlipstreamTrails(0.0f);
+            if (caddy != null) { caddy.SetSlipstreamTrails(0.0f); }
             return slipstreamBoostAmount;
         }
         else
         {
-            if (caddy != null) caddy.SetSlipstreamTrails(slipStreamScalar - 0.2f);
+            if (caddy != null) { caddy.SetSlipstreamTrails(slipStreamScalar - 0.2f); }
             return slipStreamScalar * preBoostSlipstreamMax;
         }
     }
