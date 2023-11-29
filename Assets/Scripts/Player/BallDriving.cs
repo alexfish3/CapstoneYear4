@@ -49,8 +49,6 @@ public class BallDriving : MonoBehaviour
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
     [SerializeField] private float accelerationPower = 30.0f;
-    [Tooltip("The dynamic friction applied to the sphere when braking")]
-    [SerializeField] private float brakingFriction = 1.0f;
     [Tooltip("An amorphous representation of how quickly the bike can reverse")]
     [SerializeField] private float reversingPower = 10.0f;
     [Tooltip("The amount of drag while falling. Improves the feel of the physics")]
