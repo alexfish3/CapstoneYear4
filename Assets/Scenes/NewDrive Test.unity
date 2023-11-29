@@ -7603,11 +7603,12 @@ MonoBehaviour:
   sphere: {fileID: 754711970637646572}
   inp: {fileID: 4978098870745389610}
   orderHandler: {fileID: 5266237700710792599}
+  selfPhysicsMaterial: {fileID: 13400000, guid: 68fd7116ea8c94942a4d9db3ca439588, type: 2}
   leftSlipstreamTrail: {fileID: 2113730911294917747}
   rightSlipstreamTrail: {fileID: 4284234433795071556}
   driftTrail: {fileID: 6613257509341034987}
   accelerationPower: 45
-  brakingPower: 30
+  brakingFriction: 10
   reversingPower: 28
   fallingDrag: 0.85
   groundBoostAmount: 160

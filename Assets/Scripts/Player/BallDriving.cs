@@ -39,6 +39,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private InputManager inp;
     [Tooltip("Reference to the order manager object")]
     [SerializeField] private OrderHandler orderHandler;
+    //[Tooltip("Reference to the physics material")]
+    //[SerializeField] private PhysicMaterial selfPhysicsMaterial;
     [Tooltip("Reference to the left slipstream trail")]
     [SerializeField] private TrailRenderer leftSlipstreamTrail;
     [Tooltip("Reference to the right slipstream trail")]
@@ -49,8 +51,8 @@ public class BallDriving : MonoBehaviour
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
     [SerializeField] private float accelerationPower = 30.0f;
-    [Tooltip("An amorphous representation of how hard the bike can brake")]
-    [SerializeField] private float brakingPower = 30.0f;
+    [Tooltip("The dynamic friction applied to the sphere when braking")]
+    [SerializeField] private float brakingFriction = 1.0f;
     [Tooltip("An amorphous representation of how quickly the bike can reverse")]
     [SerializeField] private float reversingPower = 10.0f;
     [Tooltip("The amount of drag while falling. Improves the feel of the physics")]
@@ -146,6 +148,8 @@ public class BallDriving : MonoBehaviour
 
     private bool stopped, reversing, grounded;
 
+    //private float baseFriction, frictionDifference;
+
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
     private int driftDirection;
@@ -185,6 +189,8 @@ public class BallDriving : MonoBehaviour
         sphereTransform = sphere.GetComponent<Transform>();
 
         startingDrag = sphereBody.drag;
+        //baseFriction = selfPhysicsMaterial.dynamicFriction;
+        //frictionDifference = brakingFriction - baseFriction;
 
         inp.WestFaceEvent += DriftFlag; //subscribes to WestFaceEvent
         inp.SouthFaceEvent += BoostFlag; //subscribes to SouthFaceEvent
@@ -222,18 +228,22 @@ public class BallDriving : MonoBehaviour
             sphereBody.drag = startingDrag;
         }
 
-        if (stopped)
-        {
-            reversing = (rightTrig < leftTrig);
-        }
-        if (reversing && rightTrig > leftTrig)
-        {
-            reversing = false;
-        }
+        //if (stopped)
+        //{
+        //    reversing = (rightTrig < leftTrig);
+        //}
+        //if (reversing && rightTrig > leftTrig)
+        //{
+        //    reversing = false;
+        //}
+
+        reversing = leftTrig > rightTrig;
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
         currentForce = reversing ? (reversingPower * leftTrig * (1 - rightTrig)) : (accelerationPower * rightTrig * (1 - leftTrig));
         currentForce = boosting ? accelerationPower : currentForce;
+        //selfPhysicsMaterial.dynamicFriction = reversing ? baseFriction : baseFriction + (leftTrig * frictionDifference);
+
         currentVelocity = sphereBody.velocity.magnitude;
         if (currentVelocity != 0)
         {
