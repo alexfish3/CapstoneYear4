@@ -87,6 +87,18 @@ public class BallDriving : MonoBehaviour
     [Tooltip("A multipler applied to steering power while in a boost, which reduces your steering capability")]
     [SerializeField] private float boostingSteerModifier = 0.4f;
 
+    [Header("Slipstream")]
+    [Tooltip("Maximum distance that two vehicles can be from each other to get slipstream")]
+    [SerializeField] private float slipstreamDistance = 10.0f;
+    [Tooltip("Minimum speed that BOTH vehicles need to be moving at to get slipstream")]
+    [SerializeField] private float minimumSlipstreamSpeed = 10.0f;
+    [Tooltip("How long in seconds slipstream needs to be maintained before getting the full boost")]
+    [SerializeField] private float slipstreamTime = 1.5f;
+    [Tooltip("The most amount of speed that the pre-boost slipstream grants")]
+    [SerializeField] private float preBoostSlipstreamMax = 50.0f;
+    [Tooltip("How much speed is granted from the slipstream boost")]
+    [SerializeField] private float slipstreamBoostAmount = 300.0f;
+
     [Header("Phasing Information")]
     [SerializeField] PlayerCameraResizer cameraResizer;
     [Tooltip("The player index is what allows only the certain player to phase")]
@@ -121,6 +133,7 @@ public class BallDriving : MonoBehaviour
     private float currentForce; //the amount of force to add to the speed on any given frame
     private float scaledVelocityMax; //a complicated variable derived from a bunch of testing and math which really just boils down to accelerationPower * 0.35
     private float currentVelocity; //just shorthand for the sphere's current velocity magnitude
+    public float CurrentVelocity { get { return currentVelocity; } }
 
     private float rotationAmount; //the amount to turn on any given frame
 
@@ -147,6 +160,8 @@ public class BallDriving : MonoBehaviour
     private bool boostAble = true;
     public bool BoostAble { set { boostAble = value; } }
     private bool phasing = false;
+
+    private float slipstreamPortion = 0.0f;
 
     private float csv;
 
@@ -294,6 +309,9 @@ public class BallDriving : MonoBehaviour
             totalForce += boostPower;
             boostInitialburst = false;
         }
+
+        //Adds the boost from slipstream
+        totalForce += Slipstream(); //most of the time Slipstream just returns 0
 
         //Adds the boost from ground boosts
         if (groundBoostFlag)
@@ -594,6 +612,10 @@ public class BallDriving : MonoBehaviour
         StartBoostCooldown();
     }
 
+    /// <summary>
+    /// Sets collision layers for boost phasing
+    /// </summary>
+    /// <param name="toggle">Whether to phase or not</param>
     private void ToggleCollision(bool toggle)
     {
         switch (playerIndex)
@@ -622,6 +644,19 @@ public class BallDriving : MonoBehaviour
         StartCoroutine(phaseIndicator.beginHornGlow(boostRechargeTime));
         yield return new WaitForSeconds(boostRechargeTime);
         boostAble = true;
+    }
+
+    private float Slipstream()
+    {
+        int lm = 128; //layer 7
+        RaycastHit hit;
+
+        Debug.DrawRay(transform.position + Vector3.up, scooterNormal.forward * slipstreamDistance, Color.green);
+        if (Physics.Raycast(transform.position + Vector3.up, scooterNormal.forward, out hit, slipstreamDistance, lm))
+        {
+
+        }
+        return 0.0f;
     }
 
     /// <summary>
