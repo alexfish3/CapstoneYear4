@@ -43,6 +43,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private TrailRenderer leftSlipstreamTrail;
     [Tooltip("Reference to the right slipstream trail")]
     [SerializeField] private TrailRenderer rightSlipstreamTrail;
+    [Tooltip("Reference to the shitty temp drift boost trail")]
+    [SerializeField] private TrailRenderer driftTrail;
 
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
@@ -295,18 +297,23 @@ public class BallDriving : MonoBehaviour
             {
                 case 1:
                     driftBoost = driftBoost1;
+                    driftTrail.time = 0.5f;
                     break;
                 case 2:
                     driftBoost = driftBoost2;
+                    driftTrail.time = 1.0f;
                     break;
                 case 3:
                     driftBoost = driftBoost3;
+                    driftTrail.time = 1.5f;
                     break;
             }
             totalForce += driftBoost;
             driftBoostAchieved = false;
             driftTier = 0;
         }
+
+        driftTrail.time -= Time.fixedDeltaTime;
 
         //Adds the boost from rocket boosting
         if (boostInitialburst)
@@ -316,8 +323,8 @@ public class BallDriving : MonoBehaviour
         }
 
         //Adds the boost from slipstream
-        totalForce += Slipstream(); //most of the time Slipstream just returns 0
         SetSlipstreamTrails(leftSlipstreamTrail.time - Time.fixedDeltaTime);
+        totalForce += Slipstream(); //most of the time Slipstream just returns 0
 
         //Adds the boost from ground boosts
         if (groundBoostFlag)
