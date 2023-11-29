@@ -654,7 +654,7 @@ public class BallDriving : MonoBehaviour
         Debug.DrawRay(transform.position + Vector3.up, scooterNormal.forward * slipstreamDistance, Color.green);
         if (Physics.Raycast(transform.position + Vector3.up, scooterNormal.forward, out hit, slipstreamDistance, lm))
         {
-
+            BallDriving caddy = hit.collider.gameObject.GetComponent<BallDriving>();
         }
         return 0.0f;
     }
