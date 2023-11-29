@@ -39,6 +39,10 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private InputManager inp;
     [Tooltip("Reference to the order manager object")]
     [SerializeField] private OrderHandler orderHandler;
+    [Tooltip("Reference to the left slipstream trail")]
+    [SerializeField] private TrailRenderer leftSlipstreamTrail;
+    [Tooltip("Reference to the right slipstream trail")]
+    [SerializeField] private TrailRenderer rightSlipstreamTrail;
 
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
@@ -649,6 +653,7 @@ public class BallDriving : MonoBehaviour
 
     private float Slipstream()
     {
+        BallDriving caddy = null;
         bool slipstreamRaysAligned = false;
         bool caddySpeedMet = false;
         bool selfSpeedMet = currentVelocity > minimumSlipstreamSpeed;
@@ -659,7 +664,7 @@ public class BallDriving : MonoBehaviour
         Debug.DrawRay(transform.position + Vector3.up, scooterNormal.forward * slipstreamDistance, Color.green);
         if (Physics.Raycast(transform.position + Vector3.up, scooterNormal.forward, out hit, slipstreamDistance, lm)) //checks forward ray
         {
-            BallDriving caddy = hit.collider.gameObject.GetComponent<BallDriving>();
+            caddy = hit.collider.gameObject.GetComponent<BallDriving>();
             caddySpeedMet = caddy.CurrentVelocity > minimumSlipstreamSpeed;
 
             RaycastHit secondHit;
@@ -681,16 +686,30 @@ public class BallDriving : MonoBehaviour
         }
         slipstreamPortion = Mathf.Clamp(slipstreamPortion, 0.0f, slipstreamTime);
 
+        float slipStreamScalar = RangeMutations.Map_Linear(slipstreamPortion, 0.0f, slipstreamTime, 0.0f, 1.0f);
+
         //Returns a certain amount of speed based on the current amount of slipstream
         if (slipstreamPortion == slipstreamTime)
         {
             slipstreamPortion = 0.0f;
+            if (caddy != null) caddy.SetSlipstreamTrails(0.0f);
             return slipstreamBoostAmount;
         }
         else
         {
-            return RangeMutations.Map_Linear(slipstreamPortion, 0.0f, slipstreamTime, 0.0f, 1.0f) * preBoostSlipstreamMax;
+            if (caddy != null) caddy.SetSlipstreamTrails(slipStreamScalar - 0.2f);
+            return slipStreamScalar * preBoostSlipstreamMax;
         }
+    }
+
+    /// <summary>
+    /// Sets the length of the slipstream indication trails. Called by a *different* player
+    /// </summary>
+    /// <param name="trailAmount">How long the trail should go</param>
+    public void SetSlipstreamTrails(float trailAmount)
+    {
+        leftSlipstreamTrail.time = trailAmount;
+        rightSlipstreamTrail.time = trailAmount;
     }
 
     /// <summary>
