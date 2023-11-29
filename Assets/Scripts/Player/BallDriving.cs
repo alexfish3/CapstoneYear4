@@ -31,6 +31,7 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private Transform scooterModel;
     [Tooltip("Reference to the empty used for checking the scooter's normal to the ground")]
     [SerializeField] private Transform scooterNormal;
+    public Transform ScooterNormal { get { return scooterNormal; } }
     [Tooltip("Reference to the movement sphere")]
     [SerializeField] private GameObject sphere; 
     public GameObject Sphere { get { return sphere; } }
@@ -648,15 +649,48 @@ public class BallDriving : MonoBehaviour
 
     private float Slipstream()
     {
+        bool slipstreamRaysAligned = false;
+        bool caddySpeedMet = false;
+        bool selfSpeedMet = currentVelocity > minimumSlipstreamSpeed;
+
         int lm = 128; //layer 7
         RaycastHit hit;
 
         Debug.DrawRay(transform.position + Vector3.up, scooterNormal.forward * slipstreamDistance, Color.green);
-        if (Physics.Raycast(transform.position + Vector3.up, scooterNormal.forward, out hit, slipstreamDistance, lm))
+        if (Physics.Raycast(transform.position + Vector3.up, scooterNormal.forward, out hit, slipstreamDistance, lm)) //checks forward ray
         {
             BallDriving caddy = hit.collider.gameObject.GetComponent<BallDriving>();
+            caddySpeedMet = caddy.CurrentVelocity > minimumSlipstreamSpeed;
+
+            RaycastHit secondHit;
+
+            if (Physics.Raycast(caddy.transform.position + Vector3.up, -caddy.ScooterNormal.forward, out secondHit, slipstreamDistance, lm)) //checks reciprocal ray
+            {
+                slipstreamRaysAligned = true;
+            }
         }
-        return 0.0f;
+
+        //Updates slipstream time. Decreases at twice the speed it increases
+        if (slipstreamRaysAligned && caddySpeedMet && selfSpeedMet)
+        {
+            slipstreamPortion += Time.fixedDeltaTime;
+        }
+        else
+        {
+            slipstreamPortion -= (Time.fixedDeltaTime * 2.0f);
+        }
+        slipstreamPortion = Mathf.Clamp(slipstreamPortion, 0.0f, slipstreamTime);
+
+        //Returns a certain amount of speed based on the current amount of slipstream
+        if (slipstreamPortion == slipstreamTime)
+        {
+            slipstreamPortion = 0.0f;
+            return slipstreamBoostAmount;
+        }
+        else
+        {
+            return RangeMutations.Map_Linear(slipstreamPortion, 0.0f, slipstreamTime, 0.0f, 1.0f) * preBoostSlipstreamMax;
+        }
     }
 
     /// <summary>
