@@ -26,6 +26,7 @@ public class TrailHandler : MonoBehaviour
         {
             trailTime[i] = boostTrails[i].time;
             boostTrails[i].time = 0;
+            boostTrails[i].gameObject.SetActive(false);
         }
         ball.OnBoostStart += GrowBoostTrail;
     }
@@ -49,6 +50,7 @@ public class TrailHandler : MonoBehaviour
     /// <returns></returns>
     private IEnumerator LerpBoost(TrailRenderer trail, float maxTime)
     {
+        trail.gameObject.SetActive(true);
         float startTime = trail.time;
         float elapsedTime = 0;
         while (trail.time < maxTime)
@@ -69,5 +71,6 @@ public class TrailHandler : MonoBehaviour
             elapsedTime += Time.deltaTime * boostTrailMulitplier;
             yield return null;
         }
+        trail.gameObject.SetActive(false);
     }
 }
