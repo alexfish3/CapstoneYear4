@@ -163,6 +163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3495660167286010803}
   - component: {fileID: 3058203835693817179}
+  - component: {fileID: 640959438591709015}
   m_Layer: 2
   m_Name: Virtual Camera
   m_TagString: Untagged
@@ -212,6 +213,30 @@ MonoBehaviour:
     FarClipPlane: 5000
     Dutch: 0
   m_ComponentOwner: {fileID: 3168693259227247806}
+--- !u!114 &640959438591709015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 978174962275233661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e501d18bb52cf8c40b1853ca4904654f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IgnoreTag: 
+  m_MinimumDistanceFromTarget: 0.1
+  m_AvoidObstacles: 1
+  m_DistanceLimit: 0
+  m_CameraRadius: 0
+  m_Strategy: 0
+  m_MaximumEffort: 4
+  m_Damping: 0
+  m_OptimalTargetDistance: 0
 --- !u!1 &1006864409914587754
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,7 +461,7 @@ Transform:
   m_GameObject: {fileID: 1867894801688539398}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 7.8, y: 0, z: 94.6}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2067,7 +2092,6 @@ MonoBehaviour:
   rightSlipstreamTrail: {fileID: 9151232230960598756}
   driftTrail: {fileID: 2183154093536438603}
   accelerationPower: 45
-  brakingFriction: 1
   reversingPower: 28
   fallingDrag: 0.85
   groundBoostAmount: 160
@@ -2110,6 +2134,7 @@ MonoBehaviour:
   debugBoostability: {fileID: 0}
   debugCSVEnable: 0
   debugCSV: {fileID: 0}
+  groundDetector: {fileID: 5760767167873063500}
 --- !u!114 &1461959447911348377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2290,7 +2315,7 @@ Transform:
   m_GameObject: {fileID: 5760767167873063500}
   serializedVersion: 2
   m_LocalRotation: {x: -0.70710677, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0.75}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

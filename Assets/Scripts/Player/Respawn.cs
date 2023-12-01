@@ -72,7 +72,7 @@ public class Respawn : MonoBehaviour
 
     private void Update()
     {
-        Debug.DrawRay(respawnPoint + transform.forward * newOffset, Vector3.down * 200, Color.blue);
+
     }
     /// <summary>
     /// This method checks if the respawn point is valid by modifying the newOffset value.
