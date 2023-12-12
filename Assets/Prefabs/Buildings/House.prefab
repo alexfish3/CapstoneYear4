@@ -34,6 +34,39 @@ Transform:
   - {fileID: 7333021656374455581}
   m_Father: {fileID: 1171795258011617743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1284382842136215230
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 338174964621100613}
+  m_Layer: 0
+  m_Name: PlantBasket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &338174964621100613
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1284382842136215230}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 605456038996483679}
+  - {fileID: 4344087711023459776}
+  m_Father: {fileID: 1961060477017039172}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4208726371635102785
 GameObject:
   m_ObjectHideFlags: 0
@@ -72,8 +105,7 @@ Transform:
   - {fileID: 3943621698271365223}
   - {fileID: 4741732564901961912}
   - {fileID: 4352406438654166346}
-  - {fileID: 605456038996483679}
-  - {fileID: 4344087711023459776}
+  - {fileID: 338174964621100613}
   m_Father: {fileID: 1171795258011617743}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4623020952337560178
@@ -137,11 +169,11 @@ Transform:
   m_GameObject: {fileID: 7757921035205980776}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 3.2282572, y: 0.9404702, z: 3.7966285}
-  m_LocalScale: {x: 0.13426258, y: 0.35983753, z: 0.15098886}
+  m_LocalPosition: {x: 3.2282543, y: 0.9404702, z: 3.7966285}
+  m_LocalScale: {x: 0.13426258, y: 0.5855365, z: 0.15098886}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1961060477017039172}
+  m_Father: {fileID: 338174964621100613}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!33 &7309292956422259968
 MeshFilter:
@@ -638,6 +670,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: small_shortbuilding
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 64ef4e95918e9474591824e8951df08b, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -670,8 +706,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 7.316102, y: 9.998505, z: 7.3719983}
-  m_Center: {x: -0, y: 4.9529743, z: 0}
+  m_Size: {x: 6.874131, y: 9.998505, z: 6.8760147}
+  m_Center: {x: 0.005945166, y: 4.9529743, z: 0.0014590425}
 --- !u!4 &3018889967569927228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 64ef4e95918e9474591824e8951df08b, type: 3}
@@ -807,6 +843,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ArchDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8aa4464297d6cc34499724a8c3c96682, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -823,7 +863,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1961060477017039172}
+    m_TransformParent: {fileID: 338174964621100613}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: e80060f12429cb1498fade25f33dfac5, type: 3}
       propertyPath: m_LocalScale.x
@@ -839,7 +879,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e80060f12429cb1498fade25f33dfac5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.197258
+      value: 3.197256
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: e80060f12429cb1498fade25f33dfac5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1165,6 +1205,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ThickWoodDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 206c7e3e218329e4eacae4ce1db1780c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1362,6 +1406,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a2e723b68269c4442ab15d297e242eed, type: 3}
       propertyPath: m_Name
       value: DoubleDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a2e723b68269c4442ab15d297e242eed, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1765,7 +1813,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a963ff58b0e014b44a6fbf5255466f39, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.27448964
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a963ff58b0e014b44a6fbf5255466f39, type: 3}
       propertyPath: m_LocalPosition.y
