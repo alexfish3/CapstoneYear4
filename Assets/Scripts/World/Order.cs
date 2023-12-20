@@ -140,31 +140,35 @@ public class Order : MonoBehaviour
         bool foundSpot = false;
         transform.LookAt(Vector3.zero);
 
-        // adjusts position if necessary
-        for (int i = 0; i < 20; i++)
+        if (value == Constants.OrderValue.Golden)
         {
-            if(Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, ground) && Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, water)
-                && !Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, buildingCheck))
-            {
-                foundSpot = true;
-                break;
-            }
-            else
-            {
-                newPosition += transform.forward;
-            }
+            playerHolding.HasGoldenOrder = false;
         }
-        if (!foundSpot) // spawns at pickup if couldn't find another spot
+        else
         {
-            newPosition = pickup.position;
+            // adjusts position if necessary
+            for (int i = 0; i < 20; i++)
+            {
+                if (Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, ground) && Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, water)
+                    && !Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, buildingCheck))
+                {
+                    foundSpot = true;
+                    break;
+                }
+                else
+                {
+                    newPosition += transform.forward;
+                }
+            }
+            if (!foundSpot) // spawns at pickup if couldn't find another spot
+            {
+                newPosition = pickup.position;
+            }
         }
         transform.position = newPosition;
         this.transform.parent = OrderManager.Instance.transform;
         beacon.ResetPickup();
-        if(value == Constants.OrderValue.Golden)
-        {
-            playerHolding.HasGoldenOrder = false;
-        }
+        
         playerDropped = playerHolding;
         playerHolding = null;
         StartPickupCooldownCoroutine();

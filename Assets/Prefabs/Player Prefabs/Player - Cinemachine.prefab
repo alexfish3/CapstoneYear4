@@ -2381,7 +2381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87855907a691e8d4ba39a82096eb29d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  liftHeight: 5
+  liftHeight: 3
   respawnDuration: 2
   liftDuration: 0.5
   ledgeOffset: -10
@@ -2397,6 +2397,9 @@ MonoBehaviour:
   buildingCheck:
     serializedVersion: 2
     m_Bits: 512
+  sizeOfRespawnArray: 10
+  respawnPoints: []
+  respawnSetInterval: 0.5
 --- !u!1 &6333650024276405161
 GameObject:
   m_ObjectHideFlags: 0

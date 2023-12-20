@@ -88,15 +88,15 @@ public class OrderHandler : MonoBehaviour
     /// <param name="basePos">The position of the order before adding the offset of the specific orderPosition.</param>
     public void DropEverything(Vector3 basePos)
     {
-        if(order1 != null)
+        if (order1 != null)
         {
-            basePos += order1Position.localPosition;
+            basePos += hasGoldenOrder ? Vector3.zero : order1Position.localPosition;
             order1.Drop(basePos);
             order1 = null;
         }
-        if(order2 != null)
+        if (order2 != null)
         {
-            basePos += order2Position.localPosition;
+            basePos += hasGoldenOrder ? Vector3.zero : order2Position.localPosition;
             order2.Drop(basePos);
             order2 = null;
         }
