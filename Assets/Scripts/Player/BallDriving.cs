@@ -172,6 +172,8 @@ public class BallDriving : MonoBehaviour
 
     [SerializeField] private GameObject groundDetector;
 
+    private SoundPool soundPool; // for driving noises
+
     /// <summary>
     /// Standard Start. Just used to get references, get initial values, and subscribe to events
     /// </summary>
@@ -193,6 +195,7 @@ public class BallDriving : MonoBehaviour
         scaledVelocityMax = accelerationPower * CSV_RATIO;
 
         respawn = sphere.GetComponent<Respawn>(); // get respawn component
+        soundPool = GetComponent<SoundPool>();
     }
 
     /// <summary>
@@ -203,6 +206,15 @@ public class BallDriving : MonoBehaviour
         leftStick = inp.LeftStickValue;
         leftTrig = inp.LeftTriggerValue;
         rightTrig = inp.RightTriggerValue;
+
+        if(csv != 0)
+        {
+            soundPool.PlayEngineSound();
+        }
+        else
+        {
+            soundPool.StopEngineSound();
+        }
 
         if (callToDrift && leftStick != 0)
         {
