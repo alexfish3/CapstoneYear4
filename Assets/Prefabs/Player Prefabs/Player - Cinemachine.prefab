@@ -179,7 +179,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 978174962275233661}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.15487324, y: 0.000000012618358, z: -0.000000001978112, w: -0.98793435}
+  m_LocalRotation: {x: -0.15487324, y: -0, z: -0, w: -0.98793435}
   m_LocalPosition: {x: 0, y: 2.25, z: -4.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -626,6 +626,70 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: c2fb24e1-e280-4486-9ec7-97f8b55ac6a5
     m_ActionName: UI/UnReadyUp[/DualShock4GamepadHID/buttonEast]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5419323488552745372}
+        m_TargetAssemblyTypeName: PlayerUIHandler, Assembly-CSharp
+        m_MethodName: LeftPadTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: d526ec2c-a0ea-402d-bb99-ff43a144dec5
+    m_ActionName: UI/Left D-Pad[/DualShock4GamepadHID/dpad/left,/Keyboard/leftArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5419323488552745372}
+        m_TargetAssemblyTypeName: PlayerUIHandler, Assembly-CSharp
+        m_MethodName: RightPadTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8000560d-543a-4296-88ff-9af57954bbb6
+    m_ActionName: UI/Right D-Pad[/DualShock4GamepadHID/dpad/right,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5419323488552745372}
+        m_TargetAssemblyTypeName: PlayerUIHandler, Assembly-CSharp
+        m_MethodName: UpPadTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 65092649-9735-479b-99b1-6bd10c408b66
+    m_ActionName: UI/Up D-Pad[/DualShock4GamepadHID/dpad/up,/Keyboard/upArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5419323488552745372}
+        m_TargetAssemblyTypeName: PlayerUIHandler, Assembly-CSharp
+        m_MethodName: DownPadTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 580bf271-fcde-4740-b96d-35017db9e1ae
+    m_ActionName: UI/Down D-Pad[/DualShock4GamepadHID/dpad/down,/Keyboard/downArrow]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -656,6 +720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MenuCanvas: {fileID: 1730626662847112208}
+  scrollSpeed: 0.2
 --- !u!114 &8362289104759965107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3186,7 +3251,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8501127692924196179}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.15487324, y: 0.000000012618358, z: -0.000000001978112, w: -0.98793435}
+  m_LocalRotation: {x: -0.15487324, y: -0, z: -0, w: -0.98793435}
   m_LocalPosition: {x: 0, y: 2.25, z: -4.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3847,6 +3912,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5289018042734306124}
     m_Modifications:
+    - target: {fileID: 1799296419663501833, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: handler
+      value: 
+      objectReference: {fileID: 5419323488552745372}
+    - target: {fileID: 1799296419663501833, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: ballDriving
+      value: 
+      objectReference: {fileID: 3575753304509721870}
     - target: {fileID: 1864800722992714799, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -3927,53 +4000,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2942803540029003745, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4577896849879768333, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 4808158917890122173}
+    - target: {fileID: 8226127984948104913, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: ghostModel
+      value: 
+      objectReference: {fileID: 4167975190139582909}
+    - target: {fileID: 8226127984948104913, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: phaseIndicator
+      value: 
+      objectReference: {fileID: 1461959447911348377}
+    - target: {fileID: 8550982155422142368, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: sliderSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5dd5a9d5bfe32704390e505f6d161749, type: 3}
     - target: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Name
       value: Menu Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6546045212976081129}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc1b261755a959d45b08825329d3089a, type: 3}
 --- !u!1 &1730626662847112208 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-  m_PrefabInstance: {fileID: 7362872049355395915}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6546045212976081129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730626662847112208}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22ae9d9732eb84d4b9327071b4777e2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  handler: {fileID: 5419323488552745372}
-  ballDriving: {fileID: 3575753304509721870}
-  readyUpText: {fileID: 5690541276866004138}
---- !u!1 &5690541276866004138 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2942803540029003745, guid: fc1b261755a959d45b08825329d3089a, type: 3}
   m_PrefabInstance: {fileID: 7362872049355395915}
   m_PrefabAsset: {fileID: 0}
 --- !u!224 &9209640781506430820 stripped

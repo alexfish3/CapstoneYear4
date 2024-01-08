@@ -22,9 +22,11 @@ public class PhaseIndicator : MonoBehaviour
     [SerializeField] Material hornGlowRef;
     [SerializeField] Material hornGlow;
 
-    // Start is called before the first frame update
-    void Start()
+    // Sets the reference to the horn glow, is called during during customization to correctly reference horns with player materials
+    public void ReferenceHornMaterial()
     {
+        Debug.Log("Start() called");
+
         hornGlow = new Material(hornGlowRef);
 
         Material[] ghostMaterials = ghostRenderer.materials;
@@ -51,8 +53,6 @@ public class PhaseIndicator : MonoBehaviour
             Color color = new Color(currentColor.r * factor, currentColor.g * factor, currentColor.b * factor);
             hornGlow.SetColor("_MainColor", color);
         }
-
-
     }
 
     public void SetHornGlow(float newValue)
@@ -70,7 +70,6 @@ public class PhaseIndicator : MonoBehaviour
         {
             float progress = i / 100f;  // Calculate the progress from 0 to 1
             hornSlider.value = Mathf.Lerp(0f, 1f, progress);  // Set the slider value based on the progress
-
 
             hornGlowValue += hornGlowStep;
             yield return new WaitForSeconds(cooldown / 100);
