@@ -45,6 +45,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private TrailRenderer rightSlipstreamTrail;
     [Tooltip("Reference to the shitty temp drift boost trail")]
     [SerializeField] private TrailRenderer driftTrail;
+    [Tooltip("Reference to the particles basket")]
+    [SerializeField] private Transform particleBasket;
 
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
@@ -133,6 +135,8 @@ public class BallDriving : MonoBehaviour
     private Respawn respawn; // used to update the respawn point when grounded
     private float startingDrag;
 
+    private ParticleSystem baseSpark, wideSpark, flare1Spark, flare2Spark, flare3Spark, longSpark;
+
     private float leftStick, leftTrig, rightTrig; //stick ranges from -1 to 1, triggers range from 0 to 1
 
     private float currentForce; //the amount of force to add to the speed on any given frame
@@ -196,6 +200,13 @@ public class BallDriving : MonoBehaviour
 
         respawn = sphere.GetComponent<Respawn>(); // get respawn component
         soundPool = GetComponent<SoundPool>();
+
+        baseSpark = particleBasket.GetChild(0).GetComponent<ParticleSystem>();
+        wideSpark = particleBasket.GetChild(1).GetComponent<ParticleSystem>();
+        flare1Spark = particleBasket.GetChild(2).GetComponent<ParticleSystem>();
+        flare2Spark = particleBasket.GetChild(3).GetComponent<ParticleSystem>();
+        flare3Spark = particleBasket.GetChild(4).GetComponent<ParticleSystem>();
+        longSpark = particleBasket.GetChild(5).GetComponent<ParticleSystem>();
     }
 
     /// <summary>
@@ -561,14 +572,17 @@ public class BallDriving : MonoBehaviour
         if (driftPoints > driftBoostThreshold) 
         {
             driftTier = 1;
+            DriftSparkSet(1);
         }
         if (driftPoints > (driftBoostThreshold * 2))
         {
             driftTier = 2;
+            DriftSparkSet(2);
         }
         if (driftPoints > (driftBoostThreshold * 3))
         {
             driftTier = 3;
+            DriftSparkSet(3);
         }
 
         return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax); //scales steering by speed (also prevents turning on the spot)
@@ -582,6 +596,49 @@ public class BallDriving : MonoBehaviour
         drifting = false;
         callToDrift = false;
         driftPoints = 0;
+        DriftSparkSet(0);
+    }
+
+    /// <summary>
+    /// Sets the sparks when drifting, aligns them to the correct angle
+    /// </summary>
+    /// <param name="tier">Which drift tier applies. 0 is no tier.</param>
+    private void DriftSparkSet(int tier)
+    {
+        switch(tier) 
+        {
+            case 0:
+                baseSpark.gameObject.SetActive(false);
+                wideSpark.gameObject.SetActive(false);
+                flare1Spark.gameObject.SetActive(false);
+                longSpark.gameObject.SetActive(false);
+                flare2Spark.gameObject.SetActive(false);
+                flare3Spark.gameObject.SetActive(false);
+                break;
+
+            case 1:
+                baseSpark.gameObject.SetActive(true);
+                wideSpark.gameObject.SetActive(true);
+                flare1Spark.gameObject.SetActive(true);
+                break;
+
+            case 2:
+                baseSpark.gameObject.SetActive(true);
+                wideSpark.gameObject.SetActive(true);
+                flare1Spark.gameObject.SetActive(true);
+                longSpark.gameObject.SetActive(true);
+                flare2Spark.gameObject.SetActive(true);
+                break;
+
+            case 3:
+                baseSpark.gameObject.SetActive(true);
+                wideSpark.gameObject.SetActive(true);
+                flare1Spark.gameObject.SetActive(true);
+                longSpark.gameObject.SetActive(true);
+                flare2Spark.gameObject.SetActive(true);
+                flare3Spark.gameObject.SetActive(true);
+                break;
+        }
     }
 
     /// <summary>
