@@ -10,6 +10,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     [Space(10)]
     [SerializeField] private GameState mainState = GameState.Default;
 
+    public GameState MainState { get { return mainState; } }
+
     public event Action OnSwapMenu;
     public event Action OnSwapPlayerSelect;
     public event Action OnSwapBegin;

@@ -2079,12 +2079,19 @@ MonoBehaviour:
   dontDestroyOnLoad: 1
   playerPoolSize: 10
   audioSourcePrefab: {fileID: 1959002433664209398, guid: 89b038321aa3c4b41bd364bbd9d07159, type: 3}
-  mainGameBGM: {fileID: 8300000, guid: b1474d590efbcb0488df5f6979a667fc, type: 3}
+  mainGameBGM: {fileID: 8300000, guid: 0ab689a6f9830d74fa3dd62511b9e4db, type: 3}
   mainMenuBGM: {fileID: 8300000, guid: d46e68a68bfabc84aa4702aa1b0b8aab, type: 3}
   finalOrderBGM: {fileID: 8300000, guid: f2e323cfde6eaec4dba28d1a5a3c4648, type: 3}
   resultsBGM: {fileID: 8300000, guid: 85c2aa340d16a454e9ebd9ca1f2b0b8b, type: 3}
   engineActive: {fileID: 8300000, guid: b899fcc8def2e694cbb6691b5d2671a0, type: 3}
+  engineIdle: {fileID: 0}
   drift: {fileID: 8300000, guid: a45a0df12b530fb43808eac64501bbf9, type: 3}
+  brake: {fileID: 0}
+  boostUsed: {fileID: 0}
+  boostCharged: {fileID: 8300000, guid: 874117bfdbc26e94fbecf3b879382020, type: 3}
+  orderPickup: {fileID: 8300000, guid: f4e544acb3e332f48a54b81dc1841f70, type: 3}
+  orderDropoff: {fileID: 8300000, guid: dae9e82c951d3a54a98a1a155dd72989, type: 3}
+  orderTheft: {fileID: 8300000, guid: 203c13f237a835b4286f1952827b5ebc, type: 3}
 --- !u!4 &1877960766
 Transform:
   m_ObjectHideFlags: 0

@@ -244,7 +244,8 @@ public class Respawn : MonoBehaviour
         
         // rotation of control
         Vector3 controlLookat = new Vector3(target.x, control.transform.position.y, target.z) - control.transform.position;
-        control.transform.rotation = Quaternion.LookRotation(controlLookat) * Quaternion.Euler(0,180,0);
+        int rotation = GameManager.Instance.MainState == GameState.FinalPackage ? 0 : 180;
+        control.transform.rotation = Quaternion.LookRotation(controlLookat) * Quaternion.Euler(0,rotation,0);
         Quaternion initialRotation = control.transform.rotation;
 
         orderHandler.DropEverything(target);

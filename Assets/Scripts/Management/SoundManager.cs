@@ -40,7 +40,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     private void OnEnable()
     {
         musicSource = GetComponent<AudioSource>();
-        musicSource.volume = 0.4f;
+        musicSource.volume = 0.2f;
         // events for music
         GameManager.Instance.OnSwapMenu += PlayMenuTheme;
         GameManager.Instance.OnSwapMainLoop += PlayMainTheme;
@@ -84,7 +84,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     public void PlayEngineSound(AudioSource source)
     {
-        source.volume = 0.3f;
+        source.volume = 0.1f;
         source.clip = engineActive;
         source.gameObject.SetActive(true);
     }
