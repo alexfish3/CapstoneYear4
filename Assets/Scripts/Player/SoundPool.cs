@@ -6,6 +6,16 @@ using UnityEngine;
 
 public class SoundPool : MonoBehaviour
 {
+    private class Ref<T>
+    {
+        private T backing;
+        public T Value { get { return backing; } set { backing = value; } }
+        public Ref(T reference)
+        {
+            backing = reference;
+        }
+    }
+
     private GameObject[] sourceGOs;
 
     // refs to specific sources
@@ -29,12 +39,12 @@ public class SoundPool : MonoBehaviour
     /// This method resets an audio source so it is able to be pulled from the sound pool again.
     /// </summary>
     /// <param name="source">AudioSource to be reset</param>
-    private void ResetSource(AudioSource source)
+    private void ResetSource(Ref<AudioSource> source)
     {
-        source.gameObject.SetActive(false);
-        source.volume = 1;
-        source.loop = false;
-        source = null;
+        source.Value.gameObject.SetActive(false);
+        source.Value.volume = 1;
+        source.Value.loop = false;
+        source.Value = null;
     }
 
     /// <summary>
@@ -67,7 +77,9 @@ public class SoundPool : MonoBehaviour
     public void StopEngineSound()
     {
         if(engineSource == null) { return; }
-        StartCoroutine(FadeOutSFX(engineSource, 1));
+        Ref<AudioSource> refEngine = new Ref<AudioSource>(engineSource);
+        StartCoroutine(FadeOutSFX(refEngine, 1));
+        engineSource = null;
     }
 
     public void PlayDriftSound()
@@ -81,35 +93,39 @@ public class SoundPool : MonoBehaviour
     public void StopDriftSound()
     {
         if(driftSource == null) { return; }
-        ResetSource(driftSource);
+        //ResetSource(driftSource);
     }
 
     public void PlayBoostReady()
     {
         AudioSource source = GetAvailableSource();
+        Ref<AudioSource> refSource = new Ref<AudioSource>(source);
         SoundManager.Instance.PlayBoostCharged(source);
-        StartCoroutine(KillSource(source));
+        StartCoroutine(KillSource(refSource));
     }
 
     public void PlayOrderPickup()
     {
         AudioSource source = GetAvailableSource();
+        Ref<AudioSource> refSource = new Ref<AudioSource> (source);
         SoundManager.Instance.PlayPickupSound(source);
-        StartCoroutine(KillSource(source));
+        StartCoroutine(KillSource(refSource));
     }
 
     public void PlayOrderDropoff()
     {
         AudioSource source = GetAvailableSource();
+        Ref<AudioSource> refSource = new Ref<AudioSource>(source);
         SoundManager.Instance.PlayDropoffSound(source);
-        StartCoroutine(KillSource(source));
+        StartCoroutine(KillSource(refSource));
     }
 
     public void PlayOrderTheft()
     {
         AudioSource source = GetAvailableSource();
+        Ref<AudioSource> refSource = new Ref<AudioSource>(source);
         SoundManager.Instance.PlayStealingSound(source);
-        StartCoroutine(KillSource(source));
+        StartCoroutine(KillSource(refSource));
     }
 
     /// <summary>
@@ -119,10 +135,10 @@ public class SoundPool : MonoBehaviour
     /// <param name="source">The audio source to fade out</param>
     /// <param name="duration">Time in seconds the audio source takes to fade</param>
     /// <returns></returns>
-    private IEnumerator FadeOutSFX(AudioSource source, float duration)
+    private IEnumerator FadeOutSFX(Ref<AudioSource> source, float duration)
     {
-        source.DOFade(0, duration);
-        while (source.volume > 0)
+        source.Value.DOFade(0, duration);
+        while (source.Value.volume > 0.1f)
         {
             yield return null;
         }
@@ -134,9 +150,9 @@ public class SoundPool : MonoBehaviour
     /// </summary>
     /// <param name="source">Source to be killed after playback</param>
     /// <returns></returns>
-    private IEnumerator KillSource(AudioSource source)
+    private IEnumerator KillSource(Ref<AudioSource> source)
     {
-        while(source.isPlaying)
+        while(source.Value.isPlaying)
         {
             yield return null;
         }
