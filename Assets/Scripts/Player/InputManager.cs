@@ -30,12 +30,21 @@ public class InputManager : MonoBehaviour
     private bool westFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool WestFaceValue { get { return westFaceValue; } }
 
+    // Left Stick
     private float leftStickValue; //a value from -1 to 1, which represents the horizontal position of the left stick
     public float LeftStickValue { get { return leftStickValue; } }
-    private float rightTriggerValue; //a value from 0 to 1, which represents the pull of the right trigger
-    public float RightTriggerValue { get { return rightTriggerValue; } }
+
+    // Right Stick
+    private float rightStickValue; //a value from -1 to 1, which represents the horizontal position of the right stick
+    public float RightStickValue { get { return rightStickValue; } }
+
+    // Left Trigger
     private float leftTriggerValue; //a value from 0 to 1, which represents the pull of the left trigger
     public float LeftTriggerValue { get { return leftTriggerValue; } }
+
+    // Right Trigger
+    private float rightTriggerValue; //a value from 0 to 1, which represents the pull of the right trigger
+    public float RightTriggerValue { get { return rightTriggerValue; } }
 
     /// <summary>
     /// Takes input from the left stick's horizontal position, driven by Input Controller
@@ -44,6 +53,15 @@ public class InputManager : MonoBehaviour
     public void LeftStickControl(CallbackContext context)
     {
         leftStickValue = context.ReadValue<float>();
+    }
+
+    /// <summary>
+    /// Takes input from the right stick's horizontal position, driven by Input Controller
+    /// </summary>
+    /// <param name="context">boilerplate for Input Controller</param>
+    public void RightStickControl(CallbackContext context)
+    {
+        rightStickValue = context.ReadValue<float>();
     }
 
     /// <summary>

@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class PhaseIndicator : MonoBehaviour
 {
+    bool initalized = false;
+
     [SerializeField] Slider hornSlider;
     [SerializeField] float intensity = 3;
 
@@ -30,23 +32,12 @@ public class PhaseIndicator : MonoBehaviour
         soundPool = GetComponent<SoundPool>();
     }
 
-    // Sets the reference to the horn glow, is called during during customization to correctly reference horns with player materials
-    public void ReferenceHornMaterial()
-    {
-        Debug.Log("Start() called");
-
-        hornGlow = new Material(hornGlowRef);
-
-        Material[] ghostMaterials = ghostRenderer.materials;
-
-        ghostMaterials[1] = hornGlow;
-
-        ghostRenderer.materials = ghostMaterials;
-    }
-
     // Update is called once per frame
     void Update()
     {
+        if (initalized == false)
+            return;
+
         float factor = Mathf.Pow(2, (hornGlowValue + intensity));
 
         // Ready boost color
@@ -67,6 +58,20 @@ public class PhaseIndicator : MonoBehaviour
             Color color = new Color(currentColor.r * factor, currentColor.g * factor, currentColor.b * factor);
             hornGlow.SetColor("_MainColor", color);
         }
+    }
+
+    // Sets the reference to the horn glow, is called during during customization to correctly reference horns with player materials
+    public void ReferenceHornMaterial()
+    {
+        hornGlow = new Material(hornGlowRef);
+
+        Material[] ghostMaterials = ghostRenderer.materials;
+
+        ghostMaterials[1] = hornGlow;
+
+        ghostRenderer.materials = ghostMaterials;
+
+        initalized = true;
     }
 
     public void SetHornGlow(float newValue)

@@ -9,6 +9,9 @@ public class PlayerUIHandler : MonoBehaviour
     public GameObject MenuCanvas;
     public float scrollSpeed = 0.2f;
 
+    public float uiDelayTime = 0.1f;
+    [SerializeField] bool canInput = false;
+
     public delegate void NorthFaceDelegate(bool northFaceState);
     public event NorthFaceDelegate NorthFaceEvent;
     private bool northFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
@@ -49,12 +52,24 @@ public class PlayerUIHandler : MonoBehaviour
     private bool downPadValue; //a bool representing the pushed state of the down d-pad button (true for pushed, false for loose)
     public bool DownPadValue { get { return downPadValue; } }
 
+    public IEnumerator Start()
+    {
+        canInput = false;
+        yield return new WaitForSeconds(uiDelayTime);
+        canInput = true;
+    }
+
+
     /// <summary>
     /// Takes input from the north face button (Y on Xbox)
     /// </summary>
     /// <param name="context">boilerplate for Input Controller</param>
     public void NorthFaceTrigger(CallbackContext context)
     {
+        // Disables input untill can input is true
+        if (canInput == false)
+            return;
+
         northFaceValue = context.ReadValueAsButton();
         NorthFaceEvent?.Invoke(northFaceValue);
     }
@@ -65,6 +80,10 @@ public class PlayerUIHandler : MonoBehaviour
     /// <param name="context">boilerplate for Input Controller</param>
     public void EastFaceTrigger(CallbackContext context)
     {
+        // Disables input untill can input is true
+        if (canInput == false)
+            return;
+
         eastFaceValue = context.ReadValueAsButton();
         EastFaceEvent?.Invoke(eastFaceValue);
     }
@@ -75,6 +94,10 @@ public class PlayerUIHandler : MonoBehaviour
     /// <param name="context">boilerplate for Input Controller</param>
     public void SouthFaceTrigger(CallbackContext context)
     {
+        // Disables input untill can input is true
+        if (canInput == false)
+            return;
+
         southFaceValue = context.ReadValueAsButton();
         SouthFaceEvent?.Invoke(southFaceValue);
     }
@@ -85,6 +108,10 @@ public class PlayerUIHandler : MonoBehaviour
     /// <param name="context">boilerplate for Input Controller</param>
     public void WestFaceTrigger(CallbackContext context)
     {
+        // Disables input untill can input is true
+        if (canInput == false)
+            return;
+
         westFaceValue = context.ReadValueAsButton();
         WestFaceEvent?.Invoke(westFaceValue);
     }
@@ -95,6 +122,10 @@ public class PlayerUIHandler : MonoBehaviour
     /// <param name="context">boilerplate for Input Controller</param>
     public void LeftPadTrigger(CallbackContext context)
     {
+        // Disables input untill can input is true
+        if (canInput == false)
+            return;
+
         leftPadValue = context.ReadValueAsButton();
 
         if (context.performed)
@@ -110,6 +141,10 @@ public class PlayerUIHandler : MonoBehaviour
     /// <param name="context">boilerplate for Input Controller</param>
     public void RightPadTrigger(CallbackContext context)
     {
+        // Disables input untill can input is true
+        if (canInput == false)
+            return;
+
         rightPadValue = context.ReadValueAsButton();
 
         if (context.performed)
@@ -125,6 +160,10 @@ public class PlayerUIHandler : MonoBehaviour
     /// <param name="context">boilerplate for Input Controller</param>
     public void UpPadTrigger(CallbackContext context)
     {
+        // Disables input untill can input is true
+        if (canInput == false)
+            return;
+
         upPadValue = context.ReadValueAsButton();
 
         if (context.performed)
@@ -140,6 +179,10 @@ public class PlayerUIHandler : MonoBehaviour
     /// <param name="context">boilerplate for Input Controller</param>
     public void DownPadTrigger(CallbackContext context)
     {
+        // Disables input untill can input is true
+        if (canInput == false)
+            return;
+
         downPadValue = context.ReadValueAsButton();
 
         if (context.performed)

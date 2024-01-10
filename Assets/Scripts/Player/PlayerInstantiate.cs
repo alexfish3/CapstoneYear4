@@ -132,6 +132,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         // Updates the virtual cameras based on the player number
         playerCameraResizer.UpdateVirtualCameras(playerCount);
 
+        // Relocates the customization menu based on player number
+        playerCameraResizer.RelocateCustomizationMenu(playerCount);
+
         // Update the naming scheme of the input reciever
         playerInput.gameObject.name = "Player " + playerCount.ToString();
         playerInput.gameObject.transform.parent = playerHolder.transform;
@@ -319,6 +322,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void SwapPlayerControlSchemeToUI()
     {
+        Debug.Log("<color=green>Swapping To UI Controls</color>");
+
         for (int i = 0; i < playerCount; i++)
         {
             avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().SwapCanvas(true);
@@ -333,6 +338,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void SwapPlayerControlSchemeToDrive()
     {
+        Debug.Log("<color=green>Swapping To Driving Controls</color>");
+
         for (int i = 0; i < playerCount; i++)
         {
             avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().SwapCanvas(false);

@@ -105,8 +105,6 @@ public class CustomizationSelector : MonoBehaviour
 
             colorSliderCustomization.currentMainPos = valueToChange;
             currentSlider.SetTrigger("SlideLeft");
-            //UpdateIcons(colorSliderCustomization, colorSprites, valueToChange);
-
         }
         // Negative Scroll
         else
@@ -122,8 +120,6 @@ public class CustomizationSelector : MonoBehaviour
 
             colorSliderCustomization.currentMainPos = valueToChange;
             currentSlider.SetTrigger("SlideRight");
-
-            //UpdateIcons(colorSliderCustomization, colorSprites, valueToChange);
         }
 
     }

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -21,9 +22,10 @@ public class PlayerCameraResizer : MonoBehaviour
     [Header("Cinemachine Info")]
     [SerializeField] GameObject[] virtualCameras;
 
-    [Header("Canvas References")]
+    [Header("UI References")]
     [SerializeField] Camera menuUICamera;
     [SerializeField] Camera drivingUICamera;
+    [SerializeField] GameObject customizationSelector;
 
     [Header("Phase Cam References")]
     [SerializeField] Camera mainCamera;
@@ -56,6 +58,9 @@ public class PlayerCameraResizer : MonoBehaviour
         }
     }
 
+    ///<summary>
+    /// Updates the cameras to render certain layers based on the player
+    ///</summary>
     public void UpdateVirtualCameras(int playerNumber)
     {
         int cameraLayer = 0;
@@ -115,6 +120,19 @@ public class PlayerCameraResizer : MonoBehaviour
         {
             mainCamera.enabled = false;
             phaseCamera.enabled = true;
+        }
+    }
+
+    ///<summary>
+    /// Relocates the character customization ui to the left if player is even number (2 or 4)
+    ///</summary>
+    public void RelocateCustomizationMenu(int playerNumber)
+    {
+        // Even
+        if(playerNumber % 2 == 0)
+        {
+            customizationSelector.transform.position = new Vector3(-customizationSelector.transform.position.x, customizationSelector.transform.position.y,
+                customizationSelector.transform.position.z);
         }
     }
 }

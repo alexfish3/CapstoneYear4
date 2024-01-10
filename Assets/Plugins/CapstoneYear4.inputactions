@@ -24,24 +24,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "OldAccelerate",
-                    "type": "Button",
-                    "id": "f2c6ca96-b7fe-40d7-b0f6-2d00b056f034",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "OldBrake",
-                    "type": "Button",
-                    "id": "6f11ac35-dc2a-4919-98ca-8d7a6cccd431",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Camera Rotation",
                     "type": "Value",
                     "id": "31ce79b5-4849-4beb-b073-62a44ceeee4a",
@@ -242,33 +224,11 @@
                 },
                 {
                     "name": "",
-                    "id": "1e96ca48-2fd8-4852-87a9-0909e0e755ca",
-                    "path": "<Gamepad>/rightTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "OldAccelerate",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "a96f413d-49e6-4497-9e22-cdb0b7174ee9",
-                    "path": "<Gamepad>/leftTrigger",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "OldBrake",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "ac3b3ccf-f0bc-4701-aa73-341b9a74c942",
                     "path": "<Gamepad>/rightStick/x",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Gamepad",
                     "action": "Camera Rotation",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -451,7 +411,7 @@
                     "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Keyboard&Mouse",
                     "action": "Left D-Pad",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -473,7 +433,7 @@
                     "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Keyboard&Mouse",
                     "action": "Right D-Pad",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -19882,14 +19882,6 @@ MonoBehaviour:
     m_ActionName: Player/Steer[/XInputControllerWindows/leftStick/x]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: f2c6ca96-b7fe-40d7-b0f6-2d00b056f034
-    m_ActionName: Player/OldAccelerate[/XInputControllerWindows/rightTrigger]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6f11ac35-dc2a-4919-98ca-8d7a6cccd431
-    m_ActionName: Player/OldBrake[/XInputControllerWindows/leftTrigger]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 31ce79b5-4849-4beb-b073-62a44ceeee4a
     m_ActionName: Player/Camera Rotation[/XInputControllerWindows/rightStick/x]
   - m_PersistentCalls:
@@ -20087,6 +20079,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MenuCanvas: {fileID: 1730626662847112208}
   scrollSpeed: 0.2
+  uiDelayTime: 0.1
+  canInput: 0
 --- !u!114 &8362289104759965107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20109,6 +20103,7 @@ MonoBehaviour:
   - {fileID: 978174962275233661}
   menuUICamera: {fileID: 4808158917890122173}
   drivingUICamera: {fileID: 3121335639242540451}
+  customizationSelector: {fileID: 1238175930791430519}
   mainCamera: {fileID: 7941610147128612290}
   phaseCamera: {fileID: 6388722889421940149}
   enableCameraSwap: 0
@@ -33114,6 +33109,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+--- !u!1 &1238175930791430519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8575081755562220092, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+  m_PrefabInstance: {fileID: 7362872049355395915}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1730626662847112208 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
