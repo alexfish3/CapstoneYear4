@@ -25,11 +25,14 @@ public class OrderHandler : MonoBehaviour
     public bool IsBoosting { get { return ball.Boosting; } }
     private bool hasGoldenOrder;
     public bool HasGoldenOrder { get { return hasGoldenOrder; } set { hasGoldenOrder = value; } }
+
+    private SoundPool soundPool;
     private void Start()
     {
         score = 0; // init score to 0
         ScoreManager.Instance.AddOrderHandler(this);
         ball = transform.parent.GetComponentInChildren<BallDriving>();
+        soundPool = GetComponent<SoundPool>();
     }
 
     /// <summary>
@@ -40,6 +43,7 @@ public class OrderHandler : MonoBehaviour
     {
         if (inOrder.CanPickup || inOrder.PlayerDropped != this)
         {
+            soundPool.PlayOrderPickup();
             // will add order if it fits, elsewise will not do anything
             if (order1 == null || order2 == null)
             {
@@ -68,6 +72,7 @@ public class OrderHandler : MonoBehaviour
     {
         if(order1 == rightOrder)
         {
+            soundPool.PlayOrderDropoff();
             score += (int)order1.Value;
             order1.EraseOrder();
             order1 = null;
@@ -75,6 +80,7 @@ public class OrderHandler : MonoBehaviour
         }
         else if(order2 == rightOrder)
         {
+            soundPool.PlayOrderDropoff();
             score += (int)order2.Value;
             order2.EraseOrder();
             order2 = null;
@@ -161,6 +167,7 @@ public class OrderHandler : MonoBehaviour
         Order newOrder = victimPlayer.GetBestOrder();
         if (newOrder != null && (order1 == null || order2 == null))
         {
+            soundPool.PlayOrderTheft();
             victimPlayer.LoseOrder(newOrder);
             AddOrder(newOrder);
         }

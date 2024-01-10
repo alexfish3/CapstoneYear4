@@ -10,6 +10,10 @@ public class SoundPool : MonoBehaviour
 
     // refs to specific sources
     private AudioSource engineSource;
+    private AudioSource idleSource;
+    private AudioSource driftSource;
+    private AudioSource brakeSource;
+    
     private void Awake()
     {
         sourceGOs = new GameObject[SoundManager.Instance.PoolSize];
@@ -19,6 +23,18 @@ public class SoundPool : MonoBehaviour
             sourceGOs[i] = Instantiate(audioSource, transform);
             sourceGOs[i].SetActive(false);
         }
+    }
+
+    /// <summary>
+    /// This method resets an audio source so it is able to be pulled from the sound pool again.
+    /// </summary>
+    /// <param name="source">AudioSource to be reset</param>
+    private void ResetSource(AudioSource source)
+    {
+        source.gameObject.SetActive(false);
+        source.volume = 1;
+        source.loop = false;
+        source = null;
     }
 
     /// <summary>
@@ -44,7 +60,7 @@ public class SoundPool : MonoBehaviour
     public void PlayEngineSound()
     {
         if (engineSource != null) { return; }
-        engineSource = GetAvailableSource().GetComponent<AudioSource>();
+        engineSource = GetAvailableSource();
         engineSource.loop = true;
         SoundManager.Instance.PlayEngineSound(engineSource);
     }
@@ -52,7 +68,48 @@ public class SoundPool : MonoBehaviour
     {
         if(engineSource == null) { return; }
         StartCoroutine(FadeOutSFX(engineSource, 1));
-        engineSource = null;
+    }
+
+    public void PlayDriftSound()
+    {
+        if(driftSource != null) { return; }
+        driftSource = GetAvailableSource();
+        driftSource.loop = true;
+        SoundManager.Instance.PlayDriftingSound(driftSource);
+
+    }
+    public void StopDriftSound()
+    {
+        if(driftSource == null) { return; }
+        ResetSource(driftSource);
+    }
+
+    public void PlayBoostReady()
+    {
+        AudioSource source = GetAvailableSource();
+        SoundManager.Instance.PlayBoostCharged(source);
+        StartCoroutine(KillSource(source));
+    }
+
+    public void PlayOrderPickup()
+    {
+        AudioSource source = GetAvailableSource();
+        SoundManager.Instance.PlayPickupSound(source);
+        StartCoroutine(KillSource(source));
+    }
+
+    public void PlayOrderDropoff()
+    {
+        AudioSource source = GetAvailableSource();
+        SoundManager.Instance.PlayDropoffSound(source);
+        StartCoroutine(KillSource(source));
+    }
+
+    public void PlayOrderTheft()
+    {
+        AudioSource source = GetAvailableSource();
+        SoundManager.Instance.PlayStealingSound(source);
+        StartCoroutine(KillSource(source));
     }
 
     /// <summary>
@@ -69,8 +126,20 @@ public class SoundPool : MonoBehaviour
         {
             yield return null;
         }
-        source.gameObject.SetActive(false);
-        source.volume = 1;
+        ResetSource(source);
+    }
 
+    /// <summary>
+    /// This coroutine is used for killing non-looping SFXs. It also won't be called with dedicated methods.
+    /// </summary>
+    /// <param name="source">Source to be killed after playback</param>
+    /// <returns></returns>
+    private IEnumerator KillSource(AudioSource source)
+    {
+        while(source.isPlaying)
+        {
+            yield return null;
+        }
+        ResetSource(source);
     }
 }

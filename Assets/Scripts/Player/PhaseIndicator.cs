@@ -22,6 +22,14 @@ public class PhaseIndicator : MonoBehaviour
     [SerializeField] Material hornGlowRef;
     [SerializeField] Material hornGlow;
 
+    private SoundPool soundPool; // for playing SFX
+    private bool dirtyBoostReady = true;
+
+    private void Start()
+    {
+        soundPool = GetComponent<SoundPool>();
+    }
+
     // Sets the reference to the horn glow, is called during during customization to correctly reference horns with player materials
     public void ReferenceHornMaterial()
     {
@@ -44,11 +52,17 @@ public class PhaseIndicator : MonoBehaviour
         // Ready boost color
         if (hornGlowValue >= hornValueMax - 0.01f)
         {
+            if(!dirtyBoostReady)
+            {
+                soundPool.PlayBoostReady();
+                dirtyBoostReady = true;
+            }
             Color color = new Color(readyColor.r * factor, readyColor.g * factor, readyColor.b * factor);
             hornGlow.SetColor("_MainColor", color);
         }
         else
         {
+            dirtyBoostReady = false;
             Color currentColor = (hornGlowGraident.Evaluate(hornGlowValue / hornValueMax));
             Color color = new Color(currentColor.r * factor, currentColor.g * factor, currentColor.b * factor);
             hornGlow.SetColor("_MainColor", color);
