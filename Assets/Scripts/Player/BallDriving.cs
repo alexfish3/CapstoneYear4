@@ -67,6 +67,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float steeringPower = 15.0f;
     [Tooltip("The 'turning power' when reversing.")]
     [SerializeField] private float reverseSteeringPower = 40.0f;
+
+    [Header("Drifting")]
     [Tooltip("The multiplier applied to turning when drifting. Always above 1 or there'll be no difference. Use caution when messing with this")]
     [SerializeField] private float driftTurnScalar = 1.8f;
     [Tooltip("The minimum multipler applied to drifting. It's hard to explain exactly what this is but you'll get a feel for it. ALWAYS KEEP IT LESS THAN DRIFTTURNSCALAR")]
@@ -81,6 +83,13 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float driftBoost2 = 10.0f;
     [Tooltip("The amount of speed granted by a second-tier successful drift")]
     [SerializeField] private float driftBoost3 = 15.0f;
+    [Tooltip("Color for the sparks when at the first tier of drifting")]
+    [SerializeField] private Color driftSparksTier1Color;
+    [Tooltip("Color for the sparks when at the second tier of drifting")]
+    [SerializeField] private Color driftSparksTier2Color;
+    [Tooltip("Color for the sparks when at the third tier of drifting")]
+    [SerializeField] private Color driftSparksTier3Color;
+
 
     [Header("Boosting")]
     [Tooltip("The speed power of the boost")]
@@ -135,7 +144,7 @@ public class BallDriving : MonoBehaviour
     private Respawn respawn; // used to update the respawn point when grounded
     private float startingDrag;
 
-    private ParticleSystem baseSpark, wideSpark, flare1Spark, flare2Spark, flare3Spark, longSpark;
+    private ParticleManipulator baseSpark, wideSpark, flare1Spark, flare2Spark, flare3Spark, longSpark;
 
     private float leftStick, leftTrig, rightTrig; //stick ranges from -1 to 1, triggers range from 0 to 1
 
@@ -201,12 +210,12 @@ public class BallDriving : MonoBehaviour
         respawn = sphere.GetComponent<Respawn>(); // get respawn component
         soundPool = GetComponent<SoundPool>();
 
-        baseSpark = particleBasket.GetChild(0).GetComponent<ParticleSystem>();
-        wideSpark = particleBasket.GetChild(1).GetComponent<ParticleSystem>();
-        flare1Spark = particleBasket.GetChild(2).GetComponent<ParticleSystem>();
-        flare2Spark = particleBasket.GetChild(3).GetComponent<ParticleSystem>();
-        flare3Spark = particleBasket.GetChild(4).GetComponent<ParticleSystem>();
-        longSpark = particleBasket.GetChild(5).GetComponent<ParticleSystem>();
+        baseSpark = particleBasket.GetChild(0).GetComponent<ParticleManipulator>();
+        wideSpark = particleBasket.GetChild(1).GetComponent<ParticleManipulator>();
+        flare1Spark = particleBasket.GetChild(2).GetComponent<ParticleManipulator>();
+        flare2Spark = particleBasket.GetChild(3).GetComponent<ParticleManipulator>();
+        flare3Spark = particleBasket.GetChild(4).GetComponent<ParticleManipulator>();
+        longSpark = particleBasket.GetChild(5).GetComponent<ParticleManipulator>();
     }
 
     /// <summary>
@@ -605,7 +614,7 @@ public class BallDriving : MonoBehaviour
     /// <param name="tier">Which drift tier applies. 0 is no tier.</param>
     private void DriftSparkSet(int tier)
     {
-        switch(tier) 
+        switch (tier) 
         {
             case 0:
                 baseSpark.gameObject.SetActive(false);
@@ -620,6 +629,11 @@ public class BallDriving : MonoBehaviour
                 baseSpark.gameObject.SetActive(true);
                 wideSpark.gameObject.SetActive(true);
                 flare1Spark.gameObject.SetActive(true);
+
+                baseSpark.StartColor = driftSparksTier1Color;
+                wideSpark.StartColor = driftSparksTier2Color;
+                flare1Spark.StartColor = driftSparksTier1Color;
+
                 break;
 
             case 2:
@@ -628,6 +642,13 @@ public class BallDriving : MonoBehaviour
                 flare1Spark.gameObject.SetActive(true);
                 longSpark.gameObject.SetActive(true);
                 flare2Spark.gameObject.SetActive(true);
+
+                baseSpark.StartColor = driftSparksTier2Color;
+                wideSpark.StartColor = driftSparksTier2Color;
+                flare1Spark.StartColor = driftSparksTier2Color;
+                longSpark.StartColor = driftSparksTier2Color;
+                flare2Spark.StartColor = driftSparksTier2Color;
+
                 break;
 
             case 3:
@@ -637,6 +658,14 @@ public class BallDriving : MonoBehaviour
                 longSpark.gameObject.SetActive(true);
                 flare2Spark.gameObject.SetActive(true);
                 flare3Spark.gameObject.SetActive(true);
+
+                baseSpark.StartColor = driftSparksTier3Color;
+                wideSpark.StartColor = driftSparksTier3Color;
+                flare1Spark.StartColor = driftSparksTier3Color;
+                longSpark.StartColor = driftSparksTier3Color;
+                flare2Spark.StartColor = driftSparksTier3Color;
+                flare3Spark.StartColor = driftSparksTier3Color;
+                    
                 break;
         }
     }
