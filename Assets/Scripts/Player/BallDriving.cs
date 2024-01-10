@@ -631,7 +631,7 @@ public class BallDriving : MonoBehaviour
                 flare1Spark.gameObject.SetActive(true);
 
                 baseSpark.StartColor = driftSparksTier1Color;
-                wideSpark.StartColor = driftSparksTier2Color;
+                wideSpark.StartColor = driftSparksTier1Color;
                 flare1Spark.StartColor = driftSparksTier1Color;
 
                 break;
