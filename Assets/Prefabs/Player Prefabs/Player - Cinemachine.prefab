@@ -9861,8 +9861,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 978174962275233661}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.15487324, y: -0, z: -0, w: -0.98793435}
-  m_LocalPosition: {x: 0, y: 2.25, z: -4.13}
+  m_LocalRotation: {x: -0.14521302, y: -0, z: -0, w: -0.98940045}
+  m_LocalPosition: {x: 0, y: 2.1, z: -4.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -19861,10 +19861,6 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d473d571-f80d-4360-98ea-9d2dbed609c2
-    m_ActionName: Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 44718454188821130}
         m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
@@ -19881,7 +19877,19 @@ MonoBehaviour:
     m_ActionId: 0a09e36f-1717-4844-ac2a-973959c6f7ba
     m_ActionName: Player/Steer[/XInputControllerWindows/leftStick/x]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 44718454188821130}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: RightStickControl
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 31ce79b5-4849-4beb-b073-62a44ceeee4a
     m_ActionName: Player/Camera Rotation[/XInputControllerWindows/rightStick/x]
   - m_PersistentCalls:
@@ -25665,8 +25673,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3168693259227247806}
   - component: {fileID: 7119968728075224463}
-  - component: {fileID: 8941434443825448304}
   - component: {fileID: 2789763561936170332}
+  - component: {fileID: 8186297299797899417}
   m_Layer: 2
   m_Name: cm
   m_TagString: Untagged
@@ -25701,26 +25709,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &8941434443825448304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4883857978336723282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_BindingMode: 2
-  m_FollowOffset: {x: 0, y: 5.65, z: -7}
-  m_XDamping: 0
-  m_YDamping: 0
-  m_ZDamping: 0
-  m_PitchDamping: 0
-  m_YawDamping: 0
-  m_RollDamping: 0
 --- !u!114 &2789763561936170332
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25746,6 +25734,48 @@ MonoBehaviour:
   m_SoftZoneHeight: 0
   m_BiasX: 0
   m_BiasY: 0
+--- !u!114 &8186297299797899417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4883857978336723282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BindingMode: 1
+  m_FollowOffset: {x: 0, y: 5.5, z: -7}
+  m_XDamping: 0
+  m_YDamping: 0
+  m_ZDamping: 0
+  m_PitchDamping: 0
+  m_YawDamping: 0
+  m_RollDamping: 0
+  m_Heading:
+    m_HeadingDefinition: 2
+    m_VelocityFilterStrength: 4
+    m_HeadingBias: 0
+  m_RecenterToTargetHeading:
+    m_enabled: 0
+    m_RecenterWaitTime: 1
+    m_RecenteringTime: 2
+    m_LegacyHeadingDefinition: -1
+    m_LegacyVelocityFilterStrength: -1
+  m_XAxis:
+    Value: 0
+    m_MaxSpeed: 300
+    m_AccelTime: 1
+    m_DecelTime: 1
+    m_InputAxisName: 
+    m_InputAxisValue: 0
+    m_InvertAxis: 1
+  m_LegacyRadius: 3.4028235e+38
+  m_LegacyHeightOffset: 3.4028235e+38
+  m_LegacyHeadingBias: 3.4028235e+38
+  m_HeadingIsSlave: 0
 --- !u!1 &5002322121789315745
 GameObject:
   m_ObjectHideFlags: 0
@@ -31182,6 +31212,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5289018042734306124}
   - component: {fileID: 3575753304509721870}
+  - component: {fileID: 7498757000421237578}
   - component: {fileID: 1461959447911348377}
   - component: {fileID: 909290580947496247}
   - component: {fileID: 7028945991361766779}
@@ -31285,6 +31316,25 @@ MonoBehaviour:
   debugCSVEnable: 0
   debugCSV: {fileID: 0}
   groundDetector: {fileID: 5760767167873063500}
+--- !u!114 &7498757000421237578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5659362900598450531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91ef2fd1056305147a9b1a527d0cd499, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputManager: {fileID: 44718454188821130}
+  virtualCamera: {fileID: 3058203835693817179}
+  orb: {fileID: 0}
+  maxAngle: 180
+  smoothSpeedValue: 0.1
+  realAxis: 0
+  smoothAxis: 0
 --- !u!114 &1461959447911348377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32335,8 +32385,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8501127692924196179}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.15487324, y: -0, z: -0, w: -0.98793435}
-  m_LocalPosition: {x: 0, y: 2.25, z: -4.13}
+  m_LocalRotation: {x: -0.14521302, y: -0, z: -0, w: -0.98940045}
+  m_LocalPosition: {x: 0, y: 2.1, z: -4.13}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
