@@ -47,6 +47,10 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private TrailRenderer driftTrail;
     [Tooltip("Reference to the particles basket")]
     [SerializeField] private Transform particleBasket;
+    [Tooltip("Reference to the left-side sparks position")]
+    [SerializeField] private Transform sparksPos1;
+    [Tooltip("Reference to the right-side sparks position")]
+    [SerializeField] private Transform sparksPos2;
 
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
@@ -614,6 +618,17 @@ public class BallDriving : MonoBehaviour
     /// <param name="tier">Which drift tier applies. 0 is no tier.</param>
     private void DriftSparkSet(int tier)
     {
+        if (driftDirection > 0)
+        {
+            particleBasket.position = sparksPos1.position;
+            particleBasket.localEulerAngles = new Vector3(0, 160, 0);
+        }
+        else
+        {
+            particleBasket.position = sparksPos2.position;
+            particleBasket.localEulerAngles = new Vector3(0, 20, 0);
+        }
+
         switch (tier) 
         {
             case 0:
