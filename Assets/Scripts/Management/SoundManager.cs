@@ -55,6 +55,11 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         GameManager.Instance.OnSwapResults -= PlayResultsTheme;
     }
 
+
+    private void Start()
+    {
+        
+    }
     // below are methods to play various BGMs
     private void PlayMenuTheme()
     {
@@ -84,9 +89,17 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     public void PlayEngineSound(AudioSource source)
     {
-        source.volume = 0.1f;
+        //source.volume = 0.1f;
         source.clip = engineActive;
         source.gameObject.SetActive(true);
+        source.Play();
+    }
+
+    public void PlayIdleSound(AudioSource source)
+    {
+        source.clip = engineIdle;
+        source.gameObject.SetActive(true);
+        source.Play();
     }
 
     public void PlayDriftingSound(AudioSource source)

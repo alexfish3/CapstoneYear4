@@ -6,6 +6,10 @@ using UnityEngine;
 
 public class SoundPool : MonoBehaviour
 {
+    /// <summary>
+    /// This class is used to create objects that can be passed-by-reference to coroutines.
+    /// </summary>
+    /// <typeparam name="T">Type of this class (primarily going to be AudioSource)</typeparam>
     private class Ref<T>
     {
         private T backing;
@@ -23,6 +27,9 @@ public class SoundPool : MonoBehaviour
     private AudioSource idleSource;
     private AudioSource driftSource;
     private AudioSource brakeSource;
+
+    private bool idling = false;
+    private bool shouldPlay = false;
     
     private void Awake()
     {
@@ -33,6 +40,16 @@ public class SoundPool : MonoBehaviour
             sourceGOs[i] = Instantiate(audioSource, transform);
             sourceGOs[i].SetActive(false);
         }
+    }
+
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapMainLoop += InitEngineSource;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapMainLoop -= InitEngineSource;
     }
 
     /// <summary>
@@ -61,26 +78,55 @@ public class SoundPool : MonoBehaviour
             }
         }
         // hopefully won't get here, if it happens frequently we can increase the pool size in SM
-        Debug.Log("Created new source");
+        Debug.LogError("Created new source, pool too small.");
         return Instantiate(SoundManager.Instance.AudioSourcePrefab, transform).GetComponent<AudioSource>();
     }
 
     // below are methods for starting and stopping specific sounds. Because of this there's no need to use our normal commenting standards.
-
-    public void PlayEngineSound()
+    private void InitEngineSource()
     {
-        if (engineSource != null) { return; }
+        if(engineSource != null) { return; }
+        Debug.Log("Engine Source Init");
         engineSource = GetAvailableSource();
         engineSource.loop = true;
+        shouldPlay = true;
+    }
+    public void PlayEngineSound()
+    {
+        /*if (engineSource != null) { return; }
+        if (idleSource != null)
+        {
+            Ref<AudioSource> idleRef = new Ref<AudioSource>(idleSource);
+            ResetSource(idleRef);
+        }
+        engineSource = GetAvailableSource();
+        engineSource.loop = true;*/
+        if (!idling || !shouldPlay) { return; };
+        Debug.Log("Engine playing");
         SoundManager.Instance.PlayEngineSound(engineSource);
+        idling = false;
     }
     public void StopEngineSound()
     {
-        if(engineSource == null) { return; }
+        if(idling || !shouldPlay) { return; };
+        Debug.Log("engine stopped");
+        SoundManager.Instance.PlayIdleSound(engineSource);
+        idling = true;
+        /*if(engineSource == null) { return; }
         Ref<AudioSource> refEngine = new Ref<AudioSource>(engineSource);
         StartCoroutine(FadeOutSFX(refEngine, 1));
         engineSource = null;
+        PlayIdleSound();*/
+
     }
+    public void PlayIdleSound()
+    {
+        if(idleSource != null) { return; }
+        idleSource = GetAvailableSource();
+        idleSource.loop = true;
+        SoundManager.Instance.PlayIdleSound(idleSource);
+    }
+
 
     public void PlayDriftSound()
     {
