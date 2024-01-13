@@ -33,11 +33,13 @@ public class SoundPool : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Instance.OnSwapMainLoop += InitEngineSource;
+        GameManager.Instance.OnSwapResults += TurnOffPlayerSounds;
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnSwapMainLoop -= InitEngineSource;
+        GameManager.Instance.OnSwapResults -= TurnOffPlayerSounds;
     }
 
     /// <summary>
@@ -69,15 +71,20 @@ public class SoundPool : MonoBehaviour
         return Instantiate(SoundManager.Instance.AudioSourcePrefab, transform).GetComponent<AudioSource>();
     }
 
-    // below are methods for starting and stopping specific sounds. Because of this there's no need to use our normal commenting standards.
     private void InitEngineSource()
     {
         if(engineSource != null) { return; }
-        Debug.Log("Engine Source Init");
         engineSource = GetAvailableSource();
         engineSource.loop = true;
         shouldPlay = true;
     }
+
+    private void TurnOffPlayerSounds()
+    {
+        shouldPlay = false;
+    }
+
+    // below are methods for starting and stopping specific sounds. Because of this there's no need to use our normal commenting standards.
 
     // TODO: fix these using GetClip() method
     public void PlayEngineSound()
