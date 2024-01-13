@@ -231,14 +231,16 @@ public class BallDriving : MonoBehaviour
         leftTrig = inp.LeftTriggerValue;
         rightTrig = inp.RightTriggerValue;
 
-        if(csv != 0)
-        {
-            soundPool.PlayEngineSound();
-        }
-        else
+        // incomplete, need to figure out a better way to detect braking
+        if (csv == 0 || rightTrig < leftTrig)
         {
             soundPool.StopEngineSound();
         }
+        else
+        {
+            soundPool.PlayEngineSound();
+        }
+        
 
         if (callToDrift && leftStick != 0)
         {
@@ -435,6 +437,7 @@ public class BallDriving : MonoBehaviour
                 Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
                 
                 phasing = true;
+                soundPool.PlayPhaseSound();
             }
             else if(hit1Success == false && hit2Success == false)
             {
@@ -447,6 +450,7 @@ public class BallDriving : MonoBehaviour
                 phasing = false;
                 ToggleCollision(false);
                 checkPhaseStatus = false;
+                soundPool.StopPhaseSound();
             }
         }
 
@@ -547,6 +551,7 @@ public class BallDriving : MonoBehaviour
     {
         if (!boosting && !reversing && grounded)
         {
+            soundPool.PlayDriftSound();
             callToDrift = false;
             drifting = true;
 
@@ -606,6 +611,7 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void DirtyDriftDrop()
     {
+        soundPool.StopDriftSound();
         drifting = false;
         callToDrift = false;
         driftPoints = 0;
@@ -695,6 +701,7 @@ public class BallDriving : MonoBehaviour
         {
             StartBoostActive();
             OnBoostStart?.Invoke();
+            soundPool.PlayBoostActivate();
         }
     }
 

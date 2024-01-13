@@ -43,10 +43,10 @@ public class OrderHandler : MonoBehaviour
     {
         if (inOrder.CanPickup || inOrder.PlayerDropped != this)
         {
-            soundPool.PlayOrderPickup();
             // will add order if it fits, elsewise will not do anything
             if (order1 == null || order2 == null)
             {
+                soundPool.PlayOrderPickup();
                 if (order2 == null)
                 {
                     order2 = inOrder;

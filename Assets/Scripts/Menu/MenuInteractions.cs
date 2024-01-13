@@ -11,6 +11,8 @@ public class MenuInteractions : MonoBehaviour
     [SerializeField] CustomizationSelector customizationSelector;
     [SerializeField] GameObject readyUpText;
 
+    private SoundPool soundPool;
+
     private void OnEnable()
     {
         handler.SouthFaceEvent += PlayerReady;
@@ -20,6 +22,8 @@ public class MenuInteractions : MonoBehaviour
         handler.UpPadEvent += CustomizationScrollUp;
         handler.RightPadEvent += CustomizationScrollRight;
         handler.LeftPadEvent += CustomizationScrollLeft;
+
+        soundPool = GetComponentInParent<SoundPool>();
     }
 
     private void OnDisable()
@@ -40,6 +44,7 @@ public class MenuInteractions : MonoBehaviour
     {
         readyUpText.SetActive(true);
         PlayerInstantiate.Instance.ReadyUp(ballDriving.playerIndex - 1);
+        soundPool.PlayEnterUI();
     }
 
     ///<summary>
@@ -49,6 +54,7 @@ public class MenuInteractions : MonoBehaviour
     {
         readyUpText.SetActive(false);
         PlayerInstantiate.Instance.UnreadyUp(ballDriving.playerIndex - 1);
+        soundPool.PlayBackUI();
     }
 
     ///<summary>
@@ -58,6 +64,7 @@ public class MenuInteractions : MonoBehaviour
     {
         // Scrolls selector down
         customizationSelector.SetCustomizationType(true);
+        soundPool.PlayScrollUI();
     }
 
     ///<summary>
@@ -67,6 +74,7 @@ public class MenuInteractions : MonoBehaviour
     {
         // Scrolls selector up
         customizationSelector.SetCustomizationType(false);
+        soundPool.PlayScrollUI();
     }
 
     ///<summary>
@@ -76,6 +84,7 @@ public class MenuInteractions : MonoBehaviour
     {
         // Scrolls selector left
         customizationSelector.SetCustomizationValue(false);
+        soundPool.PlayScrollUI();
     }
 
     ///<summary>
@@ -85,6 +94,7 @@ public class MenuInteractions : MonoBehaviour
     {
         // Scrolls selector right
         customizationSelector.SetCustomizationValue(true);
+        soundPool.PlayScrollUI();
     }
 
     ///<summary>
@@ -93,6 +103,7 @@ public class MenuInteractions : MonoBehaviour
     public void ResetCanvas()
     {
         readyUpText.SetActive(false);
+        soundPool.PlayScrollUI();
     }
 
 }

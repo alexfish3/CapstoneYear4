@@ -10,6 +10,7 @@ using UnityEngine.Rendering;
 public class SoundManager : SingletonMonobehaviour<SoundManager>
 {
     private AudioSource musicSource;
+    private Dictionary<string, AudioClip> sfxDictionary = new Dictionary<string, AudioClip>();
 
     [Header("Pooling Information")]
     [Tooltip("How many audio sources are in each player's pool")]
@@ -33,9 +34,15 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [SerializeField] private AudioClip brake;
     [SerializeField] private AudioClip boostUsed;
     [SerializeField] private AudioClip boostCharged;
+    [SerializeField] private AudioClip phasing;
     [SerializeField] private AudioClip orderPickup;
     [SerializeField] private AudioClip orderDropoff;
     [SerializeField] private AudioClip orderTheft;
+
+    [Header("UI")]
+    [SerializeField] private AudioClip enter;
+    [SerializeField] private AudioClip back;
+    [SerializeField] private AudioClip scroll;
 
     private void OnEnable()
     {
@@ -55,10 +62,24 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         GameManager.Instance.OnSwapResults -= PlayResultsTheme;
     }
 
-
+    /// <summary>
+    /// Here's where you'll find all the AudioKeys
+    /// </summary>
     private void Start()
     {
-        
+        sfxDictionary.Add("engine", engineActive);
+        sfxDictionary.Add("idle", engineIdle);
+        sfxDictionary.Add("drift", drift);
+        sfxDictionary.Add("brake", brake);
+        sfxDictionary.Add("boost_used", boostUsed);
+        sfxDictionary.Add("boost_charged", boostCharged);
+        sfxDictionary.Add("pickup", orderPickup);
+        sfxDictionary.Add("dropoff", orderDropoff);
+        sfxDictionary.Add("whoosh", orderTheft);
+        sfxDictionary.Add("phasing", phasing);
+        sfxDictionary.Add("confirm", enter);
+        sfxDictionary.Add("back", back);
+        sfxDictionary.Add("scroll", scroll);
     }
     // below are methods to play various BGMs
     private void PlayMenuTheme()
@@ -87,6 +108,13 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     // the below methods are similar but play SFXs. The audio source to be used is the only param
 
+    public void PlaySFX(string key, AudioSource source)
+    {
+        source.clip = sfxDictionary[key];
+        source.gameObject.SetActive(true);
+        source.Play();
+    }
+
     public void PlayEngineSound(AudioSource source)
     {
         //source.volume = 0.1f;
@@ -102,33 +130,19 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         source.Play();
     }
 
-    public void PlayDriftingSound(AudioSource source)
+    /// <summary>
+    /// This method returns the SFX from the dictionary with specified key. Returns null if clip can't be found and debugs the error.
+    /// </summary>
+    /// <param name="key">Key of the clip in the dictionary.</param>
+    /// <returns></returns>
+    public AudioClip GetSFX(string key)
     {
-        source.clip = drift;
-        source.gameObject.SetActive(true);
-    }
-
-    public void PlayPickupSound(AudioSource source)
-    {
-        source.clip = orderPickup;
-        source.gameObject.SetActive(true);
-    }
-
-    public void PlayDropoffSound(AudioSource source)
-    {
-        source.clip = orderDropoff;
-        source.gameObject.SetActive(true);
-    }
-
-    public void PlayStealingSound(AudioSource source)
-    {
-        source.clip = orderTheft; 
-        source.gameObject.SetActive(true);
-    }
-
-    public void PlayBoostCharged(AudioSource source)
-    {
-        source.clip = boostCharged;
-        source.gameObject.SetActive(true);
+        AudioClip outClip;
+        if(sfxDictionary.TryGetValue(key, out outClip))
+        {
+            return outClip;
+        }
+        Debug.LogError($"Couldn't find clip in dictionary with key: {key}.");
+        return null;
     }
 }
