@@ -83,7 +83,7 @@ public class SoundPool : MonoBehaviour
     public void PlayEngineSound()
     {
         if (!idling || !shouldPlay ) { return; };
-        if(brakingRoutine != null) { StopCoroutine(brakingRoutine); brakingRoutine = null; }
+        //if(brakingRoutine != null) { StopCoroutine(brakingRoutine); brakingRoutine = null; }
         SoundManager.Instance.PlayEngineSound(engineSource);
         idling = false;
         engineSource.loop = true;
@@ -91,12 +91,16 @@ public class SoundPool : MonoBehaviour
     public void StopEngineSound()
     {
         if(idling || !shouldPlay) { return; };
-        engineSource.loop = false;
+        /*        engineSource.loop = false;
+                idling = true;
+                SoundManager.Instance.PlaySFX("brake", engineSource);
+                brakingRoutine = WaitForBrake();
+                StartCoroutine(brakingRoutine);*/
         idling = true;
-        SoundManager.Instance.PlaySFX("brake", engineSource);
-        brakingRoutine = WaitForBrake();
-        StartCoroutine(brakingRoutine);
-        
+        engineSource.loop = true;
+        //brakingRoutine = null;
+        SoundManager.Instance.PlayIdleSound(engineSource);
+
     }
     public void PlayDriftSound()
     {
