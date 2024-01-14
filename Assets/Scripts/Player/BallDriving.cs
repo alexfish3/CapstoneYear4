@@ -51,6 +51,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private Transform sparksPos1;
     [Tooltip("Reference to the right-side sparks position")]
     [SerializeField] private Transform sparksPos2;
+    [Tooltip("Reference to the position used for can kickin' calculations")]
+    [SerializeField] private Transform canKicker;
 
     [Header("Speed Modifiers")]
     [Tooltip("An amorphous representation of how quickly the bike can accelerate")]
