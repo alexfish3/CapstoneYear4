@@ -18,7 +18,8 @@ public class SoundPool : MonoBehaviour
     private bool idling = false;
     private bool phasing = false;
 
-    private IEnumerator brakingRoutine;
+    private IEnumerator emoteRoutine;
+
     private void Awake()
     {
         sourceGOs = new GameObject[SoundManager.Instance.PoolSize];
@@ -50,6 +51,7 @@ public class SoundPool : MonoBehaviour
     {
         source.gameObject.SetActive(false);
         source.volume = 1;
+        source.pitch = 1;
         source.loop = false;
     }
 
@@ -82,6 +84,7 @@ public class SoundPool : MonoBehaviour
     private void TurnOffPlayerSounds()
     {
         shouldPlay = false;
+        ResetSource(engineSource);
     }
 
     // below are methods for starting and stopping specific sounds. Because of this there's no need to use our normal commenting standards.
@@ -188,6 +191,15 @@ public class SoundPool : MonoBehaviour
         SoundManager.Instance.PlaySFX("scroll", source);
         StartCoroutine(KillSource(source));
     }
+
+    // emote
+    public void PlayEmote(int index)
+    {
+        AudioSource source = GetAvailableSource();
+        SoundManager.Instance.PlayEmoteSound(source, index);
+        StartCoroutine (KillSource(source));
+    }
+
     /// <summary>
     /// This coroutine "fades out" a passed in audio source over duration seconds. It's not called with the dedicated start/stop coroutine methods
     /// as it might need to run on multiple threads at once.
@@ -227,7 +239,6 @@ public class SoundPool : MonoBehaviour
         }
         idling = true;
         engineSource.loop = true;
-        brakingRoutine = null;
         SoundManager.Instance.PlayIdleSound(engineSource);
         
     }

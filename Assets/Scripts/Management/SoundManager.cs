@@ -44,6 +44,14 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [SerializeField] private AudioClip back;
     [SerializeField] private AudioClip scroll;
 
+    [Header("Emotes")]
+    [Tooltip("[0]: Top, [1]: Right, [2]: Bottom, [3]: Left")]
+    [SerializeField] private AudioClip[] emoteSFX;
+    [Range(0f, 1f)]
+    [SerializeField] private float emotePitchMin;
+    [Range(1f, 2f)]
+    [SerializeField] private float emotePitchMax;
+
     private void OnEnable()
     {
         musicSource = GetComponent<AudioSource>();
@@ -128,6 +136,23 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         source.clip = engineIdle;
         source.gameObject.SetActive(true);
         source.Play();
+    }
+
+    // for playing sticker sounds
+    public void PlayEmoteSound(AudioSource source, int index)
+    {
+        try
+        {
+            source.clip = emoteSFX[index];
+            source.pitch = Random.Range(emotePitchMin, emotePitchMax);
+            source.gameObject.SetActive(true);
+            source.Play();
+        } 
+        catch
+        {
+            Debug.LogError($"Couldn't find index {index} of EmoteSFX array length {emoteSFX.Length}.");
+            return;
+        }
     }
 
     /// <summary>

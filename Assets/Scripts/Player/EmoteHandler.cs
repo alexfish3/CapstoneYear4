@@ -8,9 +8,14 @@ using UnityEngine.UI;
 /// </summary>
 public class EmoteHandler : MonoBehaviour
 {
+    [Header("Player Information")]
     [Tooltip("GO on the player prefab with the InputManager component.")]
     [SerializeField] private InputManager input;
 
+    [Tooltip("GO on the player prefab with the SoundPool component.")]
+    [SerializeField] private SoundPool soundPool;
+
+    [Header("Emote Information")]
     [Tooltip("Image on the canvas where the emotes will pop up.")]
     [SerializeField] private Image emoteImg;
 
@@ -20,6 +25,8 @@ public class EmoteHandler : MonoBehaviour
     
     [Tooltip("How long the emote stays on the screen for.")]
     [SerializeField] private float emoteLifetime;
+
+    private bool emoting = false;
     
     private IEnumerator emoteShowRoutine;
     // Start is called before the first frame update
@@ -53,33 +60,35 @@ public class EmoteHandler : MonoBehaviour
     /// <param name="dpad"></param>
     public void Emote(Vector2 dpad)
     {
-        Sprite emote = null;
+        if(emoting) { return; }
+        int index = -1;
         switch(dpad.x)
         {
             case 1:
-                emote = emoteSprites[1];
+                index = 1;
                 break;
             case -1:
-                emote = emoteSprites[3];
+                index = 3;
                 break;
             default:
                 switch(dpad.y)
                 {
                     case 1:
-                        emote = emoteSprites[0];
+                        index = 0;
                         break;
                     case -1:
-                        emote = emoteSprites[2];
+                        index = 2;
                         break;
                     default:
                         break;
                 }
                 break;
         }
-        if(emote != null)
+        if(index != -1)
         {
             StopEmoteShow();
-            currEmote = emote;
+            currEmote = emoteSprites[index];
+            soundPool.PlayEmote(index);
             StartEmoteShow();
         }
     }
@@ -109,10 +118,12 @@ public class EmoteHandler : MonoBehaviour
     /// <returns></returns>
     private IEnumerator ShowEmote()
     {
+        emoting = true;
         emoteImg.sprite = currEmote;
         emoteImg.gameObject.SetActive(true);
         yield return new WaitForSeconds(emoteLifetime);
         emoteImg.sprite = null;
         ResetEmote();
+        emoting = false;
     }
 }
