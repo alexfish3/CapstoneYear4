@@ -20103,6 +20103,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 580bf271-fcde-4740-b96d-35017db9e1ae
     m_ActionName: UI/Down D-Pad[/DualShock4GamepadHID/dpad/down,/Keyboard/downArrow]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 44718454188821130}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: DPadPress
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ed4f020f-6e48-4374-a1b3-991c876e0b75
+    m_ActionName: Player/Emote[/XInputControllerWindows/dpad]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -31350,6 +31366,7 @@ MonoBehaviour:
   particleBasket: {fileID: 1216163702698642695}
   sparksPos1: {fileID: 537462383072521168}
   sparksPos2: {fileID: 7067999190281734362}
+  canKicker: {fileID: 0}
   accelerationPower: 45
   reversingPower: 28
   fallingDrag: 0.85
@@ -33063,11 +33080,54 @@ PrefabInstance:
       propertyPath: m_text
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8525388960698887846, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: input
+      value: 
+      objectReference: {fileID: 44718454188821130}
+    - target: {fileID: 8525388960698887846, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: emoteImg
+      value: 
+      objectReference: {fileID: 46738862000290797}
+    - target: {fileID: 8525388960698887846, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: emoteLifetime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525388960698887846, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: emoteSprites.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8525388960698887846, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: emoteSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 5095321f6bb03364b9c96ab7a7b37142, type: 3}
+    - target: {fileID: 8525388960698887846, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: emoteSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 74fe73bf4bb16b945b1c961ff4206b57, type: 3}
+    - target: {fileID: 8525388960698887846, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: emoteSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 089fecf49cc58b340bdad7cccd293391, type: 3}
+    - target: {fileID: 8525388960698887846, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: emoteSprites.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 3035bc78cf70d8b4a831f6face02106a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+--- !u!114 &46738862000290797 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3533289899094191613, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+  m_PrefabInstance: {fileID: 3580019541855933968}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2395950110701783665 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1220149082957782113, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
@@ -33265,6 +33325,10 @@ PrefabInstance:
     - target: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Name
       value: Menu Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

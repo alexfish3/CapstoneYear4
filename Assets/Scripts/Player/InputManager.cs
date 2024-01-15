@@ -46,6 +46,11 @@ public class InputManager : MonoBehaviour
     private float rightTriggerValue; //a value from 0 to 1, which represents the pull of the right trigger
     public float RightTriggerValue { get { return rightTriggerValue; } }
 
+    // D-Pad for emotes
+    public delegate void DPadDelegate(Vector2 dpadVal);
+    public event DPadDelegate DPadEvent;
+    private Vector2 dpadValue; // a vector2 with x representing horizontal (1 right, -1 left) and y representing vertical (1 up, -1 down). returns (+-0.71, +-0.71) when 2 directions are pressed
+
     /// <summary>
     /// Takes input from the left stick's horizontal position, driven by Input Controller
     /// </summary>
@@ -110,5 +115,18 @@ public class InputManager : MonoBehaviour
     {
         southFaceValue = context.ReadValueAsButton();
         SouthFaceEvent(southFaceValue);
+    }
+
+    /// <summary>
+    /// Reads input from the DPad as a Vector2 and invokes the DPad event.
+    /// </summary>
+    /// <param name="context">boilerplate for Input Controller</param>
+    public void DPadPress(CallbackContext context)
+    {
+        dpadValue = context.ReadValue<Vector2>();
+        if(dpadValue.x * dpadValue.x == 1f || dpadValue.y * dpadValue.y == 1f) // ensure only one direction is being pressed
+        {
+            DPadEvent(dpadValue);
+        }
     }
 }
