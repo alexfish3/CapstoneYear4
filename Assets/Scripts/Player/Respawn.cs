@@ -208,7 +208,7 @@ public class Respawn : MonoBehaviour
     {
         RaycastHit hit;
         bool groundCast, waterCast, buildingCast;
-        for (int i = sizeOfRespawnArray - 1; i >= 0; i--)
+        for (int i = sizeOfRespawnArray - 2; i >= 0; i--)
         {
             bool validSpawn = true;
             Vector3 t = respawnPoints[i];
