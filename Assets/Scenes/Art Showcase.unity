@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 5d133deeaa66ed445853e946ff25e073, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 43fffaa6e2d553442990c8c3d1d72a38, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4946549, g: 0.26610348, b: 0.20795727, a: 1}
+  m_IndirectSpecularColor: {r: 0.3085406, g: 0.2921291, b: 0.4838028, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -14019,7 +14019,7 @@ PrefabInstance:
   m_SourcePrefab: {fileID: 100100000, guid: 1aca3974540606f43994805bdf765593, type: 3}
 --- !u!4 &1257384827 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 2487563408603273116, guid: 1aca3974540606f43994805bdf765593, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1923517483515956725, guid: 1aca3974540606f43994805bdf765593, type: 3}
   m_PrefabInstance: {fileID: 1257384826}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1261866105
@@ -23204,6 +23204,7 @@ MonoBehaviour:
   compassImage: {fileID: 584961727373185955}
   compassCalc: {fileID: 0}
   player: {fileID: 2344187305072453650}
+  orbitalCamera: {fileID: 0}
   playerCam: {fileID: 0}
   iconHeight: -70
   iconPrefab: {fileID: 3691895907627439231, guid: 13f91f37558f51643ac77d60dac451e9, type: 3}
@@ -23550,6 +23551,9 @@ MonoBehaviour:
   rightSlipstreamTrail: {fileID: 0}
   driftTrail: {fileID: 0}
   particleBasket: {fileID: 0}
+  sparksPos1: {fileID: 0}
+  sparksPos2: {fileID: 0}
+  canKicker: {fileID: 0}
   accelerationPower: 40
   reversingPower: 30
   fallingDrag: 1
@@ -23922,6 +23926,7 @@ MonoBehaviour:
   virtualCameras: []
   menuUICamera: {fileID: 0}
   drivingUICamera: {fileID: 0}
+  customizationSelector: {fileID: 0}
   mainCamera: {fileID: 0}
   phaseCamera: {fileID: 0}
   enableCameraSwap: 1
