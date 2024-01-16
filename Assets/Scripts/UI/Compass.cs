@@ -10,6 +10,9 @@ public class Compass : MonoBehaviour
     [SerializeField] RawImage compassImage;
     [SerializeField] Transform compassCalc;
     [SerializeField] Transform player;
+
+    [SerializeField] OrbitalCamera orbitalCamera;
+
     [SerializeField] Camera playerCam;
 
     [Tooltip("The y position of the ui on the compass")]
@@ -36,7 +39,7 @@ public class Compass : MonoBehaviour
     private void Update()
     {
         // Updates the uv rect of the compass image, to scroll based on player rotation
-        compassImage.uvRect = new Rect(player.localEulerAngles.y / 360f, 0f, 1f, 1f);
+        compassImage.uvRect = new Rect((player.localEulerAngles.y + orbitalCamera.smoothAxis) / 360f, 0f, 1f, 1f);
 
         // Loops for all markers on player and updates their position on the compass ui
         foreach (CompassIconUI marker in compassUIObjects)
@@ -78,12 +81,14 @@ public class Compass : MonoBehaviour
     {
         // Creates new object
         GameObject newMarker = Instantiate(iconPrefab, compassImage.transform);
-        newMarker.GetComponent<Image>().sprite = marker.icon;
-        newMarker.GetComponent<CompassIconUI>().objectReference = marker;
+        CompassIconUI compassIconUI = newMarker.GetComponent<CompassIconUI>();
+
+        compassIconUI.SetCompassIconSprite(marker.icon);
+        compassIconUI.objectReference = marker;
 
         // Adds to list
         compassMarkerObjects.Add(marker);
-        compassUIObjects.Add(newMarker.GetComponent<CompassIconUI>());
+        compassUIObjects.Add(compassIconUI);
     }
 
     ///<summary>
@@ -144,7 +149,7 @@ public class Compass : MonoBehaviour
         // Adjust the angle to be negative when turning counterclockwise
         angleDegrees = (Vector3.Cross(playerForwardVector, playerToObjectVector).y < 0) ? -angleDegrees : angleDegrees;
 
-        return new Vector2(angleDegrees * compassUnit, iconHeight);
+        return new Vector2((angleDegrees - orbitalCamera.smoothAxis) * compassUnit, iconHeight);
     }
 
     ///<summary>

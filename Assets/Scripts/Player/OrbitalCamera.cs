@@ -11,7 +11,7 @@ public class OrbitalCamera : MonoBehaviour
     [SerializeField] float maxAngle = 180;
     [SerializeField] float smoothSpeedValue = 0.1f;
     [SerializeField] float realAxis;
-    [SerializeField] float smoothAxis;
+    public float smoothAxis;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +27,5 @@ public class OrbitalCamera : MonoBehaviour
         smoothAxis = Mathf.Lerp(smoothAxis, realAxis, smoothSpeedValue);
 
         orb.m_XAxis.Value = smoothAxis;
-        
-
     }
 }
