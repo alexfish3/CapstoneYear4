@@ -10,6 +10,7 @@ public class SoundPool : MonoBehaviour
 
     // refs to specific sources
     private AudioSource engineSource;
+    private AudioSource brakeSource;
     private AudioSource driftSource;
     private AudioSource boostSource;
 
@@ -89,7 +90,6 @@ public class SoundPool : MonoBehaviour
 
     // below are methods for starting and stopping specific sounds. Because of this there's no need to use our normal commenting standards.
 
-    // TODO: fix these using GetClip() method
     public void PlayEngineSound()
     {
         if (!idling || !shouldPlay ) { return; };
@@ -98,17 +98,11 @@ public class SoundPool : MonoBehaviour
         idling = false;
         engineSource.loop = true;
     }
-    public void StopEngineSound()
+    public void PlayIdleSound()
     {
         if(idling || !shouldPlay) { return; };
-        /*        engineSource.loop = false;
-                idling = true;
-                SoundManager.Instance.PlaySFX("brake", engineSource);
-                brakingRoutine = WaitForBrake();
-                StartCoroutine(brakingRoutine);*/
         idling = true;
         engineSource.loop = true;
-        //brakingRoutine = null;
         SoundManager.Instance.PlayIdleSound(engineSource);
 
     }
@@ -126,6 +120,16 @@ public class SoundPool : MonoBehaviour
         ResetSource(driftSource);
         driftSource = null;
     }
+    public void PlayBrakeSound()
+    {
+        if (driftSource != null) { return; }
+        if(brakeSource == null) 
+        {
+            brakeSource = GetAvailableSource();
+        }
+        SoundManager.Instance.PlaySFX("brake", brakeSource);
+        StartCoroutine(KillSource(brakeSource));
+    }
     public void PlayBoostReady()
     {
         AudioSource source = GetAvailableSource();
@@ -137,6 +141,12 @@ public class SoundPool : MonoBehaviour
         boostSource = GetAvailableSource();
         SoundManager.Instance.PlaySFX("boost_used", boostSource);
         StartCoroutine(KillSource(boostSource));
+    }
+    public void PlayMiniBoost()
+    {
+        AudioSource source = GetAvailableSource();
+        SoundManager.Instance.PlaySFX("mini", source);
+        StartCoroutine(KillSource(source));
     }
     public void PlayPhaseSound()
     {

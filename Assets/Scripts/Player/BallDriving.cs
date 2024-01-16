@@ -233,16 +233,19 @@ public class BallDriving : MonoBehaviour
         leftTrig = inp.LeftTriggerValue;
         rightTrig = inp.RightTriggerValue;
 
-        // incomplete, need to figure out a better way to detect braking
-        if (csv == 0 || rightTrig < leftTrig)
+        if (currentVelocity > 0.5 && csv > 0 && ((leftTrig == 1 && !reversing) || (rightTrig == 1 && reversing)))
         {
-            soundPool.StopEngineSound();
+            soundPool.PlayBrakeSound();
+        }
+        else if (csv == 0)
+        {
+            soundPool.PlayIdleSound();
         }
         else
         {
             soundPool.PlayEngineSound();
         }
-        
+
 
         if (callToDrift && leftStick != 0)
         {
@@ -328,6 +331,7 @@ public class BallDriving : MonoBehaviour
         //Adds the boost from a successful drift
         if (driftBoostAchieved)
         {
+            soundPool.PlayMiniBoost();
             switch (driftTier)
             {
                 case 1:

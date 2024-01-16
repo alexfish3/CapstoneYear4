@@ -34,6 +34,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [SerializeField] private AudioClip brake;
     [SerializeField] private AudioClip boostUsed;
     [SerializeField] private AudioClip boostCharged;
+    [SerializeField] private AudioClip miniBoost;
     [SerializeField] private AudioClip phasing;
     [SerializeField] private AudioClip orderPickup;
     [SerializeField] private AudioClip orderDropoff;
@@ -88,6 +89,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         sfxDictionary.Add("confirm", enter);
         sfxDictionary.Add("back", back);
         sfxDictionary.Add("scroll", scroll);
+        sfxDictionary.Add("mini", miniBoost);
     }
     // below are methods to play various BGMs
     private void PlayMenuTheme()
