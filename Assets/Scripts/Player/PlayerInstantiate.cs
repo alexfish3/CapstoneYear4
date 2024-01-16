@@ -46,10 +46,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         gameManager.OnSwapBegin += DisablePlayerSpawn;
         gameManager.OnSwapBegin += SwapPlayerControlSchemeToDrive;
+        gameManager.OnSwapBegin += SwapMenuForPause;
 
         gameManager.OnSwapResults += DisableReadiedUp;
         gameManager.OnSwapResults += ResetPlayerCanvas;
         gameManager.OnSwapResults += SwapPlayerControlSchemeToUI;
+        gameManager.OnSwapResults += SwapMenuForMainMenu;
     }
 
     ///<summary>
@@ -61,10 +63,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         gameManager.OnSwapBegin -= DisablePlayerSpawn;
         gameManager.OnSwapBegin -= SwapPlayerControlSchemeToDrive;
+        gameManager.OnSwapBegin -= SwapMenuForPause;
 
         gameManager.OnSwapResults -= DisableReadiedUp;
         gameManager.OnSwapResults -= ResetPlayerCanvas;
         gameManager.OnSwapResults -= SwapPlayerControlSchemeToUI;
+        gameManager.OnSwapResults -= SwapMenuForMainMenu;
     }
 
     public void Update()
@@ -82,8 +86,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void AddPlayerReference(PlayerInput playerInput)
     {
-        Debug.Log("Added PLayer");
-
         // If player spawn is disabled
         if(allowPlayerSpawn == false && Constants.SPAWN_MID_MATCH == false)
         {
@@ -91,6 +93,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             Destroy(playerInput.gameObject);
             return;
         }
+
+        Debug.Log("Added PLayer");
 
         // Up the player count
         playerCount++;
@@ -307,6 +311,32 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         readyUpCountdown = null;
     }
 
+    private void SwapMenuForMainMenu()
+    {
+        SwapMenuTypeForAllPlayers(MenuType.MainMenu);
+    }
+
+    private void SwapMenuForCharacterSelect()
+    {
+        SwapMenuTypeForAllPlayers(MenuType.CharacterSelect);
+    }
+
+    private void SwapMenuForPause()
+    {
+        SwapMenuTypeForAllPlayers(MenuType.PauseMenu);
+    }
+
+    /// <summary>
+    /// Swaps the menu type for all players
+    /// </summary>
+    private void SwapMenuTypeForAllPlayers(MenuType menuType)
+    {
+        for (int i = 0; i < playerCount; i++)
+        {
+            avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().menuInteractions.SwapMenuType(menuType);
+        }
+    }
+
     ///<summary>
     /// Enables the ability to spawn players
     ///</summary>
@@ -394,6 +424,22 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         {
             avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().ResetCanvas();
         }
+    }
+
+    ///<summary>
+    /// Pause was triggered, must pause for all players
+    ///</summary>
+    public void PlayerPause()
+    {
+        SwapPlayerControlSchemeToUI();
+    }
+
+    ///<summary>
+    /// Unpause was triggered, must unpause for all players
+    ///</summary>
+    public void PlayerPlay()
+    {
+        SwapPlayerControlSchemeToDrive();
     }
 
 }

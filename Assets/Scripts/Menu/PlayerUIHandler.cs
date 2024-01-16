@@ -2,55 +2,53 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerUIHandler : MonoBehaviour
 {
     public GameObject MenuCanvas;
+    public MenuInteractions menuInteractions;
     public float scrollSpeed = 0.2f;
 
     public float uiDelayTime = 0.1f;
     [SerializeField] bool canInput = false;
 
-    public delegate void NorthFaceDelegate(bool northFaceState);
-    public event NorthFaceDelegate NorthFaceEvent;
+    public UnityEvent<bool> NorthFaceEvent;
     private bool northFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool NorthFaceValue { get { return northFaceValue; } }
 
-    public delegate void EastFaceDelegate(bool eastFaceState);
-    public event EastFaceDelegate EastFaceEvent;
+    public UnityEvent<bool> EastFaceEvent;
     private bool eastFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool EastFaceValue { get { return eastFaceValue; } }
 
-    public delegate void SouthFaceDelegate(bool southFaceState);
-    public event SouthFaceDelegate SouthFaceEvent;
+    public UnityEvent<bool> SouthFaceEvent;
     private bool southFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool SouthFaceValue { get { return southFaceValue; } }
 
-    public delegate void WestFaceDelegate(bool westFaceState);
-    public event WestFaceDelegate WestFaceEvent;
+    public UnityEvent<bool> WestFaceEvent;
     private bool westFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool WestFaceValue { get { return westFaceValue; } }
 
-    public delegate void LeftPadDelegate(bool leftPadValue);
-    public event LeftPadDelegate LeftPadEvent;
+    public UnityEvent<bool> LeftPadEvent;
     private bool leftPadValue; //a bool representing the pushed state of the left d-pad button (true for pushed, false for loose)
     public bool LeftPadValue { get { return leftPadValue; } }
 
-    public delegate void RightPadDelegate(bool rightPadValue);
-    public event RightPadDelegate RightPadEvent;
+    public UnityEvent<bool> RightPadEvent;
     private bool rightPadValue; //a bool representing the pushed state of the right d-pad button (true for pushed, false for loose)
     public bool RightPadValue { get { return rightPadValue; } }
 
-    public delegate void UpPadDelegate(bool upPadValue);
-    public event UpPadDelegate UpPadEvent;
+    public UnityEvent<bool> UpPadEvent;
     private bool upPadValue; //a bool representing the pushed state of the up d-pad button (true for pushed, false for loose)
     public bool UpPadValue { get { return upPadValue; } }
 
-    public delegate void DownPadDelegate(bool downPadValue);
-    public event DownPadDelegate DownPadEvent;
+    public UnityEvent<bool> DownPadEvent;
     private bool downPadValue; //a bool representing the pushed state of the down d-pad button (true for pushed, false for loose)
     public bool DownPadValue { get { return downPadValue; } }
+
+    public UnityEvent<bool> StartPadEvent;
+    private bool startPadValue; // A bool representing the pushed stage of the start button (true for pushed, false for loose)
+
 
     public IEnumerator Start()
     {
@@ -223,6 +221,24 @@ public class PlayerUIHandler : MonoBehaviour
                     DownPadTrigger(context);
                 }
                 break;
+        }
+    }
+
+    /// <summary>
+    /// Takes input from the start button
+    /// </summary>
+    /// <param name="context">boilerplate for Input Controller</param>
+    public void StartPadTrigger(CallbackContext context)
+    {
+        // Disables input untill can input is true
+        if (canInput == false)
+            return;
+
+        startPadValue = context.ReadValueAsButton();
+
+        if (context.performed)
+        {
+            StartPadEvent?.Invoke(startPadValue);
         }
     }
 }

@@ -20004,10 +20004,6 @@ MonoBehaviour:
     m_ActionId: e53579b4-c83b-4d8b-864d-bfd122dc9029
     m_ActionName: Player/Drift[/XInputControllerWindows/buttonWest]
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 95b54a1d-7466-4c34-9679-58958dd798c5
-    m_ActionName: Player/SwapCameraDebug[/XInputControllerWindows/dpad/down]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5419323488552745372}
         m_TargetAssemblyTypeName: PlayerUIHandler, Assembly-CSharp
@@ -20119,6 +20115,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: ed4f020f-6e48-4374-a1b3-991c876e0b75
     m_ActionName: Player/Emote[/XInputControllerWindows/dpad]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 44718454188821130}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: StartPadTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: ea61d819-5b88-4aac-aded-76fa2dea9a23
+    m_ActionName: Player/Pause[/DualShock4GamepadHID/start,/XInputControllerWindows/start,/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5419323488552745372}
+        m_TargetAssemblyTypeName: PlayerUIHandler, Assembly-CSharp
+        m_MethodName: StartPadTrigger
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2de87937-d8c2-4ce4-b424-348ee40987ac
+    m_ActionName: UI/UnPause[/DualShock4GamepadHID/start,/XInputControllerWindows/start,/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -20136,6 +20164,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35dec2fde7a57294c9ad7c3ad12560e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartPadEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5419323488552745372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20149,9 +20180,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MenuCanvas: {fileID: 1730626662847112208}
+  menuInteractions: {fileID: 437342487100121777}
   scrollSpeed: 0.2
   uiDelayTime: 0.1
   canInput: 0
+  NorthFaceEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EastFaceEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  SouthFaceEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  WestFaceEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  LeftPadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  RightPadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  UpPadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DownPadEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  StartPadEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8362289104759965107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33223,14 +33282,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5289018042734306124}
     m_Modifications:
-    - target: {fileID: 1799296419663501833, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: handler
-      value: 
-      objectReference: {fileID: 5419323488552745372}
-    - target: {fileID: 1799296419663501833, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: ballDriving
-      value: 
-      objectReference: {fileID: 3575753304509721870}
     - target: {fileID: 1864800722992714799, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -33311,10 +33362,30 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2942803540029003745, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4577896849879768333, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 4808158917890122173}
+    - target: {fileID: 6935523302629896698, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: uiHandler
+      value: 
+      objectReference: {fileID: 5419323488552745372}
+    - target: {fileID: 6935523302629896698, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: ballDriving
+      value: 
+      objectReference: {fileID: 3575753304509721870}
+    - target: {fileID: 6935523302629896698, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: drivingHandler
+      value: 
+      objectReference: {fileID: 44718454188821130}
+    - target: {fileID: 7291222671001932818, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8226127984948104913, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: ghostModel
       value: 
@@ -33323,23 +33394,30 @@ PrefabInstance:
       propertyPath: phaseIndicator
       value: 
       objectReference: {fileID: 1461959447911348377}
-    - target: {fileID: 8550982155422142368, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: sliderSprites.Array.data[0]
-      value: 
-      objectReference: {fileID: 21300000, guid: 5dd5a9d5bfe32704390e505f6d161749, type: 3}
+    - target: {fileID: 8575081755562220092, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Name
       value: Menu Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+--- !u!114 &437342487100121777 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6935523302629896698, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+  m_PrefabInstance: {fileID: 7362872049355395915}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1730626662847112208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22ae9d9732eb84d4b9327071b4777e2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1238175930791430519 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8575081755562220092, guid: fc1b261755a959d45b08825329d3089a, type: 3}

@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using static UnityEngine.InputSystem.InputAction;
 
@@ -10,23 +12,19 @@ using static UnityEngine.InputSystem.InputAction;
 /// </summary>
 public class InputManager : MonoBehaviour
 {
-    public delegate void NorthFaceDelegate(bool northFaceState);
-    public event NorthFaceDelegate NorthFaceEvent;
+    public event Action<bool> NorthFaceEvent;
     private bool northFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool NorthFaceValue { get { return northFaceValue; } }
 
-    public delegate void EastFaceDelegate(bool eastFaceState);
-    public event EastFaceDelegate EastFaceEvent;
+    public event Action<bool> EastFaceEvent;
     private bool eastFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool EastFaceValue { get { return eastFaceValue; } }
 
-    public delegate void SouthFaceDelegate(bool southFaceState);
-    public event SouthFaceDelegate SouthFaceEvent;
+    public event Action<bool> SouthFaceEvent;
     private bool southFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool SouthFaceValue { get { return southFaceValue; } }
 
-    public delegate void WestFaceDelegate(bool westFaceState);
-    public event WestFaceDelegate WestFaceEvent;
+    public event Action<bool> WestFaceEvent;
     private bool westFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool WestFaceValue { get { return westFaceValue; } }
 
@@ -47,9 +45,12 @@ public class InputManager : MonoBehaviour
     public float RightTriggerValue { get { return rightTriggerValue; } }
 
     // D-Pad for emotes
-    public delegate void DPadDelegate(Vector2 dpadVal);
-    public event DPadDelegate DPadEvent;
+    public event Action<Vector2> DPadEvent;
     private Vector2 dpadValue; // a vector2 with x representing horizontal (1 right, -1 left) and y representing vertical (1 up, -1 down). returns (+-0.71, +-0.71) when 2 directions are pressed
+
+    public UnityEvent<bool> StartPadEvent;
+    private bool startPadValue; // A bool representing the pushed stage of the start button (true for pushed, false for loose)
+
 
     /// <summary>
     /// Takes input from the left stick's horizontal position, driven by Input Controller
@@ -127,6 +128,20 @@ public class InputManager : MonoBehaviour
         if(dpadValue.x * dpadValue.x == 1f || dpadValue.y * dpadValue.y == 1f) // ensure only one direction is being pressed
         {
             DPadEvent(dpadValue);
+        }
+    }
+
+    /// <summary>
+    /// Takes input from the start button
+    /// </summary>
+    /// <param name="context">boilerplate for Input Controller</param>
+    public void StartPadTrigger(CallbackContext context)
+    {
+        startPadValue = context.ReadValueAsButton();
+
+        if (context.performed)
+        {
+            StartPadEvent?.Invoke(startPadValue);
         }
     }
 }

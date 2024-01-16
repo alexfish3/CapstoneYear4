@@ -60,15 +60,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SwapCameraDebug",
-                    "type": "Button",
-                    "id": "95b54a1d-7466-4c34-9679-58958dd798c5",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Emote",
                     "type": "Value",
                     "id": "ed4f020f-6e48-4374-a1b3-991c876e0b75",
@@ -76,6 +67,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "ea61d819-5b88-4aac-aded-76fa2dea9a23",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -147,23 +147,34 @@
                 },
                 {
                     "name": "",
-                    "id": "25481513-da5a-4c2f-9253-c28ab5924f3e",
-                    "path": "<Gamepad>/dpad/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "SwapCameraDebug",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "17d5a7f5-79c7-479b-88c8-fdd51a44318f",
                     "path": "<Gamepad>/dpad",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Emote",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b6426abd-7f34-43b8-a693-b1354d45e1f7",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3a8b47d0-601f-447c-b763-025490884760",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -222,6 +233,15 @@
                     "name": "Down D-Pad",
                     "type": "Button",
                     "id": "580bf271-fcde-4740-b96d-35017db9e1ae",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UnPause",
+                    "type": "Button",
+                    "id": "2de87937-d8c2-4ce4-b424-348ee40987ac",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -358,6 +378,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "Down D-Pad",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "20dbc882-8b2f-4a71-90dc-03de6930f71f",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "UnPause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "daf36b1f-7835-4588-9aa5-f322f6f850af",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "UnPause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
