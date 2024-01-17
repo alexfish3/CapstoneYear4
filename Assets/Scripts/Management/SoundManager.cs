@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Rendering;
 
 /// <summary>
@@ -11,6 +12,9 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 {
     private AudioSource musicSource;
     private Dictionary<string, AudioClip> sfxDictionary = new Dictionary<string, AudioClip>();
+
+    [Header("Mixing Information")]
+    [SerializeField] private AudioMixer mainMixer;
 
     [Header("Pooling Information")]
     [Tooltip("How many audio sources are in each player's pool")]
@@ -48,10 +52,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [Header("Emotes")]
     [Tooltip("[0]: Top, [1]: Right, [2]: Bottom, [3]: Left")]
     [SerializeField] private AudioClip[] emoteSFX;
-    [Range(0f, 1f)]
-    [SerializeField] private float emotePitchMin;
-    [Range(1f, 2f)]
-    [SerializeField] private float emotePitchMax;
+    [Range(0f, 1f)] [SerializeField] private float emotePitchMin;
+    [Range(1f, 2f)] [SerializeField] private float emotePitchMax;
 
     private void OnEnable()
     {
@@ -147,6 +149,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         {
             source.clip = emoteSFX[index];
             source.pitch = Random.Range(emotePitchMin, emotePitchMax);
+            SwitchSource(ref source, "Emote");
             source.gameObject.SetActive(true);
             source.Play();
         } 
@@ -171,5 +174,23 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         }
         Debug.LogError($"Couldn't find clip in dictionary with key: {key}.");
         return null;
+    }
+
+    /// <summary>
+    /// This method switches the output mixer of an audio source, or debugs an error if the mixer couldn't be found.
+    /// </summary>
+    /// <param name="source">Source being switched</param>
+    /// <param name="channel">Name of the output channel</param>
+    public void SwitchSource(ref AudioSource source, string channel)
+    {
+        AudioMixerGroup targetGroup = mainMixer.FindMatchingGroups(channel)[0];
+        if(targetGroup != null)
+        {
+            source.outputAudioMixerGroup = targetGroup;
+        }
+        else
+        {
+            Debug.LogError($"Couldn't find group in mixer with name: {channel}.");
+        }
     }
 }

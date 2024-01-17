@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class SoundPool : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class SoundPool : MonoBehaviour
     private void ResetSource(AudioSource source)
     {
         source.gameObject.SetActive(false);
+        SoundManager.Instance.SwitchSource(ref source, "SFX");
         source.volume = 1;
         source.pitch = 1;
         source.loop = false;
