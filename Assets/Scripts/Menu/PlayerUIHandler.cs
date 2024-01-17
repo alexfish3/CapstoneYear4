@@ -49,14 +49,40 @@ public class PlayerUIHandler : MonoBehaviour
     public UnityEvent<bool> StartPadEvent;
     private bool startPadValue; // A bool representing the pushed stage of the start button (true for pushed, false for loose)
 
+    Coroutine disableInteraction;
 
-    public IEnumerator Start()
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapPlayerSelect += TriggerDisableInteraction;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapPlayerSelect -= TriggerDisableInteraction;
+    }
+
+    private void Start()
+    {
+        TriggerDisableInteraction();
+    }
+
+    public void TriggerDisableInteraction()
+    {
+        if(disableInteraction != null)
+            StopCoroutine(disableInteraction);
+
+        disableInteraction = StartCoroutine(DisableInteraction());
+    }
+
+    /// <summary>
+    /// Coroutine to disable interaction on main menu
+    /// </summary>
+    public IEnumerator DisableInteraction()
     {
         canInput = false;
         yield return new WaitForSeconds(uiDelayTime);
         canInput = true;
     }
-
 
     /// <summary>
     /// Takes input from the north face button (Y on Xbox)

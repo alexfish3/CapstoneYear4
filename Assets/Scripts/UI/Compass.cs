@@ -30,6 +30,16 @@ public class Compass : MonoBehaviour
 
     [SerializeField] float compassUnit;
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapPlayerSelect += ResetCompass;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapPlayerSelect -= ResetCompass;
+    }
+
     private void Start()
     {
         // Calculates compass unit based on the size of the compass image ui size
@@ -158,5 +168,19 @@ public class Compass : MonoBehaviour
     int CalculateDistance(CompassMarker marker)
     {
         return (int) Vector3.Distance(marker.transform.position, compassCalc.transform.position);
+    }
+
+    ///<summary>
+    /// Resets compass by removing any references
+    ///</summary>
+    public void ResetCompass()
+    {
+        foreach(CompassIconUI icon in compassUIObjects)
+        {
+            Destroy(icon);
+        }
+        compassUIObjects.Clear();
+
+        compassMarkerObjects.Clear();
     }
 }
