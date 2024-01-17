@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position.
@@ -357,6 +358,7 @@ public class BallDriving : MonoBehaviour
         {
             totalForce += boostPower;
             boostInitialburst = false;
+            RumbleManager.Instance.RumblePulse(0.5f, 1f, 1f);
         }
 
         //Adds the boost from slipstream
