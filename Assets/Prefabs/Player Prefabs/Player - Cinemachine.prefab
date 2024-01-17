@@ -31435,6 +31435,7 @@ MonoBehaviour:
   steeringPower: 90
   reverseSteeringPower: 90
   driftTurnScalar: 1.6
+  driftSidewaysScalar: 3
   driftTurnMinimum: 0.3
   driftBoostThreshold: 90
   driftBoostMode: 0.5
@@ -33298,6 +33299,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5289018042734306124}
     m_Modifications:
+    - target: {fileID: 206788510589241937, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1864800722992714799, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -33382,6 +33387,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3566579835935799233, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4577896849879768333, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Camera
       value: 
@@ -33414,6 +33423,10 @@ PrefabInstance:
       propertyPath: phaseIndicator
       value: 
       objectReference: {fileID: 1461959447911348377}
+    - target: {fileID: 8227909127848263708, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8575081755562220092, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_IsActive
       value: 1
