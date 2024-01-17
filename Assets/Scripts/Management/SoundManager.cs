@@ -28,6 +28,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [Header("Music")]
     [SerializeField] private AudioClip mainGameBGM;
     [SerializeField] private AudioClip mainMenuBGM;
+    [SerializeField] private AudioClip playerSelectBGM;
     [SerializeField] private AudioClip finalOrderBGM;
     [SerializeField] private AudioClip resultsBGM;
 
@@ -61,6 +62,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         musicSource.volume = 0.2f;
         // events for music
         GameManager.Instance.OnSwapMenu += PlayMenuTheme;
+        GameManager.Instance.OnSwapPlayerSelect += PlayPlayerSelectTheme;
         GameManager.Instance.OnSwapMainLoop += PlayMainTheme;
         GameManager.Instance.OnSwapFinalPackage += PlayFinalTheme;
         GameManager.Instance.OnSwapResults += PlayResultsTheme;
@@ -68,6 +70,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     private void OnDisable()
     {
         GameManager.Instance.OnSwapMenu -= PlayMenuTheme;
+        GameManager.Instance.OnSwapPlayerSelect -= PlayPlayerSelectTheme;
         GameManager.Instance.OnSwapMainLoop -= PlayMainTheme;
         GameManager.Instance.OnSwapFinalPackage -= PlayFinalTheme;
         GameManager.Instance.OnSwapResults -= PlayResultsTheme;
@@ -97,6 +100,12 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     private void PlayMenuTheme()
     {
         musicSource.clip = mainMenuBGM;
+        musicSource.Play();
+    }
+
+    private void PlayPlayerSelectTheme()
+    {
+        musicSource.clip = playerSelectBGM;
         musicSource.Play();
     }
 
