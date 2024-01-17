@@ -19,7 +19,7 @@ public class PauseMenu : MonoBehaviour
     [Header("Host Pause")]
     [SerializeField] GameObject hostPauseGO;
 
-    public void OnPause()
+    public void OnPause(PauseType pauseType)
     {
         tint.SetActive(true);
 
@@ -27,8 +27,10 @@ public class PauseMenu : MonoBehaviour
         {
             case PauseType.Host:
                 hostPauseGO.SetActive(true);
+                subPauseGO.SetActive(false);
                 return;
             case PauseType.Sub:
+                hostPauseGO.SetActive(false);
                 subPauseGO.SetActive(true);
                 return;
             default: return;

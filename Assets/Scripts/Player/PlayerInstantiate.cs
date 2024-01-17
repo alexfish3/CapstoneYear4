@@ -148,7 +148,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
 
         // Updates the virtual cameras based on the player number
-        playerCameraResizer.UpdateVirtualCameras(playerCount);
+        playerCameraResizer.UpdateVirtualCameras(nextFillSlot);
 
         // Relocates the customization menu based on player number
         playerCameraResizer.RelocateCustomizationMenu(nextFillSlot);
@@ -504,9 +504,27 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///<summary>
     /// Pause was triggered, must pause for all players
     ///</summary>
-    public void PlayerPause()
+    public void PlayerPause(PlayerInput playerInput)
     {
         SwapPlayerControlSchemeToUI();
+
+        Time.timeScale = 0f;
+
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
+        {
+            if (avaliblePlayerInputs[i] == null)
+                continue;
+
+            // For one who paused
+            if (playerInput == avaliblePlayerInputs[i])
+            {
+                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPause(PauseMenu.PauseType.Host);
+            }
+            else
+            {
+                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPause(PauseMenu.PauseType.Sub);
+            }
+        }
     }
 
     ///<summary>
@@ -515,6 +533,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public void PlayerPlay()
     {
         SwapPlayerControlSchemeToDrive();
+
+        Time.timeScale = 1f;
     }
 
 }

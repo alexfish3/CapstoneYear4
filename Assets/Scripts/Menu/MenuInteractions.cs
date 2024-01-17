@@ -18,13 +18,14 @@ public class MenuInteractions : MonoBehaviour
     [SerializeField] bool readiedUp = false;
 
     [Header("Object References")]
+    [SerializeField] PlayerInput playerInput;
     [SerializeField] PlayerUIHandler uiHandler;
     [SerializeField] InputManager drivingHandler;
     [SerializeField] BallDriving ballDriving;
 
     [Header("UI References")]
     [SerializeField] CustomizationSelector customizationSelector;
-    [SerializeField] PauseMenu pauseMenu;
+    public PauseMenu pauseMenu;
     [SerializeField] GameObject readyUpText;
 
     private SoundPool soundPool;
@@ -69,7 +70,7 @@ public class MenuInteractions : MonoBehaviour
 
         // Disable all ui components
         customizationSelector.gameObject.SetActive(false);
-
+        readyUpText.SetActive(false);
 
         uiHandler.SouthFaceEvent.RemoveAllListeners();
         uiHandler.EastFaceEvent.RemoveAllListeners();
@@ -202,9 +203,9 @@ public class MenuInteractions : MonoBehaviour
 
     public void PauseGame(bool button)
     {
-        Debug.Log("Pause Game");
-        pauseMenu.OnPause();
-        PlayerInstantiate.Instance.PlayerPause();
+        Debug.Log("Pause Game Host");
+
+        PlayerInstantiate.Instance.PlayerPause(playerInput);
     }
 
 }

@@ -61,18 +61,18 @@ public class PlayerCameraResizer : MonoBehaviour
     ///<summary>
     /// Updates the cameras to render certain layers based on the player
     ///</summary>
-    public void UpdateVirtualCameras(int playerNumber)
+    public void UpdateVirtualCameras(int nextFillSlot)
     {
         int cameraLayer = 0;
 
         // Gets camera layer based on player
-        if (playerNumber == 1)
+        if (nextFillSlot == 1)
             cameraLayer = 17;
-        else if (playerNumber == 2)
+        else if (nextFillSlot == 2)
             cameraLayer = 18;
-        else if (playerNumber == 3)
+        else if (nextFillSlot == 3)
             cameraLayer = 19;
-        else if (playerNumber == 4)
+        else if (nextFillSlot == 4)
             cameraLayer = 20;
 
         // Loops and sets all virtual cams to layer
