@@ -32,11 +32,13 @@ public class Compass : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log("RESET COMPASS");
         GameManager.Instance.OnSwapPlayerSelect += ResetCompass;
     }
 
     private void OnDisable()
     {
+        Debug.Log("DISABLE RESET COMPASS");
         GameManager.Instance.OnSwapPlayerSelect -= ResetCompass;
     }
 
@@ -175,6 +177,7 @@ public class Compass : MonoBehaviour
     ///</summary>
     public void ResetCompass()
     {
+        Debug.Log("Reset Compass");
         foreach(CompassIconUI icon in compassUIObjects)
         {
             Destroy(icon);

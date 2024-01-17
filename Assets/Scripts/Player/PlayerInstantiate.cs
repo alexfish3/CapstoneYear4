@@ -176,8 +176,11 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         Debug.Log("Spawn Players at right positions");
 
         // Loops for all spawned players
-        for (int i = 0; i <= playerCount - 1; i++)
+        for (int i = 0; i < avaliblePlayerInputs.Length; i++)
         {
+            if (avaliblePlayerInputs[i] == null)
+                continue;
+
             // Resets the velocity of the players
             avaliblePlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
 

@@ -107,7 +107,6 @@ public class MenuInteractions : MonoBehaviour
 
     private void PauseMenuInteractons()
     {
-
         Debug.Log("<color=blue>Swap to Pause Menu</color>");
 
         uiHandler.StartPadEvent.AddListener(PlayGame);
@@ -117,7 +116,6 @@ public class MenuInteractions : MonoBehaviour
         uiHandler.UpPadEvent.AddListener(PauseScrollUp);
 
         uiHandler.SouthFaceEvent.AddListener(PauseConfirm);
-
     }
 
 
