@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum MenuType
 {
@@ -13,11 +14,13 @@ public enum MenuType
 
 public class MenuInteractions : MonoBehaviour
 {
+    [Header("Bool Information")]
+    [SerializeField] bool readiedUp = false;
+
+    [Header("Object References")]
     [SerializeField] PlayerUIHandler uiHandler;
     [SerializeField] InputManager drivingHandler;
     [SerializeField] BallDriving ballDriving;
-
-    public event Action test; 
 
     [Header("UI References")]
     [SerializeField] CustomizationSelector customizationSelector;
@@ -64,6 +67,10 @@ public class MenuInteractions : MonoBehaviour
     {
         Debug.Log("<color=blue>Clear Inputs</color>");
 
+        // Disable all ui components
+        customizationSelector.gameObject.SetActive(false);
+
+
         uiHandler.SouthFaceEvent.RemoveAllListeners();
         uiHandler.EastFaceEvent.RemoveAllListeners();
 
@@ -80,8 +87,10 @@ public class MenuInteractions : MonoBehaviour
     {
         Debug.Log("<color=blue>Swap to Character Select Menu</color>");
 
+        customizationSelector.gameObject.SetActive(true);
+
         uiHandler.SouthFaceEvent.AddListener(PlayerReady);
-        uiHandler.EastFaceEvent.AddListener(PlayerUnready);
+        uiHandler.EastFaceEvent.AddListener(PlayerUnreadyDespawn);
 
         uiHandler.DownPadEvent.AddListener(CustomizationScrollDown);
         uiHandler.UpPadEvent.AddListener(CustomizationScrollUp);
@@ -104,18 +113,34 @@ public class MenuInteractions : MonoBehaviour
     private void PlayerReady(bool button)
     {
         readyUpText.SetActive(true);
+        readiedUp = true;
         PlayerInstantiate.Instance.ReadyUp(ballDriving.playerIndex - 1);
         soundPool.PlayEnterUI();
     }
 
     ///<summary>
-    /// Calls method when player wants to unready
+    /// Calls method when player wants to unready or despawn
     ///</summary>
-    private void PlayerUnready(bool button)
+    private void PlayerUnreadyDespawn(bool button)
     {
-        readyUpText.SetActive(false);
-        PlayerInstantiate.Instance.UnreadyUp(ballDriving.playerIndex - 1);
-        soundPool.PlayBackUI();
+        if(button == true)
+            return;
+
+        Debug.Log("Unready or despawn");
+
+        // Despawn
+        if (readiedUp == false)
+        {
+            PlayerInstantiate.Instance.SubtractPlayerCount();
+            PlayerInstantiate.Instance.RemovePlayerReference(transform.parent.gameObject.transform.parent.GetComponent<PlayerInput>());
+        }
+        else
+        {
+            readyUpText.SetActive(false);
+            readiedUp = false;
+            PlayerInstantiate.Instance.UnreadyUp(ballDriving.playerIndex - 1);
+            soundPool.PlayBackUI();
+        }
     }
 
     ///<summary>
@@ -173,7 +198,6 @@ public class MenuInteractions : MonoBehaviour
 
         pauseMenu.OnPlay();
         PlayerInstantiate.Instance.PlayerPlay();
-
     }
 
     public void PauseGame(bool button)

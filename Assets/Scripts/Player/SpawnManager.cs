@@ -45,20 +45,27 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     private void SpawnPlayersStartOfGame()
     {
         // Loops for all spawned players
-        for (int i = 0; i <= playerInstantiate.PlayerCount - 1; i++)
+        for (int i = 0; i <= Constants.MAX_PLAYERS; i++)
         {
-            // Resets the velocity of the players
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+            try
+            {
+                if (playerInstantiate.PlayerInputs[i] == null)
+                    continue;
 
-            // reset position and rotation of ball and controller
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = gameSpawnPositions[i].transform.position;
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = gameSpawnPositions[i].transform.rotation;
+                // Resets the velocity of the players
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
 
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = gameSpawnPositions[i].transform.position;
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = gameSpawnPositions[i].transform.rotation;
+                // reset position and rotation of ball and controller
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = gameSpawnPositions[i].transform.position;
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = gameSpawnPositions[i].transform.rotation;
 
-            // Initalize the compass ui on each of the players
-            playerInstantiate.PlayerInputs[i].gameObject.GetComponentInChildren<CompassMarker>().InitalizeCompassUIOnAllPlayers();
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = gameSpawnPositions[i].transform.position;
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = gameSpawnPositions[i].transform.rotation;
+
+                // Initalize the compass ui on each of the players
+                playerInstantiate.PlayerInputs[i].gameObject.GetComponentInChildren<CompassMarker>().InitalizeCompassUIOnAllPlayers();
+            }
+            catch { }
         }
 
         // After players have been placed, begin main loop
@@ -71,17 +78,24 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     public void SpawnPlayersFinalPackage()
     {
         // Loops for all spawned players
-        for (int i = 0; i <= playerInstantiate.PlayerCount - 1; i++)
+        for (int i = 0; i <= Constants.MAX_PLAYERS; i++)
         {
-            // Resets the velocity of the players
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+            try
+            {
+                if (playerInstantiate.PlayerInputs[i] == null)
+                    continue;
 
-            // reset position and rotation of ball and controller
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = goldenPackageSpawnPositions[i].transform.position;
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = goldenPackageSpawnPositions[i].transform.rotation;
+                // Resets the velocity of the players
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
 
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = goldenPackageSpawnPositions[i].transform.position;
-            playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = goldenPackageSpawnPositions[i].transform.rotation;
+                // reset position and rotation of ball and controller
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = goldenPackageSpawnPositions[i].transform.position;
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = goldenPackageSpawnPositions[i].transform.rotation;
+
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = goldenPackageSpawnPositions[i].transform.position;
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = goldenPackageSpawnPositions[i].transform.rotation;
+            }
+            catch { }
         }
     }
 }

@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 /// <summary>
 /// This class resizes the rect of all cameras in array, based on a reference cam. 
@@ -23,13 +24,12 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] GameObject[] virtualCameras;
 
     [Header("UI References")]
+    [SerializeField] Camera mainCamera;
+    [SerializeField] Camera phaseCamera;
+    [SerializeField] Camera playerCamera;
     [SerializeField] Camera menuUICamera;
     [SerializeField] Camera drivingUICamera;
     [SerializeField] GameObject customizationSelector;
-
-    [Header("Phase Cam References")]
-    [SerializeField] Camera mainCamera;
-    [SerializeField] Camera phaseCamera;
 
     bool initalized = false;
     [SerializeField] bool enableCameraSwap = true;
@@ -133,6 +133,26 @@ public class PlayerCameraResizer : MonoBehaviour
         {
             customizationSelector.transform.position = new Vector3(-customizationSelector.transform.position.x, customizationSelector.transform.position.y,
                 customizationSelector.transform.position.z);
+        }
+    }
+
+    /// <summary>
+    /// Reparents the ui camera on the two cameras that can use it in a stack. (true is mainCamera, false is playerCamera)
+    /// </summary>
+    /// <param name="direction"></param>
+    public void ReparentMenuCameraStack(bool posOfMenuCamera)
+    {
+        // Reparent to main camera
+        if(posOfMenuCamera)
+        {
+            mainCamera.GetUniversalAdditionalCameraData().cameraStack.Add(menuUICamera);
+            playerCamera.GetUniversalAdditionalCameraData().cameraStack.Remove(menuUICamera);
+        }
+        // Reparent to player camera
+        else
+        {
+            mainCamera.GetUniversalAdditionalCameraData().cameraStack.Remove(menuUICamera);
+            playerCamera.GetUniversalAdditionalCameraData().cameraStack.Add(menuUICamera);
         }
     }
 }

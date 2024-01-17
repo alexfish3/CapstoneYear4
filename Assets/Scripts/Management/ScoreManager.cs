@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Rendering;
 
 /// <summary>
@@ -21,6 +22,7 @@ public class ScoreManager : SingletonMonobehaviour<ScoreManager>
         GameManager.Instance.OnSwapMenu -= ResetScore;
         GameManager.Instance.OnSwapBegin -= ResetScore;
     }
+
     /// <summary>
     /// Adds an OrderHandler to the list if they're not already in the list.
     /// </summary>
@@ -35,12 +37,27 @@ public class ScoreManager : SingletonMonobehaviour<ScoreManager>
     }
 
     /// <summary>
+    /// Recounts the order handlers, to resize array incase of player removal
+    /// </summary>
+    public void UpdateOrderHandlers(PlayerInput[] playerInputs)
+    {
+        orderHandlers.Clear();
+
+        foreach(PlayerInput handHandler in playerInputs)
+        {
+            if (handHandler != null)
+                orderHandlers.Add(handHandler.GetComponentInChildren<OrderHandler>());
+        }
+    }
+
+    /// <summary>
     /// Sorts the orderHandlers list based on their scores and assigns them placements.
     /// Called when a new OrderHandler is added to the list and when a delivery is made.
     /// </summary>
     public void UpdatePlacement()
     {
         orderHandlers.Sort((i, j) => j.Score.CompareTo(i.Score));
+
         for (int i = 0; i < orderHandlers.Count; i++)
         {
             if (i > 0)
@@ -85,7 +102,7 @@ public class ScoreManager : SingletonMonobehaviour<ScoreManager>
     /// </summary>
     private void ResetScore()
     {
-        foreach(OrderHandler handler in orderHandlers)
+        foreach (OrderHandler handler in orderHandlers)
         {
             handler.Score = 0;
         }

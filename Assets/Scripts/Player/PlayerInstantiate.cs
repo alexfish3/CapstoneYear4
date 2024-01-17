@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 {
+    [SerializeField]
+    Rect[] cameraRects;
+
     [Header("Player Info")]
     [SerializeField] GameManager gameManager;
     [SerializeField] GameObject playerHolder;
@@ -104,8 +107,19 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         Camera baseCam = playerInput.camera;
         PlayerCameraResizer playerCameraResizer = playerInput.gameObject.GetComponentInChildren<PlayerCameraResizer>();
 
+        int nextFillSlot = 0;
+
+        for(int i = 0; i < avaliblePlayerInputs.Length; i++)
+        {
+            if (avaliblePlayerInputs[i] == null)
+            {
+                nextFillSlot = i + 1;
+                break;
+            }
+        }
+
         // Update tag of player
-        switch (playerCount)
+        switch (nextFillSlot)
         {
             case 1:
                 ColliderObject.layer = 10; // Player 1;
@@ -137,7 +151,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         playerCameraResizer.UpdateVirtualCameras(playerCount);
 
         // Relocates the customization menu based on player number
-        playerCameraResizer.RelocateCustomizationMenu(playerCount);
+        playerCameraResizer.RelocateCustomizationMenu(nextFillSlot);
 
         // Update the naming scheme of the input reciever
         playerInput.gameObject.name = "Player " + playerCount.ToString();
@@ -146,7 +160,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         AddToPlayerArray(playerInput);
 
         // Updates all the player's cameras due to this new player
-        UpdatePlayerCameraRects(playerCount);
+        UpdatePlayerCameraRects();
 
         // Swaps the player's control scheme to UI
         SwapPlayerControlSchemeToUI();
@@ -180,21 +194,47 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///<summary>
     /// Updates the camera rects on all players in scenes
     ///</summary>
-    private void UpdatePlayerCameraRects(int playerCount)
+    private void UpdatePlayerCameraRects()
     {
-        Rect[] cameraRects = CalculateRects(playerCount);
+        cameraRects = CalculateRects();
 
-        for(int i = 0; i < cameraRects.Length; i++)
+        if (cameraRects.Length <= 0)
+            return;
+
+        int cameraRectCounter = 0;
+
+        for (int i = 0; i < avaliblePlayerInputs.Length; i++)
         {
-            PlayerInputs[i].camera.rect = cameraRects[i];
+            if (avaliblePlayerInputs[i] != null)
+            {
+                if (cameraRectCounter < cameraRects.Length)
+                {
+                    Debug.Log("Resize Camera");
+                    Rect temp = cameraRects[cameraRectCounter];
+                    avaliblePlayerInputs[i].camera.rect = temp;
+                    cameraRectCounter++;
+                }
+                else
+                {
+                    // Handle the case where there are more non-null player inputs than camera rects
+                    Debug.LogWarning("Not enough camera rects for all players.");
+                    break;
+                }
+            }
+            else
+            {
+                Debug.Log("Missing Player");
+            }
         }
     }
 
     ///<summary>
     /// Calculates the camera rects for when there are 1 - 4 players
     ///</summary>
-    private Rect[] CalculateRects(int playerCount)
+    private Rect[] CalculateRects()
     {
+        Debug.Log("Resizing UI, player count is now " + playerCount);
+
         Rect[] viewportRects = new Rect[playerCount];
         
         // 1 Player
@@ -235,6 +275,18 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             return;
         }
 
+        Debug.Log("Remove Player");
+        RemoveFromPlayerArray(playerInput);
+
+        ScoreManager.Instance.UpdateOrderHandlers(avaliblePlayerInputs);
+
+        Destroy(playerInput.gameObject);
+
+        UpdatePlayerCameraRects();
+    }
+
+    public void SubtractPlayerCount()
+    {
         playerCount--;
     }
 
@@ -331,9 +383,23 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     /// </summary>
     private void SwapMenuTypeForAllPlayers(MenuType menuType)
     {
-        for (int i = 0; i < playerCount; i++)
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
+            if (avaliblePlayerInputs[i] == null)
+                continue;
+
             avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().menuInteractions.SwapMenuType(menuType);
+
+            // If swapping to pause menu, reparent menu ui to game-camera
+            if (menuType == MenuType.PauseMenu)
+            {
+                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().ReparentMenuCameraStack(true);
+            }
+            // If swapping to other menu, reparent menu ui to player-camera on main menu
+            else
+            {
+                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().ReparentMenuCameraStack(false);
+            }
         }
     }
 
@@ -354,8 +420,11 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         Debug.Log("<color=green>Swapping To UI Controls</color>");
 
-        for (int i = 0; i < playerCount; i++)
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
+            if (avaliblePlayerInputs[i] == null)
+                continue;
+
             avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().SwapCanvas(true);
 
             avaliblePlayerInputs[i].actions.FindActionMap("UI").Enable();
@@ -370,8 +439,11 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         Debug.Log("<color=green>Swapping To Driving Controls</color>");
 
-        for (int i = 0; i < playerCount; i++)
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
+            if (avaliblePlayerInputs[i] == null)
+                continue;
+
             avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().SwapCanvas(false);
 
             avaliblePlayerInputs[i].actions.FindActionMap("UI").Disable();
@@ -420,8 +492,11 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void ResetPlayerCanvas()
     {
-        for (int i = 0; i < playerCount; i++)
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
+            if (avaliblePlayerInputs[i] == null)
+                continue;
+
             avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().ResetCanvas();
         }
     }
