@@ -26,7 +26,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     [Header("Audio Clips")]
     [Header("Music")]
-    [SerializeField] private AudioClip mainGameBGM;
+    [SerializeField] private AudioClip mainGameIntro;
+    [SerializeField] private AudioClip mainGameLoop;
     [SerializeField] private AudioClip mainMenuBGM;
     [SerializeField] private AudioClip playerSelectBGM;
     [SerializeField] private AudioClip finalOrderBGM;
@@ -111,8 +112,18 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     private void PlayMainTheme()
     {
-        musicSource.clip = mainGameBGM;
-        musicSource.Play();
+        if (mainGameIntro != null)
+        {
+            musicSource.clip = mainGameIntro;
+            musicSource.loop = false;
+            StartCoroutine(PlayIntro(musicSource, mainGameLoop));
+        }
+        else
+        {
+            musicSource.clip = mainGameLoop;
+            musicSource.loop = true;
+            musicSource.Play();
+        }
     }
 
     private void PlayFinalTheme()
@@ -201,5 +212,20 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         {
             Debug.LogError($"Couldn't find group in mixer with name: {channel}.");
         }
+    }
+
+    /// <summary>
+    /// This coroutine waits for the intro to a song to play and then sets the looping source.
+    /// </summary>
+    /// <param name="source">Audio source music is playing from</param>
+    /// <param name="loop">Looping song that should play after the into</param>
+    /// <returns></returns>
+    private IEnumerator PlayIntro(AudioSource source, AudioClip loop)
+    {
+        source.Play();
+        yield return new WaitUntil(() => !source.isPlaying);
+        source.clip = loop;
+        source.Play();
+        source.loop = true;
     }
 }
