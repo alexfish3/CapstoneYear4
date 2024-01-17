@@ -9,9 +9,17 @@ public class CanKicker : MonoBehaviour
 {
     [Tooltip("Reference to the can kicker transform (used for creating a trajectory)")]
     [SerializeField] private Transform canKickingSpot;
+    [Tooltip("Force to kick the can with")]
+    [SerializeField] private float kickingForce = 75;
+    [Tooltip("Reference to this player's BallDriving script")]
+    [SerializeField] private BallDriving control;
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.tag == "Kickable")
+        {
+            Vector3 kickDirection = (other.transform.position - canKickingSpot.position).normalized;
+            other.GetComponent<Rigidbody>().AddForce(kickDirection * kickingForce * control.CurrentVelocity);
+        }
     }
 }

@@ -31669,6 +31669,7 @@ GameObject:
   - component: {fileID: 8200108519610272719}
   - component: {fileID: 8752199588280220924}
   - component: {fileID: 1297416879023595643}
+  - component: {fileID: 4378912548228919951}
   m_Layer: 10
   m_Name: Ball Of Fun
   m_TagString: Untagged
@@ -31769,6 +31770,21 @@ MonoBehaviour:
     m_Bits: 512
   sizeOfRespawnArray: 20
   respawnSetInterval: 1
+--- !u!114 &4378912548228919951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5760767167873063500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f3725c176ebff8408078f4fb0f65796, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canKickingSpot: {fileID: 7081551395201927443}
+  kickingForce: 75
+  control: {fileID: 3575753304509721870}
 --- !u!1 &6333650024276405161
 GameObject:
   m_ObjectHideFlags: 0
