@@ -46,15 +46,15 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public void OnEnable()
     {
         gameManager.OnSwapPlayerSelect += EnablePlayerSpawn;
+        gameManager.OnSwapPlayerSelect += SwapMenuForCharacterSelect;
 
         gameManager.OnSwapBegin += DisablePlayerSpawn;
-        gameManager.OnSwapBegin += SwapPlayerControlSchemeToDrive;
         gameManager.OnSwapBegin += SwapMenuForPause;
 
         gameManager.OnSwapResults += DisableReadiedUp;
         gameManager.OnSwapResults += ResetPlayerCanvas;
-        gameManager.OnSwapResults += SwapPlayerControlSchemeToUI;
         gameManager.OnSwapResults += SwapMenuForMainMenu;
+
     }
 
     ///<summary>
@@ -63,14 +63,13 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public void OnDisable()
     {
         gameManager.OnSwapPlayerSelect -= EnablePlayerSpawn;
+        gameManager.OnSwapPlayerSelect -= SwapMenuForCharacterSelect;
 
         gameManager.OnSwapBegin -= DisablePlayerSpawn;
-        gameManager.OnSwapBegin -= SwapPlayerControlSchemeToDrive;
         gameManager.OnSwapBegin -= SwapMenuForPause;
 
         gameManager.OnSwapResults -= DisableReadiedUp;
         gameManager.OnSwapResults -= ResetPlayerCanvas;
-        gameManager.OnSwapResults -= SwapPlayerControlSchemeToUI;
         gameManager.OnSwapResults -= SwapMenuForMainMenu;
     }
 
@@ -365,16 +364,26 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
     private void SwapMenuForMainMenu()
     {
+        SwapPlayerControlSchemeToUI();
+
         SwapMenuTypeForAllPlayers(MenuType.MainMenu);
     }
 
     private void SwapMenuForCharacterSelect()
     {
+        Debug.Log("Swap for Charater Select");
+
+        SwapPlayerControlSchemeToUI();
+
         SwapMenuTypeForAllPlayers(MenuType.CharacterSelect);
     }
 
     private void SwapMenuForPause()
     {
+        Debug.Log("Swap for Pause");
+
+        SwapPlayerControlSchemeToDrive();
+
         SwapMenuTypeForAllPlayers(MenuType.PauseMenu);
     }
 
@@ -518,10 +527,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             // For one who paused
             if (playerInput == avaliblePlayerInputs[i])
             {
+                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().hostPause = true;
                 avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPause(PauseMenu.PauseType.Host);
             }
             else
             {
+                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().hostPause = false;
                 avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPause(PauseMenu.PauseType.Sub);
             }
         }
@@ -535,6 +546,15 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         SwapPlayerControlSchemeToDrive();
 
         Time.timeScale = 1f;
+
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
+        {
+            if (avaliblePlayerInputs[i] == null)
+                continue;
+
+            avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPlay();
+        }
+
     }
 
 }

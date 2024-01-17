@@ -16,6 +16,7 @@ public class MenuInteractions : MonoBehaviour
 {
     [Header("Bool Information")]
     [SerializeField] bool readiedUp = false;
+    public bool hostPause = false;
 
     [Header("Object References")]
     [SerializeField] PlayerInput playerInput;
@@ -38,11 +39,16 @@ public class MenuInteractions : MonoBehaviour
 
         // Starts the menu on the character select buttons
         SwapMenuType(curentMenuType);
+
+        GameManager.Instance.OnSwapBegin += PlayerUnready;
+
     }
 
     private void OnDisable()
     {
         ClearMenuInputs();
+
+        GameManager.Instance.OnSwapBegin -= PlayerUnready;
     }
 
     public void SwapMenuType(MenuType curentMenuType)
@@ -101,10 +107,17 @@ public class MenuInteractions : MonoBehaviour
 
     private void PauseMenuInteractons()
     {
+
         Debug.Log("<color=blue>Swap to Pause Menu</color>");
 
         uiHandler.StartPadEvent.AddListener(PlayGame);
         drivingHandler.StartPadEvent.AddListener(PauseGame);
+
+        uiHandler.DownPadEvent.AddListener(PauseScrollDown);
+        uiHandler.UpPadEvent.AddListener(PauseScrollUp);
+
+        uiHandler.SouthFaceEvent.AddListener(PauseConfirm);
+
     }
 
 
@@ -142,6 +155,15 @@ public class MenuInteractions : MonoBehaviour
             PlayerInstantiate.Instance.UnreadyUp(ballDriving.playerIndex - 1);
             soundPool.PlayBackUI();
         }
+    }
+
+    public void PlayerUnready()
+    {
+        Debug.Log("Unready");
+
+        readyUpText.SetActive(false);
+        readiedUp = false;
+        PlayerInstantiate.Instance.UnreadyUp(ballDriving.playerIndex - 1);
     }
 
     ///<summary>
@@ -185,6 +207,48 @@ public class MenuInteractions : MonoBehaviour
     }
 
     ///<summary>
+    /// Calls method when player scrolls up on Pause
+    ///</summary>
+    private void PauseScrollUp(bool button)
+    {
+        if (hostPause == false)
+            return;
+
+        // Scrolls selector up
+        pauseMenu.ScrollMenu(false);
+
+        soundPool.PlayScrollUI();
+    }
+
+    ///<summary>
+    /// Calls method when player scrolls down on Pause
+    ///</summary>
+    private void PauseScrollDown(bool button)
+    {
+        if (hostPause == false)
+            return;
+
+        // Scrolls selector down
+        pauseMenu.ScrollMenu(true);
+
+        soundPool.PlayScrollUI();
+    }
+
+    ///<summary>
+    /// Calls method when player scrolls down on Pause
+    ///</summary>
+    private void PauseConfirm(bool button)
+    {
+        if (hostPause == false)
+            return;
+
+        // Scrolls selector down
+        pauseMenu.ConfirmMenu();
+
+        soundPool.PlayScrollUI();
+    }
+
+    ///<summary>
     /// Calls method to reset canvas
     ///</summary>
     public void ResetCanvas()
@@ -196,15 +260,12 @@ public class MenuInteractions : MonoBehaviour
     public void PlayGame(bool button)
     {
         Debug.Log("Play Game");
-
-        pauseMenu.OnPlay();
         PlayerInstantiate.Instance.PlayerPlay();
     }
 
     public void PauseGame(bool button)
     {
         Debug.Log("Pause Game Host");
-
         PlayerInstantiate.Instance.PlayerPause(playerInput);
     }
 
