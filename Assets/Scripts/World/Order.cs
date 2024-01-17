@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// This class is for the order items in the gaame. It has simple methods for adding and dropping off orders, and contains the enum for the values of the orders.
+/// This class is for the order items in the game. It has simple methods for adding and dropping off orders, and contains the enum for the values of the orders.
 /// </summary>
 public class Order : MonoBehaviour
 {
