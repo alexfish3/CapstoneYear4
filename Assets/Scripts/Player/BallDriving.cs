@@ -75,6 +75,8 @@ public class BallDriving : MonoBehaviour
     [Header("Drifting")]
     [Tooltip("The multiplier applied to turning when drifting. Always above 1 or there'll be no difference. Use caution when messing with this")]
     [SerializeField] private float driftTurnScalar = 1.8f;
+    [Tooltip("A scalar for how 'sidewaysey' the drifting is. Higher values are LESS sideways")]
+    [SerializeField] private float driftSidewaysScalar = 3.0f;
     [Tooltip("The minimum multipler applied to drifting. It's hard to explain exactly what this is but you'll get a feel for it. ALWAYS KEEP IT LESS THAN DRIFTTURNSCALAR")]
     [SerializeField] private float driftTurnMinimum = 0.0f;
     [Tooltip("How many 'drift points' are needed to achieve the drift boost. This is a semi-arbitrary unit, though if the drift boost is being based entirely on time, 100 drift points equals 1 second")]
@@ -163,7 +165,7 @@ public class BallDriving : MonoBehaviour
 
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
-    private int driftDirection;
+    private int driftDirection; //-1 is drifting leftward, 1 is drifting rightward
     private bool driftBoostAchieved = false;
     private float driftPoints = 0.0f;
     private float driftBoost = 0.0f;
@@ -393,7 +395,7 @@ public class BallDriving : MonoBehaviour
 
             if (drifting)
             {
-                sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
+                sphereBody.AddForce((driftDirection == 1 ? ((driftSidewaysScalar * transform.forward) - transform.right).normalized : ((driftSidewaysScalar * transform.forward) + transform.right).normalized) * totalForce, ForceMode.Acceleration);
             }
             else if (reversing)
             {
