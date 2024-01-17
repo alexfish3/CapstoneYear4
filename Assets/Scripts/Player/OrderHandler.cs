@@ -35,6 +35,16 @@ public class OrderHandler : MonoBehaviour
         soundPool = GetComponent<SoundPool>();
     }
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapPlayerSelect += ResetHandler;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapPlayerSelect -= ResetHandler;
+    }
+
     /// <summary>
     /// This method checks if the player can carry an order and adds it to their bike if they can.
     /// </summary>
@@ -172,6 +182,27 @@ public class OrderHandler : MonoBehaviour
             AddOrder(newOrder);
         }
         victimPlayer.DropEverything(victimPlayer.transform.position);
+    }
+
+    /// <summary>
+    /// This method resets this handler.
+    /// </summary>
+    private void ResetHandler()
+    {
+        if(order1 != null)
+        {
+            order1.EraseOrder();
+            order1 = null;
+        }
+        if(order2 != null)
+        { 
+            order2.EraseOrder();
+            order2 = null;
+        }
+
+        hasGoldenOrder = false;
+        placement = 0;
+        score = 0;
     }
 
     /// <summary>
