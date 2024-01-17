@@ -22,6 +22,7 @@ public class BallDriving : MonoBehaviour
 
     private IEnumerator boostActiveCoroutine;
     private IEnumerator boostCooldownCoroutine;
+    private IEnumerator brakeCheckCoroutine;
 
     public delegate void BoostDelegate(); // boost event stuff for the trail
     public BoostDelegate OnBoostStart;
@@ -161,7 +162,9 @@ public class BallDriving : MonoBehaviour
 
     private float rotationAmount; //the amount to turn on any given frame
 
-    private bool stopped, reversing, grounded;
+    private bool reversing, grounded;
+    private bool brakeChecking = false;
+    private bool stopped = true;
 
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
@@ -276,6 +279,13 @@ public class BallDriving : MonoBehaviour
         if (currentVelocity != 0)
         {
             csv = currentForce / currentVelocity;
+        }
+        else
+        {
+            if (!brakeChecking && !stopped)
+            {
+                StartBrakeCheck();
+            }
         }
 
         float modelRotateAmount;
@@ -461,6 +471,11 @@ public class BallDriving : MonoBehaviour
         }
 
         GroundCheck();
+    }
+
+    private IEnumerator BrakeCheck()
+    {
+        throw new System.NotImplementedException();
     }
 
     /// <summary>
@@ -922,5 +937,16 @@ public class BallDriving : MonoBehaviour
     {
         StopCoroutine(boostCooldownCoroutine);
         boostCooldownCoroutine = null;
+    }
+
+    private void StartBrakeCheck()
+    {
+        brakeCheckCoroutine = BrakeCheck();
+        StartCoroutine(brakeCheckCoroutine);
+    }
+    private void StopBrakeCheck()
+    {
+        StopCoroutine(brakeCheckCoroutine);
+        brakeCheckCoroutine = null;
     }
 }
