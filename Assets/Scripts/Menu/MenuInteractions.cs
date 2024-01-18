@@ -29,6 +29,7 @@ public class MenuInteractions : MonoBehaviour
     [SerializeField] CustomizationSelector customizationSelector;
     public PauseMenu pauseMenu;
     [SerializeField] MainMenu mainMenu;
+    [SerializeField] ResultsMenu resultsMenu;
     [SerializeField] GameObject readyUpText;
 
     private SoundPool soundPool;
@@ -84,6 +85,7 @@ public class MenuInteractions : MonoBehaviour
                 PauseMenuInteractons();
                 return;
             case MenuType.ResultsMenu:
+                ResultsMenuInteractions();
                 return;
         }
     }
@@ -146,6 +148,16 @@ public class MenuInteractions : MonoBehaviour
         uiHandler.SouthFaceEvent.AddListener(PauseConfirm);
     }
 
+
+    private void ResultsMenuInteractions()
+    {
+        Debug.Log("<color=blue>Swap to Results Menu</color>");
+
+        // Reference main menu every time we swap
+        mainMenu = MainMenu.Instance;
+
+        uiHandler.SouthFaceEvent.AddListener(ResultsMenuConfirm);
+    }
 
     ///<summary>
     /// Calls method when player wants to ready
@@ -241,6 +253,24 @@ public class MenuInteractions : MonoBehaviour
 
         // Scrolls selector down
         mainMenu.ConfirmMenu();
+
+        soundPool.PlayScrollUI();
+    }
+
+
+    ///<summary>
+    /// Calls method when player scrolls down on Main Menu
+    ///</summary>
+    private void ResultsMenuConfirm(bool button)
+    {
+        if (hostPlayer == false)
+            return;
+
+        if (resultsMenu == null)
+            resultsMenu = ResultsMenu.Instance;
+
+        // Scrolls selector down
+        resultsMenu.ConfirmMenu();
 
         soundPool.PlayScrollUI();
     }

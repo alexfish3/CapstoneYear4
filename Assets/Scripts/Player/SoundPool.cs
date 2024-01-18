@@ -37,12 +37,14 @@ public class SoundPool : MonoBehaviour
     {
         GameManager.Instance.OnSwapMainLoop += InitEngineSource;
         GameManager.Instance.OnSwapResults += TurnOffPlayerSounds;
+        GameManager.Instance.OnSwapMenu += TurnOffPlayerSounds;
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnSwapMainLoop -= InitEngineSource;
         GameManager.Instance.OnSwapResults -= TurnOffPlayerSounds;
+        GameManager.Instance.OnSwapMenu += TurnOffPlayerSounds;
     }
 
     /// <summary>

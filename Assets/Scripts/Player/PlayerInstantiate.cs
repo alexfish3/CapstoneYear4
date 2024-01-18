@@ -53,7 +53,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         gameManager.OnSwapResults += DisableReadiedUp;
         gameManager.OnSwapResults += ResetPlayerCanvas;
-        gameManager.OnSwapResults += SwapMenuForMainMenu;
+        gameManager.OnSwapResults += SwapMenuForResults;
 
         gameManager.OnSwapMenu += SwapMenuForMainMenu;
 
@@ -72,7 +72,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         gameManager.OnSwapResults -= DisableReadiedUp;
         gameManager.OnSwapResults -= ResetPlayerCanvas;
-        gameManager.OnSwapResults -= SwapMenuForMainMenu;
+        gameManager.OnSwapResults -= SwapMenuForResults;
 
         gameManager.OnSwapMenu -= SwapMenuForMainMenu;
     }
@@ -403,6 +403,15 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         SwapPlayerControlSchemeToDrive();
 
         SwapMenuTypeForAllPlayers(MenuType.PauseMenu);
+    }
+
+    private void SwapMenuForResults()
+    {
+        Debug.Log("Swap for Results");
+
+        SwapPlayerControlSchemeToUI();
+
+        SwapMenuTypeForAllPlayers(MenuType.ResultsMenu);
     }
 
     /// <summary>

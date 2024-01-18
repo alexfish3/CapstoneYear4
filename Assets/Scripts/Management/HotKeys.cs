@@ -9,7 +9,7 @@ public class HotKeys : SingletonMonobehaviour<HotKeys>
     public event Action onDecrementWave;
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha4))
+        if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             GameManager.Instance.SetGameState(GameState.Begin);
         }
@@ -17,7 +17,12 @@ public class HotKeys : SingletonMonobehaviour<HotKeys>
         {
             GameManager.Instance.SetGameState(GameState.FinalPackage);
         }
-        if(Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            GameManager.Instance.SetGameState(GameState.Results);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             onIncrementWave?.Invoke();
         }

@@ -16,14 +16,14 @@ public class PlayerMenu : SingletonMonobehaviour<PlayerMenu>
         playerInstantiate = PlayerInstantiate.Instance;
         playerInstantiate.OnReadiedUp += LoadGameScene;
 
-        GameManager.Instance.OnSwapResults += LoadResultsScene;
+        //GameManager.Instance.OnSwapResults += LoadResultsScene;
         GameManager.Instance.OnSwapMenu += LoadPlayerSelectScene;
     }
 
     private void OnDisable()
     {
         playerInstantiate.OnReadiedUp -= LoadGameScene;
-        GameManager.Instance.OnSwapResults -= LoadResultsScene;
+        //GameManager.Instance.OnSwapResults -= LoadResultsScene;
         GameManager.Instance.OnSwapMenu -= LoadPlayerSelectScene;
     }
 
