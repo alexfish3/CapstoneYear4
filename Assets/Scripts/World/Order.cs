@@ -178,7 +178,6 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseOrder()
     {
-        Debug.Log("erasing order");
         arrow.SetActive(false);
         // Removes the ui from all players
         compassMarker.RemoveCompassUIFromAllPlayers();

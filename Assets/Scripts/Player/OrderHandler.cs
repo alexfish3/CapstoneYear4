@@ -37,12 +37,12 @@ public class OrderHandler : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapPlayerSelect += ResetHandler;
+        GameManager.Instance.OnSwapMenu += ResetHandler;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapPlayerSelect -= ResetHandler;
+        GameManager.Instance.OnSwapMenu -= ResetHandler;
     }
 
     /// <summary>
@@ -192,12 +192,10 @@ public class OrderHandler : MonoBehaviour
         if(order1 != null)
         {
             order1.EraseOrder();
-            order1 = null;
         }
         if(order2 != null)
-        { 
+        {
             order2.EraseOrder();
-            order2 = null;
         }
 
         hasGoldenOrder = false;
