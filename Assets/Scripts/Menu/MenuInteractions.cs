@@ -91,6 +91,7 @@ public class MenuInteractions : MonoBehaviour
     private void ClearMenuInputs()
     {
         Debug.Log("<color=blue>Clear Inputs</color>");
+        customizationSelector.gameObject.SetActive(false);
 
         uiHandler.SouthFaceEvent.RemoveAllListeners();
         uiHandler.EastFaceEvent.RemoveAllListeners();
