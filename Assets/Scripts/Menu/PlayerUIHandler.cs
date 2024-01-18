@@ -128,7 +128,6 @@ public class PlayerUIHandler : MonoBehaviour
         if (canInput == false)
             return;
 
-
         if (context.performed)
         {
             southFaceValue = context.ReadValueAsButton();

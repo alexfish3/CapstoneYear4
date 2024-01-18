@@ -55,6 +55,7 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
             // Quit
             case 1:
                 Debug.Log("Quit");
+                Application.Quit();
                 break;
         }
     }

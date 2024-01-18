@@ -288,7 +288,6 @@ public class Respawn : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Collider: " + other.tag);
         if (other.tag == "Water")
         {
             // Turning these off fixes camera jittering on respawn

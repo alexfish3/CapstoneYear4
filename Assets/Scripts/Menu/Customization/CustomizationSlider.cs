@@ -15,8 +15,6 @@ public class CustomizationSlider : MonoBehaviour
 
     public void UpdateIcons()
     {
-        Debug.Log("Update Icons");
-
         imagePositions = new int[5];
 
         // Calculate left2Pos

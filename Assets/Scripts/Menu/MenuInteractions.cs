@@ -34,13 +34,19 @@ public class MenuInteractions : MonoBehaviour
     private SoundPool soundPool;
 
     public MenuType curentMenuType;
+    private MenuType cache;
+
+    private void Update()
+    {
+        if(cache != curentMenuType)
+        {
+            SwapMenuType(curentMenuType);
+        }
+    }
 
     private void OnEnable()
     {
         soundPool = GetComponentInParent<SoundPool>();
-
-        // Starts the menu on the character select buttons
-        SwapMenuType(MenuType.MainMenu);
 
         GameManager.Instance.OnSwapPlayerSelect += SwapToPlayerSelect;
         GameManager.Instance.OnSwapBegin += PlayerUnready;
@@ -63,6 +69,7 @@ public class MenuInteractions : MonoBehaviour
     public void SwapMenuType(MenuType curentMenuTypePass)
     {
         curentMenuType = curentMenuTypePass;
+        cache = curentMenuTypePass;
 
         ClearMenuInputs();
         switch (curentMenuTypePass)
@@ -84,10 +91,6 @@ public class MenuInteractions : MonoBehaviour
     private void ClearMenuInputs()
     {
         Debug.Log("<color=blue>Clear Inputs</color>");
-
-        // Disable all ui components
-        customizationSelector.gameObject.SetActive(false);
-        readyUpText.SetActive(false);
 
         uiHandler.SouthFaceEvent.RemoveAllListeners();
         uiHandler.EastFaceEvent.RemoveAllListeners();
@@ -159,11 +162,6 @@ public class MenuInteractions : MonoBehaviour
     ///</summary>
     private void PlayerUnreadyDespawn(bool button)
     {
-        if(button == true)
-            return;
-
-        Debug.Log("Unready or despawn");
-
         // Despawn
         if (readiedUp == false)
         {

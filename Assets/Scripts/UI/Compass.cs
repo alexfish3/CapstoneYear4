@@ -32,13 +32,11 @@ public class Compass : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("RESET COMPASS");
         GameManager.Instance.OnSwapMenu += ResetCompass;
     }
 
     private void OnDisable()
     {
-        Debug.Log("DISABLE RESET COMPASS");
         GameManager.Instance.OnSwapMenu -= ResetCompass;
     }
 

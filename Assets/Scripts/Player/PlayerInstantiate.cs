@@ -102,10 +102,16 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         Debug.Log("Added Player");
 
-        if(playerCount <= 0)
+        if (playerCount <= 0)
         {
             Debug.Log("Spawn Host Player");
             playerInput.gameObject.GetComponent<PlayerUIHandler>().menuInteractions.hostPlayer = true;
+            playerInput.gameObject.GetComponent<PlayerUIHandler>().menuInteractions.SwapMenuType(MenuType.MainMenu);
+        }
+        else
+        {
+            Debug.Log("Spawn Sub Player");
+            playerInput.gameObject.GetComponent<PlayerUIHandler>().menuInteractions.SwapToPlayerSelect();
         }
 
 
@@ -234,10 +240,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                     break;
                 }
             }
-            else
-            {
-                Debug.Log("Missing Player");
-            }
         }
     }
 
@@ -246,7 +248,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     private Rect[] CalculateRects()
     {
-        Debug.Log("Resizing UI, player count is now " + playerCount);
+        Debug.LogWarning("Resizing UI, player count is now " + playerCount);
 
         Rect[] viewportRects = new Rect[playerCount];
         
