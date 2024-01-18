@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public enum MenuType
 {
     MainMenu,
-    CharacterSelect,
+    PlayerSelect,
     PauseMenu,
     ResultsMenu
 }
@@ -15,6 +15,7 @@ public enum MenuType
 public class MenuInteractions : MonoBehaviour
 {
     [Header("Bool Information")]
+    public bool hostPlayer;
     [SerializeField] bool readiedUp = false;
     public bool hostPause = false;
 
@@ -27,19 +28,21 @@ public class MenuInteractions : MonoBehaviour
     [Header("UI References")]
     [SerializeField] CustomizationSelector customizationSelector;
     public PauseMenu pauseMenu;
+    [SerializeField] MainMenu mainMenu;
     [SerializeField] GameObject readyUpText;
 
     private SoundPool soundPool;
 
-    public MenuType curentMenuType = MenuType.CharacterSelect;
+    public MenuType curentMenuType;
 
     private void OnEnable()
     {
         soundPool = GetComponentInParent<SoundPool>();
 
         // Starts the menu on the character select buttons
-        SwapMenuType(curentMenuType);
+        SwapMenuType(MenuType.MainMenu);
 
+        GameManager.Instance.OnSwapPlayerSelect += SwapToPlayerSelect;
         GameManager.Instance.OnSwapBegin += PlayerUnready;
 
     }
@@ -48,18 +51,26 @@ public class MenuInteractions : MonoBehaviour
     {
         ClearMenuInputs();
 
+        GameManager.Instance.OnSwapPlayerSelect -= SwapToPlayerSelect;
         GameManager.Instance.OnSwapBegin -= PlayerUnready;
     }
 
-    public void SwapMenuType(MenuType curentMenuType)
+    public void SwapToPlayerSelect()
     {
+        SwapMenuType(MenuType.PlayerSelect);
+    }
+
+    public void SwapMenuType(MenuType curentMenuTypePass)
+    {
+        curentMenuType = curentMenuTypePass;
+
         ClearMenuInputs();
-        switch (curentMenuType)
+        switch (curentMenuTypePass)
         {
             case MenuType.MainMenu:
-                CharacterSelectMenuInteractons();
+                MainMenuInteractions();
                 return;
-            case MenuType.CharacterSelect:
+            case MenuType.PlayerSelect:
                 CharacterSelectMenuInteractons();
                 return;
             case MenuType.PauseMenu:
@@ -88,6 +99,19 @@ public class MenuInteractions : MonoBehaviour
 
         uiHandler.StartPadEvent.RemoveAllListeners();
         drivingHandler.StartPadEvent.RemoveAllListeners();
+    }
+
+    private void MainMenuInteractions()
+    {
+        // Reference main menu every time we swap
+        mainMenu = MainMenu.Instance;
+
+        Debug.Log("<color=blue>Swap to Main Menu</color>");
+
+        uiHandler.DownPadEvent.AddListener(MainMenuScrollDown);
+        uiHandler.UpPadEvent.AddListener(MainMenuScrollUp);
+
+        uiHandler.SouthFaceEvent.AddListener(MainMenuConfirm);
     }
 
     private void CharacterSelectMenuInteractons()
@@ -143,8 +167,15 @@ public class MenuInteractions : MonoBehaviour
         // Despawn
         if (readiedUp == false)
         {
-            PlayerInstantiate.Instance.SubtractPlayerCount();
-            PlayerInstantiate.Instance.RemovePlayerReference(transform.parent.gameObject.transform.parent.GetComponent<PlayerInput>());
+            if(hostPlayer == false)
+            {
+                PlayerInstantiate.Instance.SubtractPlayerCount();
+                PlayerInstantiate.Instance.RemovePlayerReference(transform.parent.gameObject.transform.parent.GetComponent<PlayerInput>());
+            }
+            else
+            {
+                Debug.Log("You are host, you cannot leave");
+            }
         }
         else
         {
@@ -162,6 +193,57 @@ public class MenuInteractions : MonoBehaviour
         readyUpText.SetActive(false);
         readiedUp = false;
         PlayerInstantiate.Instance.UnreadyUp(ballDriving.playerIndex - 1);
+    }
+
+    ///<summary>
+    /// Calls method when player scrolls up on Main Menu
+    ///</summary>
+    private void MainMenuScrollUp(bool button)
+    {
+        if (hostPlayer == false)
+            return;
+
+        if (mainMenu == null)
+            mainMenu = MainMenu.Instance;
+
+        // Scrolls selector up
+        mainMenu.ScrollMenu(false);
+
+        soundPool.PlayScrollUI();
+    }
+
+    ///<summary>
+    /// Calls method when player scrolls down on Main Menu
+    ///</summary>
+    private void MainMenuScrollDown(bool button)
+    {
+        if (hostPlayer == false)
+            return;
+
+        if (mainMenu == null)
+            mainMenu = MainMenu.Instance;
+
+        // Scrolls selector down
+        mainMenu.ScrollMenu(true);
+
+        soundPool.PlayScrollUI();
+    }
+
+    ///<summary>
+    /// Calls method when player scrolls down on Main Menu
+    ///</summary>
+    private void MainMenuConfirm(bool button)
+    {
+        if (hostPlayer == false)
+            return;
+
+        if (mainMenu == null)
+            mainMenu = MainMenu.Instance;
+
+        // Scrolls selector down
+        mainMenu.ConfirmMenu();
+
+        soundPool.PlayScrollUI();
     }
 
     ///<summary>

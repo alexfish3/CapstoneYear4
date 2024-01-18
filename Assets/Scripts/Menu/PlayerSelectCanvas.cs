@@ -19,8 +19,4 @@ public class PlayerSelectCanvas : SingletonMonobehaviour<PlayerSelectCanvas>
         countdownText.text = "";
     }
 
-
-
-
-
 }

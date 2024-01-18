@@ -118,7 +118,7 @@ public class PauseMenu : MonoBehaviour
     private void ReturnToMenu()
     {
         PlayerInstantiate.Instance.PlayerPlay();
-        GameManager.Instance.SetGameState(GameState.PlayerSelect);
+        GameManager.Instance.SetGameState(GameState.Menu);
     }
 
     public void ResetMenu()

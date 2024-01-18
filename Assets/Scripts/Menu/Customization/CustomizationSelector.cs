@@ -126,7 +126,6 @@ public class CustomizationSelector : MonoBehaviour
 
     public void UpdatePlayerVisual()
     {
-        Debug.Log("UpdatePlayerVisual() called");
         ghostMats = ghostModel.materials;
         ghostMats[0] = PlayerColors[currentPlayerColor];
         ghostModel.materials = ghostMats;

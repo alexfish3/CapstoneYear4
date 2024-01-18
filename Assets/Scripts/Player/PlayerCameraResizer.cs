@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
@@ -33,6 +34,7 @@ public class PlayerCameraResizer : MonoBehaviour
 
     bool initalized = false;
     [SerializeField] bool enableCameraSwap = true;
+    [SerializeField] bool MenuCameraReparented = false;
 
     // Update is called once per frame
     void Update()
@@ -145,18 +147,29 @@ public class PlayerCameraResizer : MonoBehaviour
         // Reparent to main camera
         if(posOfMenuCamera)
         {
+            // If camera is reparented true
+            //if (MenuCameraReparented)
+            //    return;
+
             Debug.Log("Reparent to main cam");
 
+            playerCamera.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(0);
             mainCamera.GetUniversalAdditionalCameraData().cameraStack.Add(menuUICamera);
-            playerCamera.GetUniversalAdditionalCameraData().cameraStack.Remove(menuUICamera);
+
+            MenuCameraReparented = false;
         }
         // Reparent to player camera
         else
         {
-            Debug.Log("Reparent to playr cam");
+            //// If camera is reparented false
+            //if (!MenuCameraReparented)
+            //    return;
 
-            mainCamera.GetUniversalAdditionalCameraData().cameraStack.Remove(menuUICamera);
+            Debug.Log("Reparent to menu cam");
+            mainCamera.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(1);
             playerCamera.GetUniversalAdditionalCameraData().cameraStack.Add(menuUICamera);
+
+            MenuCameraReparented = true;
         }
     }
 }

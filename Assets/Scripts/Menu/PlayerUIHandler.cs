@@ -94,8 +94,11 @@ public class PlayerUIHandler : MonoBehaviour
         if (canInput == false)
             return;
 
-        northFaceValue = context.ReadValueAsButton();
-        NorthFaceEvent?.Invoke(northFaceValue);
+        if (context.performed)
+        {
+            northFaceValue = context.ReadValueAsButton();
+            NorthFaceEvent?.Invoke(northFaceValue);
+        }
     }
 
     /// <summary>
@@ -108,8 +111,11 @@ public class PlayerUIHandler : MonoBehaviour
         if (canInput == false)
             return;
 
-        eastFaceValue = context.ReadValueAsButton();
-        EastFaceEvent?.Invoke(eastFaceValue);
+        if (context.performed)
+        {
+            eastFaceValue = context.ReadValueAsButton();
+            EastFaceEvent?.Invoke(eastFaceValue);
+        }
     }
 
     /// <summary>
@@ -122,8 +128,12 @@ public class PlayerUIHandler : MonoBehaviour
         if (canInput == false)
             return;
 
-        southFaceValue = context.ReadValueAsButton();
-        SouthFaceEvent?.Invoke(southFaceValue);
+
+        if (context.performed)
+        {
+            southFaceValue = context.ReadValueAsButton();
+            SouthFaceEvent?.Invoke(southFaceValue);
+        }
     }
 
     /// <summary>
@@ -136,8 +146,11 @@ public class PlayerUIHandler : MonoBehaviour
         if (canInput == false)
             return;
 
-        westFaceValue = context.ReadValueAsButton();
-        WestFaceEvent?.Invoke(westFaceValue);
+        if (context.performed)
+        {
+            westFaceValue = context.ReadValueAsButton();
+            WestFaceEvent?.Invoke(westFaceValue);
+        }
     }
 
     /// <summary>

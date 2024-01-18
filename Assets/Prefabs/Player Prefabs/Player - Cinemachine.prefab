@@ -33299,10 +33299,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5289018042734306124}
     m_Modifications:
-    - target: {fileID: 206788510589241937, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1864800722992714799, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -33383,14 +33379,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2942803540029003745, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3566579835935799233, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4577896849879768333, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Camera
       value: 
@@ -33411,10 +33399,6 @@ PrefabInstance:
       propertyPath: drivingHandler
       value: 
       objectReference: {fileID: 44718454188821130}
-    - target: {fileID: 7291222671001932818, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8226127984948104913, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: ghostModel
       value: 
@@ -33423,14 +33407,6 @@ PrefabInstance:
       propertyPath: phaseIndicator
       value: 
       objectReference: {fileID: 1461959447911348377}
-    - target: {fileID: 8227909127848263708, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8575081755562220092, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
       propertyPath: m_Name
       value: Menu Canvas
@@ -33438,10 +33414,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 7996289391778551831}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc1b261755a959d45b08825329d3089a, type: 3}
 --- !u!114 &437342487100121777 stripped
 MonoBehaviour:
@@ -33464,27 +33437,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}
   m_PrefabInstance: {fileID: 7362872049355395915}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &7996289391778551831
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1730626662847112208}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6694b6e495cb00b4180edcf9a47e56f2, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!224 &9209640781506430820 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1864800722992714799, guid: fc1b261755a959d45b08825329d3089a, type: 3}

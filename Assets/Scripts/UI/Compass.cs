@@ -33,13 +33,13 @@ public class Compass : MonoBehaviour
     private void OnEnable()
     {
         Debug.Log("RESET COMPASS");
-        GameManager.Instance.OnSwapPlayerSelect += ResetCompass;
+        GameManager.Instance.OnSwapMenu += ResetCompass;
     }
 
     private void OnDisable()
     {
         Debug.Log("DISABLE RESET COMPASS");
-        GameManager.Instance.OnSwapPlayerSelect -= ResetCompass;
+        GameManager.Instance.OnSwapMenu -= ResetCompass;
     }
 
     private void Start()
@@ -108,8 +108,6 @@ public class Compass : MonoBehaviour
     ///</summary>
     public void RemoveCompassMarker(CompassMarker marker)
     {
-        Debug.Log("Removing Object");
-
         int indexOfObject = compassMarkerObjects.IndexOf(marker);
 
         if(indexOfObject > -1)
@@ -180,7 +178,7 @@ public class Compass : MonoBehaviour
         Debug.Log("Reset Compass");
         foreach(CompassIconUI icon in compassUIObjects)
         {
-            Destroy(icon);
+            Destroy(icon.gameObject);
         }
         compassUIObjects.Clear();
 

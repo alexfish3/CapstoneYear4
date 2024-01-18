@@ -55,6 +55,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapResults += ResetPlayerCanvas;
         gameManager.OnSwapResults += SwapMenuForMainMenu;
 
+        gameManager.OnSwapMenu += SwapMenuForMainMenu;
+
     }
 
     ///<summary>
@@ -71,6 +73,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapResults -= DisableReadiedUp;
         gameManager.OnSwapResults -= ResetPlayerCanvas;
         gameManager.OnSwapResults -= SwapMenuForMainMenu;
+
+        gameManager.OnSwapMenu -= SwapMenuForMainMenu;
     }
 
     public void Update()
@@ -89,14 +93,21 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public void AddPlayerReference(PlayerInput playerInput)
     {
         // If player spawn is disabled
-        if(allowPlayerSpawn == false && Constants.SPAWN_MID_MATCH == false)
+        if(allowPlayerSpawn == false && playerCount >= 1)
         {
             Debug.Log("Disable Spawning");
             Destroy(playerInput.gameObject);
             return;
         }
 
-        Debug.Log("Added PLayer");
+        Debug.Log("Added Player");
+
+        if(playerCount <= 0)
+        {
+            Debug.Log("Spawn Host Player");
+            playerInput.gameObject.GetComponent<PlayerUIHandler>().menuInteractions.hostPlayer = true;
+        }
+
 
         // Up the player count
         playerCount++;
@@ -153,7 +164,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         playerCameraResizer.RelocateCustomizationMenu(nextFillSlot);
 
         // Update the naming scheme of the input reciever
-        playerInput.gameObject.name = "Player " + playerCount.ToString();
+        playerInput.gameObject.name = "Player " + nextFillSlot.ToString();
         playerInput.gameObject.transform.parent = playerHolder.transform;
 
         AddToPlayerArray(playerInput);
@@ -367,6 +378,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
     private void SwapMenuForMainMenu()
     {
+        Debug.Log("Swap for Main Menu");
+
         SwapPlayerControlSchemeToUI();
 
         SwapMenuTypeForAllPlayers(MenuType.MainMenu);
@@ -378,7 +391,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         SwapPlayerControlSchemeToUI();
 
-        SwapMenuTypeForAllPlayers(MenuType.CharacterSelect);
+        SwapMenuTypeForAllPlayers(MenuType.PlayerSelect);
     }
 
     private void SwapMenuForPause()
@@ -408,7 +421,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().ReparentMenuCameraStack(true);
             }
             // If swapping to other menu, reparent menu ui to player-camera on main menu
-            else
+            else if (menuType == MenuType.MainMenu)
             {
                 avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().ReparentMenuCameraStack(false);
             }
