@@ -8,6 +8,7 @@ public enum MenuType
 {
     MainMenu,
     PlayerSelect,
+    Cutscene,
     PauseMenu,
     ResultsMenu
 }
@@ -50,7 +51,9 @@ public class MenuInteractions : MonoBehaviour
         soundPool = GetComponentInParent<SoundPool>();
 
         GameManager.Instance.OnSwapPlayerSelect += SwapToPlayerSelect;
-        GameManager.Instance.OnSwapBegin += PlayerUnready;
+
+        GameManager.Instance.OnSwapCutscene += PlayerUnready;
+        GameManager.Instance.OnSwapCutscene += SwapToCutscene;
 
     }
 
@@ -59,12 +62,19 @@ public class MenuInteractions : MonoBehaviour
         ClearMenuInputs();
 
         GameManager.Instance.OnSwapPlayerSelect -= SwapToPlayerSelect;
-        GameManager.Instance.OnSwapBegin -= PlayerUnready;
+
+        GameManager.Instance.OnSwapCutscene -= PlayerUnready;
+        GameManager.Instance.OnSwapCutscene -= SwapToCutscene;
     }
 
     public void SwapToPlayerSelect()
     {
         SwapMenuType(MenuType.PlayerSelect);
+    }
+
+    public void SwapToCutscene()
+    {
+        SwapMenuType(MenuType.Cutscene);
     }
 
     public void SwapMenuType(MenuType curentMenuTypePass)
@@ -80,6 +90,9 @@ public class MenuInteractions : MonoBehaviour
                 return;
             case MenuType.PlayerSelect:
                 CharacterSelectMenuInteractons();
+                return;
+            case MenuType.Cutscene:
+                Debug.Log("no input for cutscene");
                 return;
             case MenuType.PauseMenu:
                 PauseMenuInteractons();

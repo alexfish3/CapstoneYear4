@@ -20,7 +20,7 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
         playerInstantiate = PlayerInstantiate.Instance;
 
         Debug.Log("Enable to add spawns");
-        gameManager.OnSwapBegin += SpawnPlayersStartOfGame;
+        gameManager.OnSwapCutscene += SpawnPlayersStartOfGame;
         gameManager.OnSwapFinalPackage += SpawnPlayersFinalPackage;
     }
 
@@ -29,14 +29,14 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     ///</summary>
     private void OnDisable()
     {
-        gameManager.OnSwapBegin -= SpawnPlayersStartOfGame;
+        gameManager.OnSwapCutscene -= SpawnPlayersStartOfGame;
         gameManager.OnSwapFinalPackage -= SpawnPlayersFinalPackage;
     }
 
     private void Start()
     {
         // Set game to begin upon loading into scene
-        gameManager.SetGameState(GameState.Begin);
+        gameManager.SetGameState(GameState.Cutscene);
     }
 
     ///<summary>

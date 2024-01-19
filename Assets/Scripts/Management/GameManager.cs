@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public enum GameState { Menu, PlayerSelect, Begin, MainLoop, FinalPackage, Results, Paused, Default }
+public enum GameState { Menu, PlayerSelect, Cutscene, Begin, MainLoop, FinalPackage, Results, Paused, Default }
 
 public class GameManager : SingletonMonobehaviour<GameManager>
 {
@@ -14,6 +14,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     public event Action OnSwapMenu;
     public event Action OnSwapPlayerSelect;
+    public event Action OnSwapCutscene;
     public event Action OnSwapBegin;
     public event Action OnSwapMainLoop;
     public event Action OnSwapFinalPackage;
@@ -40,6 +41,9 @@ public class GameManager : SingletonMonobehaviour<GameManager>
                 break;
             case GameState.PlayerSelect:
                 OnSwapPlayerSelect?.Invoke();
+                break;
+            case GameState.Cutscene:
+                OnSwapCutscene?.Invoke();
                 break;
             case GameState.Begin:
                 OnSwapBegin?.Invoke();

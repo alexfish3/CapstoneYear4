@@ -48,7 +48,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapPlayerSelect += EnablePlayerSpawn;
         gameManager.OnSwapPlayerSelect += SwapMenuForCharacterSelect;
 
-        gameManager.OnSwapBegin += DisablePlayerSpawn;
+        gameManager.OnSwapCutscene += DisablePlayerSpawn;
+
         gameManager.OnSwapBegin += SwapMenuForPause;
 
         gameManager.OnSwapResults += DisableReadiedUp;
@@ -67,7 +68,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapPlayerSelect -= EnablePlayerSpawn;
         gameManager.OnSwapPlayerSelect -= SwapMenuForCharacterSelect;
 
-        gameManager.OnSwapBegin -= DisablePlayerSpawn;
+        gameManager.OnSwapCutscene -= DisablePlayerSpawn;
+
         gameManager.OnSwapBegin -= SwapMenuForPause;
 
         gameManager.OnSwapResults -= DisableReadiedUp;
