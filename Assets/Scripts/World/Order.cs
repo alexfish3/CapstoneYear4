@@ -13,9 +13,9 @@ public class Order : MonoBehaviour
 
     [SerializeField] private bool isActive = false;
     public bool IsActive { get { return isActive; } set { isActive = value; } }
-    private MeshRenderer meshRenderer;
+    [SerializeField] private MeshRenderer meshRenderer;
+    [SerializeField] private MeshFilter meshFilter;
 
-    
     [SerializeField] private Transform pickup;
     [SerializeField] private Transform dropoff;
     private Transform lastGrounded;
@@ -45,22 +45,21 @@ public class Order : MonoBehaviour
     [Tooltip("The HDR color options for the different tiers of packages")]
     [SerializeField][ColorUsageAttribute(true, true)]public Color[] packageColors;
 
+    [Tooltip("Different meshes of the package depending on the difficulty")]
+    [SerializeField] private Mesh[] orderMesh;
+
     [Tooltip("Layermasks for respawn logic. Should be set to building phase checker, water (ignore raycast), and ground")]
     [SerializeField] LayerMask water,ground,buildingCheck;
 
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
 
-    private void Start()
-    {
-        meshRenderer = GetComponent<MeshRenderer>();
-    }
     private void Update()
     {
         meshRenderer.enabled = isActive;
         beacon.gameObject.SetActive(isActive);
         if (playerHolding != null)
         {
-            this.gameObject.transform.forward = playerHolding.transform.forward;
+            this.gameObject.transform.forward = -playerHolding.transform.right;
         }
 
         Vector3 newDir = (arrow.transform.position - dropoff.position);
@@ -83,7 +82,7 @@ public class Order : MonoBehaviour
         this.transform.position = pickup.position;
         
         // setting the color of the order
-        meshRenderer = GetComponent<MeshRenderer>();
+        //meshRenderer = GetComponent<MeshRenderer>();
 
         // Determines the pacakge type value based on the order type
         int packageType = 0;
@@ -104,6 +103,7 @@ public class Order : MonoBehaviour
         }
 
         meshRenderer.material.color = packageColors[packageType];
+        meshFilter.mesh = orderMesh[packageType];
 
         Color beaconColor = new Color(packageColors[packageType].r, packageColors[packageType].g, packageColors[packageType].b, 0.3f);
         beacon.InitBeacon(this, beaconColor);
