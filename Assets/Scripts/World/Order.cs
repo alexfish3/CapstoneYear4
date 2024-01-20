@@ -186,14 +186,14 @@ public class Order : MonoBehaviour
         OrderManager.Instance.RemoveOrder(this);
         if(value == Constants.OrderValue.Golden)
         {
-            OrderManager.Instance.GoldOrderDelivered(); // lets the OM know the golden order has been delivered
             if (playerHolding != null)
             {
-                playerHolding.Score += OrderManager.Instance.FinalOrderValue - (int)Constants.OrderValue.Golden;
+                playerHolding.Score += OrderManager.Instance.FinalOrderValue - (int)Constants.OrderValue.Golden; // beacon code already adds base gold value
                 playerHolding.HasGoldenOrder = false;
             }
+            OrderManager.Instance.GoldOrderDelivered(); // lets the OM know the golden order has been delivered
         }
-        if(playerHolding != null) 
+        if (playerHolding != null) 
         {
             playerHolding.LoseOrder(this);
         }
