@@ -17,8 +17,11 @@ public class BallDriving : MonoBehaviour
     private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
     private const float DRIFT_HOP_AMOUNT = 0.25f; //How high the little pre-drift hop is
     private const float DRIFT_HOP_TIME = 0.4f; //How fast the little hop is in seconds
+
     private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
     private const float CSV_RATIO = 0.35f; //Don't touch
+
+    private const float BRAKE_CHECK_TIME = 0.1f;
 
     private IEnumerator boostActiveCoroutine;
     private IEnumerator boostCooldownCoroutine;
@@ -162,9 +165,10 @@ public class BallDriving : MonoBehaviour
 
     private float rotationAmount; //the amount to turn on any given frame
 
-    private bool reversing, grounded;
+    private bool reverseGear, grounded;
     private bool brakeChecking = false;
     private bool stopped = true;
+    private float timeSpentChecking = 0.0f;
 
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
@@ -236,7 +240,7 @@ public class BallDriving : MonoBehaviour
         leftTrig = inp.LeftTriggerValue;
         rightTrig = inp.RightTriggerValue;
 
-        if (currentVelocity > 0.5 && csv > 0 && ((leftTrig == 1 && !reversing) || (rightTrig == 1 && reversing)))
+        if (currentVelocity > 0.5 && csv > 0 && ((leftTrig == 1 && !reverseGear) || (rightTrig == 1 && reverseGear)))
         {
             soundPool.PlayBrakeSound();
         }
@@ -269,10 +273,10 @@ public class BallDriving : MonoBehaviour
             sphereBody.drag = startingDrag;
         }
 
-        reversing = leftTrig > rightTrig;
+        reverseGear = leftTrig > rightTrig;
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
-        currentForce = reversing ? (reversingPower * leftTrig * (1 - rightTrig)) : (accelerationPower * rightTrig * (1 - leftTrig));
+        currentForce = reverseGear ? (reversingPower * leftTrig * (1 - rightTrig)) : (accelerationPower * rightTrig * (1 - leftTrig));
         currentForce = boosting ? accelerationPower : currentForce;
 
         currentVelocity = sphereBody.velocity.magnitude;
@@ -298,7 +302,7 @@ public class BallDriving : MonoBehaviour
             float driftTargetAmount = (driftDirection > 0) ? RangeMutations.Map_Linear(leftStick, -1, 1, 0.5f, driftTurnScalar) : RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnScalar, 0.5f);
             modelRotateAmount = 90 + driftTargetAmount * driftDirection * DRIFTING_MODEL_ROTATION * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax);
         }
-        else if (reversing)
+        else if (reverseGear)
         {
             DirtyDriftDrop(); //only needed like 1% of the time but fixes a weird little collision behavior
             
@@ -407,7 +411,7 @@ public class BallDriving : MonoBehaviour
             {
                 sphereBody.AddForce((driftDirection == 1 ? ((driftSidewaysScalar * transform.forward) - transform.right).normalized : ((driftSidewaysScalar * transform.forward) + transform.right).normalized) * totalForce, ForceMode.Acceleration);
             }
-            else if (reversing)
+            else if (reverseGear)
             {
                 sphereBody.AddForce(scooterModel.transform.right * totalForce, ForceMode.Acceleration);
             }
@@ -475,7 +479,15 @@ public class BallDriving : MonoBehaviour
 
     private IEnumerator BrakeCheck()
     {
-        throw new System.NotImplementedException();
+        timeSpentChecking = 0.0f;
+
+        while (timeSpentChecking < BRAKE_CHECK_TIME)
+        {
+            timeSpentChecking += Time.deltaTime;
+            yield return null;
+        }
+
+        stopped = true;
     }
 
     /// <summary>
@@ -570,7 +582,7 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void AssignDriftState()
     {
-        if (!boosting && !reversing && grounded)
+        if (!boosting && !reverseGear && grounded)
         {
             soundPool.PlayDriftSound();
             callToDrift = false;
@@ -718,7 +730,7 @@ public class BallDriving : MonoBehaviour
     /// <param name="WestFaceState">The state of the south face button, passed by the event</param>
     private void BoostFlag(bool SouthFaceState)
     {
-        if (boostAble && !callToDrift && !drifting && !reversing) //& by Tally Hall
+        if (boostAble && !callToDrift && !drifting && !reverseGear) //& by Tally Hall
         {
             StartBoostActive();
             OnBoostStart?.Invoke();
