@@ -165,7 +165,7 @@ public class BallDriving : MonoBehaviour
 
     private float rotationAmount; //the amount to turn on any given frame
 
-    private bool reverseGear, grounded;
+    private bool reverseGear, forwardGear, grounded;
     private bool brakeChecking = false;
     private bool stopped = true;
     private float timeSpentChecking = 0.0f;
@@ -272,17 +272,14 @@ public class BallDriving : MonoBehaviour
         {
             sphereBody.drag = startingDrag;
         }
-
-        reverseGear = leftTrig > rightTrig;
-
-        transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
-        currentForce = reverseGear ? (reversingPower * leftTrig * (1 - rightTrig)) : (accelerationPower * rightTrig * (1 - leftTrig));
-        currentForce = boosting ? accelerationPower : currentForce;
-
+        
+        //Checks for whether the scooter has been still long enough to be considered stopped
         currentVelocity = sphereBody.velocity.magnitude;
         if (currentVelocity != 0)
         {
             csv = currentForce / currentVelocity;
+            stopped = false;
+            StopBrakeCheck();
         }
         else
         {
@@ -291,6 +288,41 @@ public class BallDriving : MonoBehaviour
                 StartBrakeCheck();
             }
         }
+        
+        //When stopped, changes gear based on trigger input
+        if (stopped)
+        {
+            reverseGear = false;
+            forwardGear = false;
+
+            if (rightTrig > leftTrig)
+            {
+                forwardGear = true;
+                reverseGear = false;
+                stopped = false;
+            }
+            else if (leftTrig > rightTrig)
+            {
+                reverseGear = true;
+                forwardGear = false;
+                stopped = false;
+            }
+        }
+
+        transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
+
+        if (reverseGear)
+        {
+            currentForce = reversingPower * leftTrig;
+        }
+       
+        if (forwardGear)
+        {
+            currentForce = accelerationPower * rightTrig;
+        }
+
+        if (boosting)
+            currentForce = accelerationPower;
 
         float modelRotateAmount;
         if (drifting)
@@ -960,5 +992,6 @@ public class BallDriving : MonoBehaviour
     {
         StopCoroutine(brakeCheckCoroutine);
         brakeCheckCoroutine = null;
+        brakeChecking = false;
     }
 }
