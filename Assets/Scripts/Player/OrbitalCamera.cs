@@ -37,6 +37,6 @@ public class OrbitalCamera : MonoBehaviour
         smoothYAxis = Mathf.Lerp(smoothYAxis, realYAxis, smoothSpeedValue);
 
         orb.m_XAxis.Value = smoothXAxis;
-        CameraFocus.transform.position = new Vector3(CameraFocus.transform.position.x, smoothYAxis, CameraFocus.transform.position.z);
+        CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
     }
 }
