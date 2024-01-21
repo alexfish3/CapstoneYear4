@@ -20,7 +20,6 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     private void UpdateResults()
     {
-        ScoreManager.Instance.UpdatePlacement();
         resultsCanvas.enabled = true;
         for (int i = 0; i < displayText.Length; i++)
         {

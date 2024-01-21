@@ -15,12 +15,14 @@ public class ScoreManager : SingletonMonobehaviour<ScoreManager>
     {
         GameManager.Instance.OnSwapMenu += ResetScore;
         GameManager.Instance.OnSwapBegin += ResetScore;
+        GameManager.Instance.OnSwapResults += UpdatePlacement;
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnSwapMenu -= ResetScore;
         GameManager.Instance.OnSwapBegin -= ResetScore;
+        GameManager.Instance.OnSwapResults -= UpdatePlacement;
     }
 
     /// <summary>

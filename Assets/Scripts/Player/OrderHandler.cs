@@ -27,12 +27,14 @@ public class OrderHandler : MonoBehaviour
     public bool HasGoldenOrder { get { return hasGoldenOrder; } set { hasGoldenOrder = value; } }
 
     private SoundPool soundPool;
+    private QAHandler qa;
     private void Start()
     {
         score = 0; // init score to 0
         ScoreManager.Instance.AddOrderHandler(this);
         ball = transform.parent.GetComponentInChildren<BallDriving>();
         soundPool = GetComponent<SoundPool>();
+        qa = GetComponent<QAHandler>();
     }
 
     private void OnEnable()
@@ -84,6 +86,7 @@ public class OrderHandler : MonoBehaviour
         {
             soundPool.PlayOrderDropoff();
             score += (int)order1.Value;
+            qa.Deliver(order1.Value);
             order1.EraseOrder();
             order1 = null;
             ScoreManager.Instance.UpdatePlacement();
@@ -92,6 +95,7 @@ public class OrderHandler : MonoBehaviour
         {
             soundPool.PlayOrderDropoff();
             score += (int)order2.Value;
+            qa.Deliver(order2.Value);
             order2.EraseOrder();
             order2 = null;
             ScoreManager.Instance.UpdatePlacement();

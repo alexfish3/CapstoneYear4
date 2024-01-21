@@ -211,6 +211,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         catch
         {
             GameManager.Instance.SetGameState(GameState.GoldenCutscene);
+            finalOrderActive = true;
         }
 
         if (!finalOrderActive)
