@@ -49,7 +49,7 @@ public class Compass : MonoBehaviour
     private void Update()
     {
         // Updates the uv rect of the compass image, to scroll based on player rotation
-        compassImage.uvRect = new Rect((player.localEulerAngles.y + orbitalCamera.smoothAxis) / 360f, 0f, 1f, 1f);
+        compassImage.uvRect = new Rect((player.localEulerAngles.y + orbitalCamera.smoothXAxis) / 360f, 0f, 1f, 1f);
 
         // Loops for all markers on player and updates their position on the compass ui
         foreach (CompassIconUI marker in compassUIObjects)
@@ -157,7 +157,7 @@ public class Compass : MonoBehaviour
         // Adjust the angle to be negative when turning counterclockwise
         angleDegrees = (Vector3.Cross(playerForwardVector, playerToObjectVector).y < 0) ? -angleDegrees : angleDegrees;
 
-        return new Vector2((angleDegrees - orbitalCamera.smoothAxis) * compassUnit, iconHeight);
+        return new Vector2((angleDegrees - orbitalCamera.smoothXAxis) * compassUnit, iconHeight);
     }
 
     ///<summary>

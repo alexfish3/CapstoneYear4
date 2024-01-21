@@ -32,9 +32,13 @@ public class InputManager : MonoBehaviour
     private float leftStickValue; //a value from -1 to 1, which represents the horizontal position of the left stick
     public float LeftStickValue { get { return leftStickValue; } }
 
-    // Right Stick
-    private float rightStickValue; //a value from -1 to 1, which represents the horizontal position of the right stick
-    public float RightStickValue { get { return rightStickValue; } }
+    // Right Stick X
+    private float rightStickXValue; //a value from -1 to 1, which represents the horizontal position of the right stick
+    public float RightStickXValue { get { return rightStickXValue; } }
+
+    // Right Stick Y
+    private float rightStickYValue; //a value from -1 to 1, which represents the horizontal position of the right stick
+    public float RightStickYValue { get { return rightStickYValue; } }
 
     // Left Trigger
     private float leftTriggerValue; //a value from 0 to 1, which represents the pull of the left trigger
@@ -65,9 +69,18 @@ public class InputManager : MonoBehaviour
     /// Takes input from the right stick's horizontal position, driven by Input Controller
     /// </summary>
     /// <param name="context">boilerplate for Input Controller</param>
-    public void RightStickControl(CallbackContext context)
+    public void RightStickXControl(CallbackContext context)
     {
-        rightStickValue = context.ReadValue<float>();
+        rightStickXValue = context.ReadValue<float>();
+    }
+
+    /// <summary>
+    /// Takes input from the right stick's horizontal position, driven by Input Controller
+    /// </summary>
+    /// <param name="context">boilerplate for Input Controller</param>
+    public void RightStickYControl(CallbackContext context)
+    {
+        rightStickYValue = context.ReadValue<float>();
     }
 
     /// <summary>

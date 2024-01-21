@@ -15,9 +15,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Camera Rotation",
+                    "name": "Camera Rotation X",
                     "type": "Value",
                     "id": "31ce79b5-4849-4beb-b073-62a44ceeee4a",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Camera Rotation Y",
+                    "type": "Value",
+                    "id": "80f450c4-7220-41a5-9393-f0465744ad23",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
@@ -97,7 +106,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Camera Rotation",
+                    "action": "Camera Rotation X",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -175,6 +184,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9c20e0a8-0693-4ffe-9a56-d4643599fa84",
+                    "path": "<Gamepad>/rightStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera Rotation Y",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
