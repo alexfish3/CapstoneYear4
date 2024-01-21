@@ -46,17 +46,22 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public void OnEnable()
     {
         gameManager.OnSwapPlayerSelect += EnablePlayerSpawn;
-        gameManager.OnSwapPlayerSelect += SwapMenuForCharacterSelect;
+        gameManager.OnSwapPlayerSelect += SwapForCharacterSelect;
 
-        gameManager.OnSwapCutscene += DisablePlayerSpawn;
+        gameManager.OnSwapStartingCutscene += DisablePlayerSpawn;
 
-        gameManager.OnSwapBegin += SwapMenuForPause;
+        gameManager.OnSwapBegin += SwapForDriving;
+
+        gameManager.OnSwapStartingCutscene += SwapForCutscene;
+        gameManager.OnSwapGoldenCutscene += SwapForCutscene;
+
+        gameManager.OnSwapFinalPackage += SwapForDriving;
 
         gameManager.OnSwapResults += DisableReadiedUp;
         gameManager.OnSwapResults += ResetPlayerCanvas;
-        gameManager.OnSwapResults += SwapMenuForResults;
+        gameManager.OnSwapResults += SwapForResults;
 
-        gameManager.OnSwapMenu += SwapMenuForMainMenu;
+        gameManager.OnSwapMenu += SwapForMainMenu;
 
     }
 
@@ -66,17 +71,22 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public void OnDisable()
     {
         gameManager.OnSwapPlayerSelect -= EnablePlayerSpawn;
-        gameManager.OnSwapPlayerSelect -= SwapMenuForCharacterSelect;
+        gameManager.OnSwapPlayerSelect -= SwapForCharacterSelect;
 
-        gameManager.OnSwapCutscene -= DisablePlayerSpawn;
+        gameManager.OnSwapStartingCutscene -= DisablePlayerSpawn;
 
-        gameManager.OnSwapBegin -= SwapMenuForPause;
+        gameManager.OnSwapBegin -= SwapForDriving;
+
+        gameManager.OnSwapStartingCutscene -= SwapForCutscene;
+        gameManager.OnSwapGoldenCutscene -= SwapForCutscene;
+
+        gameManager.OnSwapFinalPackage -= SwapForDriving;
 
         gameManager.OnSwapResults -= DisableReadiedUp;
         gameManager.OnSwapResults -= ResetPlayerCanvas;
-        gameManager.OnSwapResults -= SwapMenuForResults;
+        gameManager.OnSwapResults -= SwapForResults;
 
-        gameManager.OnSwapMenu -= SwapMenuForMainMenu;
+        gameManager.OnSwapMenu -= SwapForMainMenu;
     }
 
     public void Update()
@@ -380,7 +390,10 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         readyUpCountdown = null;
     }
 
-    private void SwapMenuForMainMenu()
+    /// <summary>
+    /// Swaps the control scheme for all players to main menu
+    /// </summary>
+    private void SwapForMainMenu()
     {
         Debug.Log("Swap for Main Menu");
 
@@ -389,7 +402,22 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         SwapMenuTypeForAllPlayers(MenuType.MainMenu);
     }
 
-    private void SwapMenuForCharacterSelect()
+    /// <summary>
+    /// Swaps the control scheme for all players to cutscenes
+    /// </summary>
+    private void SwapForCutscene()
+    {
+        Debug.Log("Swap for Cutscene");
+
+        SwapPlayerControlSchemeToUI();
+
+        SwapMenuTypeForAllPlayers(MenuType.Cutscene);
+    }
+
+    /// <summary>
+    /// Swaps the control scheme for all players to character select
+    /// </summary>
+    private void SwapForCharacterSelect()
     {
         Debug.Log("Swap for Charater Select");
 
@@ -398,22 +426,36 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         SwapMenuTypeForAllPlayers(MenuType.PlayerSelect);
     }
 
-    private void SwapMenuForPause()
-    {
-        Debug.Log("Swap for Pause");
-
-        SwapPlayerControlSchemeToDrive();
-
-        SwapMenuTypeForAllPlayers(MenuType.PauseMenu);
-    }
-
-    private void SwapMenuForResults()
+    /// <summary>
+    /// Swaps the control scheme for all players to results
+    /// </summary>
+    private void SwapForResults()
     {
         Debug.Log("Swap for Results");
 
         SwapPlayerControlSchemeToUI();
 
         SwapMenuTypeForAllPlayers(MenuType.ResultsMenu);
+    }
+
+    /// <summary>
+    /// Swaps the control scheme for all players to driving
+    /// </summary>
+    private void SwapForDriving()
+    {
+        StartCoroutine(PlayerMoverCountdown());
+    }
+
+    private IEnumerator PlayerMoverCountdown()
+    {
+        Debug.Log("Swap for Driving");
+        yield return new WaitForSeconds(3f);
+        Debug.Log("Waited Three seconds");
+
+        SwapPlayerControlSchemeToDrive();
+
+        SwapMenuTypeForAllPlayers(MenuType.PauseMenu);
+
     }
 
     /// <summary>

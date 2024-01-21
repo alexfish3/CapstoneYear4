@@ -15,7 +15,7 @@ public class HotKeys : SingletonMonobehaviour<HotKeys>
         }
         if(Input.GetKeyDown(KeyCode.Alpha5))
         {
-            GameManager.Instance.SetGameState(GameState.FinalPackage);
+            GameManager.Instance.SetGameState(GameState.GoldenCutscene);
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {

@@ -52,8 +52,7 @@ public class MenuInteractions : MonoBehaviour
 
         GameManager.Instance.OnSwapPlayerSelect += SwapToPlayerSelect;
 
-        GameManager.Instance.OnSwapCutscene += PlayerUnready;
-        GameManager.Instance.OnSwapCutscene += SwapToCutscene;
+        GameManager.Instance.OnSwapStartingCutscene += PlayerUnready;
 
     }
 
@@ -63,8 +62,7 @@ public class MenuInteractions : MonoBehaviour
 
         GameManager.Instance.OnSwapPlayerSelect -= SwapToPlayerSelect;
 
-        GameManager.Instance.OnSwapCutscene -= PlayerUnready;
-        GameManager.Instance.OnSwapCutscene -= SwapToCutscene;
+        GameManager.Instance.OnSwapStartingCutscene -= PlayerUnready;
     }
 
     public void SwapToPlayerSelect()

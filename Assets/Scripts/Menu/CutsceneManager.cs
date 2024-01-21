@@ -1,65 +1,77 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 
+public enum CutsceneType
+{
+    StartingCutscene = 0,
+    FinalOrderCutscene = 1
+}
+
 public class CutsceneManager : MonoBehaviour
 {
-    enum CutsceneType
-    {
-        StartingCutscene,
-        FinalOrderCutscene
-    }
-    [SerializeField] GameObject[] cameraPositions;
     [SerializeField] Camera cutsceneCamera;
     [SerializeField] Canvas cutsceneCanvas;
     [SerializeField] PlayableDirector playableDirector;
 
     [Header("Cutscene Information")]
     Coroutine cutsceneCoroutine;
-    [SerializeField] float cutsceneSecondsLength;
+    [SerializeField] int cutsceneBeingPlayed;
+    [SerializeField] CutsceneInformation currentCutscene;
+    [SerializeField] CutsceneInformation[] cutsceneInformation;
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapCutscene += BeginStartCutscene;
+        GameManager.Instance.OnSwapStartingCutscene += StartingCutscene;
+        GameManager.Instance.OnSwapGoldenCutscene += GoldenCutscene;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapCutscene -= BeginStartCutscene;
+        GameManager.Instance.OnSwapStartingCutscene -= StartingCutscene;
+        GameManager.Instance.OnSwapGoldenCutscene -= GoldenCutscene;
     }
 
-    // Update is called once per frame
-    void Update()
+    ///<summary>
+    /// Sets the cutscene to starting cutscene
+    ///</summary>
+    void StartingCutscene()
     {
-        if(Input.GetKeyDown(KeyCode.H))
-        {
-            BeginCutscene(CutsceneType.StartingCutscene);
-        }
-        else if (Input.GetKeyDown(KeyCode.J))
-        {
-            EndCutscene();
-        }
+        cutsceneBeingPlayed = 0;
+        BeginCutsceneCoroutine();
+    }
+
+    ///<summary>
+    /// Sets the cutscene to golden package cutscene
+    ///</summary>
+    void GoldenCutscene()
+    {
+        cutsceneBeingPlayed = 1;
+        BeginCutsceneCoroutine();
     }
 
     ///<summary>
     /// Begins the starting cutscene
     ///</summary>
-    void BeginStartCutscene()
+    void BeginCutsceneCoroutine()
     {
-        if(cutsceneCoroutine != null)
+        currentCutscene = cutsceneInformation[cutsceneBeingPlayed];
+
+        if (cutsceneCoroutine != null)
             StopCoroutine(cutsceneCoroutine);
 
-        cutsceneCoroutine = StartCoroutine(CutsceneTimer(CutsceneType.StartingCutscene));
+        cutsceneCoroutine = StartCoroutine(CutsceneTimer());
     }
 
     ///<summary>
     /// Coroutine to start and stop the cutscene
     ///</summary>
-    IEnumerator CutsceneTimer(CutsceneType cutsceneType)
+    IEnumerator CutsceneTimer()
     {
-        BeginCutscene(cutsceneType);
-        yield return new WaitForSeconds(cutsceneSecondsLength);
+        BeginCutscene();
+        yield return new WaitForSeconds(currentCutscene.timeInSeconds);
         EndCutscene();
     }
 
@@ -67,24 +79,19 @@ public class CutsceneManager : MonoBehaviour
     ///<summary>
     /// Begins a cutscene, the cutscene played is passed through with an enum typing
     ///</summary>
-    void BeginCutscene(CutsceneType cutsceneType)
+    void BeginCutscene()
     {
-        foreach(GameObject camPositions in cameraPositions)
+        foreach(GameObject camPositions in currentCutscene.cameraTransformPositions)
         {
             camPositions.SetActive(true);
         }
+
+        playableDirector.playableAsset = currentCutscene.cutscenePlayable;
 
         cutsceneCamera.enabled = true;
         cutsceneCanvas.enabled = true;
 
         playableDirector.Play();
-
-        switch (cutsceneType)
-        {
-            case CutsceneType.StartingCutscene:
-            case CutsceneType.FinalOrderCutscene:
-            default: return;
-        }
     }
 
     ///<summary>
@@ -95,11 +102,30 @@ public class CutsceneManager : MonoBehaviour
         cutsceneCanvas.enabled = false;
         cutsceneCamera.enabled = false;
 
-        foreach (GameObject camPositions in cameraPositions)
+        foreach (GameObject camPositions in currentCutscene.cameraTransformPositions)
         {
             camPositions.SetActive(false);
         }
 
-        GameManager.Instance.SetGameState(GameState.Begin);
-    }
+        switch (cutsceneBeingPlayed)
+        {
+            case 0: // Begining Cutscene
+                GameManager.Instance.SetGameState(GameState.Begin);
+                break;
+            case 1:
+                GameManager.Instance.SetGameState(GameState.FinalPackage);
+                break;
+            default:
+                break;
+        }
+    }   
+}
+
+[Serializable]
+public class CutsceneInformation
+{
+    public string cutsceneName;
+    public PlayableAsset cutscenePlayable;
+    public float timeInSeconds;
+    public GameObject[] cameraTransformPositions;
 }
