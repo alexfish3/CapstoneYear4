@@ -23,11 +23,11 @@ public class BallDriving : MonoBehaviour
 
     private const float BRAKE_CHECK_TIME = 0.5f;
     private const float RESTING_ANGULAR_DRAG = 0.05f;
-    private const float FULLBRAKE_ANGULAR_DRAG = 20.0f;
+    private const float FULLBRAKE_ANGULAR_DRAG = 15.0f;
     private const float RESTING_DYNAMIC_FRICTION = 0.4f;
-    private const float FULLBRAKE_DYNAMIC_FRICTION = 8.0f;
+    private const float FULLBRAKE_DYNAMIC_FRICTION = 5.0f;
     private const float RESTING_STATIC_FRICTION = 0.4f;
-    private const float FULLBRAKE_STATIC_FRICTION = 8.0f;
+    private const float FULLBRAKE_STATIC_FRICTION = 5.0f;
 
     private IEnumerator boostActiveCoroutine;
     private IEnumerator boostCooldownCoroutine;
@@ -67,6 +67,10 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float accelerationPower = 30.0f;
     [Tooltip("An amorphous representation of how quickly the bike can reverse")]
     [SerializeField] private float reversingPower = 10.0f;
+    [Tooltip("An amorphous representation which is *part* of how quickly the bike can brake")]
+    [SerializeField] private float brakingPower = 10.0f;
+    [Tooltip("An amorphous representation which is *part* of how quickly the bike can brake when reversing")]
+    [SerializeField] private float reverseBrakingPower = 5.0f;
     [Tooltip("The amount of drag while falling. Improves the feel of the physics")]
     [SerializeField] private float fallingDrag = 1.0f;
     [Tooltip("The amount of speed that a ground boost patch gives")]
@@ -327,10 +331,10 @@ public class BallDriving : MonoBehaviour
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
 
-        //EXPERIMENT WITH BRAKING STILL REDUCING 
+        //EXPERIMENT WITH BRAKING STILL REDUCING CF
         if (reverseGear)
         {
-            currentForce = reversingPower * leftTrig;
+            currentForce = Mathf.Max((reversingPower * leftTrig) - (reversingPower * rightTrig), 0);
             sphereBody.angularDrag = RangeMutations.Map_Linear(rightTrig, 0, 1, RESTING_ANGULAR_DRAG, FULLBRAKE_ANGULAR_DRAG);
             pMat.dynamicFriction = RangeMutations.Map_Linear(rightTrig, 0, 1, RESTING_DYNAMIC_FRICTION, FULLBRAKE_DYNAMIC_FRICTION);
             pMat.staticFriction = RangeMutations.Map_Linear(rightTrig, 0, 1, RESTING_STATIC_FRICTION, FULLBRAKE_STATIC_FRICTION);
@@ -338,7 +342,7 @@ public class BallDriving : MonoBehaviour
        
         if (forwardGear)
         {
-            currentForce = accelerationPower * rightTrig;
+            currentForce = Mathf.Max((accelerationPower * rightTrig) - (accelerationPower * leftTrig), 0);
             sphereBody.angularDrag = RangeMutations.Map_Linear(leftTrig, 0, 1, RESTING_ANGULAR_DRAG, FULLBRAKE_ANGULAR_DRAG);
             pMat.dynamicFriction = RangeMutations.Map_Linear(leftTrig, 0, 1, RESTING_DYNAMIC_FRICTION, FULLBRAKE_DYNAMIC_FRICTION);
             pMat.staticFriction = RangeMutations.Map_Linear(leftTrig, 0, 1, RESTING_STATIC_FRICTION, FULLBRAKE_STATIC_FRICTION);
