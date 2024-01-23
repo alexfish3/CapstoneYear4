@@ -22,6 +22,7 @@ public class BallDriving : MonoBehaviour
 
     private IEnumerator boostActiveCoroutine;
     private IEnumerator boostCooldownCoroutine;
+    private IEnumerator spinOutTimeCoroutine;
 
     public delegate void BoostDelegate(); // boost event stuff for the trail
     public BoostDelegate OnBoostStart;
@@ -162,6 +163,7 @@ public class BallDriving : MonoBehaviour
     private float rotationAmount; //the amount to turn on any given frame
 
     private bool stopped, reversing, grounded;
+    private bool canDrive = true;
 
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
@@ -222,6 +224,8 @@ public class BallDriving : MonoBehaviour
         flare2Spark = particleBasket.GetChild(3).GetComponent<ParticleManipulator>();
         flare3Spark = particleBasket.GetChild(4).GetComponent<ParticleManipulator>();
         longSpark = particleBasket.GetChild(5).GetComponent<ParticleManipulator>();
+
+        orderHandler.GotHit += SpinOut;
     }
 
     /// <summary>
@@ -229,6 +233,9 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        if (!canDrive)
+            return;
+
         leftStick = inp.LeftStickValue;
         leftTrig = inp.LeftTriggerValue;
         rightTrig = inp.RightTriggerValue;
@@ -326,6 +333,9 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
+        if (!canDrive)
+            return;
+
         float totalForce = currentForce;
 
         //Adds the boost from a successful drift
@@ -842,6 +852,27 @@ public class BallDriving : MonoBehaviour
         rightSlipstreamTrail.time = trailAmount;
     }
 
+    private void SpinOut()
+    {
+        canDrive = false;
+        StartSpinOutTime();
+    }
+
+    private IEnumerator SpinOutTime()
+    {
+        scooterModel.parent.DOComplete();
+
+        Tween spinning = scooterModel.parent.DORotate(new Vector3(scooterModel.parent.rotation.x, 360, scooterModel.parent.rotation.z), 1.0f, RotateMode.LocalAxisAdd);
+        spinning.SetEase(Ease.OutBack);
+
+        Tween rocking = scooterModel.DOShakeRotation(1.0f, new Vector3(10, 0, 0), 10, 45, true, ShakeRandomnessMode.Harmonic);
+
+        yield return spinning.WaitForCompletion();
+
+        canDrive = true;
+        scooterModel.parent.localEulerAngles = new Vector3(scooterModel.parent.rotation.x, 0, scooterModel.parent.rotation.z); //prevents the model from misaligning
+    }
+
     /// <summary>
     /// Updates various debug UI elements
     /// </summary>
@@ -909,8 +940,11 @@ public class BallDriving : MonoBehaviour
     }
     private void StopBoostActive()
     {
-        StopCoroutine(boostActiveCoroutine);
-        boostActiveCoroutine = null;
+        if (boostActiveCoroutine != null)
+        {
+            StopCoroutine(boostActiveCoroutine);
+            boostActiveCoroutine = null;
+        }
     }
 
     private void StartBoostCooldown()
@@ -920,7 +954,24 @@ public class BallDriving : MonoBehaviour
     }
     private void StopBoostCooldown()
     {
-        StopCoroutine(boostCooldownCoroutine);
-        boostCooldownCoroutine = null;
+        if (boostCooldownCoroutine != null)
+        {
+            StopCoroutine(boostCooldownCoroutine);
+            boostCooldownCoroutine = null;
+        }
+    }
+
+    private void StartSpinOutTime()
+    {
+        spinOutTimeCoroutine = SpinOutTime();
+        StartCoroutine(spinOutTimeCoroutine);
+    }
+    private void StopSpinOutTime()
+    {
+        if (spinOutTimeCoroutine != null)
+        {
+            StopCoroutine(spinOutTimeCoroutine);
+            spinOutTimeCoroutine = null;
+        }
     }
 }

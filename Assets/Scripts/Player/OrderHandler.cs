@@ -28,6 +28,11 @@ public class OrderHandler : MonoBehaviour
 
     private SoundPool soundPool;
     private QAHandler qa;
+
+    public delegate void GotHitDelegate();
+    public event GotHitDelegate GotHit;
+
+
     private void Start()
     {
         score = 0; // init score to 0
@@ -45,6 +50,12 @@ public class OrderHandler : MonoBehaviour
     private void OnDisable()
     {
         GameManager.Instance.OnSwapMenu -= ResetHandler;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.T))
+            DropEverything(transform.position);
     }
 
     /// <summary>
@@ -120,6 +131,8 @@ public class OrderHandler : MonoBehaviour
             order2.Drop(basePos);
             order2 = null;
         }
+
+        GotHit();
     }
 
     /// <summary>
