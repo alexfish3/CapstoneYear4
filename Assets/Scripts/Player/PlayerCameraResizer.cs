@@ -24,12 +24,13 @@ public class PlayerCameraResizer : MonoBehaviour
     [Header("Cinemachine Info")]
     [SerializeField] GameObject[] virtualCameras;
 
-    [Header("UI References")]
+    [Header("Camera References")]
     [SerializeField] Camera mainCamera;
-    [SerializeField] Camera phaseCamera;
+    [SerializeField] Camera drivingUICamera;
+
     [SerializeField] Camera playerCamera;
     [SerializeField] Camera menuUICamera;
-    [SerializeField] Camera drivingUICamera;
+
     [SerializeField] GameObject customizationSelector;
 
     bool initalized = false;
@@ -109,20 +110,19 @@ public class PlayerCameraResizer : MonoBehaviour
     ///</summary>
     public void SwapCameraRendering(bool mainCameraOn)
     {
-        if (!enableCameraSwap)
-        {
-            return;
-        }
-        if (mainCameraOn)
-        {
-            mainCamera.enabled = true;
-            phaseCamera.enabled = false;
-        }
-        else
-        {
-            mainCamera.enabled = false;
-            phaseCamera.enabled = true;
-        }
+        //if (!enableCameraSwap)
+        //{
+        //    return;
+        //}
+        //if (mainCameraOn)
+        //{
+        //    mainCamera.
+        //    mainCamera.enabled = true;
+        //}
+        //else
+        //{
+        //    mainCamera.enabled = false;
+        //}
     }
 
     ///<summary>
@@ -147,9 +147,9 @@ public class PlayerCameraResizer : MonoBehaviour
         // Reparent to main camera
         if(posOfMenuCamera)
         {
-            // If camera is reparented true
-            //if (MenuCameraReparented)
-            //    return;
+            drivingUICamera.enabled = true;
+            playerCamera.enabled = false;
+            menuUICamera.enabled = false;
 
             Debug.Log("Reparent to main cam");
 
@@ -168,9 +168,9 @@ public class PlayerCameraResizer : MonoBehaviour
         // Reparent to player camera
         else
         {
-            //// If camera is reparented false
-            //if (!MenuCameraReparented)
-            //    return;
+            drivingUICamera.enabled = false;
+            playerCamera.enabled = true;
+            menuUICamera.enabled = true;
 
             Debug.Log("Reparent to menu cam");
             mainCamera.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(1);

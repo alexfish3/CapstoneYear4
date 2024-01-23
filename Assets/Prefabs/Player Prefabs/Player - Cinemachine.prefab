@@ -9826,9 +9826,10 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2706977427480764783}
   - {fileID: 3495660167286010803}
+  - {fileID: 2706977427480764783}
   - {fileID: 6904994907174394890}
+  - {fileID: 8513792570912740242}
   - {fileID: 5087469707645805696}
   - {fileID: 4105836804644281271}
   - {fileID: 1641834967648323288}
@@ -19876,6 +19877,37 @@ Transform:
   - {fileID: 6737414560726209855}
   m_Father: {fileID: 8267366762298391490}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1683348970343966186
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8513792570912740242}
+  m_Layer: 7
+  m_Name: ~~~~~~~~~~~~~~~~~~~~~
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8513792570912740242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683348970343966186}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3891876976613540359}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1867894801688539398
 GameObject:
   m_ObjectHideFlags: 0
@@ -20279,10 +20311,9 @@ MonoBehaviour:
   virtualCameras:
   - {fileID: 978174962275233661}
   mainCamera: {fileID: 7941610147128612290}
-  phaseCamera: {fileID: 6388722889421940149}
+  drivingUICamera: {fileID: 3121335639242540451}
   playerCamera: {fileID: 9215628373192665516}
   menuUICamera: {fileID: 4808158917890122173}
-  drivingUICamera: {fileID: 3121335639242540451}
   customizationSelector: {fileID: 1238175930791430519}
   enableCameraSwap: 0
   MenuCameraReparented: 0
@@ -25418,7 +25449,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &415302538325244934
 Transform:
   m_ObjectHideFlags: 0
@@ -25441,7 +25472,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3190791656404443565}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 3
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -26101,7 +26132,7 @@ Camera:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5132095171356920860}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_ClearFlags: 3
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
@@ -32008,14 +32039,13 @@ GameObject:
   - component: {fileID: 5515579067765994065}
   - component: {fileID: 6388722889421940149}
   - component: {fileID: 7986161473650355005}
-  - component: {fileID: 2954805989461039036}
   m_Layer: 7
   m_Name: Phase Camera - Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5515579067765994065
 Transform:
   m_ObjectHideFlags: 0
@@ -32127,15 +32157,6 @@ MonoBehaviour:
     mipBias: 0
     varianceClampScale: 0.9
     contrastAdaptiveSharpening: 0
---- !u!45 &2954805989461039036
-Skybox:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6876966305405918322}
-  m_Enabled: 1
-  m_CustomSkybox: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &7236094748412668215
 GameObject:
   m_ObjectHideFlags: 0

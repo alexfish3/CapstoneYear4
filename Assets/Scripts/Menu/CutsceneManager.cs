@@ -34,6 +34,18 @@ public class CutsceneManager : MonoBehaviour
         GameManager.Instance.OnSwapGoldenCutscene -= GoldenCutscene;
     }
 
+    private void Update()
+    {
+        // Skips cutscene
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            if (cutsceneCoroutine != null)
+                StopCoroutine(cutsceneCoroutine);
+
+            EndCutscene();
+        }
+    }
+
     ///<summary>
     /// Sets the cutscene to starting cutscene
     ///</summary>
