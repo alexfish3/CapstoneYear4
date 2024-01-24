@@ -235,9 +235,16 @@ public class OrderHandler : MonoBehaviour
         {
             return;
         }
-        if (ball.Boosting && !otherHandler.IsBoosting)
+        if (ball.Boosting)
         {
-            StealOrder(otherHandler);
+            if (!otherHandler.IsBoosting)
+            {
+                StealOrder(otherHandler);
+            }
+            else
+            {
+
+            }
         }
     }
 }
