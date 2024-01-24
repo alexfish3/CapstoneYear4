@@ -24,11 +24,15 @@ public class QAHandler : MonoBehaviour
         gold = 0;
     }
 
-    public string GetData()
+    public string[] GetData()
     {
-        string data = this.gameObject.transform.parent.name + ":\n";
-        data += $"Placement: {orderHandler.Placement} | Score: ${orderHandler.Score}\n";
-        data += $"Easy: {easy} | Medium: {med} | Hard: {hard} | Gold: {gold}\n";
+        string[] data = { 
+            this.gameObject.transform.parent.name,
+            orderHandler.Placement.ToString(),
+            orderHandler.Score.ToString(),
+            easy.ToString(), med.ToString(), hard.ToString(), gold.ToString(), OrderManager.Instance.FinalOrderValue.ToString()
+        };
+
         return data;
     }
 

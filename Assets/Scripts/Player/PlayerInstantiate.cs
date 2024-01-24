@@ -306,7 +306,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         RemoveFromPlayerArray(playerInput);
 
         ScoreManager.Instance.UpdateOrderHandlers(avaliblePlayerInputs);
-
+        QAManager.Instance.UpdateQAHandlers(avaliblePlayerInputs);
+        
         Destroy(playerInput.gameObject);
 
         UpdatePlayerCameraRects();

@@ -65,8 +65,8 @@ public class OrderBeacon : MonoBehaviour
     /// </summary>
     public void ResetPickup()
     {
-        this.transform.position = order.transform.position;
         customer.transform.parent = OrderManager.Instance.transform;
+        this.transform.position = order.transform.position;
         meshRenderer.material.color = color;
         isPickup = true;
         order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);

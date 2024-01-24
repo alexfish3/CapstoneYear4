@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using System;
+using UnityEngine.InputSystem;
 
 public class QAManager : SingletonMonobehaviour<QAManager>
 {
@@ -10,7 +12,10 @@ public class QAManager : SingletonMonobehaviour<QAManager>
 
     private List<QAHandler> handlers = new List<QAHandler>();
 
-    private string outputFile = "QA/GameHistory.txt";
+    private string fileName = "QAData.csv";
+
+    private string[] columns = { "DateTime", "Name", "Placement", "Score", "#Easy", "#Medium", "#Hard", "#Gold", "Gold $$" };
+
     private void Start()
     {
         GameManager.Instance.OnSwapResults += SendData;
@@ -23,6 +28,10 @@ public class QAManager : SingletonMonobehaviour<QAManager>
         GameManager.Instance.OnSwapBegin -= ResetHandlers;
     }
 
+    /// <summary>
+    /// Adds a QAHandler to the list.
+    /// </summary>
+    /// <param name="inHandler">Handler to be added</param>
     public void AddHandler(QAHandler inHandler)
     {
         if (!handlers.Contains(inHandler))
@@ -31,44 +40,79 @@ public class QAManager : SingletonMonobehaviour<QAManager>
         }
     }
 
-    public void RemoveHandler(QAHandler outHandler)
+    /// <summary>
+    /// Clears the QAHandler list and reinits it. For when a player un-readies up.
+    /// </summary>
+    /// <param name="playerInputs">Active players</param>
+    public void UpdateQAHandlers(PlayerInput[] playerInputs)
     {
-        if(handlers.Contains(outHandler))
+        handlers.Clear();
+        foreach (PlayerInput player in playerInputs)
         {
-            handlers.Remove(outHandler);
+            if (player != null)
+            {
+                handlers.Add(player.GetComponentInChildren<QAHandler>());
+            }
         }
     }
 
+    /// <summary>
+    /// Gathers data from handlers to write to CSV.
+    /// </summary>
     private void SendData()
     {
-        if (!recordData) { return; }
-        string path = Application.streamingAssetsPath + outputFile;
-        Debug.Log($"Path: {path}");
-        try
+        DateTime dt = DateTime.Now;
+        foreach(QAHandler handler in handlers)
         {
-            using(StreamWriter writer = new StreamWriter(path, true))
+            string[] handlerData = handler.GetData();
+            string[] sheetData = new string[handlerData.Length + 1];
+            sheetData[0] = dt.ToString();
+            for(int i=0;i<handlerData.Length; i++)
             {
-                int currentGame = PlayerPrefs.GetInt("qaCount", 0);
-                writer.WriteLine($"~Start Game {currentGame}~\n");
-                foreach(QAHandler handler in handlers)
-                {
-                    writer.WriteLine(handler.GetData());
-                    writer.WriteLine("--\n");
-                }
-                writer.Write($"Final Order Value: ${OrderManager.Instance.FinalOrderValue}\n");
-                writer.WriteLine($"~End Game {currentGame}~");
-                currentGame++;
-                PlayerPrefs.SetInt("qaCount", currentGame);
-                PlayerPrefs.Save();
+                sheetData[i+1] = handlerData[i];
             }
+            WriteCSV(fileName, sheetData);
+        }
+        WriteEmptyLine(fileName);
 
-        }
-        catch
-        {
-            Debug.LogError("Couldn't write to file.");
-        }
     }
 
+    /// <summary>
+    /// Writes to CSV file if exists, otherwise creates a CSV and writes to it.
+    /// </summary>
+    /// <param name="fileName">Name of the CSV file.</param>
+    /// <param name="data">Array of data to write. Each element is a new column.</param>
+    private void WriteCSV(string fileName, string[] data)
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+
+        if (!File.Exists(filePath))
+        {
+            File.WriteAllLines(filePath, new[] { string.Join(",", columns) });
+        }
+
+        File.AppendAllLines(filePath, new[] { string.Join(",", data) });
+    }
+
+    /// <summary>
+    /// Writes an empty line in the CSV file.
+    /// </summary>
+    /// <param name="fileName">Name of CSV file.</param>
+    private void WriteEmptyLine(string fileName)
+    {
+        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+
+        if (!File.Exists(filePath))
+        {
+            File.WriteAllLines(filePath, new[] { string.Join(",", columns) });
+        }
+
+        File.AppendAllText(filePath, Environment.NewLine);
+    }
+
+    /// <summary>
+    /// Resets the stats of the handlers.
+    /// </summary>
     private void ResetHandlers()
     {
         foreach(QAHandler handler in handlers)

@@ -100,6 +100,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     // below are methods to play various BGMs
     private void PlayMenuTheme()
     {
+        Debug.Log(Application.persistentDataPath);
         musicSource.clip = mainMenuBGM;
         musicSource.Play();
     }
