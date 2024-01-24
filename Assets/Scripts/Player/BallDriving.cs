@@ -22,6 +22,7 @@ public class BallDriving : MonoBehaviour
 
     private IEnumerator boostActiveCoroutine;
     private IEnumerator boostCooldownCoroutine;
+    private IEnumerator endBoostCoroutine;
     private IEnumerator spinOutTimeCoroutine;
 
     public delegate void BoostDelegate(); // boost event stuff for the trail
@@ -744,7 +745,12 @@ public class BallDriving : MonoBehaviour
         }
 
         yield return new WaitForSeconds(boostDuration);
+        
+        StartEndBoost();
+    }
 
+    private IEnumerator EndBoost()
+    {
         // Toggles to check phase status
         checkPhaseStatus = true;
 
@@ -888,15 +894,23 @@ public class BallDriving : MonoBehaviour
         scooterModel.parent.localEulerAngles = new Vector3(scooterModel.parent.rotation.x, 0, scooterModel.parent.rotation.z); //prevents the model from misaligning
     }
 
+    /// <summary>
+    /// Slams balls together
+    /// </summary>
+    /// <param name="opponent">The other person in the collision</param>
     private void BounceOff(OrderHandler opponent)
     {
+        if (phasing)
+            return;
+
         Rigidbody opponentBall = opponent.gameObject.GetComponent<BallDriving>().Sphere.GetComponent<Rigidbody>(); //woof
 
-        Vector3 difference = (opponentBall.position - sphereBody.position).normalized;
-        difference.y = 0.3f;
+        Vector3 difference = (sphereBody.position - opponentBall.position).normalized;
+        difference.y = 0.15f;
         difference.Normalize();
 
         sphereBody.AddForce(difference * clashForce, ForceMode.Impulse);
+        StartEndBoost();
     }
 
     /// <summary>
@@ -984,6 +998,20 @@ public class BallDriving : MonoBehaviour
         {
             StopCoroutine(boostCooldownCoroutine);
             boostCooldownCoroutine = null;
+        }
+    }
+
+    private void StartEndBoost()
+    {
+        endBoostCoroutine = EndBoost();
+        StartCoroutine(endBoostCoroutine);
+    }
+    private void StopEndBoost()
+    {
+        if (endBoostCoroutine != null)
+        {
+            StopCoroutine(endBoostCoroutine);
+            endBoostCoroutine = null;
         }
     }
 
