@@ -175,16 +175,22 @@ public class SoundPool : MonoBehaviour
         SoundManager.Instance.PlaySFX("pickup", source);
         StartCoroutine(KillSource(source));
     }
-    public void PlayOrderDropoff()
+    public void PlayOrderDropoff(string dropoffType = "dropoff")
     {
         AudioSource source = GetAvailableSource();
-        SoundManager.Instance.PlaySFX("dropoff", source);
+        SoundManager.Instance.PlaySFX(dropoffType, source);
         StartCoroutine(KillSource(source));
     }
     public void PlayOrderTheft()
     {
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("whoosh", source);
+        StartCoroutine(KillSource(source));
+    }
+    public void PlayDeathSound()
+    {
+        AudioSource source = GetAvailableSource();
+        SoundManager.Instance.PlaySFX("death", source);
         StartCoroutine(KillSource(source));
     }
 
@@ -205,6 +211,12 @@ public class SoundPool : MonoBehaviour
     {
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("scroll", source);
+        StartCoroutine(KillSource(source));
+    }
+    public void PlayPauseUI()
+    {
+        AudioSource source = GetAvailableSource();
+        SoundManager.Instance.PlaySFX("pause", source);
         StartCoroutine(KillSource(source));
     }
 

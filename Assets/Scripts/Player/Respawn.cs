@@ -51,6 +51,9 @@ public class Respawn : MonoBehaviour
     [Tooltip("Cooldown time for setting respawn position")]
     [SerializeField] private float respawnSetInterval = 1f;
 
+    // Sound stuff
+    private SoundPool soundPool;
+
     private void OnEnable()
     {
         GameManager.Instance.OnSwapFinalPackage += StopRespawnCoroutine;
@@ -71,6 +74,7 @@ public class Respawn : MonoBehaviour
         respawnPoints = new Vector3[sizeOfRespawnArray];
         orderHandler = control.GetComponent<OrderHandler>();
         ballDriving = control.GetComponent<BallDriving>();
+        soundPool = control.GetComponent<SoundPool>();
         if (Mathf.Sign(ledgeOffset) != -1)
         {
             ledgeOffset = -ledgeOffset;
@@ -290,6 +294,7 @@ public class Respawn : MonoBehaviour
     {
         if (other.tag == "Water")
         {
+            soundPool.PlayDeathSound();
             // Turning these off fixes camera jittering on respawn
             GetComponent<Rigidbody>().velocity = Vector3.zero; // set velocity to 0 on respawn
             GetComponent<Rigidbody>().useGravity = false;

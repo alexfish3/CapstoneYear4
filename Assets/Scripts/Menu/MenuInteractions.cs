@@ -379,12 +379,15 @@ public class MenuInteractions : MonoBehaviour
 
     public void PlayGame(bool button)
     {
+        SoundManager.Instance.ChangeSnapshot("gameplay");
         Debug.Log("Play Game");
         PlayerInstantiate.Instance.PlayerPlay();
     }
 
     public void PauseGame(bool button)
     {
+        soundPool.PlayPauseUI();
+        SoundManager.Instance.ChangeSnapshot("paused");
         Debug.Log("Pause Game Host");
         PlayerInstantiate.Instance.PlayerPause(playerInput);
     }

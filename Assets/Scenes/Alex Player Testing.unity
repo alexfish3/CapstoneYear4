@@ -2745,6 +2745,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
   mainMixer: {fileID: 24100000, guid: 6ec1816806831fd49a67479100ae5cc1, type: 2}
+  gameplaySnapshot: {fileID: 24500006, guid: 6ec1816806831fd49a67479100ae5cc1, type: 2}
+  pausedSnapshot: {fileID: -5816504179105866977, guid: 6ec1816806831fd49a67479100ae5cc1, type: 2}
   playerPoolSize: 10
   audioSourcePrefab: {fileID: 1959002433664209398, guid: 89b038321aa3c4b41bd364bbd9d07159, type: 3}
   mainGameIntro: {fileID: 8300000, guid: b533cc91c497a6e4484300decfecc041, type: 3}
@@ -2762,11 +2764,14 @@ MonoBehaviour:
   miniBoost: {fileID: 8300000, guid: 4bc10de64dd44cc42ac1205f821ca6be, type: 3}
   phasing: {fileID: 8300000, guid: f30f89e008ae7e044bdb5076d83e7158, type: 3}
   orderPickup: {fileID: 8300000, guid: f4e544acb3e332f48a54b81dc1841f70, type: 3}
-  orderDropoff: {fileID: 8300000, guid: 3efc8016362293046b1b029a69047d65, type: 3}
+  orderDropoff: {fileID: 8300000, guid: eecd5646abb6411449f670f8a9cb2f9c, type: 3}
+  finalDropoff: {fileID: 8300000, guid: e4b84e82593173d44b30e5c1d8717910, type: 3}
   orderTheft: {fileID: 8300000, guid: 203c13f237a835b4286f1952827b5ebc, type: 3}
+  death: {fileID: 8300000, guid: 483a84a0c609daf42b485c60e69e7ee6, type: 3}
   enter: {fileID: 8300000, guid: 7dd822892cfea954ea6da11f37f151af, type: 3}
   back: {fileID: 8300000, guid: d426c6e8f8516534f8f5ab2d97fbff9c, type: 3}
   scroll: {fileID: 8300000, guid: 20ad8025abc85d64d83704820844e48f, type: 3}
+  pause: {fileID: 8300000, guid: ceb0a00c516ffe643be178601950a86b, type: 3}
   emoteSFX:
   - {fileID: 8300000, guid: 7fa51f91b9c01184491c5fc64582b9bc, type: 3}
   - {fileID: 8300000, guid: c545d746b7e1b9643a6d9381d11bbd97, type: 3}
@@ -2803,7 +2808,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

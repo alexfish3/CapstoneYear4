@@ -96,9 +96,10 @@ public class OrderHandler : MonoBehaviour
     /// <param name="rightOrder">The correct order of the dropoff spot</param>
     public void DeliverOrder(Order rightOrder)
     {
-        if(order1 == rightOrder)
+        string key = rightOrder.Value == Constants.OrderValue.Golden ? "final_dropoff" : "dropoff";
+        if (order1 == rightOrder)
         {
-            soundPool.PlayOrderDropoff();
+            soundPool.PlayOrderDropoff(key);
             score += (int)order1.Value;
             qa.Deliver(order1.Value);
             order1.DeliverOrder();
@@ -107,7 +108,7 @@ public class OrderHandler : MonoBehaviour
         }
         else if(order2 == rightOrder)
         {
-            soundPool.PlayOrderDropoff();
+            soundPool.PlayOrderDropoff(key);
             score += (int)order2.Value;
             qa.Deliver(order2.Value);
             order2.DeliverOrder();

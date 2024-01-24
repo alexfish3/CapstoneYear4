@@ -15,6 +15,9 @@ public class EmoteHandler : MonoBehaviour
     [Tooltip("GO on the player prefab with the SoundPool component.")]
     [SerializeField] private SoundPool soundPool;
 
+    [Tooltip("Sprite renderer child of emote bubble")]
+    [SerializeField] private SpriteRenderer emoteBubble;
+
     [Header("Emote Information")]
     [Tooltip("Image on the canvas where the emotes will pop up.")]
     [SerializeField] private Image emoteImg;
@@ -51,6 +54,10 @@ public class EmoteHandler : MonoBehaviour
     {
         emoteImg.gameObject.SetActive(false);
         emoteImg.sprite = null;
+        
+        emoteBubble.transform.parent.gameObject.SetActive(false);
+        emoteBubble.sprite = null;
+        
         currEmote = null;
     }
 
@@ -119,8 +126,13 @@ public class EmoteHandler : MonoBehaviour
     private IEnumerator ShowEmote()
     {
         emoting = true;
+        
         emoteImg.sprite = currEmote;
         emoteImg.gameObject.SetActive(true);
+
+        emoteBubble.sprite = currEmote;
+        emoteBubble.transform.parent.gameObject.SetActive(true);
+
         yield return new WaitForSeconds(emoteLifetime);
         emoteImg.sprite = null;
         ResetEmote();

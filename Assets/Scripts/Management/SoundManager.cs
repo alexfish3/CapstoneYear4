@@ -12,9 +12,12 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 {
     private AudioSource musicSource;
     private Dictionary<string, AudioClip> sfxDictionary = new Dictionary<string, AudioClip>();
+    private Dictionary<string, AudioMixerSnapshot> snapshotDictionary = new Dictionary<string, AudioMixerSnapshot>();
 
     [Header("Mixing Information")]
     [SerializeField] private AudioMixer mainMixer;
+    [SerializeField] private AudioMixerSnapshot gameplaySnapshot;
+    [SerializeField] private AudioMixerSnapshot pausedSnapshot;
 
     [Header("Pooling Information")]
     [Tooltip("How many audio sources are in each player's pool")]
@@ -44,12 +47,16 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [SerializeField] private AudioClip phasing;
     [SerializeField] private AudioClip orderPickup;
     [SerializeField] private AudioClip orderDropoff;
+    [SerializeField] private AudioClip finalDropoff;
     [SerializeField] private AudioClip orderTheft;
+    [SerializeField] private AudioClip death;
 
     [Header("UI")]
     [SerializeField] private AudioClip enter;
     [SerializeField] private AudioClip back;
     [SerializeField] private AudioClip scroll;
+    [SerializeField] private AudioClip pause;
+
 
     [Header("Emotes")]
     [Tooltip("[0]: Top, [1]: Right, [2]: Bottom, [3]: Left")]
@@ -82,6 +89,11 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     /// </summary>
     private void Start()
     {
+        // snapshot
+        snapshotDictionary.Add("gameplay", gameplaySnapshot);
+        snapshotDictionary.Add("paused", pausedSnapshot);
+
+        // gameplay
         sfxDictionary.Add("engine", engineActive);
         sfxDictionary.Add("idle", engineIdle);
         sfxDictionary.Add("drift", drift);
@@ -90,12 +102,19 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         sfxDictionary.Add("boost_charged", boostCharged);
         sfxDictionary.Add("pickup", orderPickup);
         sfxDictionary.Add("dropoff", orderDropoff);
+        sfxDictionary.Add("final_dropoff", finalDropoff);
         sfxDictionary.Add("whoosh", orderTheft);
         sfxDictionary.Add("phasing", phasing);
+        sfxDictionary.Add("mini", miniBoost);
+        sfxDictionary.Add("death", death);
+
+        // UI
         sfxDictionary.Add("confirm", enter);
         sfxDictionary.Add("back", back);
         sfxDictionary.Add("scroll", scroll);
-        sfxDictionary.Add("mini", miniBoost);
+        sfxDictionary.Add("pause", pause);
+
+        
     }
     // below are methods to play various BGMs
     private void PlayMenuTheme()
@@ -178,6 +197,19 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         {
             Debug.LogError($"Couldn't find index {index} of EmoteSFX array length {emoteSFX.Length}.");
             return;
+        }
+    }
+
+    /// <summary>
+    /// Switches the audio snapshot based on the provided key over the course of provided seconds.
+    /// </summary>
+    /// <param name="key">Key of the snapshot you're switching to</param>
+    /// <param name="time">Time you want it to take, default is 0.1f</param>
+    public void ChangeSnapshot(string key, float time=0.1f)
+    {
+        if(snapshotDictionary.ContainsKey(key)) // this won't get called as often as SFX so I'm less worried about performance impact
+        {
+            snapshotDictionary[key].TransitionTo(time);
         }
     }
 
