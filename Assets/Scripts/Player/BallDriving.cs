@@ -97,7 +97,6 @@ public class BallDriving : MonoBehaviour
     [Tooltip("Color for the sparks when at the third tier of drifting")]
     [SerializeField] private Color driftSparksTier3Color;
 
-
     [Header("Boosting")]
     [Tooltip("The speed power of the boost")]
     [SerializeField] private float boostPower = 50.0f;
@@ -109,6 +108,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float boostingDrag = 1.0f;
     [Tooltip("A multipler applied to steering power while in a boost, which reduces your steering capability")]
     [SerializeField] private float boostingSteerModifier = 0.4f;
+    [Tooltip("How much force is used when clashing")]
+    [SerializeField] private float clashForce = 50.0f;
 
     [Header("Slipstream")]
     [Tooltip("Maximum distance that two vehicles can be from each other to get slipstream")]
@@ -226,6 +227,7 @@ public class BallDriving : MonoBehaviour
         longSpark = particleBasket.GetChild(5).GetComponent<ParticleManipulator>();
 
         orderHandler.GotHit += SpinOut;
+        orderHandler.Clash += BounceOff;
     }
 
     /// <summary>
@@ -884,6 +886,17 @@ public class BallDriving : MonoBehaviour
 
         canDrive = true;
         scooterModel.parent.localEulerAngles = new Vector3(scooterModel.parent.rotation.x, 0, scooterModel.parent.rotation.z); //prevents the model from misaligning
+    }
+
+    private void BounceOff(OrderHandler opponent)
+    {
+        Rigidbody opponentBall = opponent.gameObject.GetComponent<BallDriving>().Sphere.GetComponent<Rigidbody>(); //woof
+
+        Vector3 difference = (opponentBall.position - sphereBody.position).normalized;
+        difference.y = 0.3f;
+        difference.Normalize();
+
+        sphereBody.AddForce(difference * clashForce, ForceMode.Impulse);
     }
 
     /// <summary>

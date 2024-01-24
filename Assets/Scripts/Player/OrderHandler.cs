@@ -32,6 +32,9 @@ public class OrderHandler : MonoBehaviour
     public delegate void GotHitDelegate();
     public event GotHitDelegate GotHit;
 
+    public delegate void ClashDelegate(OrderHandler other);
+    public event ClashDelegate Clash;
+
 
     private void Start()
     {
@@ -243,7 +246,8 @@ public class OrderHandler : MonoBehaviour
             }
             else
             {
-
+                Clash(otherHandler);
+                otherHandler.Clash(this);
             }
         }
     }
