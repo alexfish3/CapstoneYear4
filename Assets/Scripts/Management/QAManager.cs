@@ -10,7 +10,7 @@ public class QAManager : SingletonMonobehaviour<QAManager>
 
     private List<QAHandler> handlers = new List<QAHandler>();
 
-    private string outputFile = "/QA/GameHistory.txt";
+    private string outputFile = "QA/GameHistory.txt";
     private void Start()
     {
         GameManager.Instance.OnSwapResults += SendData;
@@ -42,7 +42,7 @@ public class QAManager : SingletonMonobehaviour<QAManager>
     private void SendData()
     {
         if (!recordData) { return; }
-        string path = Application.dataPath + outputFile;
+        string path = Application.streamingAssetsPath + outputFile;
         Debug.Log($"Path: {path}");
         try
         {

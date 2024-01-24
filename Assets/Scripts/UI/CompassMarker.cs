@@ -56,7 +56,6 @@ public class CompassMarker : MonoBehaviour
         {
             if (player == null)
                 continue;
-
             player.gameObject.GetComponentInChildren<Compass>().RemoveCompassMarker(this);
         }
     }
