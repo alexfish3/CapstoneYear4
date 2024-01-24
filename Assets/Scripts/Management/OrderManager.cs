@@ -47,6 +47,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("The final order in the game.")]
     [SerializeField] private Order finalOrder;
 
+    [Tooltip("The audio source of the clocktower for the bell chimes on new wave.")]
+    [SerializeField] private AudioSource clockSource;
+
     // lists for each of the types of orders in each game (minus golden ofc)
     private List<Order> easy = new List<Order>();
     private List<Order> medium = new List<Order>();
@@ -216,6 +219,10 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
         if (!finalOrderActive)
         {
+            if (wave > 0)
+            {
+                SoundManager.Instance.PlaySFX("bells", clockSource);
+            }
             easyPercentage = (float)maxEasy[wave] / maxOrders;
             mediumPercentage = (float)maxMedium[wave] / maxOrders;
             hardPercentage = (float)maxHard[wave] / maxOrders;

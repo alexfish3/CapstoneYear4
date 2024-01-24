@@ -50,6 +50,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [SerializeField] private AudioClip finalDropoff;
     [SerializeField] private AudioClip orderTheft;
     [SerializeField] private AudioClip death;
+    [SerializeField] private AudioClip clockTowerBells;
 
     [Header("UI")]
     [SerializeField] private AudioClip enter;
@@ -107,6 +108,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         sfxDictionary.Add("phasing", phasing);
         sfxDictionary.Add("mini", miniBoost);
         sfxDictionary.Add("death", death);
+        sfxDictionary.Add("bells", clockTowerBells);
 
         // UI
         sfxDictionary.Add("confirm", enter);
