@@ -1,7 +1,9 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// This class is for the beacon to indicate where an order is and where it needs to be delivered to
@@ -17,6 +19,8 @@ public class OrderBeacon : MonoBehaviour
 
     private CompassMarker compassMarker; // for the dropoff location on the compass marker
     public CompassMarker CompassMarker { get { return compassMarker; } }
+
+    [SerializeField] private OrderGhost customer;
     private void Awake()
     {
         meshRenderer = this.gameObject.GetComponent<MeshRenderer>();
@@ -47,6 +51,9 @@ public class OrderBeacon : MonoBehaviour
     {
         this.transform.position = dropoff.position;
         this.transform.parent = OrderManager.Instance.transform;
+        customer.transform.position = dropoff.position;
+        customer.transform.parent = this.transform;
+        customer.InitCustomer();
         meshRenderer.material.color = new Color(1,1,1,0.5f);
         isPickup = false;
         order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
@@ -59,6 +66,7 @@ public class OrderBeacon : MonoBehaviour
     public void ResetPickup()
     {
         this.transform.position = order.transform.position;
+        customer.transform.parent = OrderManager.Instance.transform;
         meshRenderer.material.color = color;
         isPickup = true;
         order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
@@ -66,21 +74,38 @@ public class OrderBeacon : MonoBehaviour
     }
 
     /// <summary>
-    /// This method erases the beacon and removes its dropoff marker from the player's UI.
+    /// This method is the first half of the process to reset the beacon. It "throws" the order to the customer for them to catch.
+    /// </summary>
+    public void ThrowOrder(float throwTime)
+    {
+        meshRenderer.enabled = false;
+        gameObject.layer = 0;
+
+        customer.transform.parent = OrderManager.Instance.transform;
+        customer.DeliveredOrder();
+        order.transform.DOMove(customer.CustomerPos, throwTime).OnComplete(() => { EraseBeacon(); });
+    }
+
+    /// <summary>
+    /// This method is the second half of the process to reset the beacon. It is called when the customer "catches" the order.
     /// </summary>
     public void EraseBeacon()
     {
+        customer.ThankYouComeAgain();
+        meshRenderer.enabled = false;
         gameObject.layer = 0;
+
         if (order != null)
         {
             if (order.PlayerHolding != null)
             {
                 order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
             }
+            order.EraseOrder();
         }
-        meshRenderer.enabled = false;
         isPickup = true;
     }
+
     /// <summary>
     /// Basic OnTriggerEnter, will execute whenever something enters the beacon's light.
     /// </summary>

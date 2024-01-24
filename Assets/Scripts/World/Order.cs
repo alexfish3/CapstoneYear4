@@ -174,17 +174,30 @@ public class Order : MonoBehaviour
         StartPickupCooldownCoroutine();
     }
     /// <summary>
-    /// This method erases the order and adds it back to the list of "to be used" orders.
+    /// This method performs the first half of the delivery, basically just hands the order to the customer.
+    /// </summary>
+    public void DeliverOrder()
+    {
+        arrow.SetActive(false);
+        beacon.ThrowOrder(0.25f); // hard coded value for throwing the order to a customer
+        OrderManager.Instance.IncrementCounters(value, -1);
+        OrderManager.Instance.RemoveOrder(this);
+    }
+
+    /// <summary>
+    /// This method fully erases the order so it's available in the pool.
     /// </summary>
     public void EraseOrder()
     {
         arrow.SetActive(false);
+        
         // Removes the ui from all players
         compassMarker.RemoveCompassUIFromAllPlayers();
-        beacon.EraseBeacon();
+        
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);
-        if(value == Constants.OrderValue.Golden)
+
+        if (value == Constants.OrderValue.Golden)
         {
             if (playerHolding != null)
             {
@@ -193,10 +206,12 @@ public class Order : MonoBehaviour
             }
             OrderManager.Instance.GoldOrderDelivered(); // lets the OM know the golden order has been delivered
         }
-        if (playerHolding != null) 
+        
+        if (playerHolding != null)
         {
             playerHolding.LoseOrder(this);
         }
+        
         isActive = false;
         transform.position = pickup.position;
     }

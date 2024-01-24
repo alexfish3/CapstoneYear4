@@ -98,7 +98,7 @@ public class OrderHandler : MonoBehaviour
             soundPool.PlayOrderDropoff();
             score += (int)order1.Value;
             qa.Deliver(order1.Value);
-            order1.EraseOrder();
+            order1.DeliverOrder();
             order1 = null;
             ScoreManager.Instance.UpdatePlacement();
         }
@@ -107,7 +107,7 @@ public class OrderHandler : MonoBehaviour
             soundPool.PlayOrderDropoff();
             score += (int)order2.Value;
             qa.Deliver(order2.Value);
-            order2.EraseOrder();
+            order2.DeliverOrder();
             order2 = null;
             ScoreManager.Instance.UpdatePlacement();
         }
