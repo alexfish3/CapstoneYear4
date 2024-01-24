@@ -21,8 +21,8 @@ public class BallDriving : MonoBehaviour
     private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
     private const float CSV_RATIO = 0.35f; //Don't touch
 
-    private const float BRAKE_CHECK_TIME = 0.5f;
-    private const float RESTING_ANGULAR_DRAG = 0.05f;
+    private const float BRAKE_CHECK_TIME = 0.3f;
+    private const float RESTING_ANGULAR_DRAG = 0.1f;
     private const float FULLBRAKE_ANGULAR_DRAG = 15.0f;
     private const float RESTING_DYNAMIC_FRICTION = 0.4f;
     private const float FULLBRAKE_DYNAMIC_FRICTION = 5.0f;
@@ -488,9 +488,18 @@ public class BallDriving : MonoBehaviour
         }
 
         //Clamping to make it easier to come to a complete stop
-        if (sphereBody.velocity.magnitude < 1 && currentForce < 2)
+        if (sphereBody.velocity.magnitude < 3)
         {
-            sphereBody.velocity = new Vector3(0, sphereBody.velocity.y, 0);
+            DirtyDriftDrop();
+
+            if (sphereBody.velocity.magnitude < 1 && currentForce < 2)
+            {
+                sphereBody.velocity = new Vector3(0, sphereBody.velocity.y, 0);
+            }
+        }
+
+        if (rightTrig < 0.05f)
+        {
             DirtyDriftDrop();
         }
 
