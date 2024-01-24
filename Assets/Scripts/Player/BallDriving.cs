@@ -791,6 +791,11 @@ public class BallDriving : MonoBehaviour
         boostAble = true;
     }
 
+    /// <summary>
+    /// Increases speed slowly while behind another vehicle and facing in approximately the same direction. 
+    /// After a certain amount of time tailing them like that, grants a further burst of speed
+    /// </summary>
+    /// <returns>How much speed should be added based on current slipstream status</returns>
     private float Slipstream()
     {
         BallDriving caddy = null;
@@ -852,20 +857,28 @@ public class BallDriving : MonoBehaviour
         rightSlipstreamTrail.time = trailAmount;
     }
 
+    /// <summary>
+    /// Starts a spinout when called. Meant to be invoked by events from OrderHandler
+    /// </summary>
     private void SpinOut()
     {
         canDrive = false;
         StartSpinOutTime();
     }
 
+    /// <summary>
+    /// Spins the model. Uses the outBack easing function to overshoot slightly, then correct.
+    /// Simultaneously rocks the model side to side. Once done, returns the ability to drive.
+    /// </summary>
+    /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator SpinOutTime()
     {
-        scooterModel.parent.DOComplete();
+        scooterModel.parent.DOComplete(); //make sure nothing's in the wrong place
 
         Tween spinning = scooterModel.parent.DORotate(new Vector3(scooterModel.parent.rotation.x, 360, scooterModel.parent.rotation.z), 1.0f, RotateMode.LocalAxisAdd);
-        spinning.SetEase(Ease.OutBack);
+        spinning.SetEase(Ease.OutBack); //an easing function which dictates a steep climb, slight overshoot, then gradual correction
 
-        Tween rocking = scooterModel.DOShakeRotation(1.0f, new Vector3(10, 0, 0), 10, 45, true, ShakeRandomnessMode.Harmonic);
+        Tween rocking = scooterModel.DOShakeRotation(1.0f, new Vector3(10, 0, 0), 10, 45, true, ShakeRandomnessMode.Harmonic); //rocks the scooter around its long axis
 
         yield return spinning.WaitForCompletion();
 
