@@ -56,15 +56,15 @@ public class Respawn : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapFinalPackage += StopRespawnCoroutine;
-        GameManager.Instance.OnSwapFinalPackage += ClearRespawnArray;
+        GameManager.Instance.OnSwapGoldenCutscene += StopRespawnCoroutine;
+        GameManager.Instance.OnSwapGoldenCutscene += ClearRespawnArray;
         GameManager.Instance.OnSwapBegin += ClearRespawnArray;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapFinalPackage -= StopRespawnCoroutine;
-        GameManager.Instance.OnSwapFinalPackage -= ClearRespawnArray;
+        GameManager.Instance.OnSwapGoldenCutscene -= StopRespawnCoroutine;
+        GameManager.Instance.OnSwapGoldenCutscene -= ClearRespawnArray;
         GameManager.Instance.OnSwapBegin -= ClearRespawnArray;
 
     }
@@ -320,6 +320,8 @@ public class Respawn : MonoBehaviour
             StopCoroutine(respawnCoroutine);
         }
         respawnCoroutine = null;
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<SphereCollider>().enabled = true;
     }
 
     private void StartRespawnCooldown()

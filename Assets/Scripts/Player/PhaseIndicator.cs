@@ -5,7 +5,6 @@ using UnityEditor;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
-using UnityEditor.Rendering.LookDev;
 
 public class PhaseIndicator : MonoBehaviour
 {
