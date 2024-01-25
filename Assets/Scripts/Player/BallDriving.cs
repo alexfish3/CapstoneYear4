@@ -18,6 +18,7 @@ public class BallDriving : MonoBehaviour
     private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
     private const float DRIFT_HOP_AMOUNT = 0.25f; //How high the little pre-drift hop is
     private const float DRIFT_HOP_TIME = 0.4f; //How fast the little hop is in seconds
+    private const float WHEELIE_AMOUNT = 45f; //Degrees that the scooter rotates when doing a wheelie
 
     private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
     private const float CSV_RATIO = 0.35f; //Don't touch
@@ -184,6 +185,7 @@ public class BallDriving : MonoBehaviour
     private float timeSpentChecking = 0.0f;
 
     private bool spinningOut = false;
+    private bool wheelying = false;
 
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
@@ -259,7 +261,7 @@ public class BallDriving : MonoBehaviour
     }
 
     /// <summary>
-    /// Standard Update. Gets controls and updates variables
+    /// Standard Update. Gets controls, updates variables, and manages many aspects of steering and speed
     /// </summary>
     private void Update()
     {
@@ -481,6 +483,10 @@ public class BallDriving : MonoBehaviour
                 {
                     sphereBody.AddForce((driftDirection == 1 ? ((driftSidewaysScalar * transform.forward) - transform.right).normalized : ((driftSidewaysScalar * transform.forward) + transform.right).normalized) * totalForce, ForceMode.Acceleration);
                 }
+                else if (boosting)
+                {
+                    sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
+                }
                 else
                 {
                     sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
@@ -562,6 +568,17 @@ public class BallDriving : MonoBehaviour
         }
 
         GroundCheck();
+    }
+
+    /// <summary>
+    /// Standard LateUpdate. Corrects model stuff when boosting
+    /// </summary>
+    private void LateUpdate()
+    {
+        if (wheelying)
+        {
+            scooterModel.parent.localEulerAngles = new Vector3(scooterModel.parent.localEulerAngles.x, 0, 0);
+        }
     }
 
     /// <summary>
@@ -683,8 +700,8 @@ public class BallDriving : MonoBehaviour
             driftDirection = leftStick < 0 ? -1 : 1;
 
             //Does a little hop does a little jump does a little skip
-            scooterModel.parent.DOComplete();
-            scooterModel.parent.DOPunchPosition(transform.up * DRIFT_HOP_AMOUNT, DRIFT_HOP_TIME, 5, 0);
+            scooterModel.DOComplete();
+            scooterModel.DOPunchPosition(transform.up * DRIFT_HOP_AMOUNT, DRIFT_HOP_TIME, 5, 0);
         }
         else
         {
@@ -851,12 +868,25 @@ public class BallDriving : MonoBehaviour
             cameraResizer.SwapCameraRendering(false);
         }
 
+        Tween wheelie = scooterModel.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * boostDuration, RotateMode.LocalAxisAdd);
+        wheelie.SetEase(Ease.OutQuint);
+        wheelie.SetRelative(true);
+        Tween wheelieEnd = scooterModel.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.5f * boostDuration, RotateMode.LocalAxisAdd);
+        wheelieEnd.SetEase(Ease.OutBounce);
+        wheelieEnd.SetRelative(true);
+
+        Sequence mySeq = DOTween.Sequence();
+        mySeq.Append(wheelie);
+        mySeq.Append(wheelieEnd);
+
+        wheelying = true;
+
         yield return new WaitForSeconds(boostDuration);
         
-        StartEndBoost();
+        StartEndBoost(wheelie, wheelieEnd);
     }
 
-    private IEnumerator EndBoost()
+    private IEnumerator EndBoost(Tween wheelie = null, Tween wheelieEnd = null)
     {
         // Toggles to check phase status
         checkPhaseStatus = true;
@@ -869,6 +899,16 @@ public class BallDriving : MonoBehaviour
         }
 
         boosting = false;
+
+        if (wheelie != null && wheelieEnd != null) 
+        {
+            wheelie.Complete();
+
+            yield return wheelieEnd.WaitForCompletion();
+
+            scooterModel.parent.localEulerAngles = Vector3.zero;
+            wheelying = false;
+        }
 
         StartBoostCooldown();
     }
@@ -993,9 +1033,9 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator SpinOutTime()
     {
-        scooterModel.parent.DOComplete(); //make sure nothing's in the wrong place
+        scooterModel.DOComplete(); //make sure nothing's in the wrong place
 
-        Tween spinning = scooterModel.parent.DORotate(new Vector3(scooterModel.parent.rotation.x, 360, scooterModel.parent.rotation.z), 1.0f, RotateMode.LocalAxisAdd);
+        Tween spinning = scooterModel.DORotate(new Vector3(scooterModel.rotation.x, 360, scooterModel.rotation.z), 1.0f, RotateMode.LocalAxisAdd);
         spinning.SetEase(Ease.OutBack); //an easing function which dictates a steep climb, slight overshoot, then gradual correction
 
         Tween rocking = scooterModel.DOShakeRotation(1.0f, new Vector3(10, 0, 0), 10, 45, true, ShakeRandomnessMode.Harmonic); //rocks the scooter around its long axis
@@ -1004,7 +1044,7 @@ public class BallDriving : MonoBehaviour
 
         canDrive = true;
         spinningOut = false;
-        scooterModel.parent.localEulerAngles = new Vector3(scooterModel.parent.rotation.x, 0, scooterModel.parent.rotation.z); //prevents the model from misaligning
+        scooterModel.localEulerAngles = new Vector3(scooterModel.rotation.x, 0, scooterModel.rotation.z); //prevents the model from misaligning
     }
 
     /// <summary>
@@ -1121,9 +1161,12 @@ public class BallDriving : MonoBehaviour
         }
     }
 
-    private void StartEndBoost()
+    private void StartEndBoost(Tween wheelie = null, Tween wheelieEnd = null)
     {
-        endBoostCoroutine = EndBoost();
+        Tween w = wheelie == null ? null : wheelie;
+        Tween wE = wheelieEnd == null ? null : wheelieEnd;
+
+        endBoostCoroutine = EndBoost(w, wE);
         StartCoroutine(endBoostCoroutine);
     }
     private void StopEndBoost()
