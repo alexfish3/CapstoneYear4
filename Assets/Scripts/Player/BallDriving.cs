@@ -21,7 +21,7 @@ public class BallDriving : MonoBehaviour
     private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
     private const float CSV_RATIO = 0.35f; //Don't touch
 
-    private const float BRAKE_CHECK_TIME = 0.3f;
+    private const float BRAKE_CHECK_TIME = 0.08f;
     private const float RESTING_ANGULAR_DRAG = 0.1f;
     private const float FULLBRAKE_ANGULAR_DRAG = 15.0f;
     private const float RESTING_DYNAMIC_FRICTION = 0.4f;
@@ -748,12 +748,12 @@ public class BallDriving : MonoBehaviour
     {
         if (driftDirection > 0)
         {
-            particleBasket.position = sparksPos1.position;
+            particleBasket.position = sparksPos2.position;
             particleBasket.localEulerAngles = new Vector3(0, 160, 0);
         }
         else
         {
-            particleBasket.position = sparksPos2.position;
+            particleBasket.position = sparksPos1.position;
             particleBasket.localEulerAngles = new Vector3(0, 20, 0);
         }
 
