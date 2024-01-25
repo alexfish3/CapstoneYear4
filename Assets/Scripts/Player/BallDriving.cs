@@ -202,7 +202,7 @@ public class BallDriving : MonoBehaviour
     public bool Boosting { get { return boosting; } }
     private bool boostAble = true;
     public bool BoostAble { set { boostAble = value; } }
-    private bool phasing = false;
+    [SerializeField] bool phasing = false;
 
     private float slipstreamPortion = 0.0f;
 
@@ -211,6 +211,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private GameObject groundDetector;
 
     private SoundPool soundPool; // for driving noises
+
+    public bool InsideBuilding = false;
 
     /// <summary>
     /// Standard Start. Just used to get references, get initial values, and subscribe to events
@@ -508,30 +510,19 @@ public class BallDriving : MonoBehaviour
         }
 
         // Enables raycasting for boosting while in a phase
-        if (checkPhaseStatus && phaseSetMap)
+        if (phaseSetMap)
         {
             int layerMask = 1 << 9;
             RaycastHit hit1, hit2;
 
             // First raycast
             bool hit1Success = Physics.Raycast(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down), out hit1, Mathf.Infinity, layerMask);
-
             // Second raycast
             bool hit2Success = Physics.Raycast(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down), out hit2, Mathf.Infinity, layerMask);
 
-            // Check if either raycast hit
-            if (hit1Success == true && hit2Success == true)
+            if (hit1Success == false && hit2Success == false && checkPhaseStatus)
             {
-                Debug.Log("Inside Building");
-                Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
-                Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
-                
-                phasing = true;
-                soundPool.PlayPhaseSound();
-            }
-            else if(hit1Success == false && hit2Success == false)
-            {
-                Debug.Log("Not Inside Building");
+                Debug.Log("Stop Phasing Inside Building");
                 Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
                 Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
 
@@ -540,7 +531,30 @@ public class BallDriving : MonoBehaviour
                 phasing = false;
                 ToggleCollision(false);
                 checkPhaseStatus = false;
+                InsideBuilding = false;
+                phaseIndicator.SetPhaseCam(false);
                 soundPool.StopPhaseSound();
+            }
+            // Check if either raycast hit
+            else if (hit1Success == false && hit2Success == false && InsideBuilding == true)
+            {
+                Debug.Log("Not Inside Building");
+                InsideBuilding = false;
+                phaseIndicator.SetPhaseCam(false);
+            }
+            else if (hit1Success == true && hit2Success == true && InsideBuilding == false)
+            {
+                Debug.Log("Inside Building");
+
+                phaseIndicator.SetPhaseCam(true);
+
+                InsideBuilding = true;
+
+                Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
+                Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
+
+                phasing = true;
+                soundPool.PlayPhaseSound();
             }
         }
 
@@ -820,6 +834,7 @@ public class BallDriving : MonoBehaviour
     private IEnumerator BoostActive()
     {
         phaseIndicator.SetHornGlow(0);
+
         boosting = true;
         boostAble = false;
         boostInitialburst = true;
@@ -851,6 +866,7 @@ public class BallDriving : MonoBehaviour
         }
 
         boosting = false;
+
         StartBoostCooldown();
     }
 
@@ -883,7 +899,7 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostCooldown()
     {
-        StartCoroutine(phaseIndicator.beginHornGlow(boostRechargeTime));
+        StartCoroutine(phaseIndicator.BeginHornGlow(boostRechargeTime));
         yield return new WaitForSeconds(boostRechargeTime);
         boostAble = true;
     }

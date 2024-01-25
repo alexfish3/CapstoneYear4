@@ -79,8 +79,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     private void OnEnable()
     {
         GameManager.Instance.OnSwapBegin += InitGame;
-        GameManager.Instance.OnSwapFinalPackage += DisableSpawning;
-        GameManager.Instance.OnSwapFinalPackage += SpawnFinalOrder;
+        GameManager.Instance.OnSwapGoldenCutscene += DisableSpawning;
+        GameManager.Instance.OnSwapGoldenCutscene += SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave += IncrementWave;
         HotKeys.Instance.onDecrementWave += DecrementWave;
     }
@@ -88,8 +88,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     private void OnDisable()
     {
         GameManager.Instance.OnSwapBegin -= InitGame;
-        GameManager.Instance.OnSwapFinalPackage -= DisableSpawning;
-        GameManager.Instance.OnSwapFinalPackage -= SpawnFinalOrder;
+        GameManager.Instance.OnSwapGoldenCutscene -= DisableSpawning;
+        GameManager.Instance.OnSwapGoldenCutscene -= SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave -= IncrementWave;
         HotKeys.Instance.onDecrementWave -= DecrementWave;
     }

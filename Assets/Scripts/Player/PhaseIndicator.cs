@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
 using UnityEngine.UI;
+using UnityEngine.Rendering.Universal;
+using UnityEditor.Rendering.LookDev;
 
 public class PhaseIndicator : MonoBehaviour
 {
@@ -24,8 +26,13 @@ public class PhaseIndicator : MonoBehaviour
     [SerializeField] Material hornGlowRef;
     [SerializeField] Material hornGlow;
 
+    [Header("Phase Camera")]
+    [SerializeField] UniversalAdditionalCameraData mainCameraData;
+
     private SoundPool soundPool; // for playing SFX
     private bool dirtyBoostReady = true;
+
+    public bool ShowPhase = false;
 
     private void Start()
     {
@@ -60,7 +67,9 @@ public class PhaseIndicator : MonoBehaviour
         }
     }
 
-    // Sets the reference to the horn glow, is called during during customization to correctly reference horns with player materials
+    /// <summary>
+    /// Sets the reference to the horn glow, is called during during customization to correctly reference horns with player materials
+    /// </summary>
     public void ReferenceHornMaterial()
     {
         hornGlow = new Material(hornGlowRef);
@@ -74,12 +83,18 @@ public class PhaseIndicator : MonoBehaviour
         initalized = true;
     }
 
+    /// <summary>
+    /// Sets the horn glow value
+    /// </summary>
     public void SetHornGlow(float newValue)
     {
         hornGlowValue = newValue;
     }
 
-    public IEnumerator beginHornGlow(float cooldown)
+    /// <summary>
+    /// Begins the horn glow charge
+    /// </summary>
+    public IEnumerator BeginHornGlow(float cooldown)
     {
         hornSlider.value = 0f;
 
@@ -92,6 +107,26 @@ public class PhaseIndicator : MonoBehaviour
 
             hornGlowValue += hornGlowStep;
             yield return new WaitForSeconds(cooldown / 100);
+        }
+    }
+
+    /// <summary>
+    /// Sets the phase cam to be either phase or normal based on bool input
+    /// </summary>
+    public void SetPhaseCam(bool enabled)
+    {
+        if (ShowPhase == false)
+            return;
+
+        // Phase Cam View
+        if (enabled)
+        {
+            mainCameraData.SetRenderer(2);
+        }
+        // Normal Cam View
+        else
+        {
+            mainCameraData.SetRenderer(1);
         }
     }
 }

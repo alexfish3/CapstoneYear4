@@ -234,6 +234,11 @@ public class OrderHandler : MonoBehaviour
         try
         {
             otherHandler = other.gameObject.transform.parent.GetComponentInChildren<OrderHandler>();
+
+            if(otherHandler == this)
+            {
+                return;
+            }
         }
         catch
         {
