@@ -183,6 +183,8 @@ public class BallDriving : MonoBehaviour
     private bool stopped = true;
     private float timeSpentChecking = 0.0f;
 
+    private bool spinningOut = false;
+
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
     private int driftDirection; //-1 is drifting leftward, 1 is drifting rightward
@@ -976,8 +978,12 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void SpinOut()
     {
-        canDrive = false;
-        StartSpinOutTime();
+        if (!spinningOut)
+        {
+            canDrive = false;
+            spinningOut = true;
+            StartSpinOutTime();
+        }
     }
 
     /// <summary>
@@ -997,6 +1003,7 @@ public class BallDriving : MonoBehaviour
         yield return spinning.WaitForCompletion();
 
         canDrive = true;
+        spinningOut = false;
         scooterModel.parent.localEulerAngles = new Vector3(scooterModel.parent.rotation.x, 0, scooterModel.parent.rotation.z); //prevents the model from misaligning
     }
 
