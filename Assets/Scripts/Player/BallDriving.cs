@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEditor;
 
 /// <summary>
 /// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position.
@@ -260,6 +261,8 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
+
         if (!canDrive)
             return;
 
@@ -333,8 +336,6 @@ public class BallDriving : MonoBehaviour
                 stopped = false;
             }
         }
-
-        transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
 
         if (reverseGear)
         {
@@ -1016,6 +1017,13 @@ public class BallDriving : MonoBehaviour
 
         sphereBody.AddForce(difference * clashForce, ForceMode.Impulse);
         StartEndBoost();
+    }
+
+    public void FreezeBall(bool toFreeze)
+    {
+        canDrive = toFreeze;
+
+        sphereBody.constraints = toFreeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
     }
 
     /// <summary>
