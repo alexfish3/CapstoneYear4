@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: chairtableSet
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
+      propertyPath: m_TagString
+      value: Kickable
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -71,6 +75,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
       insertIndex: -1
       addedObject: {fileID: 579378896989146196}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2694120971512859963}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 606123682951810768}
   m_SourcePrefab: {fileID: 100100000, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
 --- !u!1 &8377026703719402449 stripped
 GameObject:
@@ -98,3 +108,51 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0021413171, y: 0.0055798395, z: 0.0042779273}
   m_Center: {x: 0.000031840205, y: 0.00011707247, z: 0.0021129588}
+--- !u!54 &2694120971512859963
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8377026703719402449}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &606123682951810768
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8377026703719402449}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0035779427, y: 0.0069723395, z: 0.0042779273}
+  m_Center: {x: 0.00002315879, y: 0.00016064169, z: 0.0021129588}
