@@ -163,7 +163,7 @@ public class SoundPool : MonoBehaviour
     }
     public void StopPhaseSound()
     {
-        if(boostSource == null) { return; }
+        if(engineSource == null || boostSource == null) { return; }
         ResetSource(boostSource);
         boostSource = null;
         phasing = false;

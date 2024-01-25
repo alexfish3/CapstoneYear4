@@ -20,15 +20,24 @@ public class HotKeys : SingletonMonobehaviour<HotKeys>
 
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            GameManager.Instance.SetGameState(GameState.StartingCutscene);
+            if (GameManager.Instance.MainState != GameState.Menu && GameManager.Instance.MainState != GameState.PlayerSelect)
+            {
+                GameManager.Instance.SetGameState(GameState.StartingCutscene);
+            }
         }
         if(Input.GetKeyDown(KeyCode.Alpha5))
         {
-            GameManager.Instance.SetGameState(GameState.GoldenCutscene);
+            if (GameManager.Instance.MainState != GameState.Menu && GameManager.Instance.MainState != GameState.PlayerSelect)
+            {
+                GameManager.Instance.SetGameState(GameState.GoldenCutscene);
+            }
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            GameManager.Instance.SetGameState(GameState.Results);
+            if (GameManager.Instance.MainState != GameState.Menu && GameManager.Instance.MainState != GameState.PlayerSelect)
+            {
+                GameManager.Instance.SetGameState(GameState.Results);
+            }
         }
     }
 }

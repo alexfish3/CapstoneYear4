@@ -84,7 +84,7 @@ public class QAManager : SingletonMonobehaviour<QAManager>
     /// <param name="data">Array of data to write. Each element is a new column.</param>
     private void WriteCSV(string fileName, string[] data)
     {
-        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+        string filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
         if (!File.Exists(filePath))
         {
