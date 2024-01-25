@@ -121,7 +121,7 @@ public class OrderHandler : MonoBehaviour
     /// This method is for when the player "spins" out. It will drop all the orders the player is currently holding.
     /// </summary>
     /// <param name="basePos">The position of the order before adding the offset of the specific orderPosition.</param>
-    public void DropEverything(Vector3 basePos)
+    public void DropEverything(Vector3 basePos, bool shouldSpinout = true)
     {
         if (order1 != null)
         {
@@ -135,8 +135,7 @@ public class OrderHandler : MonoBehaviour
             order2.Drop(basePos);
             order2 = null;
         }
-
-        GotHit();
+        if(shouldSpinout) { GotHit(); }
     }
 
     /// <summary>

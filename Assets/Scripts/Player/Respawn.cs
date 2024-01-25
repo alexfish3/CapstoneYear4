@@ -10,11 +10,11 @@ using UnityEngine.UIElements;
 /// </summary>
 public class Respawn : MonoBehaviour
 {
+    private bool isRespawning = false;
+    public bool IsRespawning { get { return isRespawning; } }
+
     IEnumerator respawnCoroutine;
     IEnumerator respawnSetCooldown;
-    //Variables
-    private Vector3 respawnPoint;
-    private Quaternion controlRotation;
 
     [Tooltip("The height to lift the player above the map.")]
     [SerializeField] private float liftHeight = 5.0f; // The height to lift the player above the map
@@ -252,7 +252,7 @@ public class Respawn : MonoBehaviour
         control.transform.rotation = Quaternion.LookRotation(controlLookat) * Quaternion.Euler(0,rotation,0);
         Quaternion initialRotation = control.transform.rotation;
 
-        orderHandler.DropEverything(target);
+        orderHandler.DropEverything(target, false);
 
         float elapsedTime = 0;
         Instantiate(respawnGravestone, target + control.transform.forward * tombstoneOffset, control.transform.rotation); // spawn respawn gravestone

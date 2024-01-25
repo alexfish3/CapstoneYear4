@@ -100,7 +100,7 @@ public class QAManager : SingletonMonobehaviour<QAManager>
     /// <param name="fileName">Name of CSV file.</param>
     private void WriteEmptyLine(string fileName)
     {
-        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+        string filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
         if (!File.Exists(filePath))
         {
