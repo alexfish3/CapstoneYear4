@@ -13,7 +13,8 @@ public class OrderHandler : MonoBehaviour
     public int Score { get { return score; } set { score = value; } }
     private int placement = 0;
     public int Placement { get { return placement; }set { placement = value; } }
-    
+    [SerializeField] NumberHandler numberHandler;    
+
     private Order order1 = null; // first order the player is holding
     private Order order2 = null; // second order the player is holding
 
@@ -39,6 +40,8 @@ public class OrderHandler : MonoBehaviour
     private void Start()
     {
         score = 0; // init score to 0
+        numberHandler.UpdateScoreUI(score.ToString());
+
         ScoreManager.Instance.AddOrderHandler(this);
         ball = transform.parent.GetComponentInChildren<BallDriving>();
         soundPool = GetComponent<SoundPool>();
@@ -115,6 +118,8 @@ public class OrderHandler : MonoBehaviour
             order2 = null;
             ScoreManager.Instance.UpdatePlacement();
         }
+
+        numberHandler.UpdateScoreUI(score.ToString());
     }
 
     /// <summary>

@@ -8,7 +8,6 @@ using TMPro;
 /// </summary>
 public class DynamicNumberUI : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI scoreText;
     [SerializeField] TextMeshProUGUI waveText;
     [SerializeField] TextMeshProUGUI centerText;
     [SerializeField] TextMeshProUGUI finalOrderText;
@@ -19,9 +18,9 @@ public class DynamicNumberUI : MonoBehaviour
     {
         player = GetComponent<OrderHandler>();
     }
+
     private void Update()
     {
-        scoreText.text = "$" + player.Score;
         // I figure in the future the placements will be individual sprites in an array or something so I didn't bother adding "st","nd","rd", etc...
         placementText.text = "" + player.Placement;
         if (OrderManager.Instance != null)

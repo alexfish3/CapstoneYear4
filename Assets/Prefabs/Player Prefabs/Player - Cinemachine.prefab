@@ -31730,6 +31730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b3aa2688b1d364ea6b3b29c8e65a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberHandler: {fileID: 583497693855848728}
   order1Position: {fileID: 7852903926308569364}
   order2Position: {fileID: 7504033612411268862}
 --- !u!114 &7028945991361766779
@@ -31744,7 +31745,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae00b4ac82da51c48a89b413bf15da5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 3967863555232177554}
   waveText: {fileID: 6743173060360176475}
   centerText: {fileID: 6714806596038982034}
   finalOrderText: {fileID: 6538221017608145940}
@@ -33184,9 +33184,21 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2207108625003372221, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_Name
+      value: Score Numbers
+      objectReference: {fileID: 0}
     - target: {fileID: 3137244736015681938, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_Name
       value: Driving Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 4002664400996483748, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_Name
+      value: Score Holder
+      objectReference: {fileID: 0}
+    - target: {fileID: 4159013514717826824, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: moneyCount
+      value: 0.00
       objectReference: {fileID: 0}
     - target: {fileID: 4667503233112754414, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: minimapCamera
@@ -33384,6 +33396,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &583497693855848728 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4159013514717826824, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+  m_PrefabInstance: {fileID: 3580019541855933968}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafa5e4a0b88b5248bea63cef9bcddae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &2395950110701783665 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1220149082957782113, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
@@ -33393,17 +33416,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3967863555232177554 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 485938163052874626, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
-  m_PrefabInstance: {fileID: 3580019541855933968}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &4544940528001843062 stripped
