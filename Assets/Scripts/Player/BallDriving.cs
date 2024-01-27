@@ -861,10 +861,10 @@ public class BallDriving : MonoBehaviour
             cameraResizer.SwapCameraRendering(false);
         }
 
-        Tween wheelie = scooterModel.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * boostDuration, RotateMode.LocalAxisAdd);
+        Tween wheelie = scooterModel.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
         wheelie.SetEase(Ease.OutQuint);
         wheelie.SetRelative(true);
-        Tween wheelieEnd = scooterModel.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.8f * boostDuration, RotateMode.LocalAxisAdd);
+        Tween wheelieEnd = scooterModel.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
         wheelieEnd.SetEase(Ease.OutBounce);
         wheelieEnd.SetRelative(true);
 
