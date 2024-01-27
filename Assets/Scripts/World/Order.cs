@@ -69,11 +69,8 @@ public class Order : MonoBehaviour
 
 
     /// <summary>
-    /// This method initializes the order with passed in values and sets its default location. It also initializes the beacon for this order.
+    /// This method initializes this order to be ready for pickup. It also initializes the beacon for this order.
     /// </summary>
-    /// <param name="inPickup">Order's pickup point</param>
-    /// <param name="inDropoff">Order's dropoff point</param>
-    /// <param name="inValue">Value of the order</param>
     public void InitOrder()
     {
         OrderManager.Instance.AddOrder(this);
@@ -180,8 +177,7 @@ public class Order : MonoBehaviour
     {
         arrow.SetActive(false);
         beacon.ThrowOrder(0.25f); // hard coded value for throwing the order to a customer
-        OrderManager.Instance.IncrementCounters(value, -1);
-        OrderManager.Instance.RemoveOrder(this);
+        
     }
 
     /// <summary>
@@ -189,11 +185,12 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseOrder()
     {
+        Debug.Log("ERASING ORDER!!");
         arrow.SetActive(false);
         
         // Removes the ui from all players
         compassMarker.RemoveCompassUIFromAllPlayers();
-        
+
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);
 
