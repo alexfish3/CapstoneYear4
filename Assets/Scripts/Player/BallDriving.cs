@@ -847,20 +847,13 @@ public class BallDriving : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Sets boosting variables, waits, sets some of them back, then calls the cooldown
-    /// </summary>
-    /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostActive()
     {
-        phaseIndicator.SetHornGlow(0);
-
         boosting = true;
         boostAble = false;
         boostInitialburst = true;
         DirtyDriftDrop();
 
-        // Where collision is disabled 
         ToggleCollision(true);
 
         if (cameraResizer != null)
@@ -871,7 +864,7 @@ public class BallDriving : MonoBehaviour
         Tween wheelie = scooterModel.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * boostDuration, RotateMode.LocalAxisAdd);
         wheelie.SetEase(Ease.OutQuint);
         wheelie.SetRelative(true);
-        Tween wheelieEnd = scooterModel.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.5f * boostDuration, RotateMode.LocalAxisAdd);
+        Tween wheelieEnd = scooterModel.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.8f * boostDuration, RotateMode.LocalAxisAdd);
         wheelieEnd.SetEase(Ease.OutBounce);
         wheelieEnd.SetRelative(true);
 
@@ -881,8 +874,12 @@ public class BallDriving : MonoBehaviour
 
         wheelying = true;
 
-        yield return new WaitForSeconds(boostDuration);
-        
+        // Start the glow depletion coroutine and wait for it to complete
+        yield return StartCoroutine(phaseIndicator.GlowDeplete(0.8f * boostDuration));
+
+        Debug.Log("Glow depletion complete");
+
+        // After glow depletion is complete, proceed with the rest of the boost logic
         StartEndBoost(wheelie, wheelieEnd);
     }
 
@@ -942,8 +939,7 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostCooldown()
     {
-        StartCoroutine(phaseIndicator.BeginHornGlow(boostRechargeTime));
-        yield return new WaitForSeconds(boostRechargeTime);
+        yield return StartCoroutine(phaseIndicator.GlowCharge(boostRechargeTime));
         boostAble = true;
     }
 
@@ -1056,6 +1052,8 @@ public class BallDriving : MonoBehaviour
         if (phasing)
             return;
 
+        Debug.Log("BOUNCE " + this.gameObject.transform.parent.name);
+
         Rigidbody opponentBall = opponent.gameObject.GetComponent<BallDriving>().Sphere.GetComponent<Rigidbody>(); //woof
 
         Vector3 difference = (sphereBody.position - opponentBall.position).normalized;
@@ -1063,7 +1061,7 @@ public class BallDriving : MonoBehaviour
         difference.Normalize();
 
         sphereBody.AddForce(difference * clashForce, ForceMode.Impulse);
-        StartEndBoost();
+        //StartEndBoost();
     }
 
     public void FreezeBall(bool toFreeze)
@@ -1169,6 +1167,7 @@ public class BallDriving : MonoBehaviour
         endBoostCoroutine = EndBoost(w, wE);
         StartCoroutine(endBoostCoroutine);
     }
+
     private void StopEndBoost()
     {
         if (endBoostCoroutine != null)

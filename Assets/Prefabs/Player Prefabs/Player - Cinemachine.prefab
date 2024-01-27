@@ -31612,7 +31612,7 @@ MonoBehaviour:
   driftSparksTier2Color: {r: 0.7429711, g: 0.9245283, b: 0.10902455, a: 1}
   driftSparksTier3Color: {r: 0.1822268, g: 0.8584906, b: 0.27928475, a: 1}
   boostPower: 50
-  boostDuration: 1.6
+  boostDuration: 0.8
   boostRechargeTime: 10
   boostingDrag: 0.88
   boostingSteerModifier: 0.6
@@ -33176,6 +33176,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5289018042734306124}
     m_Modifications:
+    - target: {fileID: 162794630049763086, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -150.39996
+      objectReference: {fileID: 0}
+    - target: {fileID: 162794630049763086, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 76.20001
+      objectReference: {fileID: 0}
     - target: {fileID: 1958809946860074187, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
