@@ -67,8 +67,8 @@ public class Respawn : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RespawnPlayer()
     {
-        // position of ball
-        Vector3 target = RespawnManager.Instance.GetRespawnPoint(lastGroundedPos);
+        RespawnPoint targetPoint = RespawnManager.Instance.GetRespawnPoint(lastGroundedPos);
+        Vector3 target = targetPoint.PlayerSpawn;
         Vector3 below = new Vector3(target.x, target.y - liftHeight, target.z);
         Vector3 start = transform.position;
         
@@ -78,7 +78,7 @@ public class Respawn : MonoBehaviour
         control.transform.rotation = Quaternion.LookRotation(controlLookat) * Quaternion.Euler(0,rotation,0);
         Quaternion initialRotation = control.transform.rotation;
 
-        orderHandler.DropEverything(target, false);
+        orderHandler.DropEverything(targetPoint.Order1Spawn, targetPoint.Order2Spawn, false);
 
         float elapsedTime = 0;
         Instantiate(respawnGravestone, target + control.transform.forward * tombstoneOffset, control.transform.rotation); // spawn respawn gravestone

@@ -61,7 +61,7 @@ public class OrderHandler : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
-            DropEverything(transform.position);
+            DropEverything(order1Position.position, order2Position.position);
     }
 
     /// <summary>
@@ -126,18 +126,16 @@ public class OrderHandler : MonoBehaviour
     /// This method is for when the player "spins" out. It will drop all the orders the player is currently holding.
     /// </summary>
     /// <param name="basePos">The position of the order before adding the offset of the specific orderPosition.</param>
-    public void DropEverything(Vector3 basePos, bool shouldSpinout = true)
+    public void DropEverything(Vector3 order1NewPos, Vector3 order2NewPos, bool shouldSpinout = true)
     {
         if (order1 != null)
         {
-            basePos += hasGoldenOrder ? Vector3.zero : order1Position.localPosition;
-            order1.Drop(basePos);
+            order1.Drop(order1NewPos);
             order1 = null;
         }
         if (order2 != null)
         {
-            basePos += hasGoldenOrder ? Vector3.zero : order2Position.localPosition;
-            order2.Drop(basePos);
+            order2.Drop(order2NewPos);
             order2 = null;
         }
         if(shouldSpinout) { GotHit(); }
@@ -207,7 +205,7 @@ public class OrderHandler : MonoBehaviour
             AddOrder(newOrder);
             qa.Steals++;
         }
-        victimPlayer.DropEverything(victimPlayer.transform.position);
+        victimPlayer.DropEverything(victimPlayer.order1Position.position, victimPlayer.order1Position.position);
     }
 
     /// <summary>
