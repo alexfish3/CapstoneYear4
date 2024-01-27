@@ -164,6 +164,7 @@ public class BallDriving : MonoBehaviour
     private Transform sphereTransform;
     private Collider sphereCollider;
     private Respawn respawn; // used to update the respawn point when grounded
+    private QAHandler qa;
     private float startingDrag;
     private PhysicMaterial pMat;
 
@@ -248,6 +249,7 @@ public class BallDriving : MonoBehaviour
 
         respawn = sphere.GetComponent<Respawn>(); // get respawn component
         soundPool = GetComponent<SoundPool>();
+        qa = GetComponent<QAHandler>();
 
         baseSpark = particleBasket.GetChild(0).GetComponent<ParticleManipulator>();
         wideSpark = particleBasket.GetChild(1).GetComponent<ParticleManipulator>();
@@ -278,7 +280,7 @@ public class BallDriving : MonoBehaviour
         {
             soundPool.PlayBrakeSound();
         }
-        else if (csv == 0)
+        if (csv == 0)
         {
             soundPool.PlayIdleSound();
         }
@@ -472,9 +474,9 @@ public class BallDriving : MonoBehaviour
         //Adds the force to move forward
         if (grounded)
         {
-            if (!boosting && !onMovingPlatform && respawn != null)
+            if (!onMovingPlatform && respawn != null)
             {
-                respawn.SetRespawnPoint();
+                respawn.LastGroundedPos = sphere.transform.position;
             }
 
             if (forwardGear)
@@ -844,6 +846,7 @@ public class BallDriving : MonoBehaviour
             StartBoostActive();
             OnBoostStart?.Invoke();
             soundPool.PlayBoostActivate();
+            qa.Boosts++;
         }
     }
 
