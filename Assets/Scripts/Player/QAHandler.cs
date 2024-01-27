@@ -8,8 +8,13 @@ using UnityEngine;
 public class QAHandler : MonoBehaviour
 {
     private OrderHandler orderHandler;
-    private float easy = 0, med = 0, hard = 0, gold = 0; // number of each package type delivered
+    private int easy = 0, med = 0, hard = 0, gold = 0; // number of each package type delivered
 
+    private int boosts=0, steals=0, deaths=0; // counters for different gameplay functions
+
+    public int Boosts { get { return boosts; } set {  boosts = value; } }
+    public int Steals { get { return steals; } set {  steals = value; } }
+    public int Deaths { get { return deaths; } set {  deaths = value; } }
     private void Start()
     {
         orderHandler = GetComponent<OrderHandler>();
@@ -30,7 +35,8 @@ public class QAHandler : MonoBehaviour
             this.gameObject.transform.parent.name,
             orderHandler.Placement.ToString(),
             orderHandler.Score.ToString(),
-            easy.ToString(), med.ToString(), hard.ToString(), gold.ToString(), OrderManager.Instance.FinalOrderValue.ToString()
+            easy.ToString(), med.ToString(), hard.ToString(), gold.ToString(), OrderManager.Instance.FinalOrderValue.ToString(),
+            deaths.ToString(), boosts.ToString(), steals.ToString()
         };
 
         return data;

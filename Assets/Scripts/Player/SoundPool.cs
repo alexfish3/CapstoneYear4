@@ -156,7 +156,7 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayPhaseSound()
     {
-        if(phasing) { return; }
+        if(phasing || boostSource == null) { return; }
         engineSource.Stop();
         SoundManager.Instance.PlaySFX("phasing", boostSource);
         phasing = true;

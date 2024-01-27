@@ -54,6 +54,9 @@ public class Respawn : MonoBehaviour
     // Sound stuff
     private SoundPool soundPool;
 
+    // qa
+    private QAHandler qa;
+
     private void OnEnable()
     {
         GameManager.Instance.OnSwapGoldenCutscene += StopRespawnCoroutine;
@@ -75,6 +78,8 @@ public class Respawn : MonoBehaviour
         orderHandler = control.GetComponent<OrderHandler>();
         ballDriving = control.GetComponent<BallDriving>();
         soundPool = control.GetComponent<SoundPool>();
+        qa = control.GetComponent<QAHandler>();
+
         if (Mathf.Sign(ledgeOffset) != -1)
         {
             ledgeOffset = -ledgeOffset;
@@ -294,6 +299,7 @@ public class Respawn : MonoBehaviour
     {
         if (other.tag == "Water")
         {
+            qa.Deaths++;
             soundPool.PlayDeathSound();
             // Turning these off fixes camera jittering on respawn
             GetComponent<Rigidbody>().velocity = Vector3.zero; // set velocity to 0 on respawn

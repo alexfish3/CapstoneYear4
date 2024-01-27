@@ -205,6 +205,7 @@ public class OrderHandler : MonoBehaviour
             soundPool.PlayOrderTheft();
             victimPlayer.LoseOrder(newOrder);
             AddOrder(newOrder);
+            qa.Steals++;
         }
         victimPlayer.DropEverything(victimPlayer.transform.position);
     }
