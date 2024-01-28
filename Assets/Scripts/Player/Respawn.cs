@@ -12,29 +12,55 @@ public class Respawn : MonoBehaviour
 {
 
     IEnumerator respawnCoroutine;
-    IEnumerator respawnSetCooldown;
 
-    private float respawnDuration = 2f;
-
+    [Header("Respawn Stats")]
     [Tooltip("The height to lift the player above the map.")]
     [SerializeField] private float liftHeight = 5.0f; // The height to lift the player above the map
 
     [Tooltip("The time it takes to lift the player between startingLiftHeight to liftHeight.")]
     [SerializeField] private float liftDuration = 5.0f; // The time it takes to lift the player above the ground
 
-    [Tooltip("Distance between tombstone spawn and player spawn | MUST BE POSITIVE")]
+    [Tooltip("The height the player wisp will rise above the water.")]
+    [SerializeField] private float wispHeight = 5.0f;
+
+    [Tooltip("Time it takes for the wisp to rise above the water.")]
+    [SerializeField] private float wispRiseTime = 1f;
+
+    [Tooltip("Time it takes for the wisp to travel to the casket.")]
+    [SerializeField] private float wispToCasketTime = 1f;
+
+    [Tooltip("Trailtime of the wisp trail renderer component.")]
+    [SerializeField] private float wispTrailTime = 1f;
+
+    [Tooltip("How far below the player death position the wisp spawns.")]
+    [SerializeField] private float wispSpawnOffset = 5f;
+
+    [Tooltip("Distance between tombstone spawn and player spawn.")]
     [SerializeField] private int tombstoneOffset = 2;
 
+    [Tooltip("How far below the tombstone the player spawns.")]
+    [SerializeField] private float graveDepth = 2f;
+
+    [Header("Game Object Refs")]
     [Tooltip("The prefab for the gravestone model.)")]
     [SerializeField] private GameObject respawnGravestone; // Gravestone model to spawn in during respawn
 
     [Tooltip("Reference to the control game object.")]
     [SerializeField] private GameObject control;
+
+    [Tooltip("For enabling / disabling the mesh.")]
+    [SerializeField] private GameObject modelParent;
+
+    [Tooltip("The trail renderer used to animate the respawn.")]
+    [SerializeField] private TrailRenderer respawnWisp;
+
     private OrderHandler orderHandler;
     private BallDriving ballDriving;
 
     private Vector3 lastGroundedPos; // last position the player was grounded at
     public Vector3 LastGroundedPos { get { return lastGroundedPos; } set { lastGroundedPos = value; } }
+
+    private Vector3 wispOrigin; // original pos of the wisp
 
     // Sound stuff
     private SoundPool soundPool;
@@ -59,6 +85,13 @@ public class Respawn : MonoBehaviour
         ballDriving = control.GetComponent<BallDriving>();
         soundPool = control.GetComponent<SoundPool>();
         qa = control.GetComponent<QAHandler>();
+
+        tombstoneOffset = Mathf.Abs(tombstoneOffset); // in case a stinky designer made this value negative
+        wispOrigin = respawnWisp.transform.localPosition;
+
+        respawnWisp.time = 0f;
+        respawnWisp.gameObject.SetActive(false);
+
     }
 
     /// <summary>
@@ -67,41 +100,65 @@ public class Respawn : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RespawnPlayer()
     {
-        RespawnPoint targetPoint = RespawnManager.Instance.GetRespawnPoint(lastGroundedPos);
-        Vector3 target = targetPoint.PlayerSpawn;
-        Vector3 below = new Vector3(target.x, target.y - liftHeight, target.z);
-        Vector3 start = transform.position;
+        RespawnPoint rsp = RespawnManager.Instance.GetRespawnPoint(lastGroundedPos); // get the RSP
         
+        // init the wisp
+        Vector3 wispStart = respawnWisp.transform.position;
+        respawnWisp.transform.position -= Vector3.up * wispSpawnOffset;
+        respawnWisp.gameObject.SetActive(true);
+        respawnWisp.time = wispTrailTime;
+
         // rotation of control
-        Vector3 controlLookat = new Vector3(target.x, control.transform.position.y, target.z) - control.transform.position;
+        Vector3 controlLookat = new Vector3(rsp.PlayerSpawn.x, control.transform.position.y, rsp.PlayerSpawn.z) - control.transform.position;
         int rotation = GameManager.Instance.MainState == GameState.FinalPackage ? 0 : 180;
         control.transform.rotation = Quaternion.LookRotation(controlLookat) * Quaternion.Euler(0,rotation,0);
         Quaternion initialRotation = control.transform.rotation;
 
-        orderHandler.DropEverything(targetPoint.Order1Spawn, targetPoint.Order2Spawn, false);
+        orderHandler.DropEverything(rsp.Order1Spawn, rsp.Order2Spawn, false);
 
         float elapsedTime = 0;
-        Instantiate(respawnGravestone, target + control.transform.forward * tombstoneOffset, control.transform.rotation); // spawn respawn gravestone
+        Vector3 wispRise = wispStart + Vector3.up * wispHeight; // position of the wisp risen above water
 
-        // move the player under respawn point and rotate camera
-        while (elapsedTime < respawnDuration)
+        // raise the wisp above the water
+        while(elapsedTime < wispRiseTime)
         {
-            transform.position = Vector3.Lerp(start, below, elapsedTime / respawnDuration);
-            control.transform.rotation = initialRotation * Quaternion.Euler(0,180*(elapsedTime/respawnDuration), 0);
+            respawnWisp.transform.position = Vector3.Lerp(wispStart, wispRise, elapsedTime / wispRiseTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
+        // reset vars for next movement
         elapsedTime = 0;
-        target = new Vector3(target.x, target.y + liftHeight, target.z);
+        Vector3 casketLocation = rsp.PlayerSpawn - Vector3.up * graveDepth;
+        wispStart = respawnWisp.transform.position;
 
-        // lift player out of their "tomb"
+        Instantiate(respawnGravestone, rsp.PlayerSpawn + control.transform.forward * tombstoneOffset, control.transform.rotation); // spawn respawn gravestone
+
+        // move the wisp to the casket under RSP
+        while (elapsedTime < wispToCasketTime)
+        {
+            respawnWisp.transform.position = Vector3.Lerp(wispStart, casketLocation, elapsedTime / wispToCasketTime);
+            control.transform.rotation = initialRotation * Quaternion.Euler(0,180*(elapsedTime/wispToCasketTime), 0);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // reset vars for next movement
+        elapsedTime = 0;
+        Vector3 liftTarget = new Vector3(rsp.PlayerSpawn.x, rsp.PlayerSpawn.y + liftHeight, rsp.PlayerSpawn.z);
+
+        // re-enable player mesh and disable wisp
+        modelParent.SetActive(true);
+        respawnWisp.gameObject.SetActive(false);
+
+        // lift player out of their tomb
         while (elapsedTime < liftDuration)
         {
-            transform.position = Vector3.Lerp(below, target, elapsedTime / liftDuration);
+            transform.position = Vector3.Lerp(casketLocation, liftTarget, elapsedTime / liftDuration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+
 
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<SphereCollider>().enabled = true;
@@ -129,6 +186,9 @@ public class Respawn : MonoBehaviour
         {
             respawnCoroutine = RespawnPlayer();
         }
+
+        modelParent.SetActive(false);
+
         StartCoroutine(respawnCoroutine);
     }
 
@@ -138,6 +198,12 @@ public class Respawn : MonoBehaviour
         {
             StopCoroutine(respawnCoroutine);
         }
+
+        respawnWisp.time = 0f;
+        modelParent.SetActive(true);
+        respawnWisp.gameObject.SetActive(false);
+        respawnWisp.transform.localPosition = wispOrigin;
+
         respawnCoroutine = null;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<SphereCollider>().enabled = true;
