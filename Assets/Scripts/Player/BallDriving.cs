@@ -399,8 +399,8 @@ public class BallDriving : MonoBehaviour
 
         //Applies model rotation
         Quaternion intendedRotation = Quaternion.Euler((modelRotateAmount - 90f) * MODEL_TILT_MULTIPLIER * (drifting ? DRIFTING_MODEL_TILT_MULTIPLIER : 1), modelRotateAmount, 0);
-        Quaternion newRotation = Quaternion.Lerp(scooterModel.localRotation, intendedRotation, MODEL_ROTATION_TIME);
-        scooterModel.localRotation = newRotation;
+        Quaternion newRotation = Quaternion.Lerp(scooterModel.parent.localRotation, intendedRotation, MODEL_ROTATION_TIME);
+        scooterModel.parent.localRotation = newRotation;
 
         //Rotates the control object
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
@@ -584,7 +584,7 @@ public class BallDriving : MonoBehaviour
     {
         if (wheelying)
         {
-            scooterModel.parent.localEulerAngles = new Vector3(scooterModel.parent.localEulerAngles.x, 0, 0);
+            scooterModel.parent.parent.localEulerAngles = new Vector3(scooterModel.parent.parent.localEulerAngles.x, 0, 0);
         }
     }
 
@@ -707,8 +707,8 @@ public class BallDriving : MonoBehaviour
             driftDirection = leftStick < 0 ? -1 : 1;
 
             //Does a little hop does a little jump does a little skip
-            scooterModel.DOComplete();
-            scooterModel.DOPunchPosition(transform.up * DRIFT_HOP_AMOUNT, DRIFT_HOP_TIME, 5, 0);
+            scooterModel.parent.DOComplete();
+            scooterModel.parent.DOPunchPosition(transform.up * DRIFT_HOP_AMOUNT, DRIFT_HOP_TIME, 5, 0);
         }
         else
         {
@@ -880,10 +880,12 @@ public class BallDriving : MonoBehaviour
             cameraResizer.SwapCameraRendering(false);
         }
 
-        Tween wheelie = scooterModel.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
+        scooterModel.parent.parent.DOComplete();
+
+        Tween wheelie = scooterModel.parent.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
         wheelie.SetEase(Ease.OutQuint);
         wheelie.SetRelative(true);
-        Tween wheelieEnd = scooterModel.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
+        Tween wheelieEnd = scooterModel.parent.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
         wheelieEnd.SetEase(Ease.OutBounce);
         wheelieEnd.SetRelative(true);
 
@@ -922,7 +924,7 @@ public class BallDriving : MonoBehaviour
 
             yield return wheelieEnd.WaitForCompletion();
 
-            scooterModel.parent.localEulerAngles = Vector3.zero;
+            scooterModel.parent.parent.localEulerAngles = Vector3.zero;
             wheelying = false;
         }
 
@@ -1037,6 +1039,7 @@ public class BallDriving : MonoBehaviour
         {
             canDrive = false;
             spinningOut = true;
+            DirtyDriftDrop();
             StartSpinOutTime();
         }
     }
@@ -1048,18 +1051,19 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator SpinOutTime()
     {
-        scooterModel.DOComplete(); //make sure nothing's in the wrong place
+        scooterModel.parent.DOComplete(); //make sure nothing's in the wrong place
+        float tweenTime = 1.0f;
 
-        Tween spinning = scooterModel.DORotate(new Vector3(scooterModel.rotation.x, 360, scooterModel.rotation.z), 1.0f, RotateMode.LocalAxisAdd);
+        Tween spinning = scooterModel.parent.DORotate(new Vector3(scooterModel.parent.rotation.x, 360, scooterModel.parent.rotation.z), tweenTime, RotateMode.LocalAxisAdd);
         spinning.SetEase(Ease.OutBack); //an easing function which dictates a steep climb, slight overshoot, then gradual correction
 
-        Tween rocking = scooterModel.DOShakeRotation(1.0f, new Vector3(10, 0, 0), 10, 45, true, ShakeRandomnessMode.Harmonic); //rocks the scooter around its long axis
+        Tween rocking = scooterModel.DOShakeRotation(tweenTime, new Vector3(10, 0, 0), 10, 90, true, ShakeRandomnessMode.Harmonic); //rocks the scooter around its long axis
 
         yield return spinning.WaitForCompletion();
 
         canDrive = true;
         spinningOut = false;
-        scooterModel.localEulerAngles = new Vector3(scooterModel.rotation.x, 0, scooterModel.rotation.z); //prevents the model from misaligning
+        scooterModel.parent.localEulerAngles = new Vector3(scooterModel.rotation.x, 90, scooterModel.rotation.z); //prevents the model from misaligning
     }
 
     /// <summary>
