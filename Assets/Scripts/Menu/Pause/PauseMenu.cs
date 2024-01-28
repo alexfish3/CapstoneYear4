@@ -117,6 +117,7 @@ public class PauseMenu : MonoBehaviour
 
     private void ReturnToMenu()
     {
+        SoundManager.Instance.ChangeSnapshot("gameplay");
         PlayerInstantiate.Instance.PlayerPlay();
         GameManager.Instance.SetGameState(GameState.Menu);
     }
