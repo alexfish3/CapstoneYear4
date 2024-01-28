@@ -36,6 +36,7 @@ public class BallDriving : MonoBehaviour
     private IEnumerator brakeCheckCoroutine;
     private IEnumerator endBoostCoroutine;
     private IEnumerator spinOutTimeCoroutine;
+    private IEnumerator slowdownImmunityCoroutine;
 
     public delegate void BoostDelegate(); // boost event stuff for the trail
     public BoostDelegate OnBoostStart;
@@ -109,6 +110,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private Color driftSparksTier2Color;
     [Tooltip("Color for the sparks when at the third tier of drifting")]
     [SerializeField] private Color driftSparksTier3Color;
+    [Tooltip("How long the player is immune to grass slowdowns after getting a drift boost")]
+    [SerializeField] private float slowdownImmunityDuration;
 
     [Header("Boosting")]
     [Tooltip("The speed power of the boost")]
@@ -198,6 +201,7 @@ public class BallDriving : MonoBehaviour
 
     private bool groundBoostFlag = false;
     private bool groundSlowFlag = false;
+    private bool slowdownImmune = false;
 
     private bool onMovingPlatform = false; //tells whether the player is on a moving platform
     private MovingPlatform currentMovingPlatform;
@@ -436,6 +440,7 @@ public class BallDriving : MonoBehaviour
             totalForce += driftBoost;
             driftBoostAchieved = false;
             driftTier = 0;
+            StartSlowdownImmunity();
         }
 
         driftTrail.time -= Time.fixedDeltaTime;
@@ -459,7 +464,7 @@ public class BallDriving : MonoBehaviour
         }
 
         //Applies slow from grass patches
-        if (groundSlowFlag && !boosting)
+        if (groundSlowFlag && !boosting )
         {
             totalForce *= slowPatchMultiplier;
             groundSlowFlag = false;
@@ -836,6 +841,17 @@ public class BallDriving : MonoBehaviour
     }
 
     /// <summary>
+    /// Simple timer for how long the player is immune to grass slowdowns after getting a drift boost
+    /// </summary>
+    /// <returns>Boilerplate IEnumerator</returns>
+    private IEnumerator SlowdownImmunity()
+    {
+        slowdownImmune = true;
+        yield return new WaitForSeconds(slowdownImmunityDuration);
+        slowdownImmune = false;
+    }
+
+    /// <summary>
     /// Receives input as an event. Calls for a boost to be activated if possible
     /// </summary>
     /// <param name="WestFaceState">The state of the south face button, passed by the event</param>
@@ -1207,5 +1223,20 @@ public class BallDriving : MonoBehaviour
             brakeCheckCoroutine = null;
         }
         brakeChecking = false;
+    }
+
+    private void StartSlowdownImmunity()
+    {
+        StopSlowdownImmunity();
+        slowdownImmunityCoroutine = SlowdownImmunity();
+        StartCoroutine(slowdownImmunityCoroutine);
+    }
+    private void StopSlowdownImmunity()
+    {
+        if (slowdownImmunityCoroutine != null)
+        {
+            StopCoroutine(slowdownImmunityCoroutine);
+            slowdownImmunityCoroutine = null;
+        }
     }
 }
