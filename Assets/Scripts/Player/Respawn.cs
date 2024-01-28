@@ -113,10 +113,19 @@ public class Respawn : MonoBehaviour
         float elapsedTime = 0;
         Vector3 wispRise = wispStart + Vector3.up * wispHeight; // position of the wisp risen above water
 
+        // rotate the control around the wisp while it's rising
+        Quaternion controlStart = control.transform.rotation;
+        Quaternion controlEnd = Quaternion.LookRotation(rsp.PlayerFacingDirection - rsp.PlayerSpawn, Vector3.up);
+
+        // create the tombstone
+        Vector3 graveForward = controlEnd * Vector3.forward;
+        Instantiate(respawnGravestone, rsp.PlayerSpawn - graveForward * tombstoneOffset, controlEnd);
+
         // raise the wisp above the water
-        while(elapsedTime < wispRiseTime)
+        while (elapsedTime < wispRiseTime)
         {
-            respawnWisp.transform.position = Vector3.Lerp(wispStart, wispRise, elapsedTime / wispRiseTime);
+            respawnWisp.transform.position = Vector3.Lerp(wispStart, wispRise, elapsedTime / wispRiseTime); // lift wisp above water
+            control.transform.rotation = Quaternion.Slerp(controlStart, controlEnd, elapsedTime / wispRiseTime); // rotate around wisp
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -125,15 +134,13 @@ public class Respawn : MonoBehaviour
         elapsedTime = 0;
         Vector3 casketLocation = rsp.PlayerSpawn - Vector3.up * graveDepth;
         wispStart = respawnWisp.transform.position;
-
-        control.transform.rotation = Quaternion.LookRotation(rsp.PlayerFacingDirection - rsp.PlayerSpawn, Vector3.up);
-
-        Instantiate(respawnGravestone, rsp.PlayerSpawn - control.transform.forward * tombstoneOffset, control.transform.rotation); // spawn respawn gravestone
+        Vector3 playerStart = transform.position;
 
         // move the wisp to the casket under RSP
         while (elapsedTime < wispToCasketTime)
         {
-            respawnWisp.transform.position = Vector3.Lerp(wispStart, casketLocation, elapsedTime / wispToCasketTime);
+            respawnWisp.transform.position = Vector3.Lerp(wispStart, casketLocation, elapsedTime / wispToCasketTime); // move wisp to casket
+            transform.position = Vector3.Lerp(playerStart, casketLocation, elapsedTime / wispToCasketTime); // for control to follow wisp
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -154,9 +161,10 @@ public class Respawn : MonoBehaviour
             yield return null;
         }
 
-        rsp.InUse = false;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<SphereCollider>().enabled = true;
+        rsp.InitPoint();
+
         StopRespawnCoroutine();
     }
 

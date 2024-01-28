@@ -16,8 +16,24 @@ public class RespawnPoint : MonoBehaviour
     private Vector3 playerFacingDirection;
     private bool inUse = false;
 
-    private void Start()
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapStartingCutscene += InitPoint;
+        GameManager.Instance.OnSwapGoldenCutscene += InitPoint;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapStartingCutscene -= InitPoint;
+        GameManager.Instance.OnSwapGoldenCutscene -= InitPoint;
+    }
+
+    /// <summary>
+    /// This method is for initializing the point, specifially the inUse variable in case the gamestate changes mid-respawn.
+    /// </summary>
+    public void InitPoint()
     {
         playerFacingDirection = (Order1Spawn + Order2Spawn) / 2f;
+        inUse = false;
     }
 }
