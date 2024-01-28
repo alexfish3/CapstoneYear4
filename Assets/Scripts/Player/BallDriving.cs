@@ -501,7 +501,7 @@ public class BallDriving : MonoBehaviour
         }
         else if (boosting) //allows boosting in mid-air. bit of a weird implementation; possibly refactor in the future.
         {
-            sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
+            sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
         }
 
         //Clamping to make it easier to come to a complete stop
