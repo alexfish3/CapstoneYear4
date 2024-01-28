@@ -48,6 +48,7 @@ public class RespawnManager : SingletonMonobehaviour<RespawnManager>
         int rspIndex = 0;
         for(int i=1;i<respawnPoints.Length;i++)
         {
+            if (respawnPoints[i].InUse) { continue; }
             float newDist = Vector3.Distance(lastGrounded, respawnPoints[i].PlayerSpawn);
             if (newDist < minDist)
             {

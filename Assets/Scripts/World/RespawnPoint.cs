@@ -10,10 +10,11 @@ public class RespawnPoint : MonoBehaviour
     public Vector3 PlayerSpawn { get { return transform.position; } }
     public Vector3 Order1Spawn { get { return order1Spawn.position; } }
     public Vector3 Order2Spawn { get { return order2Spawn.position; } }
+    public Vector3 PlayerFacingDirection { get { return playerFacingDirection; } }
+    public bool InUse { get { return inUse; } set { inUse = value; } }
 
     private Vector3 playerFacingDirection;
-
-    public Vector3 PlayerFacingDirection { get { return playerFacingDirection; } }
+    private bool inUse = false;
 
     private void Start()
     {

@@ -101,7 +101,7 @@ public class Respawn : MonoBehaviour
     private IEnumerator RespawnPlayer()
     {
         RespawnPoint rsp = RespawnManager.Instance.GetRespawnPoint(lastGroundedPos); // get the RSP
-        
+        rsp.InUse = true;
         // init the wisp
         Vector3 wispStart = respawnWisp.transform.position;
         respawnWisp.transform.position -= Vector3.up * wispSpawnOffset;
@@ -154,6 +154,7 @@ public class Respawn : MonoBehaviour
             yield return null;
         }
 
+        rsp.InUse = false;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<SphereCollider>().enabled = true;
         StopRespawnCoroutine();
