@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,7 +30,7 @@ public class Order : MonoBehaviour
     [SerializeField] private GameObject arrow;
 
     [Tooltip("Time between a player dropping a package and being able to pick it back up again")]
-    [SerializeField] private int pickupCooldown = 3;
+    [SerializeField] private float pickupCooldown = 3;
     private bool canPickup = true; // if a player can pickup this order
     public bool CanPickup { get { return canPickup; } }
     [Tooltip("Default height of the order")]
@@ -128,24 +129,35 @@ public class Order : MonoBehaviour
     }
 
     /// <summary>
-    /// This method drops an order at its current location.
+    /// This method is "throws" the order in the air and then reinits it once the DOTween is complete.
     /// </summary>
     public void Drop(Vector3 newPosition)
     {
+        this.transform.parent = OrderManager.Instance.transform;
         arrow.SetActive(false);
         transform.LookAt(Vector3.zero);
+        float height = Random.Range(1f, 10f);
+        transform.position = newPosition + height * transform.up;
+        transform.DOMoveY(newPosition.y, pickupCooldown)
+            .SetEase(Ease.OutBounce).OnComplete(() => ReInitOrder(newPosition));
+        StartPickupCooldownCoroutine();
+    }
 
+    /// <summary>
+    /// Resets the properties of the order so it can be picked up again.
+    /// </summary>
+    /// <param name="newPosition"></param>
+    private void ReInitOrder(Vector3 newPosition)
+    {
         if (value == Constants.OrderValue.Golden)
         {
             playerHolding.HasGoldenOrder = false;
         }
-        transform.position = newPosition;
-        this.transform.parent = OrderManager.Instance.transform;
+        //transform.position = newPosition;
         beacon.ResetPickup();
-        
+
         playerDropped = playerHolding;
         playerHolding = null;
-        StartPickupCooldownCoroutine();
     }
     /// <summary>
     /// This method performs the first half of the delivery, basically just hands the order to the customer.

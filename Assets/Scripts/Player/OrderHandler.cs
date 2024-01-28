@@ -205,7 +205,7 @@ public class OrderHandler : MonoBehaviour
             AddOrder(newOrder);
             qa.Steals++;
         }
-        victimPlayer.DropEverything(victimPlayer.order1Position.position, victimPlayer.order1Position.position);
+        victimPlayer.DropEverything(victimPlayer.order1Position.position, victimPlayer.order2Position.position);
     }
 
     /// <summary>
