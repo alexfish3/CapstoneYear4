@@ -108,12 +108,6 @@ public class Respawn : MonoBehaviour
         respawnWisp.gameObject.SetActive(true);
         respawnWisp.time = wispTrailTime;
 
-        // rotation of control
-        Vector3 controlLookat = new Vector3(rsp.PlayerSpawn.x, control.transform.position.y, rsp.PlayerSpawn.z) - control.transform.position;
-        int rotation = GameManager.Instance.MainState == GameState.FinalPackage ? 0 : 180;
-        control.transform.rotation = Quaternion.LookRotation(controlLookat) * Quaternion.Euler(0,rotation,0);
-        Quaternion initialRotation = control.transform.rotation;
-
         orderHandler.DropEverything(rsp.Order1Spawn, rsp.Order2Spawn, false);
 
         float elapsedTime = 0;
@@ -132,13 +126,14 @@ public class Respawn : MonoBehaviour
         Vector3 casketLocation = rsp.PlayerSpawn - Vector3.up * graveDepth;
         wispStart = respawnWisp.transform.position;
 
-        Instantiate(respawnGravestone, rsp.PlayerSpawn + control.transform.forward * tombstoneOffset, control.transform.rotation); // spawn respawn gravestone
+        control.transform.rotation = Quaternion.LookRotation(rsp.PlayerFacingDirection - rsp.PlayerSpawn, Vector3.up);
+
+        Instantiate(respawnGravestone, rsp.PlayerSpawn - control.transform.forward * tombstoneOffset, control.transform.rotation); // spawn respawn gravestone
 
         // move the wisp to the casket under RSP
         while (elapsedTime < wispToCasketTime)
         {
             respawnWisp.transform.position = Vector3.Lerp(wispStart, casketLocation, elapsedTime / wispToCasketTime);
-            control.transform.rotation = initialRotation * Quaternion.Euler(0,180*(elapsedTime/wispToCasketTime), 0);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -158,7 +153,6 @@ public class Respawn : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
 
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<SphereCollider>().enabled = true;
