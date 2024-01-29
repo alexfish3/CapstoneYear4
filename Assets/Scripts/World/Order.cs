@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,7 +30,7 @@ public class Order : MonoBehaviour
     [SerializeField] private GameObject arrow;
 
     [Tooltip("Time between a player dropping a package and being able to pick it back up again")]
-    [SerializeField] private int pickupCooldown = 3;
+    [SerializeField] private float pickupCooldown = 3;
     private bool canPickup = true; // if a player can pickup this order
     public bool CanPickup { get { return canPickup; } }
     [Tooltip("Default height of the order")]
@@ -69,11 +70,8 @@ public class Order : MonoBehaviour
 
 
     /// <summary>
-    /// This method initializes the order with passed in values and sets its default location. It also initializes the beacon for this order.
+    /// This method initializes this order to be ready for pickup. It also initializes the beacon for this order.
     /// </summary>
-    /// <param name="inPickup">Order's pickup point</param>
-    /// <param name="inDropoff">Order's dropoff point</param>
-    /// <param name="inValue">Value of the order</param>
     public void InitOrder()
     {
         OrderManager.Instance.AddOrder(this);
@@ -131,47 +129,35 @@ public class Order : MonoBehaviour
     }
 
     /// <summary>
-    /// This method drops an order at its current location.
+    /// This method is "throws" the order in the air and then reinits it once the DOTween is complete.
     /// </summary>
     public void Drop(Vector3 newPosition)
     {
+        this.transform.parent = OrderManager.Instance.transform;
         arrow.SetActive(false);
-        RaycastHit hit;
-        bool foundSpot = false;
         transform.LookAt(Vector3.zero);
+        float height = Random.Range(1f, 10f);
+        transform.position = newPosition + height * transform.up;
+        transform.DOMoveY(newPosition.y, pickupCooldown)
+            .SetEase(Ease.OutBounce).OnComplete(() => ReInitOrder(newPosition));
+        StartPickupCooldownCoroutine();
+    }
 
+    /// <summary>
+    /// Resets the properties of the order so it can be picked up again.
+    /// </summary>
+    /// <param name="newPosition"></param>
+    private void ReInitOrder(Vector3 newPosition)
+    {
         if (value == Constants.OrderValue.Golden)
         {
             playerHolding.HasGoldenOrder = false;
         }
-        else
-        {
-            // adjusts position if necessary
-            for (int i = 0; i < 20; i++)
-            {
-                if (Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, ground) && Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, water)
-                    && !Physics.Raycast(newPosition, Vector3.down, out hit, Mathf.Infinity, buildingCheck))
-                {
-                    foundSpot = true;
-                    break;
-                }
-                else
-                {
-                    newPosition += transform.forward;
-                }
-            }
-            if (!foundSpot) // spawns at pickup if couldn't find another spot
-            {
-                newPosition = pickup.position;
-            }
-        }
-        transform.position = newPosition;
-        this.transform.parent = OrderManager.Instance.transform;
+        //transform.position = newPosition;
         beacon.ResetPickup();
-        
+
         playerDropped = playerHolding;
         playerHolding = null;
-        StartPickupCooldownCoroutine();
     }
     /// <summary>
     /// This method performs the first half of the delivery, basically just hands the order to the customer.
@@ -180,8 +166,7 @@ public class Order : MonoBehaviour
     {
         arrow.SetActive(false);
         beacon.ThrowOrder(0.25f); // hard coded value for throwing the order to a customer
-        OrderManager.Instance.IncrementCounters(value, -1);
-        OrderManager.Instance.RemoveOrder(this);
+        
     }
 
     /// <summary>
@@ -189,11 +174,12 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseOrder()
     {
+        Debug.Log("ERASING ORDER!!");
         arrow.SetActive(false);
         
         // Removes the ui from all players
         compassMarker.RemoveCompassUIFromAllPlayers();
-        
+
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);
 

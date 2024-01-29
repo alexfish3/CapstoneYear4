@@ -18,6 +18,7 @@ public class BallDriving : MonoBehaviour
     private const float MODEL_ROTATION_TIME = 0.2f; //How long it takes the model to rotate into full position
     private const float DRIFT_HOP_AMOUNT = 0.25f; //How high the little pre-drift hop is
     private const float DRIFT_HOP_TIME = 0.4f; //How fast the little hop is in seconds
+    private const float WHEELIE_AMOUNT = 45f; //Degrees that the scooter rotates when doing a wheelie
 
     private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
     private const float CSV_RATIO = 0.35f; //Don't touch
@@ -35,6 +36,7 @@ public class BallDriving : MonoBehaviour
     private IEnumerator brakeCheckCoroutine;
     private IEnumerator endBoostCoroutine;
     private IEnumerator spinOutTimeCoroutine;
+    private IEnumerator slowdownImmunityCoroutine;
 
     public delegate void BoostDelegate(); // boost event stuff for the trail
     public BoostDelegate OnBoostStart;
@@ -108,6 +110,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private Color driftSparksTier2Color;
     [Tooltip("Color for the sparks when at the third tier of drifting")]
     [SerializeField] private Color driftSparksTier3Color;
+    [Tooltip("How long the player is immune to grass slowdowns after getting a drift boost")]
+    [SerializeField] private float slowdownImmunityDuration;
 
     [Header("Boosting")]
     [Tooltip("The speed power of the boost")]
@@ -163,6 +167,7 @@ public class BallDriving : MonoBehaviour
     private Transform sphereTransform;
     private Collider sphereCollider;
     private Respawn respawn; // used to update the respawn point when grounded
+    private QAHandler qa;
     private float startingDrag;
     private PhysicMaterial pMat;
 
@@ -184,6 +189,7 @@ public class BallDriving : MonoBehaviour
     private float timeSpentChecking = 0.0f;
 
     private bool spinningOut = false;
+    private bool wheelying = false;
 
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
@@ -195,6 +201,7 @@ public class BallDriving : MonoBehaviour
 
     private bool groundBoostFlag = false;
     private bool groundSlowFlag = false;
+    private bool slowdownImmune = false;
 
     private bool onMovingPlatform = false; //tells whether the player is on a moving platform
     private MovingPlatform currentMovingPlatform;
@@ -246,6 +253,7 @@ public class BallDriving : MonoBehaviour
 
         respawn = sphere.GetComponent<Respawn>(); // get respawn component
         soundPool = GetComponent<SoundPool>();
+        qa = GetComponent<QAHandler>();
 
         baseSpark = particleBasket.GetChild(0).GetComponent<ParticleManipulator>();
         wideSpark = particleBasket.GetChild(1).GetComponent<ParticleManipulator>();
@@ -259,7 +267,7 @@ public class BallDriving : MonoBehaviour
     }
 
     /// <summary>
-    /// Standard Update. Gets controls and updates variables
+    /// Standard Update. Gets controls, updates variables, and manages many aspects of steering and speed
     /// </summary>
     private void Update()
     {
@@ -276,7 +284,7 @@ public class BallDriving : MonoBehaviour
         {
             soundPool.PlayBrakeSound();
         }
-        else if (csv == 0)
+        if (csv == 0)
         {
             soundPool.PlayIdleSound();
         }
@@ -391,8 +399,8 @@ public class BallDriving : MonoBehaviour
 
         //Applies model rotation
         Quaternion intendedRotation = Quaternion.Euler((modelRotateAmount - 90f) * MODEL_TILT_MULTIPLIER * (drifting ? DRIFTING_MODEL_TILT_MULTIPLIER : 1), modelRotateAmount, 0);
-        Quaternion newRotation = Quaternion.Lerp(scooterModel.localRotation, intendedRotation, MODEL_ROTATION_TIME);
-        scooterModel.localRotation = newRotation;
+        Quaternion newRotation = Quaternion.Lerp(scooterModel.parent.localRotation, intendedRotation, MODEL_ROTATION_TIME);
+        scooterModel.parent.localRotation = newRotation;
 
         //Rotates the control object
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
@@ -432,6 +440,7 @@ public class BallDriving : MonoBehaviour
             totalForce += driftBoost;
             driftBoostAchieved = false;
             driftTier = 0;
+            StartSlowdownImmunity();
         }
 
         driftTrail.time -= Time.fixedDeltaTime;
@@ -455,7 +464,7 @@ public class BallDriving : MonoBehaviour
         }
 
         //Applies slow from grass patches
-        if (groundSlowFlag && !boosting)
+        if (groundSlowFlag && !boosting )
         {
             totalForce *= slowPatchMultiplier;
             groundSlowFlag = false;
@@ -470,9 +479,9 @@ public class BallDriving : MonoBehaviour
         //Adds the force to move forward
         if (grounded)
         {
-            if (!boosting && !onMovingPlatform && respawn != null)
+            if (!onMovingPlatform && respawn != null)
             {
-                respawn.SetRespawnPoint();
+                respawn.LastGroundedPos = sphere.transform.position;
             }
 
             if (forwardGear)
@@ -480,6 +489,10 @@ public class BallDriving : MonoBehaviour
                 if (drifting)
                 {
                     sphereBody.AddForce((driftDirection == 1 ? ((driftSidewaysScalar * transform.forward) - transform.right).normalized : ((driftSidewaysScalar * transform.forward) + transform.right).normalized) * totalForce, ForceMode.Acceleration);
+                }
+                else if (boosting)
+                {
+                    sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
                 }
                 else
                 {
@@ -493,7 +506,7 @@ public class BallDriving : MonoBehaviour
         }
         else if (boosting) //allows boosting in mid-air. bit of a weird implementation; possibly refactor in the future.
         {
-            sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
+            sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
         }
 
         //Clamping to make it easier to come to a complete stop
@@ -562,6 +575,17 @@ public class BallDriving : MonoBehaviour
         }
 
         GroundCheck();
+    }
+
+    /// <summary>
+    /// Standard LateUpdate. Corrects model stuff when boosting
+    /// </summary>
+    private void LateUpdate()
+    {
+        if (wheelying)
+        {
+            scooterModel.parent.parent.localEulerAngles = new Vector3(scooterModel.parent.parent.localEulerAngles.x, 0, 0);
+        }
     }
 
     /// <summary>
@@ -817,6 +841,17 @@ public class BallDriving : MonoBehaviour
     }
 
     /// <summary>
+    /// Simple timer for how long the player is immune to grass slowdowns after getting a drift boost
+    /// </summary>
+    /// <returns>Boilerplate IEnumerator</returns>
+    private IEnumerator SlowdownImmunity()
+    {
+        slowdownImmune = true;
+        yield return new WaitForSeconds(slowdownImmunityDuration);
+        slowdownImmune = false;
+    }
+
+    /// <summary>
     /// Receives input as an event. Calls for a boost to be activated if possible
     /// </summary>
     /// <param name="WestFaceState">The state of the south face button, passed by the event</param>
@@ -827,23 +862,17 @@ public class BallDriving : MonoBehaviour
             StartBoostActive();
             OnBoostStart?.Invoke();
             soundPool.PlayBoostActivate();
+            qa.Boosts++;
         }
     }
 
-    /// <summary>
-    /// Sets boosting variables, waits, sets some of them back, then calls the cooldown
-    /// </summary>
-    /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostActive()
     {
-        phaseIndicator.SetHornGlow(0);
-
         boosting = true;
         boostAble = false;
         boostInitialburst = true;
         DirtyDriftDrop();
 
-        // Where collision is disabled 
         ToggleCollision(true);
 
         if (cameraResizer != null)
@@ -851,12 +880,31 @@ public class BallDriving : MonoBehaviour
             cameraResizer.SwapCameraRendering(false);
         }
 
-        yield return new WaitForSeconds(boostDuration);
-        
-        StartEndBoost();
+        scooterModel.parent.parent.DOComplete();
+
+        Tween wheelie = scooterModel.parent.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
+        wheelie.SetEase(Ease.OutQuint);
+        wheelie.SetRelative(true);
+        Tween wheelieEnd = scooterModel.parent.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
+        wheelieEnd.SetEase(Ease.OutBounce);
+        wheelieEnd.SetRelative(true);
+
+        Sequence mySeq = DOTween.Sequence();
+        mySeq.Append(wheelie);
+        mySeq.Append(wheelieEnd);
+
+        wheelying = true;
+
+        // Start the glow depletion coroutine and wait for it to complete
+        yield return StartCoroutine(phaseIndicator.GlowDeplete(0.8f * boostDuration));
+
+        Debug.Log("Glow depletion complete");
+
+        // After glow depletion is complete, proceed with the rest of the boost logic
+        StartEndBoost(wheelie, wheelieEnd);
     }
 
-    private IEnumerator EndBoost()
+    private IEnumerator EndBoost(Tween wheelie = null, Tween wheelieEnd = null)
     {
         // Toggles to check phase status
         checkPhaseStatus = true;
@@ -869,6 +917,16 @@ public class BallDriving : MonoBehaviour
         }
 
         boosting = false;
+
+        if (wheelie != null && wheelieEnd != null) 
+        {
+            wheelie.Complete();
+
+            yield return wheelieEnd.WaitForCompletion();
+
+            scooterModel.parent.parent.localEulerAngles = Vector3.zero;
+            wheelying = false;
+        }
 
         StartBoostCooldown();
     }
@@ -902,8 +960,7 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostCooldown()
     {
-        StartCoroutine(phaseIndicator.BeginHornGlow(boostRechargeTime));
-        yield return new WaitForSeconds(boostRechargeTime);
+        yield return StartCoroutine(phaseIndicator.GlowCharge(boostRechargeTime));
         boostAble = true;
     }
 
@@ -982,6 +1039,7 @@ public class BallDriving : MonoBehaviour
         {
             canDrive = false;
             spinningOut = true;
+            DirtyDriftDrop();
             StartSpinOutTime();
         }
     }
@@ -994,17 +1052,18 @@ public class BallDriving : MonoBehaviour
     private IEnumerator SpinOutTime()
     {
         scooterModel.parent.DOComplete(); //make sure nothing's in the wrong place
+        float tweenTime = 1.0f;
 
-        Tween spinning = scooterModel.parent.DORotate(new Vector3(scooterModel.parent.rotation.x, 360, scooterModel.parent.rotation.z), 1.0f, RotateMode.LocalAxisAdd);
+        Tween spinning = scooterModel.parent.DORotate(new Vector3(scooterModel.parent.rotation.x, 360, scooterModel.parent.rotation.z), tweenTime, RotateMode.LocalAxisAdd);
         spinning.SetEase(Ease.OutBack); //an easing function which dictates a steep climb, slight overshoot, then gradual correction
 
-        Tween rocking = scooterModel.DOShakeRotation(1.0f, new Vector3(10, 0, 0), 10, 45, true, ShakeRandomnessMode.Harmonic); //rocks the scooter around its long axis
+        Tween rocking = scooterModel.DOShakeRotation(tweenTime, new Vector3(10, 0, 0), 10, 90, true, ShakeRandomnessMode.Harmonic); //rocks the scooter around its long axis
 
         yield return spinning.WaitForCompletion();
 
         canDrive = true;
         spinningOut = false;
-        scooterModel.parent.localEulerAngles = new Vector3(scooterModel.parent.rotation.x, 0, scooterModel.parent.rotation.z); //prevents the model from misaligning
+        scooterModel.parent.localEulerAngles = new Vector3(scooterModel.rotation.x, 90, scooterModel.rotation.z); //prevents the model from misaligning
     }
 
     /// <summary>
@@ -1016,6 +1075,8 @@ public class BallDriving : MonoBehaviour
         if (phasing)
             return;
 
+        Debug.Log("BOUNCE " + this.gameObject.transform.parent.name);
+
         Rigidbody opponentBall = opponent.gameObject.GetComponent<BallDriving>().Sphere.GetComponent<Rigidbody>(); //woof
 
         Vector3 difference = (sphereBody.position - opponentBall.position).normalized;
@@ -1023,7 +1084,7 @@ public class BallDriving : MonoBehaviour
         difference.Normalize();
 
         sphereBody.AddForce(difference * clashForce, ForceMode.Impulse);
-        StartEndBoost();
+        //StartEndBoost();
     }
 
     public void FreezeBall(bool toFreeze)
@@ -1121,11 +1182,15 @@ public class BallDriving : MonoBehaviour
         }
     }
 
-    private void StartEndBoost()
+    private void StartEndBoost(Tween wheelie = null, Tween wheelieEnd = null)
     {
-        endBoostCoroutine = EndBoost();
+        Tween w = wheelie == null ? null : wheelie;
+        Tween wE = wheelieEnd == null ? null : wheelieEnd;
+
+        endBoostCoroutine = EndBoost(w, wE);
         StartCoroutine(endBoostCoroutine);
     }
+
     private void StopEndBoost()
     {
         if (endBoostCoroutine != null)
@@ -1162,5 +1227,20 @@ public class BallDriving : MonoBehaviour
             brakeCheckCoroutine = null;
         }
         brakeChecking = false;
+    }
+
+    private void StartSlowdownImmunity()
+    {
+        StopSlowdownImmunity();
+        slowdownImmunityCoroutine = SlowdownImmunity();
+        StartCoroutine(slowdownImmunityCoroutine);
+    }
+    private void StopSlowdownImmunity()
+    {
+        if (slowdownImmunityCoroutine != null)
+        {
+            StopCoroutine(slowdownImmunityCoroutine);
+            slowdownImmunityCoroutine = null;
+        }
     }
 }

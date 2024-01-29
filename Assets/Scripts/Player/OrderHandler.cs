@@ -13,7 +13,8 @@ public class OrderHandler : MonoBehaviour
     public int Score { get { return score; } set { score = value; } }
     private int placement = 0;
     public int Placement { get { return placement; }set { placement = value; } }
-    
+    [SerializeField] NumberHandler numberHandler;    
+
     private Order order1 = null; // first order the player is holding
     private Order order2 = null; // second order the player is holding
 
@@ -39,6 +40,8 @@ public class OrderHandler : MonoBehaviour
     private void Start()
     {
         score = 0; // init score to 0
+        numberHandler.UpdateScoreUI(score.ToString());
+
         ScoreManager.Instance.AddOrderHandler(this);
         ball = transform.parent.GetComponentInChildren<BallDriving>();
         soundPool = GetComponent<SoundPool>();
@@ -58,7 +61,7 @@ public class OrderHandler : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
-            DropEverything(transform.position);
+            DropEverything(order1Position.position, order2Position.position);
     }
 
     /// <summary>
@@ -115,28 +118,27 @@ public class OrderHandler : MonoBehaviour
             order2 = null;
             ScoreManager.Instance.UpdatePlacement();
         }
+
+        numberHandler.UpdateScoreUI(score.ToString());
     }
 
     /// <summary>
     /// This method is for when the player "spins" out. It will drop all the orders the player is currently holding.
     /// </summary>
     /// <param name="basePos">The position of the order before adding the offset of the specific orderPosition.</param>
-    public void DropEverything(Vector3 basePos)
+    public void DropEverything(Vector3 order1NewPos, Vector3 order2NewPos, bool shouldSpinout = true)
     {
         if (order1 != null)
         {
-            basePos += hasGoldenOrder ? Vector3.zero : order1Position.localPosition;
-            order1.Drop(basePos);
+            order1.Drop(order1NewPos);
             order1 = null;
         }
         if (order2 != null)
         {
-            basePos += hasGoldenOrder ? Vector3.zero : order2Position.localPosition;
-            order2.Drop(basePos);
+            order2.Drop(order2NewPos);
             order2 = null;
         }
-
-        GotHit();
+        if(shouldSpinout) { GotHit(); }
     }
 
     /// <summary>
@@ -201,8 +203,9 @@ public class OrderHandler : MonoBehaviour
             soundPool.PlayOrderTheft();
             victimPlayer.LoseOrder(newOrder);
             AddOrder(newOrder);
+            qa.Steals++;
         }
-        victimPlayer.DropEverything(victimPlayer.transform.position);
+        victimPlayer.DropEverything(victimPlayer.order1Position.position, victimPlayer.order2Position.position);
     }
 
     /// <summary>

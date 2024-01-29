@@ -5,6 +5,7 @@ using UnityEditor;
 using Unity.VisualScripting;
 using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
+using System.Numerics;
 
 public class PhaseIndicator : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class PhaseIndicator : MonoBehaviour
     [Range(0f, 2f)]
     [SerializeField] float hornGlowValue = 0;
     public float hornValueMax;
+    float hornGlowStep;
 
     [SerializeField] Color readyColor;
     [SerializeField] Gradient hornGlowGraident;
@@ -33,9 +35,14 @@ public class PhaseIndicator : MonoBehaviour
 
     public bool ShowPhase = false;
 
+    // Define a delegate for the completion of the glow depletion
+    public delegate void GlowDepleteComplete();
+
     private void Start()
     {
         soundPool = GetComponent<SoundPool>();
+
+        hornGlowStep = hornValueMax / 100;
     }
 
     // Update is called once per frame
@@ -44,26 +51,6 @@ public class PhaseIndicator : MonoBehaviour
         if (initalized == false)
             return;
 
-        float factor = Mathf.Pow(2, (hornGlowValue + intensity));
-
-        // Ready boost color
-        if (hornGlowValue >= hornValueMax - 0.01f)
-        {
-            if(!dirtyBoostReady)
-            {
-                soundPool.PlayBoostReady();
-                dirtyBoostReady = true;
-            }
-            Color color = new Color(readyColor.r * factor, readyColor.g * factor, readyColor.b * factor);
-            hornGlow.SetColor("_MainColor", color);
-        }
-        else
-        {
-            dirtyBoostReady = false;
-            Color currentColor = (hornGlowGraident.Evaluate(hornGlowValue / hornValueMax));
-            Color color = new Color(currentColor.r * factor, currentColor.g * factor, currentColor.b * factor);
-            hornGlow.SetColor("_MainColor", color);
-        }
     }
 
     /// <summary>
@@ -73,8 +60,11 @@ public class PhaseIndicator : MonoBehaviour
     {
         hornGlow = new Material(hornGlowRef);
 
-        Material[] ghostMaterials = ghostRenderer.materials;
+        float factor = Mathf.Pow(2, (1 + intensity));
+        Color color = new Color(readyColor.r * factor, readyColor.g * factor, readyColor.b * factor);
+        hornGlow.SetColor("_MainColor", color);
 
+        Material[] ghostMaterials = ghostRenderer.materials;
         ghostMaterials[1] = hornGlow;
 
         ghostRenderer.materials = ghostMaterials;
@@ -93,20 +83,69 @@ public class PhaseIndicator : MonoBehaviour
     /// <summary>
     /// Begins the horn glow charge
     /// </summary>
-    public IEnumerator BeginHornGlow(float cooldown)
+    public IEnumerator GlowCharge(float cooldown)
     {
         hornSlider.value = 0f;
 
-        float hornGlowStep = hornValueMax / 100;
+        float waitTime = cooldown / 100f;
 
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 101; i++)
         {
-            float progress = i / 100f;  // Calculate the progress from 0 to 1
-            hornSlider.value = Mathf.Lerp(0f, 1f, progress);  // Set the slider value based on the progress
+            hornSlider.value = i / 100f;  // Set the slider value based on the progress
 
             hornGlowValue += hornGlowStep;
-            yield return new WaitForSeconds(cooldown / 100);
+
+            float factor = Mathf.Pow(2, (hornGlowValue + intensity));
+
+            // Ready boost color
+            if (hornGlowValue >= hornValueMax - 0.01f)
+            {
+                if (!dirtyBoostReady)
+                {
+                    soundPool.PlayBoostReady();
+                    dirtyBoostReady = true;
+                }
+                Color color = new Color(readyColor.r * factor, readyColor.g * factor, readyColor.b * factor);
+                hornGlow.SetColor("_MainColor", color);
+            }
+            else
+            {
+                dirtyBoostReady = false;
+                Color currentColor = (hornGlowGraident.Evaluate(hornGlowValue / hornValueMax));
+                Color color = new Color(currentColor.r * factor, currentColor.g * factor, currentColor.b * factor);
+                hornGlow.SetColor("_MainColor", color);
+            }
+
+            yield return new WaitForSeconds(waitTime);
         }
+    }
+
+    /// <summary>
+    /// Begins the horn glow depleate
+    /// </summary>
+    public IEnumerator GlowDeplete(float cooldown, GlowDepleteComplete onComplete = null)
+    {
+        float waitTime = cooldown / 100f;
+
+        for (int i = 100; i > -1; i--)
+        {
+            hornSlider.value = i / 100f;
+
+            hornGlowValue -= hornGlowStep;
+
+            float factor = Mathf.Pow(2, (hornGlowValue + intensity));
+
+            Color currentColor = (hornGlowGraident.Evaluate(hornGlowValue / hornValueMax));
+            Color color = new Color(currentColor.r * factor, currentColor.g * factor, currentColor.b * factor);
+            hornGlow.SetColor("_MainColor", color);
+
+            yield return new WaitForSeconds(waitTime);
+        }
+
+        Debug.Log("Glow depletion complete");
+
+        // Invoke the completion callback if provided
+        onComplete?.Invoke();
     }
 
     /// <summary>

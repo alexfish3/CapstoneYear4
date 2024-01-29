@@ -96,7 +96,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             return;
         }
 
-        CheckReadyUpCount();
+        //CheckReadyUpCount();
     }
 
     ///<summary>
@@ -195,6 +195,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         // Sets the player's spawn point above ground on map
         SetAllPlayerSpawn();
+
+        // Unreadys up the player joining, which stops the countdown if it is currently counting
+        UnreadyUp(nextFillSlot);
     }
 
     ///<summary>

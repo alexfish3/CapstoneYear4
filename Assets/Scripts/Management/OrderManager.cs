@@ -3,6 +3,7 @@
 /// It is a Singleton and extends the SingletonMonobehaviour class
 /// </summary>
 
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,8 +31,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     public float WaveTimer { get { return waveTimer; } }
     private bool spawnNormalPackages = false;
 
-    private int maxOrders; // total number of orders possible in a game
-    private float easyPercentage, mediumPercentage, hardPercentage; // percentage of easy/medium/hard orders that should be in a game
     private int currEasy, currMedium, currHard; // the current number of easy/medium/hard orders in the game
 
     private bool cooledDown = true;
@@ -61,7 +60,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     public int FinalOrderValue { get { return (int)finalOrderValue; } set { finalOrderValue = (float)value; } }
 
     private List<Order> activeOrders = new List<Order>(); // list of all the orders in the game at any time
-    private List<Order> ordersThisWave = new List<Order>();
+    //private List<Order> ordersThisWave = new List<Order>();
 
     private IEnumerator easySpawnCoroutine, mediumSpawnCoroutine, hardSpawnCoroutine; // coroutines for managing cooldowns of the order spawns
 
@@ -71,10 +70,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Header("Debug")]
     [Tooltip("When checked will loop through waves so you can play forever")]
     [SerializeField] private bool waveResets;
-/*    [Tooltip("On means the max orders are the only orders spawned in the wave, off means new orders will spawn as they are delivered")]
-    [SerializeField] private bool scarcityMode;*/
-/*    [Tooltip("When true will randomize initial spawn order of all orders.")]
-    [SerializeField] private bool randomizeWaves; to be implemented, I have a graphics assignment due*/
+    [Tooltip("When true will randomize initial spawn order of all orders.")]
+    [SerializeField] private bool randomizeWaves;
 
     private void OnEnable()
     {
@@ -94,44 +91,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         HotKeys.Instance.onDecrementWave -= DecrementWave;
     }
 
-    private void Start()
-    {
-        int[] waves = { maxEasy.Length, maxMedium.Length, maxHard.Length };
-        maxWave = Mathf.Max(waves);
-
-        for(int i=0;i<normalOrders.Count();i++)
-        {
-            if (normalOrders[i].IsActive)
-            {
-                activeOrders.Add(normalOrders[i]);
-                ordersThisWave.Add(normalOrders[i]);
-                normalOrders[i].InitOrder();
-            }
-            else
-            {
-                switch (normalOrders[i].Value)
-                {
-                    case Constants.OrderValue.Easy:
-                        easy.Add(normalOrders[i]);
-                        break;
-                    case Constants.OrderValue.Medium:
-                        medium.Add(normalOrders[i]);
-                        break;
-                    case Constants.OrderValue.Hard:
-                        hard.Add(normalOrders[i]);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-    }
-
     private void Update()
     {
-        if (currEasy < 0) { currEasy = 0; }
-        if (currMedium < 0) { currMedium = 0; }
-        if(currHard < 0) { currHard = 0; }
         if (finalOrder != null)
         {
             if (finalOrderActive && finalOrder.PlayerHolding != null)
@@ -152,15 +113,15 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                         StopEasySpawn();
                         StopMediumSpawn();
                         StopHardSpawn();
-                        if (easy.Count > 0 && ((float)currEasy / ordersThisWave.Count() < easyPercentage || currEasy == 0)) // if the number of easy orders is below the quota
+                        if (easy.Count > 0 && (currEasy < maxEasy[wave] || currEasy == 0)) // if the number of easy orders is below the quota
                         {
                             StartEasySpawn();
                         }
-                        else if (medium.Count > 0 && ((float)currMedium / ordersThisWave.Count() < mediumPercentage || currMedium == 0)) // same for the medium orders
+                        else if (medium.Count > 0 && (currMedium < maxMedium[wave] || currMedium == 0)) // same for the medium orders
                         {
                             StartMediumSpawn();
                         }
-                        else if (hard.Count > 0 && ((float)currHard / ordersThisWave.Count() < hardPercentage || currHard == 0)) // and the hard orders
+                        else if (hard.Count > 0 && (currHard < maxHard[wave] || currHard == 0)) // and the hard orders
                         {
                             StartHardSpawn();
                         }
@@ -174,7 +135,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 StopHardSpawn();
                 cooledDown = true;
             }
-            canSpawnOrders = ordersThisWave.Count() >= maxOrders ? false : true;
+            canSpawnOrders = currEasy < maxEasy[wave] || currMedium < maxMedium[wave] || currHard < maxHard[wave];
         }
         else if(!finalOrderActive && waveTimer <= 0)
         {
@@ -185,12 +146,54 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     }
 
     /// <summary>
+    /// This method populates the order lists and inits any orders that should be active on runtime.
+    /// </summary>
+    private void GetOrders()
+    {
+        int[] waves = { maxEasy.Length, maxMedium.Length, maxHard.Length };
+        maxWave = Mathf.Max(waves);
+
+        for (int i = 0; i < normalOrders.Count(); i++)
+        {
+            if (normalOrders[i].IsActive)
+            {
+                IncrementCounters(normalOrders[i].Value, 1);
+                normalOrders[i].InitOrder();
+            }
+            else
+            {
+                switch (normalOrders[i].Value)
+                {
+                    case Constants.OrderValue.Easy:
+                        easy.Add(normalOrders[i]);
+                        break;
+                    case Constants.OrderValue.Medium:
+                        medium.Add(normalOrders[i]);
+                        break;
+                    case Constants.OrderValue.Hard:
+                        hard.Add(normalOrders[i]);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        if (randomizeWaves)
+        {
+            ShuffleList(easy);
+            ShuffleList(medium);
+            ShuffleList(hard);
+        }
+    }
+
+    /// <summary>
     /// Calls when the Begin/MainLoop sequence begins
     /// </summary>
     private void InitGame()
     {
         finalOrder.EraseGoldWithoutDelivering();
         OnDeleteActiveOrders?.Invoke();
+        GetOrders();
         finalOrderActive = false;
         spawnNormalPackages = true;
         waveTimer = waveLengthInSeconds;
@@ -204,12 +207,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     public void InitWave()
     {
-        ordersThisWave.Clear();
         waveTimer = waveLengthInSeconds;
         try
         {
-            // calculate the percentages and initialize the counters for each type of order
-            maxOrders = maxEasy[wave] + maxMedium[wave] + maxHard[wave];
+            // if this throws an error we know the final order should spawn
+            int maxOrders = maxEasy[wave] + maxMedium[wave] + maxHard[wave];
         }
         catch
         {
@@ -223,14 +225,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             {
                 SoundManager.Instance.PlaySFX("bells", clockSource);
             }
-            easyPercentage = (float)maxEasy[wave] / maxOrders;
-            mediumPercentage = (float)maxMedium[wave] / maxOrders;
-            hardPercentage = (float)maxHard[wave] / maxOrders;
         }
-
-        currEasy = 0;
-        currMedium = 0;
-        currHard = 0;
     }
 
     /// <summary>
@@ -260,7 +255,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(!activeOrders.Contains(order))
         {
             activeOrders.Add(order);
-            ordersThisWave.Add(order);
             OnDeleteActiveOrders += order.EraseOrder;
         }
     }
@@ -288,7 +282,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                     break;
             }
             activeOrders.Remove(order);
-            if (ordersThisWave.Contains(order)) { ordersThisWave.Remove(order); }
         }
         if(order.Value == Constants.OrderValue.Golden)
         {
@@ -363,7 +356,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     }
 
     /// <summary>
-    /// Removes all packages and starts the next wave.
+    /// Starts the next wave.
     /// </summary>
     private void ResetWave()
     {
@@ -392,7 +385,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     private void SpawnFinalOrder()
     {
         OnDeleteActiveOrders?.Invoke();
-        ordersThisWave.Clear();
         finalOrderActive = true;
         finalOrder.InitOrder();
     }
@@ -411,6 +403,22 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         else
         {
             GameManager.Instance.SetGameState(GameState.Results);
+        }
+    }
+
+    /// <summary>
+    /// Shuffles the elements in a list.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="inList"></param>
+    private void ShuffleList<T>(List<T> inList)
+    {
+        for(int i=0;i<inList.Count; i++)
+        {
+            T holder = inList[i];
+            int r = UnityEngine.Random.Range(i, inList.Count);
+            inList[i] = inList[r];
+            inList[r] = holder;
         }
     }
 

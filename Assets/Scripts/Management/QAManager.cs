@@ -14,7 +14,20 @@ public class QAManager : SingletonMonobehaviour<QAManager>
 
     private string fileName = "QAData.csv";
 
-    private string[] columns = { "DateTime", "Name", "Placement", "Score", "#Easy", "#Medium", "#Hard", "#Gold", "Gold $$" };
+    private string[] columns = { 
+        "DateTime", 
+        "Name", 
+        "Placement", 
+        "Score", 
+        "#Easy", 
+        "#Medium", 
+        "#Hard", 
+        "#Gold", 
+        "Gold $$", 
+        "#Deaths", 
+        "#Boosts",
+        "#Steals"
+    };
 
     private void Start()
     {
@@ -61,6 +74,9 @@ public class QAManager : SingletonMonobehaviour<QAManager>
     /// </summary>
     private void SendData()
     {
+#if UNITY_EDITOR
+        if (!recordData) { return; }
+#endif
         DateTime dt = DateTime.Now;
         foreach(QAHandler handler in handlers)
         {
@@ -74,7 +90,6 @@ public class QAManager : SingletonMonobehaviour<QAManager>
             WriteCSV(fileName, sheetData);
         }
         WriteEmptyLine(fileName);
-
     }
 
     /// <summary>
@@ -86,12 +101,21 @@ public class QAManager : SingletonMonobehaviour<QAManager>
     {
         string filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
-        if (!File.Exists(filePath))
+        try
         {
-            File.WriteAllLines(filePath, new[] { string.Join(",", columns) });
-        }
+            if (!File.Exists(filePath))
+            {
+                File.WriteAllLines(filePath, new[] { string.Join(",", columns) });
+            }
 
-        File.AppendAllLines(filePath, new[] { string.Join(",", data) });
+            File.AppendAllLines(filePath, new[] { string.Join(",", data) });
+
+        }
+        catch(IOException e) // mainly occurs when the file is open somewhere else
+        {
+            Debug.LogWarning(e.Message);
+            return;
+        }
     }
 
     /// <summary>
@@ -100,14 +124,22 @@ public class QAManager : SingletonMonobehaviour<QAManager>
     /// <param name="fileName">Name of CSV file.</param>
     private void WriteEmptyLine(string fileName)
     {
-        string filePath = Path.Combine(Application.persistentDataPath, fileName);
+        string filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
-        if (!File.Exists(filePath))
+        try
         {
-            File.WriteAllLines(filePath, new[] { string.Join(",", columns) });
-        }
+            if (!File.Exists(filePath))
+            {
+                File.WriteAllLines(filePath, new[] { string.Join(",", columns) });
+            }
 
-        File.AppendAllText(filePath, Environment.NewLine);
+            File.AppendAllText(filePath, Environment.NewLine);
+        }
+        catch(IOException e) // mainly occurs when the file is open somewhere else
+        {
+            Debug.LogWarning(e.Message);
+            return;
+        }
     }
 
     /// <summary>

@@ -10,229 +10,88 @@ using UnityEngine.UIElements;
 /// </summary>
 public class Respawn : MonoBehaviour
 {
-    IEnumerator respawnCoroutine;
-    IEnumerator respawnSetCooldown;
-    //Variables
-    private Vector3 respawnPoint;
-    private Quaternion controlRotation;
 
+    IEnumerator respawnCoroutine;
+
+    [Header("Respawn Stats")]
     [Tooltip("The height to lift the player above the map.")]
     [SerializeField] private float liftHeight = 5.0f; // The height to lift the player above the map
-
-    [Tooltip("The time it takes to rotate 180 degrees.")]
-    [SerializeField] private float respawnDuration = 2.0f; // The time it takes to rotate 180 degrees
 
     [Tooltip("The time it takes to lift the player between startingLiftHeight to liftHeight.")]
     [SerializeField] private float liftDuration = 5.0f; // The time it takes to lift the player above the ground
 
-    [Tooltip("How far back from the ledge the player respawns | MUST BE NEGATIVE")]
-    [SerializeField] private float ledgeOffset = -5f;
+    [Tooltip("The height the player wisp will rise above the water.")]
+    [SerializeField] private float wispHeight = 5.0f;
 
-    [Tooltip("Distance between tombstone spawn and player spawn | MUST BE POSITIVE")]
+    [Tooltip("Time it takes for the wisp to rise above the water.")]
+    [SerializeField] private float wispRiseTime = 1f;
+
+    [Tooltip("Time it takes for the wisp to travel to the casket.")]
+    [SerializeField] private float wispToCasketTime = 1f;
+
+    [Tooltip("Trailtime of the wisp trail renderer component.")]
+    [SerializeField] private float wispTrailTime = 1f;
+
+    [Tooltip("How far below the player death position the wisp spawns.")]
+    [SerializeField] private float wispSpawnOffset = 5f;
+
+    [Tooltip("Distance between tombstone spawn and player spawn.")]
     [SerializeField] private int tombstoneOffset = 2;
-    private float newOffset;
 
+    [Tooltip("How far below the tombstone the player spawns.")]
+    [SerializeField] private float graveDepth = 2f;
+
+    [Header("Game Object Refs")]
     [Tooltip("The prefab for the gravestone model.)")]
     [SerializeField] private GameObject respawnGravestone; // Gravestone model to spawn in during respawn
 
     [Tooltip("Reference to the control game object.")]
     [SerializeField] private GameObject control;
+
+    [Tooltip("For enabling / disabling the mesh.")]
+    [SerializeField] private GameObject modelParent;
+
+    [Tooltip("The trail renderer used to animate the respawn.")]
+    [SerializeField] private TrailRenderer respawnWisp;
+
     private OrderHandler orderHandler;
     private BallDriving ballDriving;
 
-    [Tooltip("Layermasks for respawn logic. Should be set to building phase checker, water (ignore raycast), and ground")]
-    [SerializeField] LayerMask water, ground, buildingCheck;
+    private Vector3 lastGroundedPos; // last position the player was grounded at
+    public Vector3 LastGroundedPos { get { return lastGroundedPos; } set { lastGroundedPos = value; } }
 
-    // new respawn with array
-    [Tooltip("How many respawn points the script stores at any given moment")]
-    [SerializeField] private int sizeOfRespawnArray = 10;
-    private Vector3[] respawnPoints;
-    private bool shouldSetRespawn = true;
-    [Tooltip("Cooldown time for setting respawn position")]
-    [SerializeField] private float respawnSetInterval = 1f;
+    private Vector3 wispOrigin; // original pos of the wisp
 
     // Sound stuff
     private SoundPool soundPool;
 
+    // qa
+    private QAHandler qa;
+
     private void OnEnable()
     {
         GameManager.Instance.OnSwapGoldenCutscene += StopRespawnCoroutine;
-        GameManager.Instance.OnSwapGoldenCutscene += ClearRespawnArray;
-        GameManager.Instance.OnSwapBegin += ClearRespawnArray;
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnSwapGoldenCutscene -= StopRespawnCoroutine;
-        GameManager.Instance.OnSwapGoldenCutscene -= ClearRespawnArray;
-        GameManager.Instance.OnSwapBegin -= ClearRespawnArray;
 
     }
 
     private void Start()
     {
-        respawnPoints = new Vector3[sizeOfRespawnArray];
         orderHandler = control.GetComponent<OrderHandler>();
         ballDriving = control.GetComponent<BallDriving>();
         soundPool = control.GetComponent<SoundPool>();
-        if (Mathf.Sign(ledgeOffset) != -1)
-        {
-            ledgeOffset = -ledgeOffset;
-        }
-    }
+        qa = control.GetComponent<QAHandler>();
 
-    /// <summary>
-    /// This method sets the respawn point.
-    /// </summary>
-    public void SetRespawnPoint()
-    {
-        if (!shouldSetRespawn) { return; }
-        for (int i = 0; i < sizeOfRespawnArray - 1; i++)
-        {
-            respawnPoints[i] = respawnPoints[i + 1];
-        }
-        respawnPoints[sizeOfRespawnArray - 1] = gameObject.transform.position;
-        StartRespawnCooldown();
-        //respawnPoint = gameObject.transform.position;
-    }
+        tombstoneOffset = Mathf.Abs(tombstoneOffset); // in case a stinky designer made this value negative
+        wispOrigin = respawnWisp.transform.localPosition;
 
-    // below is the old respawn system. will eventually be deleted but I'm too scared right now
+        respawnWisp.time = 0f;
+        respawnWisp.gameObject.SetActive(false);
 
-/*    /// <summary>
-    /// This method checks if the respawn point is valid by modifying the newOffset value.
-    /// </summary>
-    private void CheckRespawnPoint()
-    {
-        RaycastHit hit;
-        newOffset = ledgeOffset;
-        for (int i = 0; i > ledgeOffset * 2; i--)
-        {
-            // checks if the player is hitting the ground and water (water collider is under the ground) and not the building
-            if (Physics.Raycast(respawnPoint + transform.forward * newOffset, Vector3.down, out hit, Mathf.Infinity, ground) &&
-            Physics.Raycast(respawnPoint + transform.forward * newOffset, Vector3.down, out hit, Mathf.Infinity, water)
-            && !Physics.Raycast(respawnPoint + transform.forward * newOffset, Vector3.down, out hit, Mathf.Infinity, buildingCheck))
-            {
-                float newNewOffset = newOffset - 2f; // check a position in front of the player to make sure they don't spawn in front of water
-                RaycastHit newHit;
-
-                // same thing for position slightly infront of player (so that they don't spawn on an edge or something)
-                if (Physics.Raycast(respawnPoint + transform.forward * newNewOffset, Vector3.down, out newHit, Mathf.Infinity, ground) &&
-                Physics.Raycast(respawnPoint + transform.forward * newNewOffset, Vector3.down, out newHit, Mathf.Infinity, water)
-                && !Physics.Raycast(respawnPoint + transform.forward * newNewOffset, Vector3.down, out newHit, Mathf.Infinity, buildingCheck))
-                {
-                    RaycastHit tombstoneBlues; // i am going insane
-                    Vector3 potentialRespawn = respawnPoint + transform.forward * newOffset;
-                    // NOW we check if the tombstone will spawn weirdly. If it doesn't we can finally return.
-                    if (Physics.Raycast(potentialRespawn + transform.forward * (tombstoneOffset + 1), Vector3.down, out tombstoneBlues, Mathf.Infinity, ground) &&
-                    Physics.Raycast(potentialRespawn + transform.forward * (tombstoneOffset + 1), Vector3.down, out tombstoneBlues, Mathf.Infinity, water)
-                    && !Physics.Raycast(potentialRespawn + transform.forward * (tombstoneOffset + 1), Vector3.down, out tombstoneBlues, Mathf.Infinity, buildingCheck))
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        newOffset--;
-                    }
-                }
-                else
-                {
-                    newOffset--;
-                }
-            }
-            else
-            {
-                newOffset--;
-            }
-        }
-        Debug.Log("Offset is 0");
-        newOffset = 0; // if all else fails, just spawn player at their last ground pos
-    }
-
-
-    /// <summary>
-    /// This coroutine lerps the player's position from their current position to the respawn point position + liftHeight.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator RespawningPlayer()
-    {
-        Vector3 rotationRespawn = new Vector3(respawnPoint.x, transform.position.y, respawnPoint.z);
-        Vector3 rotationControl = new Vector3(respawnPoint.x, control.transform.position.y, respawnPoint.z);
-        float elapsedTime = 0;
-        Vector3 initialPosition = transform.position;
-        transform.rotation = Quaternion.LookRotation((rotationRespawn - transform.position)) * Quaternion.Euler(0, 180, 0);
-        CheckRespawnPoint();
-        respawnPoint += transform.forward * newOffset;
-        orderHandler.DropEverything(respawnPoint);
-        Vector3 targetPosition = new Vector3(respawnPoint.x, respawnPoint.y - liftHeight, respawnPoint.z); // Change height to position before lifting
-        control.transform.rotation = Quaternion.LookRotation((rotationControl - control.transform.position)) * Quaternion.Euler(0, 180, 0);
-        Quaternion initialRotation = control.transform.rotation;
-        Quaternion targetRotation = control.transform.rotation * Quaternion.Euler(0, 180, 0);
-        Instantiate(respawnGravestone, respawnPoint + transform.forward * tombstoneOffset, targetRotation); // spawn respawn gravestone
-
-        // Moving player to respawn position below ground
-        while (elapsedTime < respawnDuration)
-        {
-            transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / respawnDuration);
-            control.transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsedTime / respawnDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        control.transform.rotation = targetRotation;
-
-        transform.position = targetPosition;
-        control.GetComponent<BallDriving>().enabled = true;
-
-
-        // Resetting variables
-        elapsedTime = 0;
-        initialPosition = transform.position;
-        targetPosition = initialPosition + Vector3.up * liftHeight;
-
-        // Lifting player above ground
-        while (elapsedTime < liftDuration)
-        {
-            transform.position = Vector3.Lerp(initialPosition, targetPosition, elapsedTime / liftDuration);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        // Turn gravity and collider back on
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<SphereCollider>().enabled = true;
-        StopRespawnCoroutine();
-    }*/
-
-    /// <summary>
-    /// This method checks the array of respawn points and returns one that can be used.
-    /// </summary>
-    /// <returns>Coordinates of respawn point that can be used, if none are optimal return the last known one.</returns>
-    private Vector3 GetRespawnPoint()
-    {
-        RaycastHit hit;
-        bool groundCast, waterCast, buildingCast;
-        for (int i = sizeOfRespawnArray - 2; i >= 0; i--)
-        {
-            bool validSpawn = true;
-            Vector3 t = respawnPoints[i];
-            for(int j=-1;j<=1;j+=1) // checks one behind, one at, and one ahead to validate respawn point
-            {
-                groundCast = Physics.Raycast(t + transform.forward * j, Vector3.down, out hit, Mathf.Infinity, ground);
-                waterCast = Physics.Raycast(t + transform.forward * j, Vector3.down, out hit, Mathf.Infinity, water);
-                buildingCast = Physics.Raycast(t + transform.forward * j, Vector3.down, out hit, Mathf.Infinity, buildingCheck);
-                if (!(groundCast && waterCast && !buildingCast))
-                {
-                    validSpawn = false; break;
-                }
-            }
-            if(validSpawn) // if this is a valid spawn, return it
-            {
-                return (t);
-            }
-            
-        }
-        return (respawnPoints[sizeOfRespawnArray - 1]); // worst case return, hopefully will never get here
     }
 
     /// <summary>
@@ -241,59 +100,79 @@ public class Respawn : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RespawnPlayer()
     {
-        // position of ball
-        Vector3 target = GetRespawnPoint();
-        Vector3 below = new Vector3(target.x, target.y - liftHeight, target.z);
-        Vector3 start = transform.position;
-        
-        // rotation of control
-        Vector3 controlLookat = new Vector3(target.x, control.transform.position.y, target.z) - control.transform.position;
-        int rotation = GameManager.Instance.MainState == GameState.FinalPackage ? 0 : 180;
-        control.transform.rotation = Quaternion.LookRotation(controlLookat) * Quaternion.Euler(0,rotation,0);
-        Quaternion initialRotation = control.transform.rotation;
+        RespawnPoint rsp = RespawnManager.Instance.GetRespawnPoint(lastGroundedPos); // get the RSP
+        rsp.InUse = true;
+        // init the wisp
+        Vector3 wispStart = respawnWisp.transform.position;
+        respawnWisp.transform.position -= Vector3.up * wispSpawnOffset;
+        respawnWisp.gameObject.SetActive(true);
+        respawnWisp.time = wispTrailTime;
 
-        orderHandler.DropEverything(target);
+        orderHandler.DropEverything(rsp.Order1Spawn, rsp.Order2Spawn, false);
 
         float elapsedTime = 0;
-        Instantiate(respawnGravestone, target + control.transform.forward * tombstoneOffset, control.transform.rotation); // spawn respawn gravestone
+        Vector3 wispRise = wispStart + Vector3.up * wispHeight; // position of the wisp risen above water
 
-        // move the player under respawn point and rotate camera
-        while (elapsedTime < respawnDuration)
+        // rotate the control around the wisp while it's rising
+        Quaternion controlStart = control.transform.rotation;
+        Quaternion controlEnd = Quaternion.LookRotation(rsp.PlayerFacingDirection - rsp.PlayerSpawn, Vector3.up);
+
+        // create the tombstone
+        Vector3 graveForward = controlEnd * Vector3.forward;
+        Instantiate(respawnGravestone, rsp.PlayerSpawn - graveForward * tombstoneOffset, controlEnd);
+
+        // raise the wisp above the water
+        while (elapsedTime < wispRiseTime)
         {
-            transform.position = Vector3.Lerp(start, below, elapsedTime / respawnDuration);
-            control.transform.rotation = initialRotation * Quaternion.Euler(0,180*(elapsedTime/respawnDuration), 0);
+            respawnWisp.transform.position = Vector3.Lerp(wispStart, wispRise, elapsedTime / wispRiseTime); // lift wisp above water
+            control.transform.rotation = Quaternion.Slerp(controlStart, controlEnd, elapsedTime / wispRiseTime); // rotate around wisp
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
+        // reset vars for next movement
         elapsedTime = 0;
-        target = new Vector3(target.x, target.y + liftHeight, target.z);
+        Vector3 casketLocation = rsp.PlayerSpawn - Vector3.up * graveDepth;
+        wispStart = respawnWisp.transform.position;
+        Vector3 playerStart = transform.position;
 
-        // lift player out of their "tomb"
+        // move the wisp to the casket under RSP
+        while (elapsedTime < wispToCasketTime)
+        {
+            respawnWisp.transform.position = Vector3.Lerp(wispStart, casketLocation, elapsedTime / wispToCasketTime); // move wisp to casket
+            transform.position = Vector3.Lerp(playerStart, casketLocation, elapsedTime / wispToCasketTime); // for control to follow wisp
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // reset vars for next movement
+        elapsedTime = 0;
+        Vector3 liftTarget = new Vector3(rsp.PlayerSpawn.x, rsp.PlayerSpawn.y + liftHeight, rsp.PlayerSpawn.z);
+
+        // re-enable player mesh and disable wisp
+        modelParent.SetActive(true);
+        respawnWisp.gameObject.SetActive(false);
+
+        // lift player out of their tomb
         while (elapsedTime < liftDuration)
         {
-            transform.position = Vector3.Lerp(below, target, elapsedTime / liftDuration);
+            transform.position = Vector3.Lerp(casketLocation, liftTarget, elapsedTime / liftDuration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<SphereCollider>().enabled = true;
-        StopRespawnCoroutine();
-    }
+        rsp.InitPoint();
 
-    private IEnumerator SetRespawnCooldown()
-    {
-        shouldSetRespawn = false;
-        yield return new WaitForSeconds(respawnSetInterval);
-        shouldSetRespawn = true;
-        respawnSetCooldown = null;
+        StopRespawnCoroutine();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Water")
         {
+            qa.Deaths++;
             soundPool.PlayDeathSound();
             // Turning these off fixes camera jittering on respawn
             GetComponent<Rigidbody>().velocity = Vector3.zero; // set velocity to 0 on respawn
@@ -310,6 +189,9 @@ public class Respawn : MonoBehaviour
         {
             respawnCoroutine = RespawnPlayer();
         }
+
+        modelParent.SetActive(false);
+
         StartCoroutine(respawnCoroutine);
     }
 
@@ -319,32 +201,14 @@ public class Respawn : MonoBehaviour
         {
             StopCoroutine(respawnCoroutine);
         }
+
+        respawnWisp.time = 0f;
+        modelParent.SetActive(true);
+        respawnWisp.gameObject.SetActive(false);
+        respawnWisp.transform.localPosition = wispOrigin;
+
         respawnCoroutine = null;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<SphereCollider>().enabled = true;
-    }
-
-    private void StartRespawnCooldown()
-    {
-        if(respawnSetCooldown == null)
-        {
-            respawnSetCooldown = SetRespawnCooldown();
-        }
-        StartCoroutine(respawnSetCooldown);
-    }
-
-    private void StopRespawnCooldown()
-    {
-        if(respawnSetCooldown != null)
-        {
-            StopCoroutine(respawnSetCooldown);
-        }
-        shouldSetRespawn = true;
-    }
-
-    private void ClearRespawnArray()
-    {
-        respawnPoints = new Vector3[sizeOfRespawnArray];
-        StopRespawnCooldown();
     }
 }
