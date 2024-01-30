@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using TMPro;
 
 public class MainMenu : SingletonMonobehaviour<MainMenu>
 {
@@ -11,6 +11,18 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
 
     [Header("Player Select Objects")]
     [SerializeField] Canvas PlayerSelectCanvas;
+
+    [SerializeField] TMP_Text p1ConnectedController;
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            PlayerInstantiate.Instance.ClearPlayerArray();
+            p1ConnectedController.text = "";
+
+        }
+    }
 
     public void ScrollMenu(bool direction)
     {
@@ -76,5 +88,10 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
         PlayerSelectCanvas.enabled = false;
 
         GameManager.Instance.SetGameState(GameState.Menu);
+    }
+
+    public void Player1ControllerConnected(PlayerInput playerInput)
+    {
+        p1ConnectedController.text = playerInput.devices[0].name;
     }
 }
