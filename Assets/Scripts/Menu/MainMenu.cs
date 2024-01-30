@@ -13,12 +13,18 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
     [SerializeField] Canvas PlayerSelectCanvas;
 
     [SerializeField] TMP_Text p1ConnectedController;
+    PlayerInstantiate playerInstantiate;
 
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            PlayerInstantiate.Instance.ClearPlayerArray();
+            if (playerInstantiate == null)
+                playerInstantiate = PlayerInstantiate.Instance;
+
+            playerInstantiate.ClearPlayerArray();
+            ScoreManager.Instance.UpdateOrderHandlers(playerInstantiate.PlayerInputs);
+
             p1ConnectedController.text = "";
 
         }
