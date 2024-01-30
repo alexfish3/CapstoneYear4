@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 {
@@ -126,7 +127,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             playerInput.gameObject.GetComponent<PlayerUIHandler>().menuInteractions.SwapToPlayerSelect();
         }
 
-
         // Up the player count
         playerCount++;
 
@@ -198,6 +198,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         // Unreadys up the player joining, which stops the countdown if it is currently counting
         UnreadyUp(nextFillSlot);
+
+        // Disables text for fillslot text based on player's fill slot
+        PlayerSelectCanvas.Instance.TogglePressButtonTexts(nextFillSlot - 1, false);
     }
 
     ///<summary>
@@ -297,16 +300,20 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///<summary>
     /// Event to remove the player from references
     ///</summary>
-    public void RemovePlayerReference(PlayerInput playerInput)
+    public void RemovePlayerRef(PlayerInput playerInput)
     {
+        Debug.Log("Remove Player");
+
         // If player spawn is disabled
         if (allowPlayerSpawn == false && Constants.SPAWN_MID_MATCH == false)
         {
             return;
         }
 
-        Debug.Log("Remove Player");
-        RemoveFromPlayerArray(playerInput);
+        int position = RemoveFromPlayerArray(playerInput);
+
+        //Enabled text for fillslot text based on player's removed position
+        PlayerSelectCanvas.Instance.TogglePressButtonTexts(position, true);
 
         ScoreManager.Instance.UpdateOrderHandlers(avaliblePlayerInputs);
         QAManager.Instance.UpdateQAHandlers(avaliblePlayerInputs);
@@ -337,18 +344,19 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     }
 
     ///<summary>
-    /// Removes the player input from the player array
+    /// Removes the player input from the player array, returns position where it was removed
     ///</summary>
-    public void RemoveFromPlayerArray(PlayerInput playerInput)
+    public int RemoveFromPlayerArray(PlayerInput playerInput)
     {
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
             if (avaliblePlayerInputs[i] == playerInput)
             {
                 avaliblePlayerInputs[i] = null;
-                break;
+                return i;
             }
         }
+        return 0;
     }
 
     ///<summary>
@@ -629,7 +637,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
             avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPlay();
         }
-
     }
 
 }

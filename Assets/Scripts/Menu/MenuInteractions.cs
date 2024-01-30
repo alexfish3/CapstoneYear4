@@ -192,11 +192,12 @@ public class MenuInteractions : MonoBehaviour
             if(hostPlayer == false)
             {
                 PlayerInstantiate.Instance.SubtractPlayerCount();
-                PlayerInstantiate.Instance.RemovePlayerReference(transform.parent.gameObject.transform.parent.GetComponent<PlayerInput>());
+                PlayerInstantiate.Instance.RemovePlayerRef(transform.parent.gameObject.transform.parent.GetComponent<PlayerInput>());
             }
             else
             {
-                Debug.Log("You are host, you cannot leave");
+                // Goes back to main menu
+                MainMenu.Instance.SwapToMainMenu();
             }
         }
         else

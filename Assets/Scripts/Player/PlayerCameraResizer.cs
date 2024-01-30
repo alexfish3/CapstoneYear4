@@ -173,10 +173,19 @@ public class PlayerCameraResizer : MonoBehaviour
             menuUICamera.enabled = true;
 
             Debug.Log("Reparent to menu cam");
-            if(mainCamera.GetUniversalAdditionalCameraData().cameraStack.Count > 0)
+
+            try
             {
-                mainCamera.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(1);
+                if (mainCamera.GetUniversalAdditionalCameraData().cameraStack.Count > 0)
+                {
+                    mainCamera.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(1);
+                }
             }
+            catch
+            {
+                Debug.LogWarning("Cannot Reparent Camera");
+            }
+
             playerCamera.GetUniversalAdditionalCameraData().cameraStack.Add(menuUICamera);
 
             MenuCameraReparented = true;

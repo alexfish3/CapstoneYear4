@@ -55,6 +55,10 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
             // Quit
             case 1:
                 Debug.Log("Quit");
+
+            #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+            #endif
                 Application.Quit();
                 break;
         }
@@ -65,5 +69,12 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
         PlayerSelectCanvas.enabled = true;
 
         GameManager.Instance.SetGameState(GameState.PlayerSelect);
+    }
+
+    public void SwapToMainMenu()
+    {
+        PlayerSelectCanvas.enabled = false;
+
+        GameManager.Instance.SetGameState(GameState.Menu);
     }
 }
