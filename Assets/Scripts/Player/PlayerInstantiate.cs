@@ -120,6 +120,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             Debug.Log("Spawn Host Player");
             playerInput.gameObject.GetComponent<PlayerUIHandler>().menuInteractions.hostPlayer = true;
             playerInput.gameObject.GetComponent<PlayerUIHandler>().menuInteractions.SwapMenuType(MenuType.MainMenu);
+
+            MainMenu.Instance.Player1ControllerConnected(playerInput);
         }
         else
         {
@@ -326,6 +328,22 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public void SubtractPlayerCount()
     {
         playerCount--;
+    }
+
+    ///<summary>
+    /// Destroys all connected players
+    ///</summary>
+    public void ClearPlayerArray()
+    {
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
+        {
+            if (avaliblePlayerInputs[i] != null)
+            {
+                Destroy(avaliblePlayerInputs[i].gameObject);
+                avaliblePlayerInputs[i] = null;
+                playerCount--;
+            }
+        }
     }
 
     ///<summary>
