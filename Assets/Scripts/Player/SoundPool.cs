@@ -10,14 +10,15 @@ public class SoundPool : MonoBehaviour
     private GameObject[] sourceGOs;
 
     // refs to specific sources
+    private AudioSource drivingSource;
     private AudioSource engineSource;
     private AudioSource brakeSource;
     private AudioSource driftSource;
     private AudioSource boostSource;
+    private AudioSource miniBoostSource;
 
     // bools for controlling when certain sounds should play
     private bool shouldPlay = false;
-    private bool idling = false;
     private bool phasing = false;
 
     private IEnumerator emoteRoutine;
@@ -80,10 +81,11 @@ public class SoundPool : MonoBehaviour
 
     private void InitEngineSource()
     {
-        if(engineSource != null) { engineSource = null; }
-        engineSource = GetAvailableSource();
+        if(engineSource == null) { engineSource = GetAvailableSource(); }
+        SoundManager.Instance.SwitchSource(ref engineSource, "Player");
         engineSource.loop = true;
         shouldPlay = true;
+        PlayIdleSound();
     }
 
     private void TurnOffPlayerSounds()
@@ -96,26 +98,40 @@ public class SoundPool : MonoBehaviour
 
     // below are methods for starting and stopping specific sounds. Because of this there's no need to use our normal commenting standards.
 
-    public void PlayEngineSound()
+    public void PlayDrivingSound()
     {
-        if (!idling || !shouldPlay ) { return; };
-        //if(brakingRoutine != null) { StopCoroutine(brakingRoutine); brakingRoutine = null; }
-        SoundManager.Instance.PlayEngineSound(engineSource);
-        idling = false;
-        engineSource.loop = true;
+        if (!shouldPlay || drivingSource != null) { return; };
+        drivingSource = GetAvailableSource();
+        SoundManager.Instance.SwitchSource(ref drivingSource, "Player");
+        drivingSource.loop = true;
+        SoundManager.Instance.PlayEngineSound(drivingSource);
+    }
+    public void StopDrivingSound()
+    {
+        if(drivingSource != null)
+        {
+            ResetSource(drivingSource);
+            drivingSource = null;
+        }
     }
     public void PlayIdleSound()
     {
-        if(idling || !shouldPlay) { return; };
-        idling = true;
+        if(!shouldPlay) { return; };
+        if(drivingSource != null)
+        {
+            drivingSource.Stop();
+            ResetSource(drivingSource);
+            drivingSource = null;
+        }
+        engineSource.volume = 0.5f;
         engineSource.loop = true;
         SoundManager.Instance.PlayIdleSound(engineSource);
-
     }
     public void PlayDriftSound()
     {
         if(driftSource != null) { return; }
         driftSource = GetAvailableSource();
+        SoundManager.Instance.SwitchSource(ref driftSource, "Player");
         driftSource.loop = true;
         SoundManager.Instance.PlaySFX("drift", driftSource);
 
@@ -128,11 +144,9 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayBrakeSound()
     {
-        if (driftSource != null) { return; }
-        if(brakeSource == null) 
-        {
-            brakeSource = GetAvailableSource();
-        }
+        if(brakeSource == null) { brakeSource = GetAvailableSource(); }
+        if (!shouldPlay || brakeSource.isPlaying) { return; }
+        SoundManager.Instance.SwitchSource(ref brakeSource, "Player");
         SoundManager.Instance.PlaySFX("brake", brakeSource);
         StartCoroutine(KillSource(brakeSource));
     }
@@ -145,14 +159,17 @@ public class SoundPool : MonoBehaviour
     public void PlayBoostActivate()
     {
         boostSource = GetAvailableSource();
+        SoundManager.Instance.SwitchSource(ref boostSource, "Player");
         SoundManager.Instance.PlaySFX("boost_used", boostSource);
         StartCoroutine(KillSource(boostSource));
     }
     public void PlayMiniBoost()
     {
-        AudioSource source = GetAvailableSource();
-        SoundManager.Instance.PlaySFX("mini", source);
-        StartCoroutine(KillSource(source));
+        if(miniBoostSource == null) { miniBoostSource = GetAvailableSource(); }
+        if (miniBoostSource.isPlaying || !shouldPlay) { return; }
+        SoundManager.Instance.SwitchSource(ref miniBoostSource, "Player");
+        SoundManager.Instance.PlaySFX("mini", miniBoostSource);
+        StartCoroutine(KillSource(miniBoostSource));
     }
     public void PlayPhaseSound()
     {
@@ -190,6 +207,7 @@ public class SoundPool : MonoBehaviour
     public void PlayDeathSound()
     {
         AudioSource source = GetAvailableSource();
+        SoundManager.Instance.SwitchSource(ref source, "Player");
         SoundManager.Instance.PlaySFX("death", source);
         StartCoroutine(KillSource(source));
     }
@@ -265,7 +283,6 @@ public class SoundPool : MonoBehaviour
         {
             yield return null;
         }
-        idling = true;
         engineSource.loop = true;
         SoundManager.Instance.PlayIdleSound(engineSource);
         

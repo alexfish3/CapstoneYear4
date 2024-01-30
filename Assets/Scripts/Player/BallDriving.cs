@@ -280,19 +280,20 @@ public class BallDriving : MonoBehaviour
         leftTrig = inp.LeftTriggerValue;
         rightTrig = inp.RightTriggerValue;
 
-        if (currentVelocity > 0.5 && csv > 0 && ((leftTrig == 1 && !reverseGear) || (rightTrig == 1 && reverseGear)))
-        {
-            soundPool.PlayBrakeSound();
-        }
+        // checks for playing engine and brake sounds
         if (csv == 0)
         {
-            soundPool.PlayIdleSound();
+            soundPool.StopDrivingSound();
         }
         else
         {
-            soundPool.PlayEngineSound();
+            soundPool.PlayDrivingSound();
         }
 
+        if(forwardGear && leftTrig == 1 && !drifting)
+        {
+            soundPool.PlayBrakeSound();
+        }
 
         if (callToDrift && leftStick != 0)
         {
