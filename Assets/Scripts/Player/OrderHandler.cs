@@ -249,14 +249,17 @@ public class OrderHandler : MonoBehaviour
         }
         if (ball.Boosting)
         {
-            if (!otherHandler.IsBoosting)
+            if (otherHandler != null) // I don't know why I have to do this but apparently I do
             {
-                StealOrder(otherHandler);
-            }
-            else
-            {
-                Clash(otherHandler);
-                otherHandler.Clash(this);
+                if (!otherHandler.IsBoosting)
+                {
+                    StealOrder(otherHandler);
+                }
+                else
+                {
+                    Clash(otherHandler);
+                    otherHandler.Clash(this);
+                }
             }
         }
     }

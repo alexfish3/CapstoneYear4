@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -65,6 +66,9 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [Range(0f, 1f)] [SerializeField] private float emotePitchMin;
     [Range(1f, 2f)] [SerializeField] private float emotePitchMax;
 
+    [Header("Debug")]
+    [SerializeField] private bool simulatePlayers;
+
     private void OnEnable()
     {
         musicSource = GetComponent<AudioSource>();
@@ -116,7 +120,17 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         sfxDictionary.Add("scroll", scroll);
         sfxDictionary.Add("pause", pause);
 
-        
+        if(simulatePlayers)
+        {
+            IEnumerator p2, p3, p4;
+            p2 = RandomNoises();
+            p3 = RandomNoises();
+            p4 = RandomNoises();
+            StartCoroutine(p2);
+            StartCoroutine(p3);
+            StartCoroutine(p4);
+
+        }
     }
     // below are methods to play various BGMs
     private void PlayMenuTheme()
@@ -262,5 +276,36 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         source.clip = loop;
         source.Play();
         source.loop = true;
+    }
+
+    /// <summary>
+    /// This coroutine plays random noises from the SFX dictionary every. Used in debug to simulate multiple players because I have no bitches.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator RandomNoises()
+    {
+        AudioSource engine = Instantiate(audioSourcePrefab, this.transform).GetComponent<AudioSource>();
+        SwitchSource(ref engine, "Player");
+        engine.volume = 0.5f;
+        engine.clip = engineIdle;
+        engine.loop = true;
+        engine.Play();
+
+        while (true)
+        {
+            AudioSource source = Instantiate(audioSourcePrefab, this.transform).GetComponent<AudioSource>();
+            string channel = Random.Range(0, 10) < 5f ? "SFX" : "Player"; // to randomize the source
+            SwitchSource(ref source, channel);
+
+
+            source.clip = sfxDictionary.ElementAt(Random.Range(0, sfxDictionary.Count)).Value;
+            source.Play();
+            while (source.isPlaying)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(Random.Range(2, 5));
+            Destroy(source.gameObject);
+        }
     }
 }
