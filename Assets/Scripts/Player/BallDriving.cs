@@ -491,7 +491,7 @@ public class BallDriving : MonoBehaviour
                 {
                     sphereBody.AddForce((driftDirection == 1 ? ((driftSidewaysScalar * transform.forward) - transform.right).normalized : ((driftSidewaysScalar * transform.forward) + transform.right).normalized) * totalForce, ForceMode.Acceleration);
                 }
-                else if (boosting)
+                else if (wheelying)
                 {
                     sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
                 }
@@ -505,7 +505,7 @@ public class BallDriving : MonoBehaviour
                 sphereBody.AddForce(scooterModel.transform.right * totalForce, ForceMode.Acceleration);
             }
         }
-        else if (boosting) //allows boosting in mid-air. bit of a weird implementation; possibly refactor in the future.
+        else if (wheelying) //allows boosting in mid-air. bit of a weird implementation; possibly refactor in the future.
         {
             sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
         }
