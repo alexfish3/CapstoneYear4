@@ -741,16 +741,19 @@ public class BallDriving : MonoBehaviour
         {
             driftTier = 1;
             DriftSparkSet(1);
+            soundPool.PlayDriftSpark(0);
         }
         if (driftPoints > (driftBoostThreshold * 2))
         {
             driftTier = 2;
             DriftSparkSet(2);
+            //soundPool.PlayDriftSpark(1);
         }
         if (driftPoints > (driftBoostThreshold * 3))
         {
             driftTier = 3;
             DriftSparkSet(3);
+            //soundPool.PlayDriftSpark(2);
         }
 
         return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax); //scales steering by speed (also prevents turning on the spot)
@@ -762,6 +765,7 @@ public class BallDriving : MonoBehaviour
     private void DirtyDriftDrop()
     {
         soundPool.StopDriftSound();
+        soundPool.StopDriftSpark();
         drifting = false;
         callToDrift = false;
         driftPoints = 0;

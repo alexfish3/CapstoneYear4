@@ -16,6 +16,9 @@ public class SoundPool : MonoBehaviour
     private AudioSource driftSource;
     private AudioSource boostSource;
     private AudioSource miniBoostSource;
+    private AudioSource driftSparkSource;
+
+    private int currDriftIndex = -1;
 
     // bools for controlling when certain sounds should play
     private bool shouldPlay = false;
@@ -237,6 +240,24 @@ public class SoundPool : MonoBehaviour
         SoundManager.Instance.PlaySFX("pause", source);
         StartCoroutine(KillSource(source));
     }
+
+    public void PlayDriftSpark(int index)
+    {
+        if (currDriftIndex == index) { return; }
+        currDriftIndex = index;
+        if(driftSparkSource == null)
+            driftSparkSource = GetAvailableSource();
+
+        SoundManager.Instance.SwitchSource(ref driftSparkSource, "SFX");
+        SoundManager.Instance.PlayDriftSparkSound(driftSparkSource, index);
+    }
+
+    public void StopDriftSpark()
+    {
+        if (driftSparkSource != null)
+            ResetSource(driftSparkSource);
+        currDriftIndex = -1;
+    }    
 
     // emote
     public void PlayEmote(int index)
