@@ -873,6 +873,9 @@ public class BallDriving : MonoBehaviour
         boostAble = false;
         boostInitialburst = true;
         DirtyDriftDrop();
+        stopped = false;
+        reverseGear = false;
+        forwardGear = true;
 
         ToggleCollision(true);
 
