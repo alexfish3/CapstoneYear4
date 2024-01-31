@@ -17,16 +17,32 @@ public class RespawnManager : SingletonMonobehaviour<RespawnManager>
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapBegin += () => InitRespawnPoints(mainMapRSPParent);
-        GameManager.Instance.OnSwapGoldenCutscene += () => InitRespawnPoints(finalMapRSPParent);
+        GameManager.Instance.OnSwapBegin += InitMainRSPs;
+        GameManager.Instance.OnSwapGoldenCutscene += InitFinalRSPs;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapBegin -= () => InitRespawnPoints(mainMapRSPParent);
-        GameManager.Instance.OnSwapGoldenCutscene -= () => InitRespawnPoints(finalMapRSPParent);
+        GameManager.Instance.OnSwapBegin -= InitMainRSPs;
+        GameManager.Instance.OnSwapGoldenCutscene -= InitFinalRSPs;
     }
 
+    // for events
+
+    private void InitMainRSPs()
+    {
+        InitRespawnPoints(mainMapRSPParent);
+    }
+
+    private void InitFinalRSPs()
+    {
+        InitRespawnPoints(finalMapRSPParent);
+    }
+
+    /// <summary>
+    /// Initializes the respawn point array based on the child GOs of the parent parameter.
+    /// </summary>
+    /// <param name="parent">Parent GO of the respawn points for the map.</param>
     private void InitRespawnPoints(GameObject parent)
     {
         respawnPoints = new RespawnPoint[parent.transform.childCount];

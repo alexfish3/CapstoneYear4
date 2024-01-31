@@ -31,6 +31,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public event Action OnSwapGoldenCutscene;
     public event Action OnSwapFinalPackage;
     public event Action OnSwapResults;
+    public event Action OnSwapAnything;
 
     public void Start()
     {
@@ -44,6 +45,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     {
         Debug.Log($"Setting state to: {state}");
         mainState = state;
+
+        OnSwapAnything?.Invoke();
 
         // Calls an event for the certain state that is swapped to
         switch(mainState)
