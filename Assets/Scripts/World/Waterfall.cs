@@ -25,6 +25,7 @@ public class Waterfall : MonoBehaviour
         rend = GetComponent<MeshRenderer>();
         waterWall = GetComponent<Collider>();
         canDriveThru = startOpen;
+        rend.material.color = Color.blue;
         StartWait();
     }
 
@@ -33,7 +34,7 @@ public class Waterfall : MonoBehaviour
     /// </summary>
     private void StartWait()
     {
-        rend.material.color = canDriveThru ? Color.cyan : Color.blue;
+        rend.enabled = !canDriveThru;
         waterWall.isTrigger = canDriveThru;
         float waitTime = canDriveThru ? openTime : closedTime;
         StartCoroutine(WaitForChangedState(waitTime));
