@@ -53,6 +53,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [SerializeField] private AudioClip death;
     [SerializeField] private AudioClip clockTowerBells;
 
+    [SerializeField] private AudioClip[] driftSparks;
+
     [Header("UI")]
     [SerializeField] private AudioClip enter;
     [SerializeField] private AudioClip back;
@@ -196,6 +198,21 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         source.clip = engineIdle;
         source.gameObject.SetActive(true);
         source.Play();
+    }
+
+    public void PlayDriftSparkSound(AudioSource source, int index)
+    {
+        try
+        {
+            source.clip = driftSparks[index];
+            source.gameObject.SetActive(true);
+            source.Play();
+        }
+        catch
+        {
+            Debug.LogError($"Couldn't find index {index} of DriftSparks array length {driftSparks.Length}.");
+            return;
+        }
     }
 
     // for playing sticker sounds
