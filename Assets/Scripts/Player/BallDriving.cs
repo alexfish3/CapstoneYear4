@@ -307,18 +307,16 @@ public class BallDriving : MonoBehaviour
         }
 
         //Assigns drag
+        sphereBody.drag = startingDrag;
         if (!grounded)
         {
             sphereBody.drag = fallingDrag;
         }
-        else if (boosting)
+       if (boosting)
         {
             sphereBody.drag = boostingDrag;
         }
-        else
-        {
-            sphereBody.drag = startingDrag;
-        }
+        
 
         //Checks for whether the scooter has been still long enough to be considered stopped
         currentVelocity = sphereBody.velocity.magnitude;
