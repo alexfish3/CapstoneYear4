@@ -78,16 +78,16 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         // events for music
         GameManager.Instance.OnSwapMenu += PlayMenuTheme;
         GameManager.Instance.OnSwapPlayerSelect += PlayPlayerSelectTheme;
-        GameManager.Instance.OnSwapMainLoop += PlayMainTheme;
-        GameManager.Instance.OnSwapFinalPackage += PlayFinalTheme;
+        GameManager.Instance.OnSwapStartingCutscene += PlayMainTheme;
+        GameManager.Instance.OnSwapGoldenCutscene += PlayFinalTheme;
         GameManager.Instance.OnSwapResults += PlayResultsTheme;
     }
     private void OnDisable()
     {
         GameManager.Instance.OnSwapMenu -= PlayMenuTheme;
-        GameManager.Instance.OnSwapPlayerSelect -= PlayPlayerSelectTheme;
-        GameManager.Instance.OnSwapMainLoop -= PlayMainTheme;
-        GameManager.Instance.OnSwapFinalPackage -= PlayFinalTheme;
+        GameManager.Instance.OnSwapPlayerSelect += PlayPlayerSelectTheme;
+        GameManager.Instance.OnSwapStartingCutscene -= PlayMainTheme;
+        GameManager.Instance.OnSwapGoldenCutscene -= PlayFinalTheme;
         GameManager.Instance.OnSwapResults -= PlayResultsTheme;
     }
 
