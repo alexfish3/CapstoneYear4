@@ -271,6 +271,12 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            StopBoostCooldown();
+            boostAble = true;
+        }
+
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
 
         if (!canDrive)
