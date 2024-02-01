@@ -61,6 +61,8 @@ public class PauseMenu : MonoBehaviour
         subPauseGO.SetActive(false);
 
         tint.SetActive(false);
+
+        SoundManager.Instance.ChangeSnapshot("gameplay");
     }
 
     public void ScrollMenu(bool direction)

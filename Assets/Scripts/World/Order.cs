@@ -165,8 +165,14 @@ public class Order : MonoBehaviour
     public void DeliverOrder()
     {
         arrow.SetActive(false);
-        beacon.ThrowOrder(0.25f); // hard coded value for throwing the order to a customer
-        
+        if (value != Constants.OrderValue.Golden)
+        {
+            beacon.ThrowOrder(0.25f); // hard coded value for throwing the order to a customer
+        }
+        else
+        {
+            EraseOrder(); // temp fix for dotween handoff bug
+        }
     }
 
     /// <summary>
@@ -174,7 +180,6 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseOrder()
     {
-        Debug.Log("ERASING ORDER!!");
         arrow.SetActive(false);
         
         // Removes the ui from all players
