@@ -81,7 +81,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a3cf45a14f5aec458385d979f1a8110, type: 3}
       insertIndex: -1
       addedObject: {fileID: 559910789654613360}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a3cf45a14f5aec458385d979f1a8110, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -1293193629685974351}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a3cf45a14f5aec458385d979f1a8110, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1688458304817594518}
   m_SourcePrefab: {fileID: 100100000, guid: 1a3cf45a14f5aec458385d979f1a8110, type: 3}
+--- !u!23 &5482595258579343359 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 1a3cf45a14f5aec458385d979f1a8110, type: 3}
+  m_PrefabInstance: {fileID: 6617902175357913979}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6275461682524550698 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 1a3cf45a14f5aec458385d979f1a8110, type: 3}
@@ -156,3 +167,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.00071943353, y: 0.0068541532, z: 0.0046256157}
   m_Center: {x: -0.000009917911, y: -0.000056428995, z: 0.002293434}
+--- !u!114 &-1293193629685974351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275461682524550698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42710fd87f7b6f0498875f90ed479c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  render: {fileID: 5482595258579343359}
+--- !u!114 &1688458304817594518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6275461682524550698}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c707e9c2988977545b708d95fa42e30f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnWaitTime: 10

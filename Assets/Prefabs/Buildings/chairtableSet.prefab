@@ -81,7 +81,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
       insertIndex: -1
       addedObject: {fileID: 606123682951810768}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9076242649005558898}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3053688505841802247}
   m_SourcePrefab: {fileID: 100100000, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
+--- !u!23 &8016918710080481796 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
+  m_PrefabInstance: {fileID: 8683015633017058944}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8377026703719402449 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: d02b190a4a80a374e9b70c93e7391868, type: 3}
@@ -156,3 +167,29 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0035779427, y: 0.0069723395, z: 0.0042779273}
   m_Center: {x: 0.00002315879, y: 0.00016064169, z: 0.0021129588}
+--- !u!114 &9076242649005558898
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8377026703719402449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c707e9c2988977545b708d95fa42e30f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnWaitTime: 10
+--- !u!114 &3053688505841802247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8377026703719402449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42710fd87f7b6f0498875f90ed479c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  render: {fileID: 8016918710080481796}

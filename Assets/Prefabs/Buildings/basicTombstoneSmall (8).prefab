@@ -81,7 +81,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bb6868ec0703f924ead2b4264218fbac, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8246543287328022179}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bb6868ec0703f924ead2b4264218fbac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -3531622146426086338}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: bb6868ec0703f924ead2b4264218fbac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -7562306148940746545}
   m_SourcePrefab: {fileID: 100100000, guid: bb6868ec0703f924ead2b4264218fbac, type: 3}
+--- !u!23 &1085030491137349972 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: bb6868ec0703f924ead2b4264218fbac, type: 3}
+  m_PrefabInstance: {fileID: 1787745272296048080}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1445146456231655553 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: bb6868ec0703f924ead2b4264218fbac, type: 3}
@@ -156,3 +167,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-3531622146426086338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445146456231655553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42710fd87f7b6f0498875f90ed479c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  render: {fileID: 1085030491137349972}
+--- !u!114 &-7562306148940746545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445146456231655553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c707e9c2988977545b708d95fa42e30f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnWaitTime: 10

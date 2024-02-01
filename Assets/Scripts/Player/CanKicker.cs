@@ -21,7 +21,7 @@ public class CanKicker : MonoBehaviour
             Physics.IgnoreCollision(control.Sphere.GetComponent<Collider>(), other);
             Vector3 kickDirection = (other.transform.position - canKickingSpot.position).normalized;
             other.GetComponent<Rigidbody>().AddForce(kickDirection * kickingForce * control.CurrentVelocity);
-            Destroy(other.gameObject, 10);
+            other.gameObject.GetComponent<Kickable>().GetKicked();
         }
     }
 }

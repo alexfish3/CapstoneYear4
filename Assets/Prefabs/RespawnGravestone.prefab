@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 1694800469576353427}
   - component: {fileID: 5349114834026511616}
   - component: {fileID: 2634943632340062778}
+  - component: {fileID: -1610026411880427043}
+  - component: {fileID: -364064500279067276}
   m_Layer: 22
   m_Name: RespawnGravestone
   m_TagString: Kickable
@@ -118,6 +120,32 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1610026411880427043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814084137873696000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c707e9c2988977545b708d95fa42e30f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnWaitTime: 7
+--- !u!114 &-364064500279067276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1814084137873696000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42710fd87f7b6f0498875f90ed479c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  render: {fileID: 7777689917033590660}
 --- !u!1001 &8948215284918792960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -182,6 +210,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 849282f14c1c3e0419c0073bf9083e81, type: 2}
     - target: {fileID: 919132149155446097, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
       propertyPath: m_Name
       value: graveCross
@@ -195,6 +227,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
+--- !u!23 &7777689917033590660 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
+  m_PrefabInstance: {fileID: 8948215284918792960}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8909469271784117483 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}

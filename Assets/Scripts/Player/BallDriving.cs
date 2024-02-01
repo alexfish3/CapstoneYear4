@@ -271,6 +271,12 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.B))
+        {
+            StopBoostCooldown();
+            boostAble = true;
+        }
+
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
 
         if (!canDrive)
@@ -301,18 +307,16 @@ public class BallDriving : MonoBehaviour
         }
 
         //Assigns drag
+        sphereBody.drag = startingDrag;
         if (!grounded)
         {
             sphereBody.drag = fallingDrag;
         }
-        else if (boosting)
+       if (boosting)
         {
             sphereBody.drag = boostingDrag;
         }
-        else
-        {
-            sphereBody.drag = startingDrag;
-        }
+        
 
         //Checks for whether the scooter has been still long enough to be considered stopped
         currentVelocity = sphereBody.velocity.magnitude;

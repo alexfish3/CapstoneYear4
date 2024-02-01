@@ -202,7 +202,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0ddd6e29915f8440ae244069bfe0ba2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1557917737727088308}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0ddd6e29915f8440ae244069bfe0ba2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6036645736033075572}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b0ddd6e29915f8440ae244069bfe0ba2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -4370009088612027426}
   m_SourcePrefab: {fileID: 100100000, guid: b0ddd6e29915f8440ae244069bfe0ba2, type: 3}
+--- !u!23 &686476574475276396 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: b0ddd6e29915f8440ae244069bfe0ba2, type: 3}
+  m_PrefabInstance: {fileID: 2181799884298603752}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1334796939305578937 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b0ddd6e29915f8440ae244069bfe0ba2, type: 3}
@@ -277,6 +288,32 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0033821496, y: 0.003755123, z: 0.035085928}
   m_Center: {x: -0.00012650211, y: -0.00013376417, z: 0.017350757}
+--- !u!114 &6036645736033075572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334796939305578937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c707e9c2988977545b708d95fa42e30f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnWaitTime: 10
+--- !u!114 &-4370009088612027426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334796939305578937}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42710fd87f7b6f0498875f90ed479c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  render: {fileID: 686476574475276396}
 --- !u!4 &1859412778815990531 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b0ddd6e29915f8440ae244069bfe0ba2, type: 3}
