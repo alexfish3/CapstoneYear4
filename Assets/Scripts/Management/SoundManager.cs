@@ -11,7 +11,8 @@ using UnityEngine.Rendering;
 /// </summary>
 public class SoundManager : SingletonMonobehaviour<SoundManager>
 {
-    private AudioSource musicSource;
+    [Tooltip("Reference to the source that will play all the music.")]
+    [SerializeField] private AudioSource musicSource;
     private Dictionary<string, AudioClip> sfxDictionary = new Dictionary<string, AudioClip>();
     private Dictionary<string, AudioMixerSnapshot> snapshotDictionary = new Dictionary<string, AudioMixerSnapshot>();
 
@@ -73,7 +74,6 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     private void OnEnable()
     {
-        musicSource = GetComponent<AudioSource>();
         musicSource.volume = 0.2f;
         // events for music
         GameManager.Instance.OnSwapMenu += PlayMenuTheme;
@@ -137,13 +137,13 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     // below are methods to play various BGMs
     private void PlayMenuTheme()
     {
-        Debug.Log(Application.persistentDataPath);
         musicSource.clip = mainMenuBGM;
         musicSource.Play();
     }
 
     private void PlayPlayerSelectTheme()
     {
+        if(musicSource == null) { return; }
         musicSource.clip = playerSelectBGM;
         musicSource.Play();
     }
