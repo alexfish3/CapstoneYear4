@@ -20,6 +20,7 @@ public class CanKicker : MonoBehaviour
         {
             Vector3 kickDirection = (other.transform.position - canKickingSpot.position).normalized;
             other.GetComponent<Rigidbody>().AddForce(kickDirection * kickingForce * control.CurrentVelocity);
+            Destroy(other.gameObject, 10);
         }
     }
 }
