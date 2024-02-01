@@ -12,13 +12,15 @@ public class Fader : MonoBehaviour
 
     private IEnumerator changeFadeCoroutine;
 
+    [Tooltip("Reference to the associated Renderer")]
+    [SerializeField] private Renderer render;
 
     /// <summary>
     /// Stock Start. Gets some quick references.
     /// </summary>
     private void Start()
     {
-        mat = GetComponent<Renderer>().material;
+        mat = render.material;
         originalColor = mat.color;
     }
 
