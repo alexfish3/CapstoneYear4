@@ -182,7 +182,7 @@ public class BallDriving : MonoBehaviour
 
     private float rotationAmount; //the amount to turn on any given frame
 
-    private bool reverseGear, forwardGear, grounded;
+    private bool reverseGear, forwardGear, grounded, airboost;
     private bool canDrive = true;
     private bool brakeChecking = false;
     private bool stopped = true;
@@ -279,6 +279,25 @@ public class BallDriving : MonoBehaviour
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
 
+        //Assigns drag
+        sphereBody.drag = startingDrag;
+        if (!grounded && !airboost)
+        {
+            sphereBody.drag = fallingDrag;
+            if (boosting)
+            {
+                airboost = true;
+            }
+        }
+        if (boosting)
+        {
+            sphereBody.drag = boostingDrag;
+        }
+        if (grounded)
+        {
+            airboost = false;
+        }
+
         if (!canDrive)
             return;
 
@@ -305,18 +324,6 @@ public class BallDriving : MonoBehaviour
         {
             AssignDriftState();
         }
-
-        //Assigns drag
-        sphereBody.drag = startingDrag;
-        if (!grounded)
-        {
-            sphereBody.drag = fallingDrag;
-        }
-       if (boosting)
-        {
-            sphereBody.drag = boostingDrag;
-        }
-        
 
         //Checks for whether the scooter has been still long enough to be considered stopped
         currentVelocity = sphereBody.velocity.magnitude;
