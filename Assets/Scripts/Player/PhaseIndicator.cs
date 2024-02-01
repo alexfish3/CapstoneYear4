@@ -48,6 +48,12 @@ public class PhaseIndicator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyUp(KeyCode.B) && hornSlider.value < 1f)
+        {
+            hornGlowValue = hornValueMax + 1;
+            hornSlider.value = 1;
+            StopAllCoroutines();
+        }
         if (initalized == false)
             return;
 
