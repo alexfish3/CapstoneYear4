@@ -87,12 +87,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6419229349575394327}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6606703952671581437}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1601747828592635735}
   m_SourcePrefab: {fileID: 100100000, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
 --- !u!23 &2719852131495729841 stripped
 MeshRenderer:
@@ -198,30 +192,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c707e9c2988977545b708d95fa42e30f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnWaitTime: 10
---- !u!114 &6606703952671581437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4521094413720222564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c707e9c2988977545b708d95fa42e30f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  respawnWaitTime: 10
---- !u!114 &1601747828592635735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4521094413720222564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42710fd87f7b6f0498875f90ed479c2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  render: {fileID: 2719852131495729841}
+  respawnWaitTime: 6
