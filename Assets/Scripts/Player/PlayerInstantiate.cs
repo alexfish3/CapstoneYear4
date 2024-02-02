@@ -199,7 +199,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         SetAllPlayerSpawn();
 
         // Unreadys up the player joining, which stops the countdown if it is currently counting
-        UnreadyUp(nextFillSlot);
+        UnreadyUp(nextFillSlot - 1);
 
         // Disables text for fillslot text based on player's fill slot
         PlayerSelectCanvas.Instance.TogglePressButtonTexts(nextFillSlot - 1, false);
