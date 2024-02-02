@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Rendering;
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// This class is a singleton that plays audio. It has an audio source for game music and methods that play respective audio clips on passed in sources.
@@ -12,7 +14,7 @@ using UnityEngine.Rendering;
 public class SoundManager : SingletonMonobehaviour<SoundManager>
 {
     [Tooltip("Reference to the source that will play all the music.")]
-    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private static AudioSource musicSource;
     private Dictionary<string, AudioClip> sfxDictionary = new Dictionary<string, AudioClip>();
     private Dictionary<string, AudioMixerSnapshot> snapshotDictionary = new Dictionary<string, AudioMixerSnapshot>();
 
@@ -31,7 +33,6 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     [Header("Audio Clips")]
     [Header("Music")]
-    [SerializeField] private AudioClip mainGameIntro;
     [SerializeField] private AudioClip mainGameLoop;
     [SerializeField] private AudioClip mainMenuBGM;
     [SerializeField] private AudioClip playerSelectBGM;
@@ -69,12 +70,20 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [Range(0f, 1f)] [SerializeField] private float emotePitchMin;
     [Range(1f, 2f)] [SerializeField] private float emotePitchMax;
 
+    [Header("Looping Logic")]
+    [Tooltip("Length of the intro for the main gameplay theme.")]
+    [SerializeField] private float gameThemeIntroLength = 1f;
+    [SerializeField] private float finalThemeIntroLength = 1f;
+
     [Header("Debug")]
     [SerializeField] private bool simulatePlayers;
 
+    // looping coroutine
+    private IEnumerator bgmRoutine;
+
     private void OnEnable()
     {
-        musicSource.volume = 0.2f;
+        musicSource = GetComponent<AudioSource>();
         // events for music
         GameManager.Instance.OnSwapMenu += PlayMenuTheme;
         GameManager.Instance.OnSwapPlayerSelect += PlayPlayerSelectTheme;
@@ -134,44 +143,74 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
         }
     }
+
+    private void Update()
+    {
+        // temporary way of doing this obviously
+        if(GameManager.Instance.MainState != GameState.FinalPackage 
+            && GameManager.Instance.MainState != GameState.GoldenCutscene)
+        {
+            musicSource.volume = 0.2f;
+        }
+        else
+        {
+            musicSource.volume = 0.1f;
+        }
+    }
+
     // below are methods to play various BGMs
     private void PlayMenuTheme()
     {
+        if(bgmRoutine != null)
+            StopCoroutine(bgmRoutine);
+
+        musicSource.timeSamples = 0;
         musicSource.clip = mainMenuBGM;
         musicSource.Play();
     }
 
     private void PlayPlayerSelectTheme()
     {
-        if(musicSource == null) { return; }
+        if (bgmRoutine != null)
+            StopCoroutine(bgmRoutine);
+
+        musicSource.Pause();
         musicSource.clip = playerSelectBGM;
         musicSource.Play();
     }
 
     private void PlayMainTheme()
     {
-        if (mainGameIntro != null)
+        if (bgmRoutine != null)
         {
-            musicSource.clip = mainGameIntro;
-            musicSource.loop = false;
-            StartCoroutine(PlayIntro(musicSource, mainGameLoop));
+            StopCoroutine(bgmRoutine);
+            bgmRoutine = null;
         }
-        else
-        {
-            musicSource.clip = mainGameLoop;
-            musicSource.loop = true;
-            musicSource.Play();
-        }
+
+        musicSource.Pause();
+        musicSource.clip = mainGameLoop;
+        bgmRoutine = PlayLoopedSongWithIntro(musicSource, gameThemeIntroLength);
+        StartCoroutine(bgmRoutine);
     }
 
     private void PlayFinalTheme()
     {
+        if (bgmRoutine != null)
+        {
+            StopCoroutine(bgmRoutine);
+            bgmRoutine = null;
+        }
+
         musicSource.clip = finalOrderBGM;
-        musicSource.Play();
+        bgmRoutine = PlayLoopedSongWithIntro(musicSource, finalThemeIntroLength);
+        StartCoroutine(bgmRoutine);
     }
 
     private void PlayResultsTheme()
     {
+        if (bgmRoutine != null)
+            StopCoroutine(bgmRoutine);
+
         musicSource.clip = resultsBGM;
         musicSource.Play();
     }
@@ -281,18 +320,31 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     }
 
     /// <summary>
-    /// This coroutine waits for the intro to a song to play and then sets the looping source.
+    /// This coroutine plays a looped song with an intro, so on subsequent loops it skips the intro.
     /// </summary>
-    /// <param name="source">Audio source music is playing from</param>
-    /// <param name="loop">Looping song that should play after the into</param>
+    /// <param name="source">Audio source with preloaded clip</param>
+    /// <param name="introLength">Length of the intro section</param>
     /// <returns></returns>
-    private IEnumerator PlayIntro(AudioSource source, AudioClip loop)
+    IEnumerator PlayLoopedSongWithIntro(AudioSource source, float introLength)
     {
-        source.Play();
-        yield return new WaitUntil(() => !source.isPlaying);
-        source.clip = loop;
-        source.Play();
-        source.loop = true;
+        if (source.clip != null)
+        {
+            int totalLength = Mathf.RoundToInt(source.clip.frequency * source.clip.length);
+            int introTime = Mathf.RoundToInt(source.clip.frequency * introLength);
+            while (true)
+            {
+                source.Play();
+                while (source.timeSamples < totalLength)
+                {
+                    yield return null;
+                }
+                source.timeSamples = introTime;
+            }
+        }
+        else
+        {
+            Debug.LogError("No audio clip present in looping coroutine.");
+        }
     }
 
     /// <summary>
