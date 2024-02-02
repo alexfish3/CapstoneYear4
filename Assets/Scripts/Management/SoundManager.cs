@@ -319,6 +319,16 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         }
     }
 
+    public void SetSFX(float value)
+    {
+        mainMixer.SetFloat("SFX", value);        
+    }
+
+    public void SetMusic(float value)
+    {
+        mainMixer.SetFloat("Music", value);
+    }
+
     /// <summary>
     /// This coroutine plays a looped song with an intro, so on subsequent loops it skips the intro.
     /// </summary>
