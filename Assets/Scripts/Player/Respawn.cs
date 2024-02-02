@@ -172,19 +172,20 @@ public class Respawn : MonoBehaviour
     {
         if (other.tag == "Water")
         {
-            qa.Deaths++;
-            soundPool.PlayDeathSound();
-            // Turning these off fixes camera jittering on respawn
-            GetComponent<Rigidbody>().velocity = Vector3.zero; // set velocity to 0 on respawn
-            GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<SphereCollider>().enabled = false;
-
             StartRespawnCoroutine();
         }
     }
 
     public void StartRespawnCoroutine()
     {
+        qa.Deaths++;
+        soundPool.PlayDeathSound();
+
+        // Turning these off fixes camera jittering on respawn
+        GetComponent<Rigidbody>().velocity = Vector3.zero; // set velocity to 0 on respawn
+        GetComponent<Rigidbody>().useGravity = false;
+        GetComponent<SphereCollider>().enabled = false;
+
         if (respawnCoroutine == null)
         {
             respawnCoroutine = RespawnPlayer();
