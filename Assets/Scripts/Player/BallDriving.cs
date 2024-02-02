@@ -22,6 +22,7 @@ public class BallDriving : MonoBehaviour
 
     private const float GROUNDCHECK_DISTANCE = 1.3f; //How long the ray that checks for the ground is
     private const float CSV_RATIO = 0.35f; //Don't touch
+    private const float WATERCHECK_DISTANCE = 2f; // length of ray checking for respawning
 
     private const float BRAKE_CHECK_TIME = 0.08f;
     private const float RESTING_ANGULAR_DRAG = 0.1f;
@@ -219,6 +220,9 @@ public class BallDriving : MonoBehaviour
     private float csv;
 
     [SerializeField] private GameObject groundDetector;
+
+    private bool dirtyTerrainRespawn = false;
+    public bool DirtyTerrainRespawn { get { return dirtyTerrainRespawn; } set { dirtyTerrainRespawn = value; } }
 
     private SoundPool soundPool; // for driving noises
 
@@ -625,7 +629,7 @@ public class BallDriving : MonoBehaviour
     private void GroundCheck()
     {
         int lm = 513; //layers 0 and 9
-        RaycastHit hit;
+        RaycastHit hit, waterHit;
 
         if (Physics.Raycast(groundDetector.transform.position, Vector3.down, out hit, GROUNDCHECK_DISTANCE))
         {
@@ -664,7 +668,6 @@ public class BallDriving : MonoBehaviour
                         }
                     }
                     break;
-
                 default:
                     if (currentMovingPlatform != null)
                     {
@@ -673,6 +676,20 @@ public class BallDriving : MonoBehaviour
                         currentMovingPlatform = null;
                     }
                     break;
+            }
+        }
+
+        if (!dirtyTerrainRespawn)
+        {
+            Debug.DrawRay(groundDetector.transform.position, Vector3.down * WATERCHECK_DISTANCE, Color.green, Mathf.Infinity);
+            if (Physics.Raycast(groundDetector.transform.position, Vector3.down, out waterHit, WATERCHECK_DISTANCE))
+            {
+                Debug.Log($"name: {waterHit.collider.tag}");
+                if (waterHit.collider.tag == "Water")
+                {
+                    respawn.StartRespawnCoroutine();
+                    dirtyTerrainRespawn = true;
+                }
             }
         }
     }

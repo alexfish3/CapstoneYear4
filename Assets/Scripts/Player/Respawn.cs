@@ -183,7 +183,7 @@ public class Respawn : MonoBehaviour
         }
     }
 
-    private void StartRespawnCoroutine()
+    public void StartRespawnCoroutine()
     {
         if (respawnCoroutine == null)
         {
@@ -210,5 +210,7 @@ public class Respawn : MonoBehaviour
         respawnCoroutine = null;
         GetComponent<Rigidbody>().useGravity = true;
         GetComponent<SphereCollider>().enabled = true;
+
+        ballDriving.DirtyTerrainRespawn = false;
     }
 }

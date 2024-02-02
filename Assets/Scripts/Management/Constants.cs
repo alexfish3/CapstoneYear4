@@ -7,7 +7,7 @@ public class Constants
     public const int MAX_REQUIRED_READY_UP = 2;
     public const bool REQUIRE_MAX_PLAYERS = false;
     public const bool SPAWN_MID_MATCH = false;
-    public enum OrderValue { Easy = 40, Medium = 60, Hard = 80, Golden = 60};
+    public enum OrderValue { Easy = 40, Medium = 60, Hard = 80, Golden = 50};
 
     // Distance calculations
     public enum DistanceType { Meters, Feet};
