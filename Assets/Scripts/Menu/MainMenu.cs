@@ -9,8 +9,9 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
     [SerializeField] GameObject[] selectorObjects;
     int selectorPos;
 
-    [Header("Player Select Objects")]
+    [Header("Canvas Objects")]
     [SerializeField] Canvas PlayerSelectCanvas;
+    [SerializeField] Canvas OptionsCanvas;
 
     [SerializeField] TMP_Text p1ConnectedController;
     PlayerInstantiate playerInstantiate;
@@ -71,8 +72,12 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
                 Debug.Log("Play");
                 SwapToPlayerSelect();
                 break;
-            // Quit
             case 1:
+                Debug.Log("Options");
+                SwapToOptions();
+                break;
+            // Quit
+            case 2:
                 Debug.Log("Quit");
 
             #if UNITY_EDITOR
@@ -90,10 +95,21 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
         GameManager.Instance.SetGameState(GameState.PlayerSelect);
     }
 
+    public void SwapToOptions()
+    {
+        OptionsCanvas.enabled = true;
+
+        GameManager.Instance.SetGameState(GameState.Options);
+
+        selectorPos = 0;
+        // Updates selector for current slider selected
+        selector.transform.position = new Vector3(selector.transform.position.x, selectorObjects[selectorPos].transform.position.y, selector.transform.position.z);
+    }
+
     public void SwapToMainMenu()
     {
         PlayerSelectCanvas.enabled = false;
-
+        OptionsCanvas.enabled = false;
         GameManager.Instance.SetGameState(GameState.Menu);
     }
 

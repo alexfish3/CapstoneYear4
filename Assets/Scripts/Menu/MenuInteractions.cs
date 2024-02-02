@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public enum MenuType
 {
     MainMenu,
+    Options,
     PlayerSelect,
     Cutscene,
     PauseMenu,
@@ -30,6 +31,7 @@ public class MenuInteractions : MonoBehaviour
     [SerializeField] CustomizationSelector customizationSelector;
     public PauseMenu pauseMenu;
     [SerializeField] MainMenu mainMenu;
+    [SerializeField] OptionsMenu optionsMenu;
     [SerializeField] ResultsMenu resultsMenu;
     [SerializeField] GameObject readyUpText;
 
@@ -51,6 +53,7 @@ public class MenuInteractions : MonoBehaviour
         soundPool = GetComponentInParent<SoundPool>();
 
         GameManager.Instance.OnSwapPlayerSelect += SwapToPlayerSelect;
+        GameManager.Instance.OnSwapOptions += SwapToOptions;
 
         GameManager.Instance.OnSwapStartingCutscene += PlayerUnready;
 
@@ -61,6 +64,7 @@ public class MenuInteractions : MonoBehaviour
         ClearMenuInputs();
 
         GameManager.Instance.OnSwapPlayerSelect -= SwapToPlayerSelect;
+        GameManager.Instance.OnSwapOptions -= SwapToOptions;
 
         GameManager.Instance.OnSwapStartingCutscene -= PlayerUnready;
     }
@@ -68,6 +72,11 @@ public class MenuInteractions : MonoBehaviour
     public void SwapToPlayerSelect()
     {
         SwapMenuType(MenuType.PlayerSelect);
+    }
+
+    public void SwapToOptions()
+    {
+        SwapMenuType(MenuType.Options);
     }
 
     public void SwapToCutscene()
@@ -85,6 +94,9 @@ public class MenuInteractions : MonoBehaviour
         {
             case MenuType.MainMenu:
                 MainMenuInteractions();
+                return;
+            case MenuType.Options:
+                OptionsInteractions();
                 return;
             case MenuType.PlayerSelect:
                 CharacterSelectMenuInteractons();
@@ -129,6 +141,21 @@ public class MenuInteractions : MonoBehaviour
         uiHandler.UpPadEvent.AddListener(MainMenuScrollUp);
 
         uiHandler.SouthFaceEvent.AddListener(MainMenuConfirm);
+    }
+
+    private void OptionsInteractions()
+    {
+        // Reference options menu every time we swap
+        optionsMenu = OptionsMenu.Instance;
+
+        Debug.Log("<color=blue>Swap to Options</color>");
+
+        uiHandler.EastFaceEvent.AddListener(OptionsExit);
+
+        uiHandler.DownPadEvent.AddListener(OptionsScrollDown);
+        uiHandler.UpPadEvent.AddListener(OptionsScrollUp);
+        uiHandler.RightPadEvent.AddListener(OptionsScrollRight);
+        uiHandler.LeftPadEvent.AddListener(OptionsScrollLeft);
     }
 
     private void CharacterSelectMenuInteractons()
@@ -209,6 +236,9 @@ public class MenuInteractions : MonoBehaviour
         }
     }
 
+    ///<summary>
+    /// Calls method when player wants to unready
+    ///</summary>
     public void PlayerUnready()
     {
         Debug.Log("Unready");
@@ -265,6 +295,91 @@ public class MenuInteractions : MonoBehaviour
 
         // Scrolls selector down
         mainMenu.ConfirmMenu();
+
+        soundPool.PlayScrollUI();
+    }
+
+    ///<summary>
+    /// Calls method when player scrolls up on Options Menu
+    ///</summary>
+    private void OptionsScrollUp(bool button)
+    {
+        if (hostPlayer == false)
+            return;
+
+        if (optionsMenu == null)
+            optionsMenu = OptionsMenu.Instance;
+
+        // Scrolls selector up
+        optionsMenu.ScrollMenuUpDown(false);
+
+        soundPool.PlayScrollUI();
+    }
+
+    ///<summary>
+    /// Calls method when player scrolls down on Main Menu
+    ///</summary>
+    private void OptionsScrollDown(bool button)
+    {
+        if (hostPlayer == false)
+            return;
+
+        if (optionsMenu == null)
+            optionsMenu = OptionsMenu.Instance;
+
+        // Scrolls selector down
+        optionsMenu.ScrollMenuUpDown(true);
+
+        soundPool.PlayScrollUI();
+    }
+
+    ///<summary>
+    /// Calls method when player scrolls up on Options Menu
+    ///</summary>
+    private void OptionsScrollLeft(bool button)
+    {
+        if (hostPlayer == false)
+            return;
+
+        if (optionsMenu == null)
+            optionsMenu = OptionsMenu.Instance;
+
+        // Scrolls selector up
+        optionsMenu.ScrollMenuLeftRight(false);
+
+        soundPool.PlayScrollUI();
+    }
+
+    ///<summary>
+    /// Calls method when player scrolls down on Main Menu
+    ///</summary>
+    private void OptionsScrollRight(bool button)
+    {
+        if (hostPlayer == false)
+            return;
+
+        if (optionsMenu == null)
+            optionsMenu = OptionsMenu.Instance;
+
+        // Scrolls selector down
+        optionsMenu.ScrollMenuLeftRight(true);
+
+        soundPool.PlayScrollUI();
+    }
+
+    ///<summary>
+    /// Calls method when player scrolls down on Main Menu
+    ///</summary>
+    private void OptionsExit(bool button)
+    {
+        if (hostPlayer == false)
+            return;
+
+        if (optionsMenu == null)
+            optionsMenu = OptionsMenu.Instance;
+
+        // Scrolls selector down
+        optionsMenu.ExitMenu();
 
         soundPool.PlayScrollUI();
     }

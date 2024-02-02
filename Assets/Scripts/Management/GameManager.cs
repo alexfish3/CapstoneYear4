@@ -3,6 +3,7 @@ using UnityEngine;
 
 public enum GameState { 
     Menu,
+    Options,
     PlayerSelect,
     StartingCutscene,
     Begin,
@@ -24,6 +25,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public GameState MainState { get { return mainState; } }
 
     public event Action OnSwapMenu;
+    public event Action OnSwapOptions;
     public event Action OnSwapPlayerSelect;
     public event Action OnSwapStartingCutscene;
     public event Action OnSwapBegin;
@@ -53,6 +55,9 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         {
             case GameState.Menu:
                 OnSwapMenu?.Invoke();
+                break;
+            case GameState.Options:
+                OnSwapOptions?.Invoke();
                 break;
             case GameState.PlayerSelect:
                 OnSwapPlayerSelect?.Invoke();
