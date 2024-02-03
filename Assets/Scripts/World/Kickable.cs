@@ -29,16 +29,16 @@ public class Kickable : MonoBehaviour
     /// <summary>
     /// Public method that can be called when kicked to start the process of fading and respawning.
     /// </summary>
-    public void GetKicked()
+    public void GetKicked(Collider sphereBody)
     {
-        StartRespawn();
+        StartRespawn(sphereBody);
     }
 
     /// <summary>
     /// Waits a duration, fades out, waits for the fade to complete, respawns the object
     /// </summary>
     /// <returns>Boilerplate IEnumerator</returns>
-    private IEnumerator Respawn()
+    private IEnumerator Respawn(Collider sphereBody)
     {
         yield return new WaitForSeconds(respawnWaitTime);
 
@@ -49,11 +49,12 @@ public class Kickable : MonoBehaviour
         transform.position = startPos;
         transform.rotation = startRot;
         fade.Reset();
+        Physics.IgnoreCollision(sphereBody, GetComponent<Collider>(), false);
     }
 
-    private void StartRespawn()
+    private void StartRespawn(Collider sphereBody)
     {
-        respawnCoroutine = Respawn();
+        respawnCoroutine = Respawn(sphereBody);
         StartCoroutine(respawnCoroutine);
     }
     private void StopRespawn()

@@ -14,14 +14,21 @@ public class CanKicker : MonoBehaviour
     [Tooltip("Reference to this player's BallDriving script")]
     [SerializeField] private BallDriving control;
 
+    private Collider sphereCol;
+
+    private void Start()
+    {
+        sphereCol = control.Sphere.GetComponent<Collider>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Kickable")
         {
-            Physics.IgnoreCollision(control.Sphere.GetComponent<Collider>(), other);
+            Physics.IgnoreCollision(sphereCol, other);
             Vector3 kickDirection = (other.transform.position - canKickingSpot.position).normalized;
             other.GetComponent<Rigidbody>().AddForce(kickDirection * kickingForce * control.CurrentVelocity);
-            other.gameObject.GetComponent<Kickable>().GetKicked();
+            other.gameObject.GetComponent<Kickable>().GetKicked(sphereCol);
         }
     }
 }
