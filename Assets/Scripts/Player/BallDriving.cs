@@ -899,6 +899,10 @@ public class BallDriving : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Initializes all aspects of boost, starts the wheelie, calls on recharge, then calls on the end steps
+    /// </summary>
+    /// <returns>Boilerplate IEnumerator</returns>
     private IEnumerator BoostActive()
     {
         boosting = true;
@@ -940,6 +944,12 @@ public class BallDriving : MonoBehaviour
         StartEndBoost(wheelie, wheelieEnd);
     }
 
+    /// <summary>
+    /// Ends a boost. Stops phasing, finishes the wheelie, corrects all positions, starts the cooldown
+    /// </summary>
+    /// <param name="wheelie">Reference to the tween for the wheelie</param>
+    /// <param name="wheelieEnd">Reference to the tween for the end of the wheelie</param>
+    /// <returns>Boilerplate IEnumerator</returns>
     private IEnumerator EndBoost(Tween wheelie = null, Tween wheelieEnd = null)
     {
         // Toggles to check phase status
@@ -1123,6 +1133,10 @@ public class BallDriving : MonoBehaviour
         //StartEndBoost();
     }
 
+    /// <summary>
+    /// Freezes the ball's rigidbody and prevents it from driving
+    /// </summary>
+    /// <param name="toFreeze">True for freeze, False for unfreeze</param>
     public void FreezeBall(bool toFreeze)
     {
         canDrive = toFreeze;

@@ -26,8 +26,10 @@ public class CanKicker : MonoBehaviour
         if (other.tag == "Kickable")
         {
             Physics.IgnoreCollision(sphereCol, other);
+
             Vector3 kickDirection = (other.transform.position - canKickingSpot.position).normalized;
             other.GetComponent<Rigidbody>().AddForce(kickDirection * kickingForce * control.CurrentVelocity);
+
             other.gameObject.GetComponent<Kickable>().GetKicked(sphereCol);
         }
     }
