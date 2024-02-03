@@ -28,6 +28,8 @@ public class PhaseIndicator : MonoBehaviour
     [SerializeField] Material hornGlow;
 
     [Header("Phase Camera")]
+        [SerializeField] LayerMask drivingMask;
+    [SerializeField] LayerMask phasingMask;
     [SerializeField] UniversalAdditionalCameraData mainCameraData;
 
     private SoundPool soundPool; // for playing SFX

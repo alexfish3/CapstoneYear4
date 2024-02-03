@@ -20479,12 +20479,18 @@ MonoBehaviour:
   playerRenderCamera: {fileID: 9215628373192665516}
   virtualCameras:
   - {fileID: 978174962275233661}
+  drivingMask:
+    serializedVersion: 2
+    m_Bits: 4194967
+  phasingMask:
+    serializedVersion: 2
+    m_Bits: 4194711
   mainCamera: {fileID: 7941610147128612290}
+  cameraCollidder: {fileID: 640959438591709015}
   drivingUICamera: {fileID: 3121335639242540451}
   playerCamera: {fileID: 9215628373192665516}
   menuUICamera: {fileID: 4808158917890122173}
   customizationSelector: {fileID: 1238175930791430519}
-  enableCameraSwap: 0
   MenuCameraReparented: 0
 --- !u!1 &1972777142083505637
 GameObject:
@@ -31880,6 +31886,12 @@ MonoBehaviour:
   ghostRenderer: {fileID: 7858842854796681375}
   hornGlowRef: {fileID: 2100000, guid: a3f6a7172c4400847ab3098fcd8e05a4, type: 2}
   hornGlow: {fileID: 0}
+  drivingMask:
+    serializedVersion: 2
+    m_Bits: 4194967
+  phasingMask:
+    serializedVersion: 2
+    m_Bits: 4194711
   mainCameraData: {fileID: 1867994358104329779}
   ShowPhase: 1
 --- !u!114 &909290580947496247

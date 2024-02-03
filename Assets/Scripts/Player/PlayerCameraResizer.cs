@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -25,7 +26,12 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] GameObject[] virtualCameras;
 
     [Header("Camera References")]
+    [SerializeField] LayerMask drivingMask;
+    [SerializeField] LayerMask phasingMask;
+
     [SerializeField] Camera mainCamera;
+    [SerializeField] CinemachineCollider cameraCollidder;
+
     [SerializeField] Camera drivingUICamera;
 
     [SerializeField] Camera playerCamera;
@@ -34,8 +40,9 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] GameObject customizationSelector;
 
     bool initalized = false;
-    [SerializeField] bool enableCameraSwap = true;
     [SerializeField] bool MenuCameraReparented = false;
+
+    int cameraLayer = 0;
 
     // Update is called once per frame
     void Update()
@@ -66,8 +73,6 @@ public class PlayerCameraResizer : MonoBehaviour
     ///</summary>
     public void UpdateVirtualCameras(int nextFillSlot)
     {
-        int cameraLayer = 0;
-
         // Gets camera layer based on player
         if (nextFillSlot == 1)
             cameraLayer = 17;
@@ -110,19 +115,23 @@ public class PlayerCameraResizer : MonoBehaviour
     ///</summary>
     public void SwapCameraRendering(bool mainCameraOn)
     {
-        //if (!enableCameraSwap)
-        //{
-        //    return;
-        //}
-        //if (mainCameraOn)
-        //{
-        //    mainCamera.
-        //    mainCamera.enabled = true;
-        //}
-        //else
-        //{
-        //    mainCamera.enabled = false;
-        //}
+        // Phasing
+        if (mainCameraOn)
+        {
+            mainCamera.cullingMask = phasingMask;
+            // Add via bitwise to include the phase layer
+            mainCamera.cullingMask |= (1 << 8);
+            cameraCollidder.m_AvoidObstacles = false;
+        }
+        // Normal
+        else
+        {
+            mainCamera.cullingMask = drivingMask;
+            cameraCollidder.m_AvoidObstacles = true;
+        }
+
+        // Add via bitwise to include the camera layer
+        mainCamera.cullingMask |= (1 << cameraLayer);
     }
 
     ///<summary>

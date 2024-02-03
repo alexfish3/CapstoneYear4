@@ -558,13 +558,13 @@ public class BallDriving : MonoBehaviour
                 Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
                 Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
 
-                cameraResizer.SwapCameraRendering(true);
-
                 phasing = false;
                 ToggleCollision(false);
                 checkPhaseStatus = false;
                 InsideBuilding = false;
                 phaseIndicator.SetPhaseCam(false);
+                cameraResizer.SwapCameraRendering(false);
+
                 soundPool.StopPhaseSound();
             }
             // Check if either raycast hit
@@ -573,12 +573,14 @@ public class BallDriving : MonoBehaviour
                 Debug.Log("Not Inside Building");
                 InsideBuilding = false;
                 phaseIndicator.SetPhaseCam(false);
+                cameraResizer.SwapCameraRendering(false);
             }
             else if (hit1Success == true && hit2Success == true && InsideBuilding == false)
             {
                 Debug.Log("Inside Building");
 
                 phaseIndicator.SetPhaseCam(true);
+                cameraResizer.SwapCameraRendering(true);
 
                 InsideBuilding = true;
 
@@ -914,11 +916,6 @@ public class BallDriving : MonoBehaviour
         forwardGear = true;
 
         ToggleCollision(true);
-
-        if (cameraResizer != null)
-        {
-            cameraResizer.SwapCameraRendering(false);
-        }
 
         scooterModel.parent.parent.DOComplete();
 
