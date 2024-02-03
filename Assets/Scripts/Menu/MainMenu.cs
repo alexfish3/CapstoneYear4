@@ -101,6 +101,8 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
 
         GameManager.Instance.SetGameState(GameState.Options);
 
+        OptionsMenu.Instance.UpdateSelectors();
+
         selectorPos = 0;
         // Updates selector for current slider selected
         selector.transform.position = new Vector3(selector.transform.position.x, selectorObjects[selectorPos].transform.position.y, selector.transform.position.z);

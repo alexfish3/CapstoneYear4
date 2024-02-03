@@ -33,18 +33,22 @@ public class PlayerUIHandler : MonoBehaviour
     public UnityEvent<bool> LeftPadEvent;
     private bool leftPadValue; //a bool representing the pushed state of the left d-pad button (true for pushed, false for loose)
     public bool LeftPadValue { get { return leftPadValue; } }
+    Coroutine leftPadCoroutine;
 
     public UnityEvent<bool> RightPadEvent;
     private bool rightPadValue; //a bool representing the pushed state of the right d-pad button (true for pushed, false for loose)
     public bool RightPadValue { get { return rightPadValue; } }
+    Coroutine rightPadCoroutine;
 
     public UnityEvent<bool> UpPadEvent;
     private bool upPadValue; //a bool representing the pushed state of the up d-pad button (true for pushed, false for loose)
     public bool UpPadValue { get { return upPadValue; } }
+    Coroutine upPadCoroutine;
 
     public UnityEvent<bool> DownPadEvent;
     private bool downPadValue; //a bool representing the pushed state of the down d-pad button (true for pushed, false for loose)
     public bool DownPadValue { get { return downPadValue; } }
+    Coroutine downPadCoroutine;
 
     public UnityEvent<bool> StartPadEvent;
     private bool startPadValue; // A bool representing the pushed stage of the start button (true for pushed, false for loose)
@@ -167,7 +171,14 @@ public class PlayerUIHandler : MonoBehaviour
         if (context.performed)
         {
             LeftPadEvent?.Invoke(leftPadValue);
-            StartCoroutine(ScrollPress(context, 0));
+
+            if (leftPadCoroutine != null)
+            {
+                StopCoroutine(leftPadCoroutine);
+                leftPadCoroutine = null;
+            }
+
+            leftPadCoroutine = StartCoroutine(ScrollPress(context, 0));
         }
     }
 
@@ -186,7 +197,14 @@ public class PlayerUIHandler : MonoBehaviour
         if (context.performed)
         {
             RightPadEvent?.Invoke(rightPadValue);
-            StartCoroutine(ScrollPress(context, 1));
+
+            if (rightPadCoroutine != null)
+            {
+                StopCoroutine(rightPadCoroutine);
+                rightPadCoroutine = null;
+            }
+
+            rightPadCoroutine = StartCoroutine(ScrollPress(context, 1));
         }
     }
 
@@ -205,7 +223,14 @@ public class PlayerUIHandler : MonoBehaviour
         if (context.performed)
         {
             UpPadEvent?.Invoke(upPadValue);
-            StartCoroutine(ScrollPress(context, 2));
+
+            if (upPadCoroutine != null)
+            {
+                StopCoroutine(upPadCoroutine);
+                upPadCoroutine = null;
+            }
+
+            upPadCoroutine = StartCoroutine(ScrollPress(context, 2));
         }
     }
 
@@ -224,7 +249,14 @@ public class PlayerUIHandler : MonoBehaviour
         if (context.performed)
         {
             DownPadEvent?.Invoke(downPadValue);
-            StartCoroutine(ScrollPress(context, 3));
+
+            if (downPadCoroutine != null)
+            {
+                StopCoroutine(downPadCoroutine);
+                downPadCoroutine = null;
+            }
+
+            downPadCoroutine = StartCoroutine(ScrollPress(context, 3));
         }
     }
 
