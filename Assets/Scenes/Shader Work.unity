@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -376,17 +376,6 @@ MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 8a0cce62cbf407942ada07e0ab1beaf3, type: 3}
   m_PrefabInstance: {fileID: 616313698}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &300722231 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 485938163052874626, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
-  m_PrefabInstance: {fileID: 1298422483}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &407882982
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,11 +450,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   liftHeight: 5
-  startingLiftHeight: -2
-  respawnDuration: 2
   liftDuration: 2
+  wispHeight: 5
+  wispRiseTime: 1
+  wispToCasketTime: 1
+  wispTrailTime: 1
+  wispSpawnOffset: 5
+  tombstoneOffset: 2
+  graveDepth: 2
   respawnGravestone: {fileID: 0}
   control: {fileID: 1302466763}
+  modelParent: {fileID: 0}
+  respawnWisp: {fileID: 0}
 --- !u!54 &414998963
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -760,10 +756,14 @@ MonoBehaviour:
   - {fileID: 1792322166}
   viewPortRectDefault: {x: 0, y: 0, z: 1, w: 1}
   playerRenderCamera: {fileID: 0}
-  menuUICamera: {fileID: 0}
-  drivingUICamera: {fileID: 0}
+  virtualCameras: []
   mainCamera: {fileID: 0}
-  phaseCamera: {fileID: 0}
+  drivingUICamera: {fileID: 0}
+  playerCamera: {fileID: 0}
+  menuUICamera: {fileID: 0}
+  customizationSelector: {fileID: 0}
+  enableCameraSwap: 1
+  MenuCameraReparented: 0
 --- !u!1 &785556342
 GameObject:
   m_ObjectHideFlags: 0
@@ -1060,111 +1060,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 811359641}
   m_Mesh: {fileID: 548590712551798673, guid: 63c932e608368f34f94f598a84058071, type: 3}
---- !u!1 &857065271
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 857065275}
-  - component: {fileID: 857065274}
-  - component: {fileID: 857065273}
-  - component: {fileID: 857065272}
-  m_Layer: 0
-  m_Name: Cube
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!65 &857065272
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 857065271}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &857065273
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 857065271}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: d9e1abcca9e00c74ab216951bed2cf3b, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &857065274
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 857065271}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &857065275
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 857065271}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10.57, y: 4.7305, z: 2.85}
-  m_LocalScale: {x: 24.69324, y: 9.374834, z: 2.1932}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &899923191
 GameObject:
   m_ObjectHideFlags: 0
@@ -1243,6 +1138,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35dec2fde7a57294c9ad7c3ad12560e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartPadEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &990601368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1269,10 +1167,6 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d473d571-f80d-4360-98ea-9d2dbed609c2
-    m_ActionName: Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 990601367}
         m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
@@ -1288,14 +1182,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0a09e36f-1717-4844-ac2a-973959c6f7ba
     m_ActionName: Player/Steer[/XInputControllerWindows/leftStick/x]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f2c6ca96-b7fe-40d7-b0f6-2d00b056f034
-    m_ActionName: Player/OldAccelerate[/XInputControllerWindows/rightTrigger]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6f11ac35-dc2a-4919-98ca-8d7a6cccd431
-    m_ActionName: Player/OldBrake[/XInputControllerWindows/leftTrigger]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 31ce79b5-4849-4beb-b073-62a44ceeee4a
@@ -1366,48 +1252,44 @@ MonoBehaviour:
     m_ActionName: Player/Drift[/XInputControllerWindows/buttonWest]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 95b54a1d-7466-4c34-9679-58958dd798c5
-    m_ActionName: Player/SwapCameraDebug[/XInputControllerWindows/dpad/down]
+    m_ActionId: 80f450c4-7220-41a5-9393-f0465744ad23
+    m_ActionName: Player/Camera Rotation Y[/DualShock4GamepadHID/rightStick/y]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0d36002c-bac2-4e22-9321-a29007ea3bc4
-    m_ActionName: UI/Navigate[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/rightStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/rightStick/right,/XInputControllerWindows/dpad,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
+    m_ActionId: ed4f020f-6e48-4374-a1b3-991c876e0b75
+    m_ActionName: Player/Emote[/DualShock4GamepadHID/dpad]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 32dcf77c-5dbc-4755-a0d6-b28bb1eec00d
-    m_ActionName: UI/Submit[/Keyboard/enter,/XInputControllerWindows/buttonSouth]
+    m_ActionId: ea61d819-5b88-4aac-aded-76fa2dea9a23
+    m_ActionName: Player/Pause[/DualShock4GamepadHID/start,/Keyboard/tab]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 95455c07-4d2c-4a81-a88a-d2ab1c78e210
-    m_ActionName: UI/Cancel[/Keyboard/escape,/XInputControllerWindows/buttonEast]
+    m_ActionId: 7149b41a-3622-401e-8b8b-c637bed053dc
+    m_ActionName: UI/ReadyUp[/DualShock4GamepadHID/buttonSouth,/Keyboard/space]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 647d0c16-a30a-4e1f-bcab-426e44bf198e
-    m_ActionName: UI/Point[/Mouse/position]
+    m_ActionId: c2fb24e1-e280-4486-9ec7-97f8b55ac6a5
+    m_ActionName: UI/UnReadyUp[/DualShock4GamepadHID/buttonEast,/Keyboard/backspace]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: c758784d-6a0b-4e90-bf94-0d715dfba062
-    m_ActionName: UI/Click[/Mouse/leftButton]
+    m_ActionId: d526ec2c-a0ea-402d-bb99-ff43a144dec5
+    m_ActionName: UI/Left D-Pad[/DualShock4GamepadHID/dpad/left,/Keyboard/leftArrow]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 8a0e1e84-063c-4c99-9051-18ae8cfc2ccf
-    m_ActionName: UI/ScrollWheel[/Mouse/scroll]
+    m_ActionId: 8000560d-543a-4296-88ff-9af57954bbb6
+    m_ActionName: UI/Right D-Pad[/DualShock4GamepadHID/dpad/right,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 7d6234a1-ee47-4ea5-bcb6-b4e1474962d3
-    m_ActionName: UI/MiddleClick[/Mouse/middleButton]
+    m_ActionId: 65092649-9735-479b-99b1-6bd10c408b66
+    m_ActionName: UI/Up D-Pad[/DualShock4GamepadHID/dpad/up,/Keyboard/upArrow]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 04715e4b-0d58-4c0c-aaff-aad684010928
-    m_ActionName: UI/RightClick[/Mouse/rightButton]
+    m_ActionId: 580bf271-fcde-4740-b96d-35017db9e1ae
+    m_ActionName: UI/Down D-Pad[/DualShock4GamepadHID/dpad/down,/Keyboard/downArrow]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 0d351e01-e5b3-4481-993a-299d207be88d
-    m_ActionName: UI/TrackedDevicePosition
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 9aa38074-808e-4fe8-9ec2-79830b7e5c41
-    m_ActionName: UI/TrackedDeviceOrientation
+    m_ActionId: 2de87937-d8c2-4ce4-b424-348ee40987ac
+    m_ActionName: UI/UnPause[/DualShock4GamepadHID/start,/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -1644,7 +1526,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!65 &1293975672
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1686,7 +1568,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d9e1abcca9e00c74ab216951bed2cf3b, type: 2}
+  - {fileID: 2100000, guid: 500615d1c9859344083e64c50bad2c6b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1725,8 +1607,8 @@ Transform:
   m_GameObject: {fileID: 1293975671}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.76, y: 0.8700001, z: 4.17}
-  m_LocalScale: {x: 2.1932, y: 2.1932, z: 2.1932}
+  m_LocalPosition: {x: 3.2608, y: 3.3491, z: -14.2856}
+  m_LocalScale: {x: 10.871693, y: 7.091274, z: 13.764304}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1743,6 +1625,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 162794630049763086, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -150.39996
+      objectReference: {fileID: 0}
+    - target: {fileID: 162794630049763086, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 76.20001
+      objectReference: {fileID: 0}
     - target: {fileID: 316929060483141093, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -1754,6 +1644,14 @@ PrefabInstance:
     - target: {fileID: 1533936606662990322, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1958809946860074187, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1958809946860074187, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2680920299931847598, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_Layer
@@ -1853,6 +1751,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5495209367309118182, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817492827116145080, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817492827116145080, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817492827116145080, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7648248240842875844, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
@@ -1961,6 +1871,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79df954a579c7344b9173ac5c7736604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hornSlider: {fileID: 0}
+  intensity: 3
   hornGlowValue: 0.04
   hornValueMax: 3
   readyColor: {r: 0.21868706, g: 0, b: 1, a: 1}
@@ -1997,6 +1909,8 @@ MonoBehaviour:
   ghostRenderer: {fileID: 288376403}
   hornGlowRef: {fileID: 2100000, guid: a3f6a7172c4400847ab3098fcd8e05a4, type: 2}
   hornGlow: {fileID: 0}
+  mainCameraData: {fileID: 0}
+  ShowPhase: 0
 --- !u!114 &1302466767
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2023,11 +1937,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compassImage: {fileID: 1401998191}
+  compassCalc: {fileID: 0}
   player: {fileID: 1302466764}
+  orbitalCamera: {fileID: 0}
+  playerCam: {fileID: 0}
   iconHeight: -70
   iconPrefab: {fileID: 3691895907627439231, guid: 13f91f37558f51643ac77d60dac451e9, type: 3}
   compassUIObjects: []
   compassMarkerObjects: []
+  compassUnit: 0
 --- !u!114 &1302466769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2040,8 +1958,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae00b4ac82da51c48a89b413bf15da5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 300722231}
   waveText: {fileID: 1538193990}
+  centerText: {fileID: 0}
+  finalOrderText: {fileID: 0}
   placementText: {fileID: 1850017561}
 --- !u!114 &1302466770
 MonoBehaviour:
@@ -2055,6 +1974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b3aa2688b1d364ea6b3b29c8e65a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberHandler: {fileID: 0}
   order1Position: {fileID: 1709578442}
   order2Position: {fileID: 92915519}
 --- !u!114 &1302466771
@@ -2073,24 +1993,44 @@ MonoBehaviour:
   scooterNormal: {fileID: 899923192}
   sphere: {fileID: 414998961}
   inp: {fileID: 990601367}
+  orderHandler: {fileID: 0}
+  leftSlipstreamTrail: {fileID: 0}
+  rightSlipstreamTrail: {fileID: 0}
+  driftTrail: {fileID: 0}
+  particleBasket: {fileID: 0}
+  sparksPos1: {fileID: 0}
+  sparksPos2: {fileID: 0}
   accelerationPower: 45
-  brakingPower: 40
   reversingPower: 28
   fallingDrag: 1
   groundBoostAmount: 100
   slowPatchMultiplier: 0.75
+  goldenOrderMultiplier: 0.95
   steeringPower: 90
   reverseSteeringPower: 90
   driftTurnScalar: 1.6
+  driftSidewaysScalar: 3
   driftTurnMinimum: 0
   driftBoostThreshold: 100
   driftBoostMode: 0
-  driftBoost: 560
+  driftBoost1: 5
+  driftBoost2: 10
+  driftBoost3: 15
+  driftSparksTier1Color: {r: 0, g: 0, b: 0, a: 0}
+  driftSparksTier2Color: {r: 0, g: 0, b: 0, a: 0}
+  driftSparksTier3Color: {r: 0, g: 0, b: 0, a: 0}
+  slowdownImmunityDuration: 0
   boostPower: 50
   boostDuration: 1.6
   boostRechargeTime: 10
   boostingDrag: 0.88
   boostingSteerModifier: 0.6
+  clashForce: 50
+  slipstreamDistance: 10
+  minimumSlipstreamSpeed: 10
+  slipstreamTime: 1.5
+  preBoostSlipstreamMax: 50
+  slipstreamBoostAmount: 300
   cameraResizer: {fileID: 0}
   playerIndex: 0
   phaseIndicator: {fileID: 1302466766}
@@ -2107,6 +2047,9 @@ MonoBehaviour:
   debugBoostability: {fileID: 0}
   debugCSVEnable: 0
   debugCSV: {fileID: 0}
+  phasing: 0
+  groundDetector: {fileID: 0}
+  InsideBuilding: 0
 --- !u!1 &1336803782
 GameObject:
   m_ObjectHideFlags: 0
@@ -2560,17 +2503,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1615054168}
   m_Mesh: {fileID: -7387706064836869012, guid: 63c932e608368f34f94f598a84058071, type: 3}
---- !u!114 &1653209957 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 485938163052874626, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
-  m_PrefabInstance: {fileID: 5624167851270021273}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1670986938
 GameObject:
   m_ObjectHideFlags: 0
@@ -3491,11 +3423,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compassImage: {fileID: 584961727373185955}
+  compassCalc: {fileID: 0}
   player: {fileID: 2344187305072453650}
+  orbitalCamera: {fileID: 0}
+  playerCam: {fileID: 0}
   iconHeight: -70
   iconPrefab: {fileID: 3691895907627439231, guid: 13f91f37558f51643ac77d60dac451e9, type: 3}
   compassUIObjects: []
   compassMarkerObjects: []
+  compassUnit: 0
 --- !u!20 &418238104810524960
 Camera:
   m_ObjectHideFlags: 0
@@ -3589,6 +3525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b3aa2688b1d364ea6b3b29c8e65a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberHandler: {fileID: 0}
   order1Position: {fileID: 0}
   order2Position: {fileID: 0}
 --- !u!114 &526234125001943078
@@ -3838,17 +3775,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &584961727373185954 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 485938163052874626, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
-  m_PrefabInstance: {fileID: 584961727373185951}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &584961727373185955 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1220149082957782113, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
@@ -3933,24 +3859,44 @@ MonoBehaviour:
   scooterNormal: {fileID: 2440687566011191825}
   sphere: {fileID: 2409406666155375692}
   inp: {fileID: 6696839798581672980}
+  orderHandler: {fileID: 0}
+  leftSlipstreamTrail: {fileID: 0}
+  rightSlipstreamTrail: {fileID: 0}
+  driftTrail: {fileID: 0}
+  particleBasket: {fileID: 0}
+  sparksPos1: {fileID: 0}
+  sparksPos2: {fileID: 0}
   accelerationPower: 40
-  brakingPower: 40
   reversingPower: 30
   fallingDrag: 1
   groundBoostAmount: 100
   slowPatchMultiplier: 0.75
+  goldenOrderMultiplier: 0.95
   steeringPower: 95
   reverseSteeringPower: 40
   driftTurnScalar: 1.4
+  driftSidewaysScalar: 3
   driftTurnMinimum: 0
   driftBoostThreshold: 100
   driftBoostMode: 0
-  driftBoost: 590
+  driftBoost1: 5
+  driftBoost2: 10
+  driftBoost3: 15
+  driftSparksTier1Color: {r: 0, g: 0, b: 0, a: 0}
+  driftSparksTier2Color: {r: 0, g: 0, b: 0, a: 0}
+  driftSparksTier3Color: {r: 0, g: 0, b: 0, a: 0}
+  slowdownImmunityDuration: 0
   boostPower: 50
   boostDuration: 1
   boostRechargeTime: 10
   boostingDrag: 0.86
   boostingSteerModifier: 0.4
+  clashForce: 50
+  slipstreamDistance: 10
+  minimumSlipstreamSpeed: 10
+  slipstreamTime: 1.5
+  preBoostSlipstreamMax: 50
+  slipstreamBoostAmount: 300
   cameraResizer: {fileID: 0}
   playerIndex: 0
   phaseIndicator: {fileID: 0}
@@ -3967,6 +3913,9 @@ MonoBehaviour:
   debugBoostability: {fileID: 0}
   debugCSVEnable: 0
   debugCSV: {fileID: 0}
+  phasing: 0
+  groundDetector: {fileID: 0}
+  InsideBuilding: 0
 --- !u!114 &969288984619752539
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3980,11 +3929,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   liftHeight: 5
-  startingLiftHeight: -2
-  respawnDuration: 2
   liftDuration: 2
+  wispHeight: 5
+  wispRiseTime: 1
+  wispToCasketTime: 1
+  wispTrailTime: 1
+  wispSpawnOffset: 5
+  tombstoneOffset: 2
+  graveDepth: 2
   respawnGravestone: {fileID: 0}
   control: {fileID: 4669215134568373702}
+  modelParent: {fileID: 0}
+  respawnWisp: {fileID: 0}
 --- !u!20 &1142926582877304243
 Camera:
   m_ObjectHideFlags: 0
@@ -4244,6 +4200,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35dec2fde7a57294c9ad7c3ad12560e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartPadEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1981907358139843784
 GameObject:
   m_ObjectHideFlags: 0
@@ -4309,10 +4268,14 @@ MonoBehaviour:
   - {fileID: 0}
   viewPortRectDefault: {x: 0, y: 0, z: 1, w: 1}
   playerRenderCamera: {fileID: 0}
-  menuUICamera: {fileID: 0}
-  drivingUICamera: {fileID: 0}
+  virtualCameras: []
   mainCamera: {fileID: 0}
-  phaseCamera: {fileID: 0}
+  drivingUICamera: {fileID: 0}
+  playerCamera: {fileID: 0}
+  menuUICamera: {fileID: 0}
+  customizationSelector: {fileID: 0}
+  enableCameraSwap: 1
+  MenuCameraReparented: 0
 --- !u!1 &2219798652496916153
 GameObject:
   m_ObjectHideFlags: 0
@@ -4593,8 +4556,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae00b4ac82da51c48a89b413bf15da5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 1653209957}
   waveText: {fileID: 2051120974}
+  centerText: {fileID: 0}
+  finalOrderText: {fileID: 0}
   placementText: {fileID: 1301792032}
 --- !u!65 &3390048224263225643
 BoxCollider:
@@ -4953,6 +4917,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b3aa2688b1d364ea6b3b29c8e65a09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberHandler: {fileID: 0}
   order1Position: {fileID: 1565360610494173348}
   order2Position: {fileID: 3475647451280497041}
 --- !u!1 &4861582923259265998
@@ -4987,11 +4952,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   compassImage: {fileID: 981085024}
+  compassCalc: {fileID: 0}
   player: {fileID: 7393508318876719892}
+  orbitalCamera: {fileID: 0}
+  playerCam: {fileID: 0}
   iconHeight: -70
   iconPrefab: {fileID: 3691895907627439231, guid: 13f91f37558f51643ac77d60dac451e9, type: 3}
   compassUIObjects: []
   compassMarkerObjects: []
+  compassUnit: 0
 --- !u!20 &4895637461277193362
 Camera:
   m_ObjectHideFlags: 0
@@ -5147,10 +5116,6 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: d473d571-f80d-4360-98ea-9d2dbed609c2
-    m_ActionName: Player/Move[/XInputControllerWindows/leftStick,/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
-  - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6696839798581672980}
         m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
@@ -5166,14 +5131,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0a09e36f-1717-4844-ac2a-973959c6f7ba
     m_ActionName: Player/Steer[/XInputControllerWindows/leftStick/x]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: f2c6ca96-b7fe-40d7-b0f6-2d00b056f034
-    m_ActionName: Player/OldAccelerate[/XInputControllerWindows/rightTrigger]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6f11ac35-dc2a-4919-98ca-8d7a6cccd431
-    m_ActionName: Player/OldBrake[/XInputControllerWindows/leftTrigger]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: 31ce79b5-4849-4beb-b073-62a44ceeee4a
@@ -5244,16 +5201,44 @@ MonoBehaviour:
     m_ActionName: Player/Drift[/XInputControllerWindows/buttonWest]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 95b54a1d-7466-4c34-9679-58958dd798c5
-    m_ActionName: Player/SwapCameraDebug[/XInputControllerWindows/dpad/down]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 7149b41a-3622-401e-8b8b-c637bed053dc
     m_ActionName: UI/ReadyUp[/DualShock4GamepadHID/buttonSouth,/Keyboard/space]
   - m_PersistentCalls:
       m_Calls: []
     m_ActionId: c2fb24e1-e280-4486-9ec7-97f8b55ac6a5
     m_ActionName: UI/UnReadyUp[/DualShock4GamepadHID/buttonEast,/Keyboard/backspace]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 80f450c4-7220-41a5-9393-f0465744ad23
+    m_ActionName: Player/Camera Rotation Y[/DualShock4GamepadHID/rightStick/y]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ed4f020f-6e48-4374-a1b3-991c876e0b75
+    m_ActionName: Player/Emote[/DualShock4GamepadHID/dpad]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ea61d819-5b88-4aac-aded-76fa2dea9a23
+    m_ActionName: Player/Pause[/DualShock4GamepadHID/start,/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d526ec2c-a0ea-402d-bb99-ff43a144dec5
+    m_ActionName: UI/Left D-Pad[/DualShock4GamepadHID/dpad/left,/Keyboard/leftArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8000560d-543a-4296-88ff-9af57954bbb6
+    m_ActionName: UI/Right D-Pad[/DualShock4GamepadHID/dpad/right,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 65092649-9735-479b-99b1-6bd10c408b66
+    m_ActionName: UI/Up D-Pad[/DualShock4GamepadHID/dpad/up,/Keyboard/upArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 580bf271-fcde-4740-b96d-35017db9e1ae
+    m_ActionName: UI/Down D-Pad[/DualShock4GamepadHID/dpad/down,/Keyboard/downArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2de87937-d8c2-4ce4-b424-348ee40987ac
+    m_ActionName: UI/UnPause[/DualShock4GamepadHID/start,/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
@@ -5359,24 +5344,44 @@ MonoBehaviour:
   scooterNormal: {fileID: 7479402710988972311}
   sphere: {fileID: 7457067987501977418}
   inp: {fileID: 1944650258721050386}
+  orderHandler: {fileID: 0}
+  leftSlipstreamTrail: {fileID: 0}
+  rightSlipstreamTrail: {fileID: 0}
+  driftTrail: {fileID: 0}
+  particleBasket: {fileID: 0}
+  sparksPos1: {fileID: 0}
+  sparksPos2: {fileID: 0}
   accelerationPower: 45
-  brakingPower: 40
   reversingPower: 28
   fallingDrag: 1
   groundBoostAmount: 100
   slowPatchMultiplier: 0.75
+  goldenOrderMultiplier: 0.95
   steeringPower: 90
   reverseSteeringPower: 90
   driftTurnScalar: 1.6
+  driftSidewaysScalar: 3
   driftTurnMinimum: 0
   driftBoostThreshold: 100
   driftBoostMode: 0
-  driftBoost: 560
+  driftBoost1: 5
+  driftBoost2: 10
+  driftBoost3: 15
+  driftSparksTier1Color: {r: 0, g: 0, b: 0, a: 0}
+  driftSparksTier2Color: {r: 0, g: 0, b: 0, a: 0}
+  driftSparksTier3Color: {r: 0, g: 0, b: 0, a: 0}
+  slowdownImmunityDuration: 0
   boostPower: 50
   boostDuration: 1.6
   boostRechargeTime: 10
   boostingDrag: 0.88
   boostingSteerModifier: 0.6
+  clashForce: 50
+  slipstreamDistance: 10
+  minimumSlipstreamSpeed: 10
+  slipstreamTime: 1.5
+  preBoostSlipstreamMax: 50
+  slipstreamBoostAmount: 300
   cameraResizer: {fileID: 0}
   playerIndex: 0
   phaseIndicator: {fileID: 7577601632277122222}
@@ -5393,6 +5398,9 @@ MonoBehaviour:
   debugBoostability: {fileID: 0}
   debugCSVEnable: 0
   debugCSV: {fileID: 0}
+  phasing: 0
+  groundDetector: {fileID: 0}
+  InsideBuilding: 0
 --- !u!4 &5477889336603288230
 Transform:
   m_ObjectHideFlags: 0
@@ -5449,6 +5457,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 162794630049763086, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -150.39996
+      objectReference: {fileID: 0}
+    - target: {fileID: 162794630049763086, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 76.20001
+      objectReference: {fileID: 0}
     - target: {fileID: 316929060483141093, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_Layer
       value: 5
@@ -5460,6 +5476,14 @@ PrefabInstance:
     - target: {fileID: 1533936606662990322, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_Layer
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1958809946860074187, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1958809946860074187, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2680920299931847598, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_Layer
@@ -5559,6 +5583,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5495209367309118182, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817492827116145080, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817492827116145080, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5817492827116145080, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7648248240842875844, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
@@ -5782,10 +5818,14 @@ MonoBehaviour:
   - {fileID: 8580955959752859882}
   viewPortRectDefault: {x: 0, y: 0, z: 1, w: 1}
   playerRenderCamera: {fileID: 0}
-  menuUICamera: {fileID: 0}
-  drivingUICamera: {fileID: 0}
+  virtualCameras: []
   mainCamera: {fileID: 0}
-  phaseCamera: {fileID: 0}
+  drivingUICamera: {fileID: 0}
+  playerCamera: {fileID: 0}
+  menuUICamera: {fileID: 0}
+  customizationSelector: {fileID: 0}
+  enableCameraSwap: 1
+  MenuCameraReparented: 0
 --- !u!4 &6624770273829416809
 Transform:
   m_ObjectHideFlags: 0
@@ -5840,6 +5880,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35dec2fde7a57294c9ad7c3ad12560e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartPadEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6742481787641968590
 GameObject:
   m_ObjectHideFlags: 0
@@ -6102,6 +6145,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79df954a579c7344b9173ac5c7736604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hornSlider: {fileID: 0}
+  intensity: 3
   hornGlowValue: 0.04
   hornValueMax: 3
   readyColor: {r: 0.21868706, g: 0, b: 1, a: 1}
@@ -6138,6 +6183,8 @@ MonoBehaviour:
   ghostRenderer: {fileID: 447459681}
   hornGlowRef: {fileID: 2100000, guid: a3f6a7172c4400847ab3098fcd8e05a4, type: 2}
   hornGlow: {fileID: 0}
+  mainCameraData: {fileID: 0}
+  ShowPhase: 0
 --- !u!4 &7641147684661324893
 Transform:
   m_ObjectHideFlags: 0
@@ -6216,8 +6263,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae00b4ac82da51c48a89b413bf15da5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scoreText: {fileID: 584961727373185954}
   waveText: {fileID: 584961727373185953}
+  centerText: {fileID: 0}
+  finalOrderText: {fileID: 0}
   placementText: {fileID: 0}
 --- !u!23 &7750397774314449516
 MeshRenderer:
@@ -6635,11 +6683,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   liftHeight: 5
-  startingLiftHeight: -2
-  respawnDuration: 2
   liftDuration: 2
+  wispHeight: 5
+  wispRiseTime: 1
+  wispToCasketTime: 1
+  wispTrailTime: 1
+  wispSpawnOffset: 5
+  tombstoneOffset: 2
+  graveDepth: 2
   respawnGravestone: {fileID: 0}
   control: {fileID: 0}
+  modelParent: {fileID: 0}
+  respawnWisp: {fileID: 0}
 --- !u!33 &8920592874532034507
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6740,7 +6795,6 @@ SceneRoots:
   m_Roots:
   - {fileID: 1670986940}
   - {fileID: 1336803786}
-  - {fileID: 857065275}
   - {fileID: 1293975675}
   - {fileID: 101349416}
   - {fileID: 2574084288144884736}
