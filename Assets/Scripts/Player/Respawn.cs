@@ -79,6 +79,14 @@ public class Respawn : MonoBehaviour
 
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            StartRespawnCoroutine();
+        }
+    }
+
     private void Start()
     {
         orderHandler = control.GetComponent<OrderHandler>();
