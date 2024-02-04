@@ -228,6 +228,24 @@ public class BallDriving : MonoBehaviour
 
     public bool InsideBuilding = false;
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapStartingCutscene += () => FreezeBall(true);
+        GameManager.Instance.OnSwapGoldenCutscene += () => FreezeBall(true);
+
+        GameManager.Instance.OnSwapBegin += () => FreezeBall(false);
+        GameManager.Instance.OnSwapFinalPackage += () => FreezeBall(false);
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapGoldenCutscene -= () => FreezeBall(true);
+        GameManager.Instance.OnSwapStartingCutscene -= () => FreezeBall(true);
+
+        GameManager.Instance.OnSwapBegin += () => FreezeBall(false);
+        GameManager.Instance.OnSwapFinalPackage += () => FreezeBall(false);
+    }
+
     /// <summary>
     /// Standard Start. Just used to get references, get initial values, and subscribe to events
     /// </summary>
@@ -1136,8 +1154,11 @@ public class BallDriving : MonoBehaviour
     /// <param name="toFreeze">True for freeze, False for unfreeze</param>
     public void FreezeBall(bool toFreeze)
     {
-        canDrive = toFreeze;
+        if (sphereBody == null)
+            return;
 
+        canDrive = !toFreeze;
+        Debug.Log($"Can Drive : {canDrive}");
         sphereBody.constraints = toFreeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
     }
 

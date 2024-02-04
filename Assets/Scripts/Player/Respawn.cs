@@ -190,6 +190,8 @@ public class Respawn : MonoBehaviour
         qa.SetDeath();
         soundPool.PlayDeathSound();
 
+        ballDriving.FreezeBall(true);
+
         // Turning these off fixes camera jittering on respawn
         GetComponent<Rigidbody>().velocity = Vector3.zero; // set velocity to 0 on respawn
         GetComponent<Rigidbody>().useGravity = false;
@@ -216,6 +218,8 @@ public class Respawn : MonoBehaviour
         modelParent.SetActive(true);
         respawnWisp.gameObject.SetActive(false);
         respawnWisp.transform.localPosition = wispOrigin;
+
+        ballDriving.FreezeBall(false);
 
         respawnCoroutine = null;
         GetComponent<Rigidbody>().useGravity = true;
