@@ -179,6 +179,7 @@ public class Respawn : MonoBehaviour
     public void StartRespawnCoroutine()
     {
         qa.Deaths++;
+        qa.SetDeath();
         soundPool.PlayDeathSound();
 
         // Turning these off fixes camera jittering on respawn

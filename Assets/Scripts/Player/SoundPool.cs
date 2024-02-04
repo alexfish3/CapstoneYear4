@@ -7,7 +7,7 @@ using UnityEngine.Animations;
 
 public class SoundPool : MonoBehaviour
 {
-    private GameObject[] sourceGOs;
+    private AudioSource[] sourcePool;
 
     // refs to specific sources
     private AudioSource drivingSource;
@@ -28,12 +28,14 @@ public class SoundPool : MonoBehaviour
 
     private void Awake()
     {
-        sourceGOs = new GameObject[SoundManager.Instance.PoolSize];
+        GameObject sourceGO;
+        sourcePool = new AudioSource[SoundManager.Instance.PoolSize];
         GameObject audioSource = SoundManager.Instance.AudioSourcePrefab;
-        for(int i=0;i<sourceGOs.Length; i++)
+        for(int i=0;i<sourcePool.Length; i++)
         {
-            sourceGOs[i] = Instantiate(audioSource, transform);
-            sourceGOs[i].SetActive(false);
+            sourceGO = Instantiate(audioSource, transform);
+            sourcePool[i] = sourceGO.GetComponent<AudioSource>();
+            sourcePool[i].gameObject.SetActive(false);
         }
     }
 
@@ -42,6 +44,7 @@ public class SoundPool : MonoBehaviour
         GameManager.Instance.OnSwapMainLoop += InitEngineSource;
         GameManager.Instance.OnSwapResults += TurnOffPlayerSounds;
         GameManager.Instance.OnSwapMenu += TurnOffPlayerSounds;
+        GameManager.Instance.OnSwapAnything += StopAudio;
     }
 
     private void OnDisable()
@@ -49,6 +52,7 @@ public class SoundPool : MonoBehaviour
         GameManager.Instance.OnSwapMainLoop -= InitEngineSource;
         GameManager.Instance.OnSwapResults -= TurnOffPlayerSounds;
         GameManager.Instance.OnSwapMenu -= TurnOffPlayerSounds;
+        GameManager.Instance.OnSwapAnything -= StopAudio;
     }
 
     /// <summary>
@@ -57,6 +61,7 @@ public class SoundPool : MonoBehaviour
     /// <param name="source">AudioSource to be reset</param>
     private void ResetSource(AudioSource source)
     {
+        source.Stop();
         source.gameObject.SetActive(false);
         SoundManager.Instance.SwitchSource(ref source, "SFX");
         source.volume = 1;
@@ -70,11 +75,11 @@ public class SoundPool : MonoBehaviour
     /// <returns></returns>
     public AudioSource GetAvailableSource()
     {
-        foreach(GameObject go in sourceGOs)
+        foreach(AudioSource source in sourcePool)
         {
-            if(!go.activeInHierarchy)
+            if(!source.gameObject.activeInHierarchy)
             {
-                return go.GetComponent<AudioSource>();
+                return source;
             }
         }
         // hopefully won't get here, if it happens frequently we can increase the pool size in SM
@@ -265,6 +270,14 @@ public class SoundPool : MonoBehaviour
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlayEmoteSound(source, index);
         StartCoroutine (KillSource(source));
+    }
+
+    public void StopAudio()
+    {
+        foreach(AudioSource source in sourcePool)
+        {
+            source.Stop();
+        }
     }
 
     /// <summary>

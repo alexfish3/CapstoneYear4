@@ -29,6 +29,10 @@ public class QAManager : SingletonMonobehaviour<QAManager>
         "#Steals"
     };
 
+    // heatmap stuff
+    [Tooltip("Each player needs their own trail so the colors are different. Set up each prefab here.")]
+    [SerializeField] private GameObject[] trailObjects;
+
     private void Start()
     {
         GameManager.Instance.OnSwapResults += SendData;
@@ -50,6 +54,7 @@ public class QAManager : SingletonMonobehaviour<QAManager>
         if (!handlers.Contains(inHandler))
         {
             handlers.Add(inHandler);
+            inHandler.SetTrailObj(trailObjects[handlers.Count - 1]);
         }
     }
 

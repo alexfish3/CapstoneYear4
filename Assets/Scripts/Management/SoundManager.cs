@@ -319,6 +319,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         }
     }
 
+    // for volume control
+
     public void SetSFX(float value)
     {
         mainMixer.SetFloat("SFX", value);        
