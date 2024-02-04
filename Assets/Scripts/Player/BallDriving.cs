@@ -660,7 +660,6 @@ public class BallDriving : MonoBehaviour
             grounded = false;
         }
 
-        Debug.DrawRay(groundDetector.transform.position, Vector3.down, Color.red, GROUNDCHECK_DISTANCE);
 
         if (grounded)
         {
@@ -701,7 +700,6 @@ public class BallDriving : MonoBehaviour
 
         if (!dirtyTerrainRespawn)
         {
-            Debug.DrawRay(groundDetector.transform.position, Vector3.down * WATERCHECK_DISTANCE, Color.green, Mathf.Infinity);
             if (Physics.Raycast(groundDetector.transform.position, Vector3.down, out waterHit, WATERCHECK_DISTANCE))
             {
                 Debug.Log($"name: {waterHit.collider.tag}");
