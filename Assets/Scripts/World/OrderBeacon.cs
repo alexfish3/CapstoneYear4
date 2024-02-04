@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -21,6 +22,9 @@ public class OrderBeacon : MonoBehaviour
     public CompassMarker CompassMarker { get { return compassMarker; } }
 
     [SerializeField] private OrderGhost customer;
+    [SerializeField] private MeshRenderer dissolveRend;
+    [SerializeField] private Material[] dissolveMats;
+
     private void Awake()
     {
         meshRenderer = this.gameObject.GetComponent<MeshRenderer>();
@@ -34,13 +38,29 @@ public class OrderBeacon : MonoBehaviour
     public void InitBeacon(Order inOrder, Color beaconColor)
     {
         meshRenderer.enabled = true;
-        //this.transform.parent = OrderManager.Instance.transform;
         order = inOrder;
-
         color = beaconColor;
-
         meshRenderer.material.color = color;
         this.transform.position = order.transform.position;
+
+        // set the color of the dissolve
+        switch(order.Value)
+        {
+            case Constants.OrderValue.Easy:
+                dissolveRend.material = dissolveMats[0];
+                break;
+            case Constants.OrderValue.Medium:
+                dissolveRend.material = dissolveMats[1];
+                break;
+            case Constants.OrderValue.Hard:
+                dissolveRend.material = dissolveMats[2];
+                break;
+            case Constants.OrderValue.Golden:
+                dissolveRend.material = dissolveMats[3];
+                break;
+            default:
+                break;
+        }
     }
 
     /// <summary>

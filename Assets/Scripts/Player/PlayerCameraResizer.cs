@@ -13,6 +13,8 @@ public class PlayerCameraResizer : MonoBehaviour
 {
     [Tooltip("This is the camera in which if changed, other cameras will also change to match")]
     [SerializeField] Camera referenceCam;
+    public Camera PlayerReferenceCamera { get { return referenceCam; } }
+
     [Tooltip("This is the camera array in which all will resize to the main upon main being changed")]
     [SerializeField] Camera[] camerasToFollow;
     [Tooltip("This is a vector4 value indicating the default rect of a camera. the four values are xPos, yPos, Width and Height")]
@@ -42,7 +44,7 @@ public class PlayerCameraResizer : MonoBehaviour
     bool initalized = false;
     [SerializeField] bool MenuCameraReparented = false;
 
-    int cameraLayer = 0;
+    public int cameraLayer = 0;
 
     // Update is called once per frame
     void Update()
@@ -89,6 +91,25 @@ public class PlayerCameraResizer : MonoBehaviour
 
         // Add via bitwise to include the camera layer
         referenceCam.cullingMask |= (1 << cameraLayer);
+    }
+
+    public static void UpdatePlayerObjectLayer(GameObject objectToChange, int playerPos)
+    {
+        int layer = 0;
+        // Gets camera layer based on player
+        if (playerPos == 0)
+            layer = 10;
+        else if (playerPos == 1)
+            layer = 11;
+        else if (playerPos == 2)
+            layer = 12;
+        else if (playerPos == 3)
+            layer = 13;
+        else
+            layer = 1;
+        
+
+        objectToChange.layer = layer;
     }
 
     ///<summary>
