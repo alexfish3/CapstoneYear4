@@ -31,6 +31,8 @@ public class HeatmapCamera : MonoBehaviour
 
     private void TakePicture()
     {
+        if (!QAManager.Instance.GenerateHeatmap)
+            return;
         this.transform.position = mainMapPos.position;
         this.transform.rotation = mainMapPos.rotation;
 
@@ -58,6 +60,9 @@ public class HeatmapCamera : MonoBehaviour
 
     private void TakeFinalPicture()
     {
+        if (!QAManager.Instance.GenerateHeatmap)
+            return;
+
         this.transform.position = finalMapPos.position;
         this.transform.rotation = finalMapPos.rotation;
 

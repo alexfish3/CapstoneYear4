@@ -29,6 +29,8 @@ public class QAHandler : MonoBehaviour
     [SerializeField] private float iconHeight = 5f;
     [Tooltip("Reference to the icon used to display death.")]
     [SerializeField] private GameObject deathIcon;
+    [Tooltip("Reference to the parent GameObject of the heatmap sprites.")]
+    [SerializeField] private GameObject trailParent;
 
     private void Start()
     {
@@ -38,12 +40,12 @@ public class QAHandler : MonoBehaviour
 
     private void Update()
     {
-        if (!shouldTrail) { return; }
+        if (!shouldTrail || !QAManager.Instance.GenerateHeatmap) { return; }
 
         if(trailTimer > trailFrequency)
         {
             Instantiate(trailObject, this.transform.position + iconHeight * transform.up, 
-                this.transform.rotation * Quaternion.Euler(90,1,1), this.transform.parent);
+                this.transform.rotation * Quaternion.Euler(90,1,1), trailParent.transform);
             trailTimer = 0f;
         }
 
@@ -59,7 +61,7 @@ public class QAHandler : MonoBehaviour
     public void SetDeath()
     {
         Instantiate(deathIcon, transform.position + iconHeight * transform.up, 
-            transform.rotation * Quaternion.Euler(90,1,1), this.transform.parent);
+            transform.rotation * Quaternion.Euler(90,1,1), trailParent.transform);
     }
 
     public void ResetQA()

@@ -15,6 +15,10 @@ public class QAManager : SingletonMonobehaviour<QAManager>
 
     private string fileName = "QAData.csv";
 
+    [Tooltip("When off won't generate heatmaps.")]
+    [SerializeField] private bool generateHeatmap;
+    public bool GenerateHeatmap { get { return generateHeatmap; } }
+
     private string[] columns = { 
         "DateTime", 
         "Name", 
