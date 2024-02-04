@@ -12,19 +12,22 @@ public class QAHandler : MonoBehaviour
     // raw stats
     private int easy = 0, med = 0, hard = 0, gold = 0; // number of each package type delivered
 
-    private int boosts=0, steals=0, deaths=0; // counters for different gameplay functions
+    private int boosts = 0, steals = 0, goldSteals = 0, deaths = 0; // counters for different gameplay functions
 
     public int Boosts { get { return boosts; } set {  boosts = value; } }
     public int Steals { get { return steals; } set {  steals = value; } }
     public int Deaths { get { return deaths; } set {  deaths = value; } }
+    public int GoldSteals { get { return goldSteals; } set { goldSteals = value; } }
 
     // heat map
     private GameObject trailObject;
+    [Tooltip("How often trail objects are created.")]
     [SerializeField] private float trailFrequency = 1f;
-    private Color trailColor;
     private bool shouldTrail = false;
     private float trailTimer = 0f;
-    private float iconHeight = 50f;
+    [Tooltip("Height above the player the icons are generated.")]
+    [SerializeField] private float iconHeight = 5f;
+    [Tooltip("Reference to the icon used to display death.")]
     [SerializeField] private GameObject deathIcon;
 
     private void Start()
@@ -69,12 +72,12 @@ public class QAHandler : MonoBehaviour
 
     public string[] GetData()
     {
-        string[] data = { 
+        string[] data = {
             this.gameObject.transform.parent.name,
             orderHandler.Placement.ToString(),
             orderHandler.Score.ToString(),
             easy.ToString(), med.ToString(), hard.ToString(), gold.ToString(), OrderManager.Instance.FinalOrderValue.ToString(),
-            deaths.ToString(), boosts.ToString(), steals.ToString()
+            deaths.ToString(), boosts.ToString(), steals.ToString(), goldSteals.ToString()
         };
 
         return data;

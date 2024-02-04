@@ -203,7 +203,10 @@ public class OrderHandler : MonoBehaviour
             soundPool.PlayOrderTheft();
             victimPlayer.LoseOrder(newOrder);
             AddOrder(newOrder);
-            qa.Steals++;
+            if (GameManager.Instance.MainState != GameState.FinalPackage)
+                qa.Steals++;
+            else
+                qa.GoldSteals++;
         }
         victimPlayer.DropEverything(victimPlayer.order1Position.position, victimPlayer.order2Position.position);
     }

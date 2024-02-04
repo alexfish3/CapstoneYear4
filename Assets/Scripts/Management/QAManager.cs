@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using System;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class QAManager : SingletonMonobehaviour<QAManager>
 {
@@ -26,7 +27,8 @@ public class QAManager : SingletonMonobehaviour<QAManager>
         "Gold $$", 
         "#Deaths", 
         "#Boosts",
-        "#Steals"
+        "#Steals",
+        "#GoldSteals"
     };
 
     // heatmap stuff
@@ -109,6 +111,10 @@ public class QAManager : SingletonMonobehaviour<QAManager>
         try
         {
             if (!File.Exists(filePath))
+            {
+                File.WriteAllLines(filePath, new[] { string.Join(",", columns) });
+            }
+            if(File.ReadLines(filePath).First<string>() != string.Join(",", columns))
             {
                 File.WriteAllLines(filePath, new[] { string.Join(",", columns) });
             }
