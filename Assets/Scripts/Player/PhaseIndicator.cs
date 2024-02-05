@@ -28,7 +28,7 @@ public class PhaseIndicator : MonoBehaviour
     [SerializeField] Material hornGlow;
 
     [Header("Phase Camera")]
-        [SerializeField] LayerMask drivingMask;
+    [SerializeField] LayerMask drivingMask;
     [SerializeField] LayerMask phasingMask;
     [SerializeField] UniversalAdditionalCameraData mainCameraData;
 
@@ -36,6 +36,8 @@ public class PhaseIndicator : MonoBehaviour
     private bool dirtyBoostReady = true;
 
     public bool ShowPhase = false;
+
+    Coroutine hornStatus;
 
     // Define a delegate for the completion of the glow depletion
     public delegate void GlowDepleteComplete();
@@ -58,7 +60,6 @@ public class PhaseIndicator : MonoBehaviour
         }
         if (initalized == false)
             return;
-
     }
 
     /// <summary>
@@ -86,6 +87,22 @@ public class PhaseIndicator : MonoBehaviour
     public void SetHornGlow(float newValue)
     {
         hornGlowValue = newValue;
+    }
+
+    public void BeginGlowCharge(float cooldown)
+    {
+        if (hornStatus != null)
+            StopCoroutine(hornStatus);
+
+        hornStatus = StartCoroutine(GlowCharge(cooldown));
+    }
+
+    public void BeginGlowDepleate(float cooldown)
+    {
+        if (hornStatus != null)
+            StopCoroutine(hornStatus);
+
+        hornStatus = StartCoroutine(GlowDeplete(cooldown));
     }
 
     /// <summary>

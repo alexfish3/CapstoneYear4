@@ -174,10 +174,10 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 break;
         }
 
-        // Updates the virtual cameras based on the player number
+        // Updates the main virtual camera based on the player number
         playerCameraResizer.UpdateMainVirtualCameras(nextFillSlot);
 
-        // Updates the virtual cameras based on the player number
+        // Updates the icon virtual cameras based on the player number
         playerCameraResizer.UpdateIconVirtualCameras(nextFillSlot);
 
         // Relocates the customization menu based on player number
