@@ -99,13 +99,13 @@ public class PlayerCameraResizer : MonoBehaviour
         int iconLayer = 0;
         // Gets camera layer based on player
         if (nextFillSlot == 1)
-            iconLayer = 25;
+            iconLayer = 24;
         else if (nextFillSlot == 2)
-            iconLayer = 26;
+            iconLayer = 25;
         else if (nextFillSlot == 3)
             iconLayer = 26;
         else if (nextFillSlot == 4)
-            iconLayer = 26;
+            iconLayer = 27;
 
         virtualCameraIcon.layer = iconLayer;
 
