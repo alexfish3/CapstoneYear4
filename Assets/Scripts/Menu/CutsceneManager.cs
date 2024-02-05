@@ -9,12 +9,12 @@ public enum CutsceneType
     StartingCutscene = 0,
     FinalOrderCutscene = 1
 }
-
-public class CutsceneManager : MonoBehaviour
+public class CutsceneManager : SingletonMonobehaviour<CutsceneManager>
 {
     [SerializeField] Camera cutsceneCamera;
     [SerializeField] Canvas cutsceneCanvas;
     [SerializeField] PlayableDirector playableDirector;
+    [SerializeField] Animator cutsceneCountdownAnimation;
 
     [Header("Cutscene Information")]
     Coroutine cutsceneCoroutine;
@@ -131,6 +131,11 @@ public class CutsceneManager : MonoBehaviour
                 break;
         }
     }   
+
+    public void BeginCountdownAnimation()
+    {
+        cutsceneCountdownAnimation.SetTrigger("Countdown");
+    }
 }
 
 [Serializable]

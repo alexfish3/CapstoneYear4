@@ -40,6 +40,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [Tooltip("The time it takes to start the match")]
     [SerializeField] float countdownTimer = 5f;
     Coroutine readyUpCountdown;
+
+    CutsceneManager cutsceneManager;
        
     ///<summary>
     /// OnEnable, where i set event methods
@@ -478,14 +480,18 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
     private IEnumerator PlayerMoverCountdown()
     {
+        if (cutsceneManager == null)
+            cutsceneManager = CutsceneManager.Instance;
+
         Debug.Log("Swap for Driving");
+
+        cutsceneManager.BeginCountdownAnimation();
+
         yield return new WaitForSeconds(3f);
         Debug.Log("Waited Three seconds");
 
         SwapPlayerControlSchemeToDrive();
-
         SwapMenuTypeForAllPlayers(MenuType.PauseMenu);
-
     }
 
     /// <summary>
