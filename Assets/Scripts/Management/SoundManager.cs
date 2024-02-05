@@ -42,7 +42,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [Header("SFX")]
     [SerializeField] private AudioObject engineActive;
     [SerializeField] private AudioObject engineIdle;
-    [SerializeField] private AudioObject drift;
+    //[SerializeField] private AudioObject drift;
     [SerializeField] private AudioObject brake;
     [SerializeField] private AudioObject boostUsed;
     [SerializeField] private AudioObject boostCharged;
@@ -117,7 +117,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         // gameplay
         sfxDictionary.Add("engine", engineActive);
         sfxDictionary.Add("idle", engineIdle);
-        sfxDictionary.Add("drift", drift);
+        //sfxDictionary.Add("drift", drift);
         sfxDictionary.Add("brake", brake);
         sfxDictionary.Add("boost_used", boostUsed);
         sfxDictionary.Add("boost_charged", boostCharged);
