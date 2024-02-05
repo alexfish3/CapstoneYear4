@@ -927,6 +927,7 @@ public class BallDriving : MonoBehaviour
         boostAble = false;
         boostInitialburst = true;
         DirtyDriftDrop();
+
         stopped = false;
         reverseGear = false;
         forwardGear = true;
@@ -948,6 +949,8 @@ public class BallDriving : MonoBehaviour
 
         wheelying = true;
 
+        phaseIndicator.BeginGlowDepleate(boostDuration * 0.5f);
+
         // Start the glow depletion coroutine and wait for it to complete
         yield return new WaitForSeconds(boostDuration); //StartCoroutine(phaseIndicator.GlowDeplete(0.8f * boostDuration));
 
@@ -955,6 +958,15 @@ public class BallDriving : MonoBehaviour
 
         // After glow depletion is complete, proceed with the rest of the boost logic
         StartEndBoost(wheelie, wheelieEnd);
+    }
+
+    private void StartEndBoost(Tween wheelie = null, Tween wheelieEnd = null)
+    {
+        Tween w = wheelie == null ? null : wheelie;
+        Tween wE = wheelieEnd == null ? null : wheelieEnd;
+
+        endBoostCoroutine = EndBoost(w, wE);
+        StartCoroutine(endBoostCoroutine);
     }
 
     /// <summary>
@@ -990,6 +1002,23 @@ public class BallDriving : MonoBehaviour
         StartBoostCooldown();
     }
 
+    private void StartBoostCooldown()
+    {
+        boostCooldownCoroutine = BoostCooldown();
+        StartCoroutine(boostCooldownCoroutine);
+    }
+
+    /// <summary>
+    /// Waits for the recharge duration then enables boosting again
+    /// </summary>
+    /// <returns>IEnumerator boilerplate</returns>
+    private IEnumerator BoostCooldown()
+    {
+        phaseIndicator.BeginGlowCharge(boostRechargeTime);
+        yield return new WaitForSeconds(boostRechargeTime);
+        boostAble = true;
+    }
+
     /// <summary>
     /// Sets collision layers for boost phasing
     /// </summary>
@@ -1013,15 +1042,6 @@ public class BallDriving : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Waits for the recharge duration then enables boosting again
-    /// </summary>
-    /// <returns>IEnumerator boilerplate</returns>
-    private IEnumerator BoostCooldown()
-    {
-        yield return StartCoroutine(phaseIndicator.GlowCharge(boostRechargeTime));
-        boostAble = true;
-    }
 
     /// <summary>
     /// Increases speed slowly while behind another vehicle and facing in approximately the same direction. 
@@ -1234,11 +1254,6 @@ public class BallDriving : MonoBehaviour
         }
     }
 
-    private void StartBoostCooldown()
-    {
-        boostCooldownCoroutine = BoostCooldown();
-        StartCoroutine(boostCooldownCoroutine);
-    }
     private void StopBoostCooldown()
     {
         if (boostCooldownCoroutine != null)
@@ -1246,15 +1261,6 @@ public class BallDriving : MonoBehaviour
             StopCoroutine(boostCooldownCoroutine);
             boostCooldownCoroutine = null;
         }
-    }
-
-    private void StartEndBoost(Tween wheelie = null, Tween wheelieEnd = null)
-    {
-        Tween w = wheelie == null ? null : wheelie;
-        Tween wE = wheelieEnd == null ? null : wheelieEnd;
-
-        endBoostCoroutine = EndBoost(w, wE);
-        StartCoroutine(endBoostCoroutine);
     }
 
     private void StopEndBoost()
