@@ -13,7 +13,9 @@ public class DrivingIndicators : MonoBehaviour
     [SerializeField] List<Transform> playerCameraTransforms = new List<Transform>();
     [SerializeField] GameObject[] playersRotationObjects;
 
-    [SerializeField] float speed = 1.0f;
+    [Header("Distance")]
+    [SerializeField] float distanceScale = 15f;
+    [SerializeField] Vector2 sizeValues;
 
     // Start is called before the first frame update
     void Start()
@@ -24,9 +26,6 @@ public class DrivingIndicators : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // The step size is equal to speed times frame time.
-        float singleStep = speed * Time.deltaTime;
-
         // Rotate independently
         for (int i = 0; i <= playersToKeepTrackOf.Count - 1; i++)
         {
@@ -37,6 +36,13 @@ public class DrivingIndicators : MonoBehaviour
         }
 
         // scale independently
+        for (int i = 0; i <= playersToKeepTrackOf.Count - 1; i++)
+        {
+            float distance = Vector3.Distance(thisPlayerGameobject.transform.position, playersToKeepTrackOf[i].transform.position);
+            float sizeValue = Mathf.Clamp(distance / distanceScale, sizeValues.x, sizeValues.y);
+
+            playersRotationObjects[i].transform.localScale = new Vector3(sizeValue, sizeValue, sizeValue);
+        }
 
     }
 
