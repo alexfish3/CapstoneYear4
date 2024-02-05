@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Rendering;
 using Random = UnityEngine.Random;
 
 /// <summary>
@@ -15,7 +15,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 {
     [Tooltip("Reference to the source that will play all the music.")]
     [SerializeField] private static AudioSource musicSource;
-    private Dictionary<string, AudioClip> sfxDictionary = new Dictionary<string, AudioClip>();
+    private Dictionary<string, AudioObject> sfxDictionary = new Dictionary<string, AudioObject>();
     private Dictionary<string, AudioMixerSnapshot> snapshotDictionary = new Dictionary<string, AudioMixerSnapshot>();
 
     [Header("Mixing Information")]
@@ -33,40 +33,40 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     [Header("Audio Clips")]
     [Header("Music")]
-    [SerializeField] private AudioClip mainGameLoop;
-    [SerializeField] private AudioClip mainMenuBGM;
-    [SerializeField] private AudioClip playerSelectBGM;
-    [SerializeField] private AudioClip finalOrderBGM;
-    [SerializeField] private AudioClip resultsBGM;
+    [SerializeField] private AudioObject mainGameLoop;
+    [SerializeField] private AudioObject mainMenuBGM;
+    [SerializeField] private AudioObject playerSelectBGM;
+    [SerializeField] private AudioObject finalOrderBGM;
+    [SerializeField] private AudioObject resultsBGM;
 
     [Header("SFX")]
-    [SerializeField] private AudioClip engineActive;
-    [SerializeField] private AudioClip engineIdle;
-    [SerializeField] private AudioClip drift;
-    [SerializeField] private AudioClip brake;
-    [SerializeField] private AudioClip boostUsed;
-    [SerializeField] private AudioClip boostCharged;
-    [SerializeField] private AudioClip miniBoost;
-    [SerializeField] private AudioClip phasing;
-    [SerializeField] private AudioClip orderPickup;
-    [SerializeField] private AudioClip orderDropoff;
-    [SerializeField] private AudioClip finalDropoff;
-    [SerializeField] private AudioClip orderTheft;
-    [SerializeField] private AudioClip death;
-    [SerializeField] private AudioClip clockTowerBells;
+    [SerializeField] private AudioObject engineActive;
+    [SerializeField] private AudioObject engineIdle;
+    [SerializeField] private AudioObject drift;
+    [SerializeField] private AudioObject brake;
+    [SerializeField] private AudioObject boostUsed;
+    [SerializeField] private AudioObject boostCharged;
+    [SerializeField] private AudioObject miniBoost;
+    [SerializeField] private AudioObject phasing;
+    [SerializeField] private AudioObject orderPickup;
+    [SerializeField] private AudioObject orderDropoff;
+    [SerializeField] private AudioObject finalDropoff;
+    [SerializeField] private AudioObject orderTheft;
+    [SerializeField] private AudioObject death;
+    [SerializeField] private AudioObject clockTowerBells;
 
-    [SerializeField] private AudioClip[] driftSparks;
+    [SerializeField] private AudioObject[] driftSparks;
 
     [Header("UI")]
-    [SerializeField] private AudioClip enter;
-    [SerializeField] private AudioClip back;
-    [SerializeField] private AudioClip scroll;
-    [SerializeField] private AudioClip pause;
+    [SerializeField] private AudioObject enter;
+    [SerializeField] private AudioObject back;
+    [SerializeField] private AudioObject scroll;
+    [SerializeField] private AudioObject pause;
 
 
     [Header("Emotes")]
     [Tooltip("[0]: Top, [1]: Right, [2]: Bottom, [3]: Left")]
-    [SerializeField] private AudioClip[] emoteSFX;
+    [SerializeField] private AudioObject[] emoteSFX;
     [Range(0f, 1f)] [SerializeField] private float emotePitchMin;
     [Range(1f, 2f)] [SerializeField] private float emotePitchMax;
 
@@ -76,10 +76,15 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [SerializeField] private float finalThemeIntroLength = 1f;
 
     [Header("Debug")]
+    [Tooltip("Will randomize noises to simulate multiple players.")]
     [SerializeField] private bool simulatePlayers;
+    [Tooltip("We might not have player select music.")]
+    [SerializeField] private bool playPlayerSelect;
 
     // looping coroutine
     private IEnumerator bgmRoutine;
+
+    private bool dirtyMainMenuTheme = false;
 
     private void OnEnable()
     {
@@ -144,20 +149,6 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         }
     }
 
-    private void Update()
-    {
-        // temporary way of doing this obviously
-        if(GameManager.Instance.MainState != GameState.FinalPackage 
-            && GameManager.Instance.MainState != GameState.GoldenCutscene)
-        {
-            musicSource.volume = 0.2f;
-        }
-        else
-        {
-            musicSource.volume = 0.1f;
-        }
-    }
-
     // below are methods to play various BGMs
     private void PlayMenuTheme()
     {
@@ -165,17 +156,22 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
             StopCoroutine(bgmRoutine);
 
         musicSource.timeSamples = 0;
-        musicSource.clip = mainMenuBGM;
+        musicSource.clip = mainMenuBGM.clip;
+        musicSource.volume = mainMenuBGM.volume;
         musicSource.Play();
     }
 
     private void PlayPlayerSelectTheme()
     {
+        if (!playPlayerSelect)
+            return;
+
         if (bgmRoutine != null)
             StopCoroutine(bgmRoutine);
 
         musicSource.Pause();
-        musicSource.clip = playerSelectBGM;
+        musicSource.clip = playerSelectBGM.clip;
+        musicSource.volume = playerSelectBGM.volume;
         musicSource.Play();
     }
 
@@ -188,7 +184,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         }
 
         musicSource.Pause();
-        musicSource.clip = mainGameLoop;
+        musicSource.clip = mainGameLoop.clip;
+        musicSource.volume = mainGameLoop.volume;
         bgmRoutine = PlayLoopedSongWithIntro(musicSource, gameThemeIntroLength);
         StartCoroutine(bgmRoutine);
     }
@@ -201,7 +198,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
             bgmRoutine = null;
         }
 
-        musicSource.clip = finalOrderBGM;
+        musicSource.clip = finalOrderBGM.clip;
+        musicSource.volume = finalOrderBGM.volume;
         bgmRoutine = PlayLoopedSongWithIntro(musicSource, finalThemeIntroLength);
         StartCoroutine(bgmRoutine);
     }
@@ -211,7 +209,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         if (bgmRoutine != null)
             StopCoroutine(bgmRoutine);
 
-        musicSource.clip = resultsBGM;
+        musicSource.clip = resultsBGM.clip;
+        musicSource.volume = resultsBGM.volume;
         musicSource.Play();
     }
 
@@ -219,7 +218,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     public void PlaySFX(string key, AudioSource source)
     {
-        source.clip = sfxDictionary[key];
+        source.clip = sfxDictionary[key].clip;
+        source.volume = sfxDictionary[key].volume;
         source.gameObject.SetActive(true);
         source.Play();
     }
@@ -227,14 +227,16 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     public void PlayEngineSound(AudioSource source)
     {
         //source.volume = 0.1f;
-        source.clip = engineActive;
+        source.clip = engineActive.clip;
+        source.volume = engineActive.volume;
         source.gameObject.SetActive(true);
         source.Play();
     }
 
     public void PlayIdleSound(AudioSource source)
     {
-        source.clip = engineIdle;
+        source.clip = engineIdle.clip;
+        source.volume = engineIdle.volume;
         source.gameObject.SetActive(true);
         source.Play();
     }
@@ -243,7 +245,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     {
         try
         {
-            source.clip = driftSparks[index];
+            source.clip = driftSparks[index].clip;
+            source.volume = driftSparks[index].volume;
             source.gameObject.SetActive(true);
             source.Play();
         }
@@ -259,7 +262,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     {
         try
         {
-            source.clip = emoteSFX[index];
+            source.clip = emoteSFX[index].clip;
+            source.volume = emoteSFX[index].volume;
             source.pitch = Random.Range(emotePitchMin, emotePitchMax);
             SwitchSource(ref source, "Emote");
             source.gameObject.SetActive(true);
@@ -290,9 +294,9 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     /// </summary>
     /// <param name="key">Key of the clip in the dictionary.</param>
     /// <returns></returns>
-    public AudioClip GetSFX(string key)
+    public AudioObject GetSFX(string key)
     {
-        AudioClip outClip;
+        AudioObject outClip;
         if(sfxDictionary.TryGetValue(key, out outClip))
         {
             return outClip;
@@ -368,7 +372,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         AudioSource engine = Instantiate(audioSourcePrefab, this.transform).GetComponent<AudioSource>();
         SwitchSource(ref engine, "Player");
         engine.volume = 0.5f;
-        engine.clip = engineIdle;
+        engine.clip = engineIdle.clip;
         engine.loop = true;
         engine.Play();
 
@@ -379,7 +383,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
             SwitchSource(ref source, channel);
 
 
-            source.clip = sfxDictionary.ElementAt(Random.Range(0, sfxDictionary.Count)).Value;
+            source.clip = sfxDictionary.ElementAt(Random.Range(0, sfxDictionary.Count)).Value.clip;
+            source.volume = sfxDictionary.ElementAt(Random.Range(0, sfxDictionary.Count)).Value.volume;
             source.Play();
             while (source.isPlaying)
             {

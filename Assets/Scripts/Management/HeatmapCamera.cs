@@ -15,6 +15,7 @@ public class HeatmapCamera : MonoBehaviour
     private void Awake()
     {
         viewport = GetComponent<Camera>();
+        viewport.enabled = false;
     }
 
     private void OnEnable()
@@ -33,6 +34,9 @@ public class HeatmapCamera : MonoBehaviour
     {
         if (!QAManager.Instance.GenerateHeatmap)
             return;
+
+        viewport.enabled = true;
+
         this.transform.position = mainMapPos.position;
         this.transform.rotation = mainMapPos.rotation;
 
@@ -47,21 +51,21 @@ public class HeatmapCamera : MonoBehaviour
         image.ReadPixels(new Rect(0, 0, viewport.targetTexture.width, viewport.targetTexture.height), 0, 0);
         image.Apply();
 
-        RenderTexture.active = null;
-        viewport.targetTexture = null;
-
         byte[] bytes = image.EncodeToPNG();
         Destroy(image);
 
         int screenshotNum = PlayerPrefs.GetInt("screenshot_main", 0);
         File.WriteAllBytes(Application.streamingAssetsPath + "/HeatMaps/main_" + screenshotNum.ToString() + ".png", bytes);
         PlayerPrefs.SetInt("screenshot_main", screenshotNum+1);
+        viewport.enabled = false;
     }
 
     private void TakeFinalPicture()
     {
         if (!QAManager.Instance.GenerateHeatmap)
             return;
+
+        viewport.enabled = true;
 
         this.transform.position = finalMapPos.position;
         this.transform.rotation = finalMapPos.rotation;
@@ -86,5 +90,7 @@ public class HeatmapCamera : MonoBehaviour
         int screenshotNum = PlayerPrefs.GetInt("screenshot_final", 0);
         File.WriteAllBytes(Application.streamingAssetsPath + "/HeatMaps/final_" + screenshotNum.ToString() + ".png", bytes);
         PlayerPrefs.SetInt("screenshot_final", screenshotNum+1);
+
+        viewport.enabled = false;
     }
 }

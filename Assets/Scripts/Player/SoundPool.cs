@@ -137,6 +137,7 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayDriftSound()
     {
+        return; // TODO: fix this or don't play a drift
         if(driftSource != null) { return; }
         driftSource = GetAvailableSource();
         SoundManager.Instance.SwitchSource(ref driftSource, "Player");
