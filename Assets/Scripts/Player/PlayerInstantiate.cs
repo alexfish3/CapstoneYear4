@@ -52,6 +52,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapStartingCutscene += DisablePlayerSpawn;
 
         gameManager.OnSwapBegin += SwapForDriving;
+        gameManager.OnSwapBegin += PlayerUpdateDrivingIndicators;
 
         gameManager.OnSwapStartingCutscene += SwapForCutscene;
         gameManager.OnSwapGoldenCutscene += SwapForCutscene;
@@ -77,6 +78,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapStartingCutscene -= DisablePlayerSpawn;
 
         gameManager.OnSwapBegin -= SwapForDriving;
+        gameManager.OnSwapBegin -= PlayerUpdateDrivingIndicators;
 
         gameManager.OnSwapStartingCutscene -= SwapForCutscene;
         gameManager.OnSwapGoldenCutscene -= SwapForCutscene;
@@ -92,12 +94,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
     public void Update()
     {
-        if(isAllReadedUp == true)
-        {
-            return;
-        }
 
-        //CheckReadyUpCount();
     }
 
     ///<summary>
@@ -178,7 +175,10 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
 
         // Updates the virtual cameras based on the player number
-        playerCameraResizer.UpdateVirtualCameras(nextFillSlot);
+        playerCameraResizer.UpdateMainVirtualCameras(nextFillSlot);
+
+        // Updates the virtual cameras based on the player number
+        playerCameraResizer.UpdateIconVirtualCameras(nextFillSlot);
 
         // Relocates the customization menu based on player number
         playerCameraResizer.RelocateCustomizationMenu(nextFillSlot);
@@ -654,6 +654,17 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 continue;
 
             avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPlay();
+        }
+    }
+
+    public void PlayerUpdateDrivingIndicators()
+    {
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
+        {
+            if (avaliblePlayerInputs[i] == null)
+                continue;
+
+            avaliblePlayerInputs[i].gameObject.GetComponentInChildren<DrivingIndicators>().UpdatePlayerReferencesForObjects();
         }
     }
 

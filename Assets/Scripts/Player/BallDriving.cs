@@ -949,7 +949,7 @@ public class BallDriving : MonoBehaviour
         wheelying = true;
 
         // Start the glow depletion coroutine and wait for it to complete
-        yield return StartCoroutine(phaseIndicator.GlowDeplete(0.8f * boostDuration));
+        yield return new WaitForSeconds(boostDuration); //StartCoroutine(phaseIndicator.GlowDeplete(0.8f * boostDuration));
 
         Debug.Log("Glow depletion complete");
 

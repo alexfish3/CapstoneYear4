@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 /// <summary>
 /// This class resizes the rect of all cameras in array, based on a reference cam. 
@@ -25,17 +26,16 @@ public class PlayerCameraResizer : MonoBehaviour
     public Camera PlayerRenderCamera { get { return playerRenderCamera; } }
 
     [Header("Cinemachine Info")]
-    [SerializeField] GameObject[] virtualCameras;
+    [SerializeField] GameObject virtualCameraMain;
+    [SerializeField] GameObject virtualCameraIcon;
+    [SerializeField] CinemachineCollider cameraCollidder;
 
     [Header("Camera References")]
     [SerializeField] LayerMask drivingMask;
     [SerializeField] LayerMask phasingMask;
 
-    [SerializeField] Camera mainCamera;
-    [SerializeField] CinemachineCollider cameraCollidder;
-
     [SerializeField] Camera drivingUICamera;
-
+    [SerializeField] Camera iconCamera;
     [SerializeField] Camera playerCamera;
     [SerializeField] Camera menuUICamera;
 
@@ -73,7 +73,7 @@ public class PlayerCameraResizer : MonoBehaviour
     ///<summary>
     /// Updates the cameras to render certain layers based on the player
     ///</summary>
-    public void UpdateVirtualCameras(int nextFillSlot)
+    public void UpdateMainVirtualCameras(int nextFillSlot)
     {
         // Gets camera layer based on player
         if (nextFillSlot == 1)
@@ -85,15 +85,35 @@ public class PlayerCameraResizer : MonoBehaviour
         else if (nextFillSlot == 4)
             cameraLayer = 20;
 
-        // Loops and sets all virtual cams to layer
-        foreach(GameObject virtualCam in virtualCameras)
-            virtualCam.layer = cameraLayer;
+        virtualCameraMain.layer = cameraLayer;
 
         // Add via bitwise to include the camera layer
         referenceCam.cullingMask |= (1 << cameraLayer);
     }
 
-    public static void UpdatePlayerObjectLayer(GameObject objectToChange, int playerPos)
+    ///<summary>
+    /// Updates the cameras to render certain layers based on the player
+    ///</summary>
+    public void UpdateIconVirtualCameras(int nextFillSlot)
+    {
+        int iconLayer = 0;
+        // Gets camera layer based on player
+        if (nextFillSlot == 1)
+            iconLayer = 25;
+        else if (nextFillSlot == 2)
+            iconLayer = 26;
+        else if (nextFillSlot == 3)
+            iconLayer = 26;
+        else if (nextFillSlot == 4)
+            iconLayer = 26;
+
+        virtualCameraIcon.layer = iconLayer;
+
+        //// Add via bitwise to include the camera layer
+        iconCamera.cullingMask |= (1 << iconLayer);
+    }
+
+    public static void UpdatePlayerObjectLayer(List<GameObject> objectsToChange, int playerPos, Camera iconCamera)
     {
         int layer = 0;
         // Gets camera layer based on player
@@ -105,11 +125,14 @@ public class PlayerCameraResizer : MonoBehaviour
             layer = 12;
         else if (playerPos == 3)
             layer = 13;
-        else
-            layer = 1;
-        
 
-        objectToChange.layer = layer;
+        foreach(GameObject obj in objectsToChange)
+        {
+            obj.layer = layer;
+        }
+
+        // Update icon camera to not render self layer
+        iconCamera.cullingMask ^= 1 << layer;
     }
 
     ///<summary>
@@ -139,20 +162,20 @@ public class PlayerCameraResizer : MonoBehaviour
         // Phasing
         if (mainCameraOn)
         {
-            mainCamera.cullingMask = phasingMask;
+            referenceCam.cullingMask = phasingMask;
             // Add via bitwise to include the phase layer
-            mainCamera.cullingMask |= (1 << 8);
+            referenceCam.cullingMask |= (1 << 8);
             cameraCollidder.m_AvoidObstacles = false;
         }
         // Normal
         else
         {
-            mainCamera.cullingMask = drivingMask;
+            referenceCam.cullingMask = drivingMask;
             cameraCollidder.m_AvoidObstacles = true;
         }
 
         // Add via bitwise to include the camera layer
-        mainCamera.cullingMask |= (1 << cameraLayer);
+        referenceCam.cullingMask |= (1 << cameraLayer);
     }
 
     ///<summary>
@@ -186,7 +209,7 @@ public class PlayerCameraResizer : MonoBehaviour
             try
             {
                 playerCamera.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(0);
-                mainCamera.GetUniversalAdditionalCameraData().cameraStack.Add(menuUICamera);
+                referenceCam.GetUniversalAdditionalCameraData().cameraStack.Add(menuUICamera);
             }
             catch
             {
@@ -206,9 +229,9 @@ public class PlayerCameraResizer : MonoBehaviour
 
             try
             {
-                if (mainCamera.GetUniversalAdditionalCameraData().cameraStack.Count > 0)
+                if (referenceCam.GetUniversalAdditionalCameraData().cameraStack.Count > 0)
                 {
-                    mainCamera.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(1);
+                    referenceCam.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(1);
                 }
             }
             catch

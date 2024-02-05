@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class DrivingIndicators : MonoBehaviour
 {
+    [SerializeField] Camera iconCamera;
     PlayerInstantiate playerInstantiate;
     [SerializeField] PlayerInput thisPlayer;
     [SerializeField] GameObject thisPlayerGameobject;
@@ -23,11 +24,6 @@ public class DrivingIndicators : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            UpdatePlayerReferencesForObjects();
-        }
-
         // The step size is equal to speed times frame time.
         float singleStep = speed * Time.deltaTime;
 
@@ -41,7 +37,6 @@ public class DrivingIndicators : MonoBehaviour
         }
 
         // scale independently
-
 
     }
 
@@ -69,8 +64,12 @@ public class DrivingIndicators : MonoBehaviour
                 playerCameraTransforms.Add(playerInput.gameObject.GetComponent<PlayerCameraResizer>().PlayerReferenceCamera.transform);
 
                 playersRotationObjects[counter].SetActive(true);
-                PlayerCameraResizer.UpdatePlayerObjectLayer(playersRotationObjects[counter], i);
 
+                List<GameObject> needToSwitch = new List<GameObject>();
+                needToSwitch.Add(playersRotationObjects[counter]);
+                needToSwitch.Add(playersRotationObjects[counter].transform.GetChild(0).gameObject);
+
+                PlayerCameraResizer.UpdatePlayerObjectLayer(needToSwitch, i, iconCamera);
                 counter++;
             }
         }

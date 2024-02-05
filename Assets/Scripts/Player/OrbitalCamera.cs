@@ -8,8 +8,10 @@ public class OrbitalCamera : MonoBehaviour
     [SerializeField] InputManager inputManager;
 
     [Header("Horizontal Movement")]
-    [SerializeField] CinemachineVirtualCamera virtualCamera;
-    [SerializeField] CinemachineOrbitalTransposer orb;
+    [SerializeField] CinemachineVirtualCamera virtualCameraMain;
+    [SerializeField] CinemachineVirtualCamera virtualCameraIcon;
+    [SerializeField] CinemachineOrbitalTransposer mainOrb;
+    [SerializeField] CinemachineOrbitalTransposer iconOrb;
     [SerializeField] float maxXAngle = 180;
     [SerializeField] float smoothSpeedValue = 0.1f;
     [SerializeField] float realXAxis;
@@ -24,7 +26,8 @@ public class OrbitalCamera : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        orb = virtualCamera.GetCinemachineComponent<CinemachineOrbitalTransposer>();
+        mainOrb = virtualCameraMain.GetCinemachineComponent<CinemachineOrbitalTransposer>();
+        iconOrb = virtualCameraIcon.GetCinemachineComponent<CinemachineOrbitalTransposer>();
     }
 
     // Update is called once per frame
@@ -36,7 +39,9 @@ public class OrbitalCamera : MonoBehaviour
         smoothXAxis = Mathf.Lerp(smoothXAxis, realXAxis, smoothSpeedValue);
         smoothYAxis = Mathf.Lerp(smoothYAxis, realYAxis, smoothSpeedValue);
 
-        orb.m_XAxis.Value = smoothXAxis;
+        mainOrb.m_XAxis.Value = smoothXAxis;
+        iconOrb.m_XAxis.Value = smoothXAxis;
+
         CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
     }
 }
