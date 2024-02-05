@@ -84,7 +84,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     // looping coroutine
     private IEnumerator bgmRoutine;
 
-    private bool dirtyMainMenuTheme = false;
+    private bool shouldPlayMain = true;
 
     private void OnEnable()
     {
@@ -152,6 +152,11 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     // below are methods to play various BGMs
     private void PlayMenuTheme()
     {
+        if (!shouldPlayMain)
+            return;
+
+        shouldPlayMain = false;
+
         if(bgmRoutine != null)
             StopCoroutine(bgmRoutine);
 
@@ -177,6 +182,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     private void PlayMainTheme()
     {
+        shouldPlayMain = true;
         if (bgmRoutine != null)
         {
             StopCoroutine(bgmRoutine);

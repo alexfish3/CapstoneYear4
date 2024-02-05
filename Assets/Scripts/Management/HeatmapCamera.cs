@@ -57,6 +57,7 @@ public class HeatmapCamera : MonoBehaviour
         int screenshotNum = PlayerPrefs.GetInt("screenshot_main", 0);
         File.WriteAllBytes(Application.streamingAssetsPath + "/HeatMaps/main_" + screenshotNum.ToString() + ".png", bytes);
         PlayerPrefs.SetInt("screenshot_main", screenshotNum+1);
+        PlayerPrefs.SetInt("screenshot_final", screenshotNum + 1);
         viewport.enabled = false;
     }
 
@@ -89,7 +90,6 @@ public class HeatmapCamera : MonoBehaviour
 
         int screenshotNum = PlayerPrefs.GetInt("screenshot_final", 0);
         File.WriteAllBytes(Application.streamingAssetsPath + "/HeatMaps/final_" + screenshotNum.ToString() + ".png", bytes);
-        PlayerPrefs.SetInt("screenshot_final", screenshotNum+1);
 
         viewport.enabled = false;
     }
