@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6192375558702640640}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pipes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,7 +49,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7353857915215081714}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Props
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,7 +81,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7325156735232991719}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Overhang Building 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,6 +101,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2601790274101931227}
+  - {fileID: 873295039298531268}
   - {fileID: 4022621362892845059}
   - {fileID: 5964505599255560661}
   - {fileID: 1371229028529667727}
@@ -108,6 +110,172 @@ Transform:
   - {fileID: 7353857915215081714}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5515733048913154889
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 873295039298531268}
+  - component: {fileID: 858455962395381897}
+  - component: {fileID: 4434688983174018968}
+  m_Layer: 8
+  m_Name: House Glow Sub
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &873295039298531268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5515733048913154889}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.5234, y: 5.23, z: 0.0124}
+  m_LocalScale: {x: 7.7367454, y: 10.83879, z: 13.750673}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7325156735232991719}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &858455962395381897
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5515733048913154889}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &4434688983174018968
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5515733048913154889}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 556c6f4c9b27466499784b9200216c5b, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5730920139839647866
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2601790274101931227}
+  - component: {fileID: 2765276654958218529}
+  - component: {fileID: 810895861720537978}
+  m_Layer: 8
+  m_Name: House Glow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2601790274101931227
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5730920139839647866}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.4869, y: 5.2268004, z: -0.0091}
+  m_LocalScale: {x: 8.141793, y: 10.85753, z: 14.125184}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7325156735232991719}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &2765276654958218529
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5730920139839647866}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &810895861720537978
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5730920139839647866}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 500615d1c9859344083e64c50bad2c6b, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &5738947641184577592
 GameObject:
   m_ObjectHideFlags: 0
@@ -117,7 +285,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5964505599255560661}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Doors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,7 +317,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7129920236516071602}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Windows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -183,7 +351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1371229028529667727}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Lamps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -275,6 +443,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: pipeConnector (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -352,6 +524,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
       propertyPath: m_Name
       value: pipeElbow (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -431,6 +607,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: pipeConnector (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -492,6 +672,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a2e723b68269c4442ab15d297e242eed, type: 3}
       propertyPath: m_Name
       value: DoubleDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a2e723b68269c4442ab15d297e242eed, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -571,6 +755,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: pipeElbow (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -633,6 +821,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoveredWindow
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -694,6 +886,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
       propertyPath: m_Name
       value: CoveredWindow (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -772,6 +968,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
       value: pipeConnector
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -966,6 +1166,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wallLamp_02 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 11c805bf18a7b89439472b22f1a7f7b9, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1043,6 +1247,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
       value: pipeConnector (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1122,6 +1330,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: pipeConnector (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1199,6 +1411,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
       value: pipeConnector (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1278,6 +1494,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: pipeElbow
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1339,6 +1559,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
       propertyPath: m_Name
       value: CoveredWindow (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1417,6 +1641,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 11c805bf18a7b89439472b22f1a7f7b9, type: 3}
       propertyPath: m_Name
       value: wallLamp_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 11c805bf18a7b89439472b22f1a7f7b9, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

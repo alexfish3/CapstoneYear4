@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2601730029448933596}
   - component: {fileID: 8920376142097270064}
   - component: {fileID: 3560096969053209717}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,7 +116,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4200489168770434025}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Vines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3295983816192098925}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plant Basket (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -185,7 +185,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 448229898919209396}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Lamps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -217,7 +217,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3656262981491640358}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Balconies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -248,7 +248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9066940089425205510}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Medium Generic House 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,6 +268,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2517896013127758126}
+  - {fileID: 6698750654484654383}
   - {fileID: 4400878584624700753}
   - {fileID: 8677998371165076306}
   - {fileID: 7270256685931132000}
@@ -287,7 +289,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8432992707323214198}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plant Basket (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -320,7 +322,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1554936265416241412}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Doors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +354,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1294003717676235880}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Plant Basket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -385,7 +387,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3235616233294734096}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Props
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -424,7 +426,7 @@ GameObject:
   - component: {fileID: 5898958774997679807}
   - component: {fileID: 508169064942477970}
   - component: {fileID: 4766428168880345815}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -528,7 +530,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7241134242556419846}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Pipes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -553,6 +555,172 @@ Transform:
   - {fileID: 3555319122988582889}
   m_Father: {fileID: 3235616233294734096}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8599643964622140562
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2517896013127758126}
+  - component: {fileID: 6062156398707241938}
+  - component: {fileID: 1549124520271321163}
+  m_Layer: 8
+  m_Name: House Glow
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2517896013127758126
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8599643964622140562}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0593, y: 5.2268004, z: 0.0246}
+  m_LocalScale: {x: 7.94968, y: 10.85753, z: 10.542514}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9066940089425205510}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &6062156398707241938
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8599643964622140562}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &1549124520271321163
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8599643964622140562}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 500615d1c9859344083e64c50bad2c6b, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &8879549816823399381
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6698750654484654383}
+  - component: {fileID: 2816888472717937784}
+  - component: {fileID: 6760082998129252719}
+  m_Layer: 8
+  m_Name: House Glow Sub
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6698750654484654383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8879549816823399381}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.0237, y: 5.23, z: 0.0405}
+  m_LocalScale: {x: 7.5541897, y: 10.83879, z: 10.262992}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 9066940089425205510}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &2816888472717937784
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8879549816823399381}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &6760082998129252719
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8879549816823399381}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 556c6f4c9b27466499784b9200216c5b, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &9175346069115308642
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,7 +733,7 @@ GameObject:
   - component: {fileID: 4160533044021138829}
   - component: {fileID: 6612724014031083849}
   - component: {fileID: 3359513203481317590}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -669,7 +837,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9084069063106482105}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Windows
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -762,6 +930,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: vineWallScaling
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a963ff58b0e014b44a6fbf5255466f39, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -839,6 +1011,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
       propertyPath: m_Name
       value: CoveredWindow (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -918,6 +1094,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: plantBasket
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e80060f12429cb1498fade25f33dfac5, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -995,6 +1175,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a963ff58b0e014b44a6fbf5255466f39, type: 3}
       propertyPath: m_Name
       value: vineWallScaling (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a963ff58b0e014b44a6fbf5255466f39, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1074,6 +1258,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoveredWindow
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1152,6 +1340,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: pipeConnector
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1229,6 +1421,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
       propertyPath: m_Name
       value: pipeElbow
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1423,6 +1619,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wallLamp_02
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 11c805bf18a7b89439472b22f1a7f7b9, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1500,6 +1700,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a963ff58b0e014b44a6fbf5255466f39, type: 3}
       propertyPath: m_Name
       value: vineWallScaling (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a963ff58b0e014b44a6fbf5255466f39, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1579,6 +1783,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: plantBasket
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e80060f12429cb1498fade25f33dfac5, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1657,6 +1865,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: pipeConnector (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1718,6 +1930,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c096553e3cf8e9a44a781f89a23673fe, type: 3}
       propertyPath: m_Name
       value: Chimney
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c096553e3cf8e9a44a781f89a23673fe, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1797,6 +2013,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: CoveredWindow (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1874,6 +2094,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a963ff58b0e014b44a6fbf5255466f39, type: 3}
       propertyPath: m_Name
       value: vineWallScaling (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a963ff58b0e014b44a6fbf5255466f39, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1953,6 +2177,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: plantBasket
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e80060f12429cb1498fade25f33dfac5, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2014,6 +2242,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 8aa4464297d6cc34499724a8c3c96682, type: 3}
       propertyPath: m_Name
       value: ArchDoor
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8aa4464297d6cc34499724a8c3c96682, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2093,6 +2325,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: vineWallScaling (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a963ff58b0e014b44a6fbf5255466f39, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2166,6 +2402,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f18f88ec5ceb07b469168ea7eceae532, type: 3}
       propertyPath: m_Name
       value: RoofGeneric_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f18f88ec5ceb07b469168ea7eceae532, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
