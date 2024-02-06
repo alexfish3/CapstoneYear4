@@ -26,6 +26,11 @@ public class DrivingIndicators : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            UpdatePlayerReferencesForObjects();
+        }
+
         // Rotate independently
         for (int i = 0; i <= playersToKeepTrackOf.Count - 1; i++)
         {
@@ -43,11 +48,12 @@ public class DrivingIndicators : MonoBehaviour
 
             playersRotationObjects[i].transform.localScale = new Vector3(sizeValue, sizeValue, sizeValue);
         }
-
     }
 
     public void UpdatePlayerReferencesForObjects()
     {
+        Debug.Log("Update Arrows");
+
         // Sets all to false
         foreach(GameObject rotationObject in playersRotationObjects)
         {
@@ -71,9 +77,11 @@ public class DrivingIndicators : MonoBehaviour
 
                 playersRotationObjects[counter].SetActive(true);
 
-                List<GameObject> needToSwitch = new List<GameObject>();
-                needToSwitch.Add(playersRotationObjects[counter]);
-                needToSwitch.Add(playersRotationObjects[counter].transform.GetChild(0).gameObject);
+                List<GameObject> needToSwitch = new List<GameObject>
+                {
+                    playersRotationObjects[counter],
+                    playersRotationObjects[counter].transform.GetChild(0).gameObject
+                };
 
                 PlayerCameraResizer.UpdatePlayerObjectLayer(needToSwitch, i, iconCamera);
                 counter++;

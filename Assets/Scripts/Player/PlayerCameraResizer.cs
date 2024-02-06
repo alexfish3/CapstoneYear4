@@ -44,6 +44,7 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] bool MenuCameraReparented = false;
 
     public int cameraLayer = 0;
+    int nextFillSlot = 0;
 
     // Update is called once per frame
     void Update()
@@ -72,8 +73,10 @@ public class PlayerCameraResizer : MonoBehaviour
     ///<summary>
     /// Updates the cameras to render certain layers based on the player
     ///</summary>
-    public void UpdateMainVirtualCameras(int nextFillSlot)
+    public void UpdateMainVirtualCameras(int nextFillSlotPass)
     {
+        nextFillSlot = nextFillSlotPass;
+
         // Gets camera layer based on player
         if (nextFillSlot == 1)
             cameraLayer = 17;
@@ -115,6 +118,7 @@ public class PlayerCameraResizer : MonoBehaviour
     public static void UpdatePlayerObjectLayer(List<GameObject> objectsToChange, int playerPos, Camera iconCamera)
     {
         int layer = 0;
+
         // Gets camera layer based on player
         if (playerPos == 0)
             layer = 10;
@@ -125,13 +129,13 @@ public class PlayerCameraResizer : MonoBehaviour
         else if (playerPos == 3)
             layer = 13;
 
-        foreach(GameObject obj in objectsToChange)
+        foreach (GameObject obj in objectsToChange)
         {
             obj.layer = layer;
         }
 
         // Update icon camera to not render self layer
-        iconCamera.cullingMask ^= 1 << layer;
+        iconCamera.cullingMask &= ~(1 << layer);
     }
 
     ///<summary>
@@ -230,7 +234,7 @@ public class PlayerCameraResizer : MonoBehaviour
             {
                 if (referenceCam.GetUniversalAdditionalCameraData().cameraStack.Count > 0)
                 {
-                    referenceCam.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(1);
+                    referenceCam.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(2);
                 }
             }
             catch
