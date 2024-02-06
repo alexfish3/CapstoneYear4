@@ -12,31 +12,39 @@ using static UnityEngine.InputSystem.InputAction;
 /// </summary>
 public class InputManager : MonoBehaviour
 {
+    // North Face Press
     public event Action<bool> NorthFaceEvent;
     private bool northFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool NorthFaceValue { get { return northFaceValue; } }
 
+    // East Face Press
     public event Action<bool> EastFaceEvent;
     private bool eastFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool EastFaceValue { get { return eastFaceValue; } }
 
+    // South Face Press
     public event Action<bool> SouthFaceEvent;
     private bool southFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool SouthFaceValue { get { return southFaceValue; } }
 
+    // West Face Press
     public event Action<bool> WestFaceEvent;
     private bool westFaceValue; //a bool representing the pushed state of the west face button (true for pushed, false for loose)
     public bool WestFaceValue { get { return westFaceValue; } }
 
-    // Left Stick
+    // Right Stick Press
+    private bool rightStickValue; //a bool representing the pushed state of the right stick button (true for pushed, false for loose)
+    public bool RightStickValue { get { return rightStickValue; } }
+
+    // Left Stick Movement
     private float leftStickValue; //a value from -1 to 1, which represents the horizontal position of the left stick
     public float LeftStickValue { get { return leftStickValue; } }
 
-    // Right Stick X
+    // Right Stick X Movement
     private float rightStickXValue; //a value from -1 to 1, which represents the horizontal position of the right stick
     public float RightStickXValue { get { return rightStickXValue; } }
 
-    // Right Stick Y
+    // Right Stick Y Movement
     private float rightStickYValue; //a value from -1 to 1, which represents the horizontal position of the right stick
     public float RightStickYValue { get { return rightStickYValue; } }
 
@@ -81,6 +89,15 @@ public class InputManager : MonoBehaviour
     public void RightStickYControl(CallbackContext context)
     {
         rightStickYValue = context.ReadValue<float>();
+    }
+
+    /// <summary>
+    /// Takes input from the north face button (Y on Xbox)
+    /// </summary>
+    /// <param name="context">boilerplate for Input Controller</param>
+    public void RightStickPress(CallbackContext context)
+    {
+        rightStickValue = context.ReadValueAsButton();
     }
 
     /// <summary>

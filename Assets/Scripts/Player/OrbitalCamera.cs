@@ -33,15 +33,27 @@ public class OrbitalCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        realXAxis = RangeMutations.Map_Linear(inputManager.RightStickXValue, -1, 1, -maxXAngle, maxXAngle);
-        realYAxis = RangeMutations.Map_Linear(inputManager.RightStickYValue, -1, 1, yAngleMinMax.x, yAngleMinMax.y);
+        // Custom joystick camera aim
+        if (!inputManager.RightStickValue)
+        {
+            realXAxis = RangeMutations.Map_Linear(inputManager.RightStickXValue, -1, 1, -maxXAngle, maxXAngle);
+            realYAxis = RangeMutations.Map_Linear(inputManager.RightStickYValue, -1, 1, yAngleMinMax.x, yAngleMinMax.y);
 
-        smoothXAxis = Mathf.Lerp(smoothXAxis, realXAxis, smoothSpeedValue);
-        smoothYAxis = Mathf.Lerp(smoothYAxis, realYAxis, smoothSpeedValue);
+            smoothXAxis = Mathf.Lerp(smoothXAxis, realXAxis, smoothSpeedValue);
+            smoothYAxis = Mathf.Lerp(smoothYAxis, realYAxis, smoothSpeedValue);
 
-        mainOrb.m_XAxis.Value = smoothXAxis;
-        iconOrb.m_XAxis.Value = smoothXAxis;
+            mainOrb.m_XAxis.Value = smoothXAxis;
+            iconOrb.m_XAxis.Value = smoothXAxis;
 
-        CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
+            CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
+        }
+        // Static look behind
+        else
+        {
+            mainOrb.m_XAxis.Value = -180;
+            iconOrb.m_XAxis.Value = 0;
+
+            CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
+        }
     }
 }

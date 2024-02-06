@@ -33,6 +33,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Camera Swap",
+                    "type": "Button",
+                    "id": "b82050cc-2f9c-4425-85f2-b12ec8c2bd57",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Boost",
                     "type": "Button",
                     "id": "0d619756-2bc7-4e17-b01b-aceb20a0cb59",
@@ -195,6 +204,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Camera Rotation Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b00c292d-41ac-4aee-a451-9cfdbb5f4285",
+                    "path": "<Gamepad>/rightStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Camera Swap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
