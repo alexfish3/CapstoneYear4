@@ -12,10 +12,18 @@ public class HeatmapCamera : MonoBehaviour
     [Tooltip("Position for the final map heat map")]
     [SerializeField] private Transform finalMapPos;
     private Camera viewport;
+    private string screenshotNum = "";
+    private string heatmapFolder = "InBuilds";
+
     private void Awake()
     {
         viewport = GetComponent<Camera>();
         viewport.enabled = false;
+
+        if(Application.isEditor)
+        {
+            heatmapFolder = "InEngine";
+        }
     }
 
     private void OnEnable()
@@ -54,10 +62,8 @@ public class HeatmapCamera : MonoBehaviour
         byte[] bytes = image.EncodeToPNG();
         Destroy(image);
 
-        int screenshotNum = PlayerPrefs.GetInt("screenshot_main", 0);
-        File.WriteAllBytes(Application.streamingAssetsPath + "/HeatMaps/main_" + screenshotNum.ToString() + ".png", bytes);
-        PlayerPrefs.SetInt("screenshot_main", screenshotNum+1);
-        PlayerPrefs.SetInt("screenshot_final", screenshotNum + 1);
+        screenshotNum = DateTime.Now.ToString("Mddhhmmff");
+        File.WriteAllBytes(Application.streamingAssetsPath + $"/HeatMaps/{heatmapFolder}/{screenshotNum}_main.png", bytes);
         viewport.enabled = false;
     }
 
@@ -88,8 +94,12 @@ public class HeatmapCamera : MonoBehaviour
         byte[] bytes = image.EncodeToPNG();
         Destroy(image);
 
-        int screenshotNum = PlayerPrefs.GetInt("screenshot_final", 0);
-        File.WriteAllBytes(Application.streamingAssetsPath + "/HeatMaps/final_" + screenshotNum.ToString() + ".png", bytes);
+        if(screenshotNum == "")
+            screenshotNum = DateTime.Now.ToString("Mddhhmmff");
+
+        File.WriteAllBytes(Application.streamingAssetsPath + $"/HeatMaps/{heatmapFolder}/{screenshotNum}_final.png", bytes);
+
+        screenshotNum = "";
 
         viewport.enabled = false;
     }

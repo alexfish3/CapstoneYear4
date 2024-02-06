@@ -5,18 +5,18 @@ using System.IO;
 using System;
 using UnityEngine.InputSystem;
 using System.Linq;
+using System.Net;
 
 public class QAManager : SingletonMonobehaviour<QAManager>
 {
     [Tooltip("Toggle for recording data in the text document.")]
-    [SerializeField] private bool recordData = true;
+    private bool recordData = true;
 
     private List<QAHandler> handlers = new List<QAHandler>();
 
     private string fileName = "QAData.csv";
 
-    [Tooltip("When off won't generate heatmaps.")]
-    [SerializeField] private bool generateHeatmap;
+    private bool generateHeatmap = true;
     public bool GenerateHeatmap { get { return generateHeatmap; } }
 
     private string[] columns = { 
