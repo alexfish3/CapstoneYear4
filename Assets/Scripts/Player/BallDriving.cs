@@ -76,7 +76,7 @@ public class BallDriving : MonoBehaviour
     [Tooltip("The amount of drag while falling. Improves the feel of the physics")]
     [SerializeField] private float fallingDrag = 1.0f;
     [Tooltip("The amount of speed that a ground boost patch gives")]
-    [SerializeField] private float groundBoostAmount = 100.0f;
+    [SerializeField] private float groundBoostDefault = 160.0f;
     [Tooltip("The multiplier applied to speed when in a ground slow patch")]
     [SerializeField] private float slowPatchMultiplier = 0.75f;
     [Tooltip("The multiplier applied to speed when holding the golden order")]
@@ -203,6 +203,7 @@ public class BallDriving : MonoBehaviour
     private bool groundBoostFlag = false;
     private bool groundSlowFlag = false;
     private bool slowdownImmune = false;
+    private float groundBoostAmount = 0;
 
     private bool onMovingPlatform = false; //tells whether the player is on a moving platform
     private MovingPlatform currentMovingPlatform;
@@ -670,6 +671,14 @@ public class BallDriving : MonoBehaviour
             {
                 case "Speed":
                     groundBoostFlag = true;
+                    try
+                    {
+                        groundBoostAmount = hit.collider.gameObject.GetComponent<Booster>().SpeedBoostAmount;
+                    }
+                    catch (System.NullReferenceException e)
+                    {
+                        groundBoostAmount = groundBoostDefault;
+                    }
                     break;
 
                 case "TouchGrass":
