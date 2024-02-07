@@ -32036,6 +32036,7 @@ GameObject:
   - component: {fileID: 6355295014402667270}
   - component: {fileID: 267954890541210731}
   - component: {fileID: 890723998163202814}
+  - component: {fileID: 3382091636616336334}
   m_Layer: 7
   m_Name: Control
   m_TagString: Untagged
@@ -32367,10 +32368,33 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 3.859176, y: 2, z: 3.3739984}
   m_Center: {x: -0, y: 1, z: -0.30892837}
+--- !u!136 &3382091636616336334
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5659362900598450531}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.1508944
+  m_Height: 4.301789
+  m_Direction: 1
+  m_Center: {x: -0, y: 1.6244934, z: -0.41731143}
 --- !u!1 &5760767167873063500
 GameObject:
   m_ObjectHideFlags: 0

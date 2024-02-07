@@ -110,7 +110,7 @@ public class Compass : MonoBehaviour
 
         if(indexOfObject > -1)
         {
-            Debug.Log(indexOfObject);
+            Debug.Log($"Index of Compass Object: {indexOfObject}");
 
             // Cahces the ui icon to remove
             GameObject objectToRemove = compassUIObjects[indexOfObject].gameObject;

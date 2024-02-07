@@ -74,7 +74,7 @@ public class OrderBeacon : MonoBehaviour
         customer.transform.position = dropoff.position;
         customer.transform.parent = this.transform;
         customer.InitCustomer();
-        meshRenderer.enabled = false;
+        //meshRenderer.enabled = false;
         isPickup = false;
         order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
         gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer;
