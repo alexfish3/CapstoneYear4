@@ -47,8 +47,7 @@ public class PlayerCameraResizer : MonoBehaviour
 
     [Space(10)]
     [Header("Phase Camera")]
-    [SerializeField] float phaseTransitionSpeed = 0.5f;
-    [SerializeField] float maxTimeOnScreen = 0.15f;
+    [SerializeField] float phaseTransitionSpeed = 0.15f;
     [SerializeField] float shaderPassIncrements = 10f;
     [SerializeField] Material phaseTransitionMaterial;
     [SerializeField] GameObject phaseRender;
@@ -298,7 +297,7 @@ public class PlayerCameraResizer : MonoBehaviour
         phaseCamera.enabled = true;
         phaseRender.SetActive(true);
 
-        float waitTimeIncrement = maxTimeOnScreen / shaderPassIncrements;
+        float waitTimeIncrement = phaseTransitionSpeed / shaderPassIncrements;
         for (float i = 0f; i <= shaderPassIncrements; i += 1f)
         {
             phaseTransitionMaterialMain.SetFloat("_Value", i / shaderPassIncrements);
