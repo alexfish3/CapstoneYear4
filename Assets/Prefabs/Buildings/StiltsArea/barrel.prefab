@@ -81,6 +81,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 980834921abdfee4da12d2eb266517e3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7913030661223544202}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 980834921abdfee4da12d2eb266517e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8592582795234963702}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 980834921abdfee4da12d2eb266517e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3541106123517421241}
   m_SourcePrefab: {fileID: 100100000, guid: 980834921abdfee4da12d2eb266517e3, type: 3}
 --- !u!1 &2532896878936266855 stripped
 GameObject:
@@ -156,3 +162,35 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8592582795234963702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2532896878936266855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c707e9c2988977545b708d95fa42e30f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  respawnWaitTime: 10
+  frozenAtStart: 0
+--- !u!114 &3541106123517421241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2532896878936266855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42710fd87f7b6f0498875f90ed479c2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  render: {fileID: 4046013925859178930}
+--- !u!23 &4046013925859178930 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 980834921abdfee4da12d2eb266517e3, type: 3}
+  m_PrefabInstance: {fileID: 3451940512036824374}
+  m_PrefabAsset: {fileID: 0}
