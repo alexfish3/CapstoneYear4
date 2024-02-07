@@ -51,7 +51,7 @@ public class OrbitalCamera : MonoBehaviour
         else
         {
             mainOrb.m_XAxis.Value = -180;
-            iconOrb.m_XAxis.Value = 0;
+            iconOrb.m_XAxis.Value = -180;
 
             CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
         }
