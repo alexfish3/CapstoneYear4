@@ -65,6 +65,8 @@ public class Kickable : MonoBehaviour
 
         transform.position = startPos;
         transform.rotation = startRot;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
 
         fade.Reset();
         if (sphereBody != null) 
