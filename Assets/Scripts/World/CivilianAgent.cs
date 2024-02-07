@@ -18,13 +18,9 @@ public class CivilianAgent : MonoBehaviour
     private float slowUpdateTickSpeed = 0.1f; //How frequently, in seconds, SlowUpdate runs
     private IEnumerator slowUpdateCoroutine;
 
-    /// <summary>
-    /// Standard Start, just gets a reference
-    /// </summary>
-    private void Start()
+    private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        BeginPathing();
     }
 
     /// <summary>
@@ -37,6 +33,8 @@ public class CivilianAgent : MonoBehaviour
             Debug.LogError(this.gameObject.name + " has no assigned patrol points.");
             return;
         }
+
+        agent.SetDestination(points[0].position);
 
         StartSlowUpdate();
     }
