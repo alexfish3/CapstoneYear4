@@ -1,9 +1,13 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
 
+/// <summary>
+/// Runs individual pedestrians. They move between a number of points, cycling between them.
+/// </summary>
 public class CivilianAgent : MonoBehaviour
 {
     private NavMeshAgent agent;
@@ -18,9 +22,12 @@ public class CivilianAgent : MonoBehaviour
     private float slowUpdateTickSpeed = 0.1f; //How frequently, in seconds, SlowUpdate runs
     private IEnumerator slowUpdateCoroutine;
 
+    private Transform model;
+
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        model = transform.GetChild(0);
     }
 
     /// <summary>
@@ -35,6 +42,10 @@ public class CivilianAgent : MonoBehaviour
         }
 
         agent.SetDestination(points[0].position);
+
+        Tween bob = model.DOLocalMoveY(0.3f, 0.6f, false);
+        bob.SetEase(Ease.InOutSine);
+        bob.SetLoops(-1, LoopType.Yoyo);
 
         StartSlowUpdate();
     }
