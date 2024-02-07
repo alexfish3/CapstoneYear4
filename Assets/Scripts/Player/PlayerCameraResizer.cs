@@ -56,6 +56,8 @@ public class PlayerCameraResizer : MonoBehaviour
     Material phaseTransitionMaterialMain;
     RenderTexture phaseCameraRT;
     bool phaseCameraUpdate;
+    bool currentPhaseStatus;
+    Coroutine phaseCameraUpdateCoroutine;
 
     [Space(10)]
     [Header("Other")]
@@ -200,7 +202,19 @@ public class PlayerCameraResizer : MonoBehaviour
     ///</summary>
     public void SwapCameraRendering(bool mainCameraOn)
     {
-        StartCoroutine(RenderOutPhaseCamera(mainCameraOn));
+        // handles cases where rendering may be set twice
+        if(currentPhaseStatus == mainCameraOn)
+            return;
+        
+        // Sets current phase status to be what camera mode is
+        currentPhaseStatus = mainCameraOn;
+
+        Debug.Log("Triggering Phase Camera Swap");
+
+        if (phaseCameraUpdateCoroutine != null)
+            StopCoroutine(phaseCameraUpdateCoroutine);
+
+        phaseCameraUpdateCoroutine = StartCoroutine(RenderOutPhaseCamera(mainCameraOn));
 
         // Phasing
         if (mainCameraOn)
