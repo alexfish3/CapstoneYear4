@@ -27,11 +27,6 @@ public class PhaseIndicator : MonoBehaviour
     [SerializeField] Material hornGlowRef;
     [SerializeField] Material hornGlow;
 
-    [Header("Phase Camera")]
-    [SerializeField] LayerMask drivingMask;
-    [SerializeField] LayerMask phasingMask;
-    [SerializeField] UniversalAdditionalCameraData mainCameraData;
-
     private SoundPool soundPool; // for playing SFX
     private bool dirtyBoostReady = true;
 
@@ -171,25 +166,5 @@ public class PhaseIndicator : MonoBehaviour
 
         // Invoke the completion callback if provided
         onComplete?.Invoke();
-    }
-
-    /// <summary>
-    /// Sets the phase cam to be either phase or normal based on bool input
-    /// </summary>
-    public void SetPhaseCam(bool enabled)
-    {
-        if (ShowPhase == false)
-            return;
-
-        // Phase Cam View
-        if (enabled)
-        {
-            mainCameraData.SetRenderer(2);
-        }
-        // Normal Cam View
-        else
-        {
-            mainCameraData.SetRenderer(1);
-        }
     }
 }

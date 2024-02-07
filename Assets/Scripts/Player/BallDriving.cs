@@ -581,7 +581,6 @@ public class BallDriving : MonoBehaviour
                 ToggleCollision(false);
                 checkPhaseStatus = false;
                 InsideBuilding = false;
-                phaseIndicator.SetPhaseCam(false);
                 cameraResizer.SwapCameraRendering(false);
 
                 soundPool.StopPhaseSound();
@@ -591,14 +590,12 @@ public class BallDriving : MonoBehaviour
             {
                 Debug.Log("Not Inside Building");
                 InsideBuilding = false;
-                phaseIndicator.SetPhaseCam(false);
                 cameraResizer.SwapCameraRendering(false);
             }
             else if (hit1Success == true && hit2Success == true && InsideBuilding == false)
             {
                 Debug.Log("Inside Building");
 
-                phaseIndicator.SetPhaseCam(true);
                 cameraResizer.SwapCameraRendering(true);
 
                 InsideBuilding = true;

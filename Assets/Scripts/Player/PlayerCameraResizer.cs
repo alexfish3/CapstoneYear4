@@ -1,8 +1,10 @@
 using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 /// <summary>
 /// This class resizes the rect of all cameras in array, based on a reference cam. 
@@ -11,24 +13,29 @@ using UnityEngine.Rendering.Universal;
 /// /// </summary>
 public class PlayerCameraResizer : MonoBehaviour
 {
+    [Header("Main Camera Details")]
     [Tooltip("This is the camera in which if changed, other cameras will also change to match")]
     [SerializeField] Camera referenceCam;
     public Camera PlayerReferenceCamera { get { return referenceCam; } }
+    [SerializeField] UniversalAdditionalCameraData referenceCamData;
 
     [Tooltip("This is the camera array in which all will resize to the main upon main being changed")]
     [SerializeField] Camera[] camerasToFollow;
+
     [Tooltip("This is a vector4 value indicating the default rect of a camera. the four values are xPos, yPos, Width and Height")]
     [SerializeField] Vector4 viewPortRectDefault;
 
-    [Tooltip("This reference is to the camera outputing to the render textures")]
+    [Tooltip("This reference is to the player camera outputing to the render textures")]
     [SerializeField] Camera playerRenderCamera;
     public Camera PlayerRenderCamera { get { return playerRenderCamera; } }
 
+    [Space(10)]
     [Header("Cinemachine Info")]
     [SerializeField] GameObject virtualCameraMain;
     [SerializeField] GameObject virtualCameraIcon;
     [SerializeField] CinemachineCollider cameraCollidder;
 
+    [Space(10)]
     [Header("Camera References")]
     [SerializeField] LayerMask drivingMask;
     [SerializeField] LayerMask phasingMask;
@@ -38,17 +45,49 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] Camera playerCamera;
     [SerializeField] Camera menuUICamera;
 
+    [Space(10)]
+    [Header("Phase Camera")]
+    [SerializeField] float phaseTransitionSpeed = 0.5f;
+    [SerializeField] float maxTimeOnScreen = 0.15f;
+    [SerializeField] float shaderPassIncrements = 10f;
+    [SerializeField] Material phaseTransitionMaterial;
+    [SerializeField] GameObject phaseRender;
+    [SerializeField] Camera phaseCamera;
+    [SerializeField] UniversalAdditionalCameraData phaseCamData;
+    Material phaseTransitionMaterialMain;
+    RenderTexture phaseCameraRT;
+    bool phaseCameraUpdate;
+
+    [Space(10)]
+    [Header("Other")]
     [SerializeField] GameObject customizationSelector;
-
     bool initalized = false;
-    [SerializeField] bool MenuCameraReparented = false;
-
     public int cameraLayer = 0;
     int nextFillSlot = 0;
+
+    private void Start()
+    {
+        phaseTransitionMaterialMain = new Material(phaseTransitionMaterial);
+        phaseCameraRT = new RenderTexture(1920,1080,24);
+        phaseCamera.targetTexture = phaseCameraRT;
+
+        phaseTransitionMaterialMain.SetTexture("_MainTex", phaseCamera.targetTexture);
+        //phaseTransitionMaterialMain.SetFloat("_Value", 0);
+
+        phaseRender.GetComponent<Image>().material = phaseTransitionMaterialMain;
+    }
 
     // Update is called once per frame
     void Update()
     {
+        // Updates the phase camera to follow the movement of the main camera
+        if (phaseCameraUpdate)
+        {
+            // Updates position and rotation
+            phaseCamera.transform.rotation = referenceCam.transform.rotation;
+            phaseCamera.transform.position = referenceCam.transform.position;
+        }
+
         // Returns if updated already
         if (initalized)
             return;
@@ -162,9 +201,12 @@ public class PlayerCameraResizer : MonoBehaviour
     ///</summary>
     public void SwapCameraRendering(bool mainCameraOn)
     {
+        StartCoroutine(RenderOutPhaseCamera(mainCameraOn));
+
         // Phasing
         if (mainCameraOn)
         {
+            referenceCamData.SetRenderer(2);
             referenceCam.cullingMask = phasingMask;
             // Add via bitwise to include the phase layer
             referenceCam.cullingMask |= (1 << 8);
@@ -173,6 +215,7 @@ public class PlayerCameraResizer : MonoBehaviour
         // Normal
         else
         {
+            referenceCamData.SetRenderer(1);
             referenceCam.cullingMask = drivingMask;
             cameraCollidder.m_AvoidObstacles = true;
         }
@@ -197,7 +240,6 @@ public class PlayerCameraResizer : MonoBehaviour
     /// <summary>
     /// Reparents the ui camera on the two cameras that can use it in a stack. (true is mainCamera, false is playerCamera)
     /// </summary>
-    /// <param name="direction"></param>
     public void ReparentMenuCameraStack(bool posOfMenuCamera)
     {
         // Reparent to main camera
@@ -218,8 +260,6 @@ public class PlayerCameraResizer : MonoBehaviour
             {
                 Debug.LogWarning("Cannot Reparent Camera");
             }
-
-            MenuCameraReparented = false;
         }
         // Reparent to player camera
         else
@@ -243,8 +283,48 @@ public class PlayerCameraResizer : MonoBehaviour
             }
 
             playerCamera.GetUniversalAdditionalCameraData().cameraStack.Add(menuUICamera);
-
-            MenuCameraReparented = true;
         }
+    }
+
+    /// <summary>
+    /// Renders and calculates phase camera transition
+    /// </summary>
+    public IEnumerator RenderOutPhaseCamera(bool renderType)
+    {
+        // Reset Tex
+        phaseTransitionMaterialMain.SetFloat("_Value", 0);
+
+        phaseCameraUpdate = true;
+        phaseCamera.enabled = true;
+        phaseRender.SetActive(true);
+
+        float waitTimeIncrement = maxTimeOnScreen / shaderPassIncrements;
+        for (float i = 0f; i <= shaderPassIncrements; i += 1f)
+        {
+            phaseTransitionMaterialMain.SetFloat("_Value", i / shaderPassIncrements);
+            yield return new WaitForSeconds(waitTimeIncrement);
+        }
+
+        phaseRender.SetActive(false);
+        phaseCamera.enabled = false;
+        phaseCameraUpdate = false;
+
+        // Phasing
+        if (renderType)
+        {
+            phaseCamData.SetRenderer(2);
+            phaseCamera.cullingMask = phasingMask;
+            // Add via bitwise to include the phase layer
+            phaseCamera.cullingMask |= (1 << 8);
+        }
+        // Normal
+        else
+        {
+            phaseCamData.SetRenderer(0);
+            phaseCamera.cullingMask = drivingMask;
+        }
+
+        // Add via bitwise to include the camera layer
+        phaseCamera.cullingMask |= (1 << cameraLayer);
     }
 }
