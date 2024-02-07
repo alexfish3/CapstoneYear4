@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class CivilianAgent : MonoBehaviour
 {
     private NavMeshAgent agent;
-    private float wayPointDistance = 2f;
+    private float wayPointDistance = 4f;
 
     [SerializeField]
     private Transform[] points;
