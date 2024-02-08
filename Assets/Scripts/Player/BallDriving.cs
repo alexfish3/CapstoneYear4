@@ -726,7 +726,7 @@ public class BallDriving : MonoBehaviour
         {
             if (Physics.Raycast(groundDetector.transform.position, Vector3.down, out waterHit, WATERCHECK_DISTANCE))
             {
-                Debug.Log($"name: {waterHit.collider.tag}");
+                //Debug.Log($"name: {waterHit.collider.tag}");
                 if (waterHit.collider.tag == "Water")
                 {
                     respawn.StartRespawnCoroutine();
