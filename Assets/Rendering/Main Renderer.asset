@@ -131,6 +131,23 @@ MonoBehaviour:
   - {fileID: 2800000, guid: a61ad2a794db98f40ad298bb3187bac9, type: 3}
   - {fileID: 2800000, guid: 096086165d665ba48af19b1fff7d9a9c, type: 3}
   - {fileID: 2800000, guid: 2342567b3d0ca2c41994aa404d2e998d, type: 3}
+--- !u!114 &-1674164047765867845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7afc38c2d1fc5794db8af8261ba5f3b1, type: 3}
+  m_Name: OutlineObjectFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  mask:
+    serializedVersion: 2
+    m_Bits: 0
+  Event: 0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153,7 +170,8 @@ MonoBehaviour:
   - {fileID: -9222676969425248800}
   - {fileID: -6662672601640701798}
   - {fileID: 7607228783780055565}
-  m_RendererFeatureMap: 805dad751807cabffd5c3be5d2f220e0f45628112d1924cbe05d3bff287802809a707ab4916e89a30d4a5626464e9269
+  - {fileID: -1674164047765867845}
+  m_RendererFeatureMap: 805dad751807cabffd5c3be5d2f220e0f45628112d1924cbe05d3bff287802809a707ab4916e89a30d4a5626464e9269bb722f2dab2cc4e8
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
