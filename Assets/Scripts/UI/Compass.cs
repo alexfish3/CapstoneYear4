@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -107,11 +108,10 @@ public class Compass : MonoBehaviour
     public void RemoveCompassMarker(CompassMarker marker)
     {
         int indexOfObject = compassMarkerObjects.IndexOf(marker);
+        Debug.Log($"Index of Compass Object: {indexOfObject}");
 
-        if(indexOfObject > -1)
+        try
         {
-            Debug.Log($"Index of Compass Object: {indexOfObject}");
-
             // Cahces the ui icon to remove
             GameObject objectToRemove = compassUIObjects[indexOfObject].gameObject;
 
@@ -121,6 +121,11 @@ public class Compass : MonoBehaviour
 
             // Deletes ui icon
             Destroy(objectToRemove);
+        }
+        catch
+        {
+            Debug.Log("Compass null error was caught.");
+            return;
         }
     }
 
