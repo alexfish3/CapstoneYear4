@@ -63,6 +63,9 @@ public class SoundPool : MonoBehaviour
     /// <param name="source">AudioSource to be reset</param>
     private void ResetSource(AudioSource source)
     {
+        if (source == null)
+            return;
+
         source.Stop();
         source.gameObject.SetActive(false);
         SoundManager.Instance.SwitchSource(ref source, "SFX");
@@ -185,7 +188,6 @@ public class SoundPool : MonoBehaviour
     public void PlayPhaseSound()
     {
         if(phasing || boostSource == null) { return; }
-        engineSource.Stop();
         SoundManager.Instance.PlaySFX("phasing", boostSource);
         phasing = true;
     }
