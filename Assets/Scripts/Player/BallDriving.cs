@@ -121,6 +121,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float boostDuration = 1.0f;
     [Tooltip("How long it takes to recharge the boost, starting after it finishes")]
     [SerializeField] private float boostRechargeTime = 10.0f;
+    [Tooltip("Modifier value to determine how fast the boost recharges")]
+    [SerializeField] private float boostRechargeModifier = 1f;
     [Tooltip("The amount of drag while boosting (Exercise caution when changing this; ask Will before playing with it too much)")]
     [SerializeField] private float boostingDrag = 1.0f;
     [Tooltip("A multipler applied to steering power while in a boost, which reduces your steering capability")]
@@ -141,6 +143,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float slipstreamBoostAmount = 300.0f;
 
     [Header("Phasing Information")]
+    [Tooltip("The type of visual to happen when boosting")]
+    public PhaseType phaseType = PhaseType.OnlyInBuilding;
     [SerializeField] PlayerCameraResizer cameraResizer;
     [Tooltip("The player index is what allows only the certain player to phase")]
     public int playerIndex;
@@ -151,6 +155,12 @@ public class BallDriving : MonoBehaviour
     [SerializeField] GameObject[] phaseRaycastPositions;
     [Tooltip("Whether the current map is set up for phase testing; Will uses this for things dwai")]
     [SerializeField] bool phaseSetMap = true;
+
+    public enum PhaseType
+    {
+        OnlyInBuilding,
+        AtAllTimes
+    }
 
     [Header("Debug")]
     [SerializeField] private bool debugSpeedometerEnable = false;
@@ -231,6 +241,8 @@ public class BallDriving : MonoBehaviour
 
     private void OnEnable()
     {
+        GameManager.Instance.OnSwapAnything += ResetBoost;
+
         GameManager.Instance.OnSwapStartingCutscene += () => FreezeBall(true);
         GameManager.Instance.OnSwapGoldenCutscene += () => FreezeBall(true);
 
@@ -240,6 +252,8 @@ public class BallDriving : MonoBehaviour
 
     private void OnDisable()
     {
+        GameManager.Instance.OnSwapAnything -= ResetBoost;
+
         GameManager.Instance.OnSwapGoldenCutscene -= () => FreezeBall(true);
         GameManager.Instance.OnSwapStartingCutscene -= () => FreezeBall(true);
 
@@ -253,7 +267,7 @@ public class BallDriving : MonoBehaviour
     private void Start()
     {
         // Sets horn glow to max
-        phaseIndicator.SetHornGlow(phaseIndicator.hornValueMax);
+        phaseIndicator.SetHornColor(1f);
 
         sphereBody = sphere.GetComponent<Rigidbody>();
         sphereTransform = sphere.GetComponent<Transform>();
@@ -296,8 +310,7 @@ public class BallDriving : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.B))
         {
-            StopBoostCooldown();
-            boostAble = true;
+            ResetBoost();
         }
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
@@ -581,7 +594,9 @@ public class BallDriving : MonoBehaviour
                 ToggleCollision(false);
                 checkPhaseStatus = false;
                 InsideBuilding = false;
-                cameraResizer.SwapCameraRendering(false);
+
+                if(phaseType == PhaseType.OnlyInBuilding)
+                    cameraResizer.SwapCameraRendering(false);
 
                 soundPool.StopPhaseSound();
             }
@@ -590,13 +605,16 @@ public class BallDriving : MonoBehaviour
             {
                 Debug.Log("Not Inside Building");
                 InsideBuilding = false;
-                cameraResizer.SwapCameraRendering(false);
+
+                if (phaseType == PhaseType.OnlyInBuilding)
+                    cameraResizer.SwapCameraRendering(false);
             }
             else if (hit1Success == true && hit2Success == true && InsideBuilding == false)
             {
                 Debug.Log("Inside Building");
 
-                cameraResizer.SwapCameraRendering(true);
+                if (phaseType == PhaseType.OnlyInBuilding)
+                    cameraResizer.SwapCameraRendering(true);
 
                 InsideBuilding = true;
 
@@ -914,10 +932,11 @@ public class BallDriving : MonoBehaviour
     /// <param name="WestFaceState">The state of the south face button, passed by the event</param>
     private void BoostFlag(bool SouthFaceState)
     {
-        if (boostAble && !callToDrift && !drifting && !reverseGear) //& by Tally Hall
+        if (boostAble && !callToDrift && !drifting && !reverseGear && !spinningOut) //& by Tally Hall
         {
             StartBoostActive();
             OnBoostStart?.Invoke();
+
             soundPool.PlayBoostActivate();
             qa.Boosts++;
         }
@@ -940,6 +959,9 @@ public class BallDriving : MonoBehaviour
 
         ToggleCollision(true);
 
+        if (phaseType == PhaseType.AtAllTimes)
+            cameraResizer.SwapCameraRendering(true);
+
         scooterModel.parent.parent.DOComplete();
 
         Tween wheelie = scooterModel.parent.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
@@ -955,24 +977,18 @@ public class BallDriving : MonoBehaviour
 
         wheelying = true;
 
-        phaseIndicator.BeginGlowDepleate(boostDuration * 0.5f);
-
-        // Start the glow depletion coroutine and wait for it to complete
-        yield return new WaitForSeconds(boostDuration); //StartCoroutine(phaseIndicator.GlowDeplete(0.8f * boostDuration));
+        float elapsedTime = 0f;
+        while(elapsedTime < boostDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            phaseIndicator.SetHornColor(1 - (elapsedTime / boostDuration));
+            yield return null;
+        }
 
         Debug.Log("Glow depletion complete");
 
         // After glow depletion is complete, proceed with the rest of the boost logic
         StartEndBoost(wheelie, wheelieEnd);
-    }
-
-    private void StartEndBoost(Tween wheelie = null, Tween wheelieEnd = null)
-    {
-        Tween w = wheelie == null ? null : wheelie;
-        Tween wE = wheelieEnd == null ? null : wheelieEnd;
-
-        endBoostCoroutine = EndBoost(w, wE);
-        StartCoroutine(endBoostCoroutine);
     }
 
     /// <summary>
@@ -994,6 +1010,9 @@ public class BallDriving : MonoBehaviour
         }
 
         boosting = false;
+
+        if (phaseType == PhaseType.AtAllTimes)
+            cameraResizer.SwapCameraRendering(false);
 
         if (wheelie != null && wheelieEnd != null) 
         {
@@ -1020,8 +1039,22 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostCooldown()
     {
-        phaseIndicator.BeginGlowCharge(boostRechargeTime);
-        yield return new WaitForSeconds(boostRechargeTime);
+        float elapsedTime = 0f;
+        while (elapsedTime < boostRechargeTime)
+        {
+            elapsedTime += (Time.deltaTime * boostRechargeModifier);
+            phaseIndicator.SetHornColor(elapsedTime / boostRechargeTime);
+            yield return null;
+        }
+        phaseIndicator.SetHornColor(1);
+
+        boostAble = true;
+    }
+
+    private void ResetBoost()
+    {
+        StopBoostCooldown();
+        phaseIndicator.SetHornColor(1);
         boostAble = true;
     }
 
@@ -1047,7 +1080,6 @@ public class BallDriving : MonoBehaviour
                 break;
         }
     }
-
 
     /// <summary>
     /// Increases speed slowly while behind another vehicle and facing in approximately the same direction. 
@@ -1245,7 +1277,6 @@ public class BallDriving : MonoBehaviour
         }
     }
 
-
     private void StartBoostActive()
     {
         boostActiveCoroutine = BoostActive();
@@ -1269,6 +1300,14 @@ public class BallDriving : MonoBehaviour
         }
     }
 
+    private void StartEndBoost(Tween wheelie = null, Tween wheelieEnd = null)
+    {
+        Tween w = wheelie == null ? null : wheelie;
+        Tween wE = wheelieEnd == null ? null : wheelieEnd;
+
+        endBoostCoroutine = EndBoost(w, wE);
+        StartCoroutine(endBoostCoroutine);
+    }
     private void StopEndBoost()
     {
         if (endBoostCoroutine != null)

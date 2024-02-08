@@ -31608,6 +31608,7 @@ MonoBehaviour:
   boostPower: 60
   boostDuration: 1.6
   boostRechargeTime: 8
+  boostRechargeModifier: 1
   boostingDrag: 0.86
   boostingSteerModifier: 0.6
   clashForce: 5000
@@ -31616,6 +31617,7 @@ MonoBehaviour:
   slipstreamTime: 1.5
   preBoostSlipstreamMax: 50
   slipstreamBoostAmount: 300
+  phaseType: 1
   cameraResizer: {fileID: 8362289104759965107}
   playerIndex: 0
   phaseIndicator: {fileID: 1461959447911348377}
@@ -31711,7 +31713,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   ghostRenderer: {fileID: 7858842854796681375}
   hornGlowRef: {fileID: 2100000, guid: a3f6a7172c4400847ab3098fcd8e05a4, type: 2}
-  hornGlow: {fileID: 0}
+  hornGlow: {fileID: 2100000, guid: a3f6a7172c4400847ab3098fcd8e05a4, type: 2}
   ShowPhase: 1
 --- !u!114 &6612634177998966307
 MonoBehaviour:
