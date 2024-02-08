@@ -71,11 +71,13 @@ public class OrderBeacon : MonoBehaviour
     {
         this.transform.position = dropoff.position;
         this.transform.parent = OrderManager.Instance.transform;
+        
         customer.transform.position = dropoff.position;
         customer.transform.parent = this.transform;
         customer.InitCustomer();
-        //meshRenderer.enabled = false;
+        
         isPickup = false;
+        
         order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
         gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer;
     }
@@ -90,7 +92,7 @@ public class OrderBeacon : MonoBehaviour
         meshRenderer.enabled = true;
         meshRenderer.material.color = color;
         isPickup = true;
-        order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
+        order.RemovePlayerHolding();
         gameObject.layer = 0; // reset to default layer
     }
 
@@ -118,10 +120,6 @@ public class OrderBeacon : MonoBehaviour
 
         if (order != null)
         {
-            if (order.PlayerHolding != null)
-            {
-                order.PlayerHolding.GetComponent<Compass>().RemoveCompassMarker(compassMarker);
-            }
             order.EraseOrder();
         }
         isPickup = true;

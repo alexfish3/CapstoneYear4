@@ -117,30 +117,34 @@ public class Order : MonoBehaviour
         this.gameObject.transform.rotation = Quaternion.identity;
         arrow.SetActive(true);
         playerHolding = player;
+
         if(value == Constants.OrderValue.Golden)
         {
             playerHolding.HasGoldenOrder = true;
         }
         playerDropped = null;
-        StopPickupCountdownCoroutine();
         beacon.SetDropoff(dropoff);
         
         compassMarker.SwitchCompassUIForPlayers(true);
     }
 
     /// <summary>
-    /// This method is "throws" the order in the air and then reinits it once the DOTween is complete.
+    /// This method is "throws" the order in the air and then reinits it once the DOTween is complete. Meant for stealing.
     /// </summary>
     public void Drop(Vector3 newPosition)
     {
         this.transform.parent = OrderManager.Instance.transform;
+        
         arrow.SetActive(false);
         transform.LookAt(Vector3.zero);
+        
         float height = Random.Range(1f, 10f);
         transform.position = newPosition + height * transform.up;
+
         transform.DOMoveY(newPosition.y, pickupCooldown)
             .SetEase(Ease.OutBounce).OnComplete(() => ReInitOrder(newPosition));
         StartPickupCooldownCoroutine();
+
     }
 
     /// <summary>
@@ -153,17 +157,16 @@ public class Order : MonoBehaviour
         {
             playerHolding.HasGoldenOrder = false;
         }
-        //transform.position = newPosition;
-        beacon.ResetPickup();
 
         playerDropped = playerHolding;
-        playerHolding = null;
+        RemovePlayerHolding();
     }
     /// <summary>
     /// This method performs the first half of the delivery, basically just hands the order to the customer.
     /// </summary>
     public void DeliverOrder()
     {
+        RemovePlayerHolding();
         arrow.SetActive(false);
         if (value != Constants.OrderValue.Golden)
         {
@@ -223,6 +226,7 @@ public class Order : MonoBehaviour
             {
                 playerHolding.HasGoldenOrder = false;
                 playerHolding.LoseOrder(this);
+                RemovePlayerHolding();
             }
             compassMarker.RemoveCompassUIFromAllPlayers();
             OrderManager.Instance.IncrementCounters(value, -1);
@@ -255,7 +259,8 @@ public class Order : MonoBehaviour
 
     private void StopPickupCountdownCoroutine()
     {
-        if(pickupCooldownCoroutine != null)
+        beacon.ResetPickup();
+        if (pickupCooldownCoroutine != null)
         {
             StopCoroutine(pickupCooldownCoroutine);
             pickupCooldownCoroutine = null;
