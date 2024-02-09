@@ -120,8 +120,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0026536654, y: 0.0069549773, z: 0.003469797}
-  m_Center: {x: 0.00034431095, y: 0.000043745047, z: 0.0017319879}
+  m_Size: {x: 0.0025651704, y: 0.006998143, z: 0.0033103104}
+  m_Center: {x: 0.00033159638, y: 0.00006538534, z: 0.0016522509}
 --- !u!65 &8889798920371845210
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -137,12 +137,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0026536654, y: 0.0069549773, z: 0.003469797}
-  m_Center: {x: 0.00034431095, y: 0.000043745047, z: 0.0017319879}
+  m_Size: {x: 0.003340745, y: 0.0076867426, z: 0.00387301}
+  m_Center: {x: 0.00043656107, y: 0.00011991788, z: 0.0016666959}
 --- !u!54 &1045596006487421359
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnWaitTime: 6
+  frozenAtStart: 0
 --- !u!23 &1828048658447676498 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: e651b453139e13f40af1d010080f06ab, type: 3}

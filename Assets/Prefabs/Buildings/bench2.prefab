@@ -143,7 +143,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -164,12 +164,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.0026627402, y: 0.0071514975, z: 0.0021391506}
-  m_Center: {x: -0.000018269697, y: -0.000029711748, z: 0.0010556169}
+  m_Size: {x: 0.0029601008, y: 0.0075130044, z: 0.0024820392}
+  m_Center: {x: -0.000017173887, y: -0.000012556315, z: 0.0010597808}
 --- !u!114 &6756022979025394118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,6 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnWaitTime: 6
+  frozenAtStart: 0
 --- !u!23 &8871773345178956894 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 54c20af3b0f330543ba14d79233dcbf6, type: 3}
