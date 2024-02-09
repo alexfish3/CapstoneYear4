@@ -242,6 +242,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void DisableSpawning()
     {
+        Debug.Log("Disable Spawning Start");
         ResetWave();
         spawnNormalPackages = false;
 
@@ -386,6 +387,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void SpawnFinalOrder()
     {
+        Debug.Log("Spawn Final Order Start");
+
         OnDeleteActiveOrders?.Invoke();
         finalOrderActive = true;
         finalOrder.InitOrder();

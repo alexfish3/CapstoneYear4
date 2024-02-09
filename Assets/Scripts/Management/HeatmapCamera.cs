@@ -40,6 +40,7 @@ public class HeatmapCamera : MonoBehaviour
 
     private void TakePicture()
     {
+        Debug.Log("Take Picture Start");
         if (!QAManager.Instance.GenerateHeatmap)
             return;
 

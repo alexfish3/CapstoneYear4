@@ -1221,6 +1221,8 @@ public class BallDriving : MonoBehaviour
     /// <param name="toFreeze">True for freeze, False for unfreeze</param>
     public void FreezeBall(bool toFreeze)
     {
+        Debug.Log("Freeze Ball Start");
+
         if (sphereBody == null)
             return;
 
