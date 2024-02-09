@@ -40,7 +40,7 @@ public class Order : MonoBehaviour
     [SerializeField] private OrderBeacon beacon;
 
     [Tooltip("Reference to the compass marker component on this object")]
-    [SerializeField] CompassMarker compassMarker;
+    public CompassMarker compassMarker;
     [SerializeField] Sprite[] possiblePackageTypes;
 
     [Tooltip("The HDR color options for the different tiers of packages")]
@@ -118,7 +118,10 @@ public class Order : MonoBehaviour
         arrow.SetActive(true);
         playerHolding = player;
 
-        if(value == Constants.OrderValue.Golden)
+        // Removes the ui from all players
+        //compassMarker.RemoveCompassUIFromAllPlayers();
+
+        if (value == Constants.OrderValue.Golden)
         {
             playerHolding.HasGoldenOrder = true;
         }
@@ -134,7 +137,10 @@ public class Order : MonoBehaviour
     public void Drop(Vector3 newPosition)
     {
         this.transform.parent = OrderManager.Instance.transform;
-        
+
+        //// Removes the ui from all players
+        //compassMarker.RemoveCompassUIFromAllPlayers();
+
         arrow.SetActive(false);
         transform.LookAt(Vector3.zero);
         
@@ -183,11 +189,14 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseOrder()
     {
+        Debug.Log("Erase Order");
         DOTween.Kill(transform);
         arrow.SetActive(false);
         
         // Removes the ui from all players
         compassMarker.RemoveCompassUIFromAllPlayers();
+
+        beacon.CompassMarker.RemoveCompassUIFromAllPlayers();
 
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);
@@ -212,6 +221,8 @@ public class Order : MonoBehaviour
         
         isActive = false;
         transform.position = pickup.position;
+
+        Debug.Log("Erase Order Finished");
     }
 
     /// <summary>
@@ -244,7 +255,9 @@ public class Order : MonoBehaviour
     {
         if (playerHolding != null)
         {
-            playerHolding.GetComponent<Compass>().RemoveCompassMarker(beacon.CompassMarker);
+            // Removes the ui from all players
+            //compassMarker.RemoveCompassUIFromAllPlayers();
+            //playerHolding.GetComponent<Compass>().RemoveCompassMarker(beacon.CompassMarker, );
         }
         playerHolding = null;
     }

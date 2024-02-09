@@ -77,7 +77,9 @@ public class OrderBeacon : MonoBehaviour
         customer.InitCustomer();
         
         isPickup = false;
-        
+
+        compassMarker.RemoveCompassUIFromAllPlayers();
+
         order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
         gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer;
     }
@@ -87,6 +89,9 @@ public class OrderBeacon : MonoBehaviour
     /// </summary>
     public void ResetPickup()
     {
+        compassMarker.RemoveCompassUIFromAllPlayers();
+        order.compassMarker.InitalizeCompassUIOnAllPlayers();
+
         customer.transform.parent = OrderManager.Instance.transform;
         this.transform.position = order.transform.position;
         meshRenderer.enabled = true;
@@ -114,6 +119,10 @@ public class OrderBeacon : MonoBehaviour
     /// </summary>
     public void EraseBeacon()
     {
+        Debug.Log("Erase Becon");
+
+        gameObject.GetComponent<CompassMarker>().RemoveCompassUIFromAllPlayers();
+
         customer.ThankYouComeAgain();
         meshRenderer.enabled = false;
         gameObject.layer = 0;

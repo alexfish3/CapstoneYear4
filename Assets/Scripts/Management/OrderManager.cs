@@ -93,6 +93,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Y))
+        {
+            OnDeleteActiveOrders?.Invoke();
+        }
+
         if (finalOrder != null)
         {
             if (finalOrderActive && finalOrder.PlayerHolding != null)
@@ -193,6 +198,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     {
         finalOrder.EraseGoldWithoutDelivering();
         OnDeleteActiveOrders?.Invoke();
+
         GetOrders();
         finalOrderActive = false;
         spawnNormalPackages = true;

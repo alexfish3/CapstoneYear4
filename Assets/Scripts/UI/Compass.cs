@@ -19,15 +19,16 @@ public class Compass : MonoBehaviour
     [Tooltip("The y position of the ui on the compass")]
     [SerializeField] float iconHeight = -70;
 
-    //[Tooltip("The distance away from the object before it fades on the compass ui. In meters")]
-    //[SerializeField] float fadeDistance = 100f;
-
     [SerializeField] GameObject iconPrefab;
-    [SerializeField] List<CompassIconUI> compassUIObjects = new List<CompassIconUI>();
-    public List<CompassIconUI> CompassUIObjects { get { return compassUIObjects; } }
 
-    [SerializeField] List<CompassMarker> compassMarkerObjects = new List<CompassMarker>();
-    public List<CompassMarker> CompassMarkerObjects { get { return compassMarkerObjects; } }
+
+    [SerializeField] List<CompassInformationInstance> compassInformationObjects = new List<CompassInformationInstance>();
+
+    //[SerializeField] List<CompassIconUI> compassUIObjects = new List<CompassIconUI>();
+    //public List<CompassIconUI> CompassUIObjects { get { return compassUIObjects; } }
+
+    //[SerializeField] List<CompassMarker> compassMarkerObjects = new List<CompassMarker>();
+    //public List<CompassMarker> CompassMarkerObjects { get { return compassMarkerObjects; } }
 
     [SerializeField] float compassUnit;
 
@@ -53,8 +54,10 @@ public class Compass : MonoBehaviour
         compassImage.uvRect = new Rect((player.localEulerAngles.y + orbitalCamera.smoothXAxis) / 360f, 0f, 1f, 1f);
 
         // Loops for all markers on player and updates their position on the compass ui
-        foreach (CompassIconUI marker in compassUIObjects)
+        foreach (CompassInformationInstance instance in compassInformationObjects)
         {
+            CompassIconUI marker = instance.compassIcon;
+
             // Updates the position on the compass
             //marker.imageRect.rectTransform.anchoredPosition = GetPosOnCompass(marker.objectReference);
             marker.imageRect.rectTransform.anchoredPosition = GetPosOnCompass(marker.objectReference);
@@ -74,13 +77,13 @@ public class Compass : MonoBehaviour
             }
         }
 
-        var sortedListDescending = compassUIObjects.OrderByDescending(ui => ui.distance).ToList();
+        var sortedListDescending = compassInformationObjects.OrderByDescending(instance => instance.compassIcon.distance).ToList();
 
         // Loop through the sorted list and organize the children
         for (int i = 0; i < sortedListDescending.Count; i++)
         {
             // Assuming each CompassIconUI has a transform property
-            sortedListDescending[i].transform.SetSiblingIndex(i);
+            sortedListDescending[i].compassIcon.transform.SetSiblingIndex(i);
         }
 
     }
@@ -97,9 +100,15 @@ public class Compass : MonoBehaviour
         compassIconUI.SetCompassIconSprite(marker.icon);
         compassIconUI.objectReference = marker;
 
+        CompassInformationInstance currentCompassIconInstance = new CompassInformationInstance(compassIconUI, marker);
+
+        compassInformationObjects.Add(currentCompassIconInstance);
+
         // Adds to list
-        compassMarkerObjects.Add(marker);
-        compassUIObjects.Add(compassIconUI);
+        //compassMarkerObjects.Add(marker);
+        //compassUIObjects.Add(compassIconUI);
+
+        //return compassIconUI;
     }
 
     ///<summary>
@@ -107,26 +116,28 @@ public class Compass : MonoBehaviour
     ///</summary>
     public void RemoveCompassMarker(CompassMarker marker)
     {
-        int indexOfObject = compassMarkerObjects.IndexOf(marker);
-        Debug.Log($"Index of Compass Object: {indexOfObject}");
+        Debug.Log("Remove Compass Marker From Player");
 
-        try
+        CompassInformationInstance oneToRemove = null;
+
+        foreach (CompassInformationInstance instance in compassInformationObjects)
         {
-            // Cahces the ui icon to remove
-            GameObject objectToRemove = compassUIObjects[indexOfObject].gameObject;
-
-            // Removes from lists
-            compassMarkerObjects.RemoveAt(indexOfObject);
-            compassUIObjects.RemoveAt(indexOfObject);
-
-            // Deletes ui icon
-            Destroy(objectToRemove);
+            if(instance.compassMarker == marker)
+            {
+                oneToRemove = instance;
+                break;
+            }
         }
-        catch
+
+        if(oneToRemove == null)
         {
-            Debug.Log("Compass null error was caught.");
             return;
         }
+
+        // remove it
+        Destroy(oneToRemove.compassIcon.gameObject);
+
+        compassInformationObjects.Remove(oneToRemove);
     }
 
     ///<summary>
@@ -179,12 +190,28 @@ public class Compass : MonoBehaviour
     public void ResetCompass()
     {
         Debug.Log("Reset Compass");
-        foreach(CompassIconUI icon in compassUIObjects)
-        {
-            Destroy(icon.gameObject);
-        }
-        compassUIObjects.Clear();
 
-        compassMarkerObjects.Clear();
+        for(int i = compassInformationObjects.Count - 1; i >= 0; i--)
+        {
+            // remove it
+
+            if(compassInformationObjects[i].compassIcon != null)
+                Destroy(compassInformationObjects[i].compassIcon.gameObject);
+
+            compassInformationObjects.Remove(compassInformationObjects[i]);
+        }
+    }
+}
+
+[System.Serializable]
+public class CompassInformationInstance
+{
+    public CompassIconUI compassIcon;
+    public CompassMarker compassMarker;
+
+    public CompassInformationInstance(CompassIconUI compassIconUI, CompassMarker compassMarker)
+    {
+        this.compassIcon = compassIconUI;
+        this.compassMarker = compassMarker;
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -17,12 +18,12 @@ public class CompassMarker : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapResults += RemoveCompassUIFromAllPlayers;
+        //GameManager.Instance.OnSwapResults += RemoveCompassUIFromAllPlayers;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapResults -= RemoveCompassUIFromAllPlayers;
+        //GameManager.Instance.OnSwapResults -= RemoveCompassUIFromAllPlayers;
     }
 
     ///<summary>
@@ -51,11 +52,15 @@ public class CompassMarker : MonoBehaviour
         if (playerInstantiate == null)
             playerInstantiate = PlayerInstantiate.Instance;
 
-        //To be used upon package spawning
-        foreach (PlayerInput player in playerInstantiate.PlayerInputs)
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (player == null)
+            if (playerInstantiate.PlayerInputs[i] == null)
                 continue;
+
+            Debug.Log("Remove From Player");
+
+            PlayerInput player = playerInstantiate.PlayerInputs[i];
+
             player.gameObject.GetComponentInChildren<Compass>().RemoveCompassMarker(this);
         }
     }
