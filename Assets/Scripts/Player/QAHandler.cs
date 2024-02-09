@@ -40,6 +40,7 @@ public class QAHandler : MonoBehaviour
 
     private void Update()
     {
+        return;
         if (!shouldTrail || !QAManager.Instance.GenerateHeatmap) { return; }
 
         if(trailTimer > trailFrequency)

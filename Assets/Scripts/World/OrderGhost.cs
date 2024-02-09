@@ -49,7 +49,7 @@ public class OrderGhost : MonoBehaviour
     public void DeliveredOrder()
     {
         if(walkingTween != null) 
-        { 
+        {
             walkingTween.Kill();
             walkingTween = null;
         }

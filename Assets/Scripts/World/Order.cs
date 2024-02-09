@@ -183,6 +183,7 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseOrder()
     {
+        DOTween.Kill(transform);
         arrow.SetActive(false);
         
         // Removes the ui from all players
