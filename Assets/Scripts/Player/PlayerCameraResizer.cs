@@ -76,9 +76,6 @@ public class PlayerCameraResizer : MonoBehaviour
         phaseTransitionMaterialMain.SetTexture("_MainTex", phaseCamera.targetTexture);
 
         phaseRender.GetComponent<Image>().material = phaseTransitionMaterialMain;
-
-        //referenceCamData.SetRenderer(nextFillSlot);
-        //phaseCamData.SetRenderer(nextFillSlot);
     }
 
     // Update is called once per frame
@@ -137,7 +134,7 @@ public class PlayerCameraResizer : MonoBehaviour
 
         // Updates camera layers to be spesific player renderers
         referenceCamData.SetRenderer(nextFillSlot);
-        phaseCamData.SetRenderer(nextFillSlot);
+        phaseCamData.SetRenderer(0);
 
         // Sets the speed lines material for the player
         ballDriving.SetSpeedLinesMaterial(nextFillSlot);

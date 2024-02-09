@@ -962,6 +962,9 @@ public class BallDriving : MonoBehaviour
         reverseGear = false;
         forwardGear = true;
 
+        speedLineValue = 0.8f;
+        speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
+
         ToggleCollision(true);
 
         if (phaseType == PhaseType.AtAllTimes)
@@ -1028,6 +1031,9 @@ public class BallDriving : MonoBehaviour
             scooterModel.parent.parent.localEulerAngles = Vector3.zero;
             wheelying = false;
         }
+
+        speedLineValue = 1f;
+        speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
 
         StartBoostCooldown();
     }
