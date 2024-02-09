@@ -144,6 +144,8 @@ public class Order : MonoBehaviour
         arrow.SetActive(false);
         transform.LookAt(Vector3.zero);
         
+        beacon.ToggleBeaconMesh(false);
+
         float height = Random.Range(1f, 10f);
         transform.position = newPosition + height * transform.up;
 

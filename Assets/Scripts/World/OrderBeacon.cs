@@ -37,7 +37,7 @@ public class OrderBeacon : MonoBehaviour
     /// <param name="inOrder">Order the beacon will track</param>
     public void InitBeacon(Order inOrder, Color beaconColor)
     {
-        meshRenderer.enabled = true;
+        ToggleBeaconMesh(true);
         order = inOrder;
         color = beaconColor;
         meshRenderer.material.color = color;
@@ -77,6 +77,7 @@ public class OrderBeacon : MonoBehaviour
         customer.InitCustomer();
         
         isPickup = false;
+        meshRenderer.material.color = new Color(1, 1, 1, 0.5f);
 
         compassMarker.RemoveCompassUIFromAllPlayers();
 
@@ -94,7 +95,7 @@ public class OrderBeacon : MonoBehaviour
 
         customer.transform.parent = OrderManager.Instance.transform;
         this.transform.position = order.transform.position;
-        meshRenderer.enabled = true;
+        ToggleBeaconMesh(true);
         meshRenderer.material.color = color;
         isPickup = true;
         order.RemovePlayerHolding();
@@ -102,11 +103,21 @@ public class OrderBeacon : MonoBehaviour
     }
 
     /// <summary>
+    /// Sets the mesh renderer of the beacon to true or false. Used for hiding the beacon during a drop animation.
+    /// </summary>
+    /// <param name="status">Enabled property of the mesh renderer</param>
+    public void ToggleBeaconMesh(bool status)
+    {
+        meshRenderer.enabled = status;
+        dissolveRend.enabled = status;
+    }
+
+    /// <summary>
     /// This method is the first half of the process to reset the beacon. It "throws" the order to the customer for them to catch.
     /// </summary>
     public void ThrowOrder(float throwTime)
     {
-        meshRenderer.enabled = false;
+        ToggleBeaconMesh(false);
         gameObject.layer = 0;
 
         customer.transform.parent = OrderManager.Instance.transform;
@@ -124,7 +135,7 @@ public class OrderBeacon : MonoBehaviour
         gameObject.GetComponent<CompassMarker>().RemoveCompassUIFromAllPlayers();
 
         customer.ThankYouComeAgain();
-        meshRenderer.enabled = false;
+        ToggleBeaconMesh(false);
         gameObject.layer = 0;
 
         if (order != null)
