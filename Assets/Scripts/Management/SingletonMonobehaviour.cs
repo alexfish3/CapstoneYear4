@@ -24,7 +24,10 @@ public abstract class SingletonMonobehaviour<T> : MonoBehaviour where T : MonoBe
         }
         else
         {
-            Destroy(gameObject);
+            if (this)
+            {
+                Destroy(gameObject);
+            }
         }
 
         // If true, allow for scene loading
