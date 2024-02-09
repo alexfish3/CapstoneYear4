@@ -1211,6 +1211,9 @@ public class BallDriving : MonoBehaviour
         //StartEndBoost();
     }
 
+    /// <summary>
+    /// Changes speed line value based on speed and boosting state
+    /// </summary>
     private void ControlSpeedLines()
     {
         if (boosting)
