@@ -21,6 +21,9 @@ public class HeatmapTrailIcon : MonoBehaviour
 
     private void DestroyIcon()
     {
-        Destroy(this.gameObject);
+        if (this)
+        {
+            Destroy(gameObject);
+        }
     }
 }
