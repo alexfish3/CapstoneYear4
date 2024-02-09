@@ -9940,16 +9940,15 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2706977427480764783}
-  - {fileID: 3839354979346122069}
   - {fileID: 3495660167286010803}
   - {fileID: 6993651860953965298}
-  - {fileID: 6904994907174394890}
-  - {fileID: 5924871587388972087}
   - {fileID: 8513792570912740242}
-  - {fileID: 5087469707645805696}
-  - {fileID: 4105836804644281271}
+  - {fileID: 2706977427480764783}
+  - {fileID: 3839354979346122069}
+  - {fileID: 6904994907174394890}
   - {fileID: 1641834967648323288}
+  - {fileID: 5924871587388972087}
+  - {fileID: 4105836804644281271}
   m_Father: {fileID: 5289018042734306124}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7040842915376129806
@@ -20572,7 +20571,9 @@ MonoBehaviour:
   phaseCamera: {fileID: 324879840845790628}
   phaseCamData: {fileID: 850318172832524132}
   customizationSelector: {fileID: 1238175930791430519}
+  ballDriving: {fileID: 3575753304509721870}
   cameraLayer: 0
+  nextFillSlot: 0
 --- !u!1 &1972777142083505637
 GameObject:
   m_ObjectHideFlags: 0
@@ -25524,134 +25525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 699743c044e246c4caa4c6de91c95cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &3141495089983496558
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5087469707645805696}
-  - component: {fileID: 8400633152239621754}
-  - component: {fileID: 8865167184544686225}
-  m_Layer: 7
-  m_Name: Minimap Camera - Base
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5087469707645805696
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3141495089983496558}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 117.1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3891876976613540359}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!20 &8400633152239621754
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3141495089983496558}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.01
-  far clip plane: 1000
-  field of view: 100
-  orthographic: 1
-  orthographic size: 40
-  m_Depth: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 15991
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!114 &8865167184544686225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3141495089983496558}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
-  m_Cameras: []
-  m_RendererIndex: -1
-  m_VolumeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  m_VolumeTrigger: {fileID: 0}
-  m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
-  m_AntialiasingQuality: 2
-  m_StopNaN: 0
-  m_Dithering: 0
-  m_ClearDepth: 1
-  m_AllowXRRendering: 1
-  m_AllowHDROutput: 1
-  m_UseScreenCoordOverride: 0
-  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
-  m_RequiresDepthTexture: 0
-  m_RequiresColorTexture: 0
-  m_Version: 2
-  m_TaaSettings:
-    quality: 3
-    frameInfluence: 0.1
-    jitterScale: 1
-    mipBias: 0
-    varianceClampScale: 0.9
-    contrastAdaptiveSharpening: 0
 --- !u!1 &3155601630444779920
 GameObject:
   m_ObjectHideFlags: 0
@@ -31617,6 +31490,12 @@ MonoBehaviour:
   slipstreamTime: 1.5
   preBoostSlipstreamMax: 50
   slipstreamBoostAmount: 300
+  speedLineValue: 1
+  potentialPlayerSpeedLineMaterials:
+  - {fileID: 2100000, guid: f6a4f606e013e9841a706f3d8cbc168c, type: 2}
+  - {fileID: 2100000, guid: a3bdda65cfd87ac41a90175d93cd3050, type: 2}
+  - {fileID: 2100000, guid: f4266bc16f89d124d86e1eab103e6577, type: 2}
+  - {fileID: 2100000, guid: dac748d1025264843955e726c48a3cfe, type: 2}
   phaseType: 1
   cameraResizer: {fileID: 8362289104759965107}
   playerIndex: 0
@@ -32295,7 +32174,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 1
   m_Cameras: []
-  m_RendererIndex: 1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 1
@@ -33656,10 +33535,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Driving Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 4667503233112754414, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
-      propertyPath: minimapCamera
-      value: 
-      objectReference: {fileID: 8400633152239621754}
     - target: {fileID: 5495209367309118182, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -33769,7 +33644,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2569578463215466883}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2680920299931847598, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+    - {fileID: 1452851783015492587, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}

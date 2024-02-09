@@ -142,6 +142,11 @@ public class BallDriving : MonoBehaviour
     [Tooltip("How much speed is granted from the slipstream boost")]
     [SerializeField] private float slipstreamBoostAmount = 300.0f;
 
+    [Header("Speed Lines")]
+    [SerializeField] float speedLineValue = 1;
+    Material speedLinesMain;
+    [SerializeField] Material[] potentialPlayerSpeedLineMaterials;
+
     [Header("Phasing Information")]
     [Tooltip("The type of visual to happen when boosting")]
     public PhaseType phaseType = PhaseType.OnlyInBuilding;
@@ -1275,6 +1280,15 @@ public class BallDriving : MonoBehaviour
         {
             debugCSV.text = "CS/V: " + csv;
         }
+    }
+
+    /// <summary>
+    /// Sets the speed lines material for the player, which allows us to change during gameplay
+    /// </summary>
+    public void SetSpeedLinesMaterial(int playerIndex)
+    {
+        speedLinesMain = potentialPlayerSpeedLineMaterials[playerIndex - 1];
+        speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
     }
 
     private void StartBoostActive()

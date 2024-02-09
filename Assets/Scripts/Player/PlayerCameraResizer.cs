@@ -62,9 +62,10 @@ public class PlayerCameraResizer : MonoBehaviour
     [Space(10)]
     [Header("Other")]
     [SerializeField] GameObject customizationSelector;
+    [SerializeField] BallDriving ballDriving;
     bool initalized = false;
     public int cameraLayer = 0;
-    int nextFillSlot = 0;
+    [SerializeField] int nextFillSlot = 0;
 
     private void Start()
     {
@@ -73,9 +74,11 @@ public class PlayerCameraResizer : MonoBehaviour
         phaseCamera.targetTexture = phaseCameraRT;
 
         phaseTransitionMaterialMain.SetTexture("_MainTex", phaseCamera.targetTexture);
-        //phaseTransitionMaterialMain.SetFloat("_Value", 0);
 
         phaseRender.GetComponent<Image>().material = phaseTransitionMaterialMain;
+
+        //referenceCamData.SetRenderer(nextFillSlot);
+        //phaseCamData.SetRenderer(nextFillSlot);
     }
 
     // Update is called once per frame
@@ -131,6 +134,13 @@ public class PlayerCameraResizer : MonoBehaviour
 
         // Add via bitwise to include the camera layer
         referenceCam.cullingMask |= (1 << cameraLayer);
+
+        // Updates camera layers to be spesific player renderers
+        referenceCamData.SetRenderer(nextFillSlot);
+        phaseCamData.SetRenderer(nextFillSlot);
+
+        // Sets the speed lines material for the player
+        ballDriving.SetSpeedLinesMaterial(nextFillSlot);
     }
 
     ///<summary>
@@ -219,7 +229,7 @@ public class PlayerCameraResizer : MonoBehaviour
         // Phasing
         if (mainCameraOn)
         {
-            referenceCamData.SetRenderer(2);
+            referenceCamData.SetRenderer(nextFillSlot + 4);
             referenceCam.cullingMask = phasingMask;
             // Add via bitwise to include the phase layer
             referenceCam.cullingMask |= (1 << 8);
@@ -228,7 +238,7 @@ public class PlayerCameraResizer : MonoBehaviour
         // Normal
         else
         {
-            referenceCamData.SetRenderer(1);
+            referenceCamData.SetRenderer(nextFillSlot);
             referenceCam.cullingMask = drivingMask;
             cameraCollidder.m_AvoidObstacles = true;
         }
@@ -325,7 +335,7 @@ public class PlayerCameraResizer : MonoBehaviour
         // Phasing
         if (renderType)
         {
-            phaseCamData.SetRenderer(2);
+            phaseCamData.SetRenderer(nextFillSlot + 4);
             phaseCamera.cullingMask = phasingMask;
             // Add via bitwise to include the phase layer
             phaseCamera.cullingMask |= (1 << 8);
