@@ -1227,6 +1227,8 @@ public class BallDriving : MonoBehaviour
         canDrive = !toFreeze;
         Debug.Log($"Can Drive : {canDrive}");
         sphereBody.constraints = toFreeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
+
+        Debug.Log("Freeze Ball Was Successful");
     }
 
     /// <summary>

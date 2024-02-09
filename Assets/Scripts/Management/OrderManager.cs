@@ -244,6 +244,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     {
         ResetWave();
         spawnNormalPackages = false;
+
+        Debug.Log("Disable Spawning Was Successful");
     }
 
     /// <summary>
@@ -387,6 +389,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         OnDeleteActiveOrders?.Invoke();
         finalOrderActive = true;
         finalOrder.InitOrder();
+
+        Debug.Log("Spawn Final Order Was Successful");
     }
 
     /// <summary>

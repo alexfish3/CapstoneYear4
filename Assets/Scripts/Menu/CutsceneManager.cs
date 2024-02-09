@@ -62,6 +62,7 @@ public class CutsceneManager : SingletonMonobehaviour<CutsceneManager>
     {
         cutsceneBeingPlayed = 1;
         BeginCutsceneCoroutine();
+        Debug.Log("Begin Cutscene Coroutine Was Successful");
     }
 
     ///<summary>
