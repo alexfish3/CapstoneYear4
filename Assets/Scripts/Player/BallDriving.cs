@@ -1223,7 +1223,7 @@ public class BallDriving : MonoBehaviour
         }
         else
         {
-            float clampedSpeedLineValue = RangeMutations.Map_Linear(currentVelocity, 23, 30, 1, 0.8f);
+            float clampedSpeedLineValue = RangeMutations.Map_Linear(currentVelocity, 23, 30, 1, 0.85f);
             clampedSpeedLineValue = Mathf.Clamp(clampedSpeedLineValue, 0.85f, 1f);
 
             speedLineValue = clampedSpeedLineValue;
