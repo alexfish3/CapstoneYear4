@@ -33,7 +33,10 @@ public abstract class SingletonMonobehaviour<T> : MonoBehaviour where T : MonoBe
             T[] objs = FindObjectsOfType<T>();
             if (objs.Length > 1)
             {
-                Destroy(this.gameObject);
+                if (this)
+                {
+                    Destroy(gameObject);
+                }
             }
 
 
