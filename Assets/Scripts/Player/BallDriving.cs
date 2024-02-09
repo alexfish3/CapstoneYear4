@@ -458,6 +458,8 @@ public class BallDriving : MonoBehaviour
         //Rotates the control object
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
 
+        ControlSpeedLines();
+
         DebugUIUpdate();
     }
 
@@ -962,9 +964,6 @@ public class BallDriving : MonoBehaviour
         reverseGear = false;
         forwardGear = true;
 
-        speedLineValue = 0.8f;
-        speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
-
         ToggleCollision(true);
 
         if (phaseType == PhaseType.AtAllTimes)
@@ -1031,9 +1030,6 @@ public class BallDriving : MonoBehaviour
             scooterModel.parent.parent.localEulerAngles = Vector3.zero;
             wheelying = false;
         }
-
-        speedLineValue = 1f;
-        speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
 
         StartBoostCooldown();
     }
@@ -1213,6 +1209,23 @@ public class BallDriving : MonoBehaviour
 
         sphereBody.AddForce(difference * clashForce, ForceMode.Impulse);
         //StartEndBoost();
+    }
+
+    private void ControlSpeedLines()
+    {
+        if (boosting)
+        {
+            speedLineValue = 0.8f;
+            speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
+        }
+        else
+        {
+            float clampedSpeedLineValue = RangeMutations.Map_Linear(currentVelocity, 23, 30, 1, 0.8f);
+            clampedSpeedLineValue = Mathf.Clamp(clampedSpeedLineValue, 0.85f, 1f);
+
+            speedLineValue = clampedSpeedLineValue;
+            speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
+        }
     }
 
     /// <summary>
