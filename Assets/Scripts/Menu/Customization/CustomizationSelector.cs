@@ -10,26 +10,27 @@ public class CustomizationSelector : MonoBehaviour
     [SerializeField] CustomizationChanging customizationChanging;
 
     [SerializeField] int currentPlayerColor = 0;
-    [SerializeField] Material[] PlayerColors;
+    [SerializeField] PlayerColorInformationSO[] playerColors;
 
     [SerializeField] int currentPlayerHat = 0;
-    [SerializeField] Mesh[] PlayerHats;
+    [SerializeField] PlayerHatInformationSO[] playerHats;
 
     [Header("References")]
     [SerializeField] GameObject selector;
     [SerializeField] MeshRenderer ghostModel;
-    public Material[] ghostMats;
+    [SerializeField] MeshRenderer hatModel;
+    Material[] ghostMats;
 
+    [SerializeField] PhaseIndicator phaseIndicator;
     [SerializeField] GameObject[] sliderGameobjcts;
 
+    [Header("Animations")]
     Animator currentSlider;
     [SerializeField] Animator colorSlider;
     [SerializeField] CustomizationSlider colorSliderCustomization;
 
     [SerializeField] Animator hatSlider;
     [SerializeField] CustomizationSlider hatSliderCustomization;
-
-    [SerializeField] PhaseIndicator phaseIndicator;
 
     enum CustomizationChanging
     {
@@ -39,7 +40,25 @@ public class CustomizationSelector : MonoBehaviour
 
     public void Start()
     {
-        UpdatePlayerVisual();
+        UpdateGhostColor();
+        UpdateHat();
+
+        // Set Ghost Color Icons
+        Sprite[] colorSprites = new Sprite[playerColors.Length];
+        for(int i = 0; i < playerColors.Length; i++)
+        {
+            colorSprites[i] = playerColors[i].colorIcon;
+        }
+        colorSliderCustomization.SetSliderSprites(colorSprites);
+
+        // Set Ghost Hat Icons
+        Sprite[] hatSprites = new Sprite[playerHats.Length];
+        for (int i = 0; i < playerHats.Length; i++)
+        {
+            hatSprites[i] = playerHats[i].hatIcon;
+        }
+        hatSliderCustomization.SetSliderSprites(hatSprites);
+
     }
 
     public void SetCustomizationType(bool direction)
@@ -79,12 +98,13 @@ public class CustomizationSelector : MonoBehaviour
         {
             case CustomizationChanging.playerColor:
                 currentSlider = colorSlider;
-                SetIntValue(direction, ref currentPlayerColor, PlayerColors.Length);
-                UpdatePlayerVisual();
+                SetIntValue(direction, ref currentPlayerColor, playerColors.Length);
+                UpdateGhostColor();
                 return;
             case CustomizationChanging.playerHat:
                 currentSlider = hatSlider;
-                SetIntValue(direction, ref currentPlayerHat, PlayerHats.Length);
+                SetIntValue(direction, ref currentPlayerHat, playerHats.Length);
+                UpdateHat();
                 return;
         }
     }
@@ -102,8 +122,6 @@ public class CustomizationSelector : MonoBehaviour
             {
                 valueToChange++;
             }
-
-            colorSliderCustomization.currentMainPos = valueToChange;
             currentSlider.SetTrigger("SlideLeft");
         }
         // Negative Scroll
@@ -117,19 +135,45 @@ public class CustomizationSelector : MonoBehaviour
             {
                 valueToChange--;
             }
-
-            colorSliderCustomization.currentMainPos = valueToChange;
             currentSlider.SetTrigger("SlideRight");
+        }
+
+        if (customizationChanging == CustomizationChanging.playerColor)
+        {
+            colorSliderCustomization.currentMainPos = valueToChange;
+        }
+        else if (customizationChanging == CustomizationChanging.playerHat)
+        {
+            hatSliderCustomization.currentMainPos = valueToChange;
         }
 
     }
 
-    public void UpdatePlayerVisual()
+    public void UpdateGhostColor()
     {
         ghostMats = ghostModel.materials;
-        ghostMats[0] = PlayerColors[currentPlayerColor];
+        ghostMats[0] = playerColors[currentPlayerColor].colorMaterial;
         ghostModel.materials = ghostMats;
 
         phaseIndicator.ReferenceHornMaterial();
+    }
+
+    public void UpdateHat() 
+    {
+        PlayerHatInformationSO hatInfo = playerHats[currentPlayerHat];
+
+        if(hatInfo.displayHat == true)
+        {
+            hatModel.gameObject.SetActive(true);
+            hatModel.gameObject.GetComponent<MeshFilter>().mesh = hatInfo.hatMesh;
+            hatModel.material = hatInfo.hatMaterial;
+
+            hatModel.gameObject.transform.localPosition = hatInfo.hatPosition;
+            hatModel.gameObject.transform.localScale = hatInfo.hatScale;
+        }
+        else
+        {
+            hatModel.gameObject.SetActive(false);
+        }
     }
 }

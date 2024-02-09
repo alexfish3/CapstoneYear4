@@ -13,6 +13,11 @@ public class CustomizationSlider : MonoBehaviour
     [SerializeField] Image right1;
     [SerializeField] Image right2;
 
+    public void SetSliderSprites(Sprite[] sprites)
+    {
+        sliderSprites = sprites;
+    }
+
     public void UpdateIcons()
     {
         imagePositions = new int[5];
