@@ -14,9 +14,13 @@ public class Order : MonoBehaviour
 
     [SerializeField] private bool isActive = false;
     public bool IsActive { get { return isActive; } set { isActive = value; } }
-    [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private MeshFilter meshFilter;
+    [Header("Mesh Information")]
+    [Tooltip("Actual mesh of the order for rotation and swapping models.")]
+    [SerializeField] private GameObject orderMeshObject;
+    private MeshRenderer meshRenderer;
+    private MeshFilter meshFilter;
 
+    [Header("Order Information")]
     [SerializeField] private Transform pickup;
     [SerializeField] private Transform dropoff;
     private Transform lastGrounded;
@@ -41,6 +45,22 @@ public class Order : MonoBehaviour
 
     [Tooltip("Reference to the compass marker component on this object")]
     public CompassMarker compassMarker;
+
+    [Header("Order Movement When Holding")]
+    [Tooltip("The amount of time it takes to rotate the order.")]
+    [SerializeField] private float rotationDuration;
+    [Tooltip("The amount the order will rotation per duration.")]
+    [SerializeField] private Vector3 meshRotation;
+    [Tooltip("How long it takes for the order to bob between positions.")]
+    [SerializeField] private float bobbingDuration;
+    [Tooltip("Bob offset of original order position.")]
+    [SerializeField] private Vector3 bobPosition;
+
+    // tweening
+    private Tween floatyTween, bobbyTween, arrowTween;
+    private Quaternion initMeshRotation;
+
+    [Header("Order Type Information")]
     [SerializeField] Sprite[] possiblePackageTypes;
 
     [Tooltip("The HDR color options for the different tiers of packages")]
@@ -49,10 +69,14 @@ public class Order : MonoBehaviour
     [Tooltip("Different meshes of the package depending on the difficulty")]
     [SerializeField] private Mesh[] orderMesh;
 
-    [Tooltip("Layermasks for respawn logic. Should be set to building phase checker, water (ignore raycast), and ground")]
-    [SerializeField] LayerMask water,ground,buildingCheck;
-
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
+
+    private void Start()
+    {
+        meshRenderer = orderMeshObject.GetComponent<MeshRenderer>();
+        meshFilter = orderMeshObject.GetComponent<MeshFilter>();
+        initMeshRotation = orderMeshObject.transform.localRotation;
+    }
 
     private void Update()
     {
@@ -60,7 +84,7 @@ public class Order : MonoBehaviour
         beacon.gameObject.SetActive(isActive);
         if (playerHolding != null)
         {
-            this.gameObject.transform.forward = -playerHolding.transform.right;
+            //this.gameObject.transform.forward = -playerHolding.transform.right;
         }
 
         Vector3 newDir = (arrow.transform.position - dropoff.position);
@@ -114,7 +138,7 @@ public class Order : MonoBehaviour
     /// </summary>
     public void Pickup(OrderHandler player)
     {
-        this.gameObject.transform.rotation = Quaternion.identity;
+        //this.gameObject.transform.rotation = Quaternion.identity;
         arrow.SetActive(true);
         playerHolding = player;
 
@@ -129,6 +153,20 @@ public class Order : MonoBehaviour
         beacon.SetDropoff(dropoff);
         
         compassMarker.SwitchCompassUIForPlayers(true);
+
+        // start tweening
+        floatyTween = orderMeshObject.transform.DORotate(meshRotation, rotationDuration, RotateMode.FastBeyond360)
+            .SetLoops(-1, LoopType.Incremental)
+            .SetRelative()
+            .SetEase(Ease.Linear);
+        bobbyTween = orderMeshObject.transform.DOLocalMove(bobPosition, bobbingDuration)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetRelative()
+            .SetEase(Ease.Linear);
+        arrowTween = arrow.transform.DOLocalMove(bobPosition, bobbingDuration)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetRelative()
+            .SetEase(Ease.Linear);
     }
 
     /// <summary>
@@ -136,7 +174,12 @@ public class Order : MonoBehaviour
     /// </summary>
     public void Drop(Vector3 newPosition)
     {
+        floatyTween.Kill();
+        bobbyTween.Kill();
+        arrowTween.Kill();
+
         this.transform.parent = OrderManager.Instance.transform;
+        orderMeshObject.transform.rotation = initMeshRotation;
 
         //// Removes the ui from all players
         //compassMarker.RemoveCompassUIFromAllPlayers();
@@ -191,6 +234,12 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseOrder()
     {
+        floatyTween.Kill();
+        bobbyTween.Kill();
+        arrowTween.Kill();
+
+        orderMeshObject.transform.rotation = initMeshRotation;
+
         Debug.Log("Erase Order");
         DOTween.Kill(transform);
         arrow.SetActive(false);

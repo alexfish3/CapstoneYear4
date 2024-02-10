@@ -165,8 +165,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   value: 0
   isActive: 0
-  meshRenderer: {fileID: 3749146788344735552}
-  meshFilter: {fileID: 7332059866188554807}
+  orderMeshObject: {fileID: 2088671248249965066}
   pickup: {fileID: 0}
   dropoff: {fileID: 0}
   arrow: {fileID: 2471757960971766071}
@@ -174,6 +173,10 @@ MonoBehaviour:
   height: 4.43
   beacon: {fileID: 5119566958450804217}
   compassMarker: {fileID: 1102462634237522931}
+  rotationDuration: 1
+  meshRotation: {x: 0, y: 45, z: 0}
+  bobbingDuration: 2
+  bobPosition: {x: 0, y: 1, z: 0}
   possiblePackageTypes:
   - {fileID: 21300000, guid: dc51116de53138c4a860d9223dbb0fe8, type: 3}
   - {fileID: 21300000, guid: b61372c2a13cabc478d05e55cdf80038, type: 3}
@@ -189,15 +192,6 @@ MonoBehaviour:
   - {fileID: -1657488969148862022, guid: dbf2267d12465bd4c9c82c814fcb09ff, type: 3}
   - {fileID: -3527494723027698959, guid: 04e0f79d077b99e469b5bae2de972f78, type: 3}
   - {fileID: -3527494723027698959, guid: 04e0f79d077b99e469b5bae2de972f78, type: 3}
-  water:
-    serializedVersion: 2
-    m_Bits: 4
-  ground:
-    serializedVersion: 2
-    m_Bits: 1
-  buildingCheck:
-    serializedVersion: 2
-    m_Bits: 512
 --- !u!114 &1102462634237522931
 MonoBehaviour:
   m_ObjectHideFlags: 0
