@@ -82,7 +82,8 @@ public class OrderBeacon : MonoBehaviour
         compassMarker.RemoveCompassUIFromAllPlayers();
 
         order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
-        gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer;
+        // NOTE: if camera layers change it'll fuck with beacon rendering
+        gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer + 7;
     }
 
     /// <summary>
