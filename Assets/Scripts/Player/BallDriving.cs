@@ -121,8 +121,10 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float boostDuration = 1.0f;
     [Tooltip("How long it takes to recharge the boost, starting after it finishes")]
     [SerializeField] private float boostRechargeTime = 10.0f;
-    [Tooltip("Modifier value to determine how fast the boost recharges")]
-    [SerializeField] private float boostRechargeModifier = 1f;
+    [Tooltip("Modifier value to determine how fast the boost recharges without an order")]
+    [SerializeField] private float defaultBoostModifier = 1f;
+    [Tooltip("Modifier value ot determine how fast the boost recharges with an order")]
+    [SerializeField] private float handsFullBoostModifier = 0.5f;
     [Tooltip("The amount of drag while boosting (Exercise caution when changing this; ask Will before playing with it too much)")]
     [SerializeField] private float boostingDrag = 1.0f;
     [Tooltip("A multipler applied to steering power while in a boost, which reduces your steering capability")]
@@ -230,6 +232,9 @@ public class BallDriving : MonoBehaviour
     private bool boostAble = true;
     public bool BoostAble { set { boostAble = value; } }
     [SerializeField] bool phasing = false;
+
+    private float boostRechargeModifier = 1f;
+
 
     private float slipstreamPortion = 0.0f;
 
@@ -1315,6 +1320,15 @@ public class BallDriving : MonoBehaviour
     {
         speedLinesMain = potentialPlayerSpeedLineMaterials[playerIndex - 1];
         speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
+    }
+
+    /// <summary>
+    /// Sets the boost modifier based on whether or not the player is holding something.
+    /// </summary>
+    /// <param name="holdingPackage">Status of the player's inventory</param>
+    public void SetBoostModifier(bool holdingPackage)
+    {
+        boostRechargeModifier = holdingPackage ? handsFullBoostModifier : defaultBoostModifier;
     }
 
     private void StartBoostActive()

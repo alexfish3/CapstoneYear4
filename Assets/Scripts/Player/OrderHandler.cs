@@ -26,6 +26,7 @@ public class OrderHandler : MonoBehaviour
     public bool IsBoosting { get { return ball.Boosting; } }
     private bool hasGoldenOrder;
     public bool HasGoldenOrder { get { return hasGoldenOrder; } set { hasGoldenOrder = value; } }
+    private bool hasOrder = false;
 
     private SoundPool soundPool;
     private QAHandler qa;
@@ -89,8 +90,10 @@ public class OrderHandler : MonoBehaviour
                     order1.transform.parent = order1Position;
                 }
                 inOrder.Pickup(this);
+                hasOrder = true;
             }
         }
+        ball.SetBoostModifier(hasOrder);
     }
 
     /// <summary>
@@ -119,7 +122,13 @@ public class OrderHandler : MonoBehaviour
             ScoreManager.Instance.UpdatePlacement();
         }
 
+        if(order1 == null && order2 == null)
+        {
+            hasOrder = false;
+        }
+
         numberHandler.UpdateScoreUI(score.ToString());
+        ball.SetBoostModifier(hasOrder);
     }
 
     /// <summary>
@@ -139,6 +148,8 @@ public class OrderHandler : MonoBehaviour
             order2 = null;
         }
         if(shouldSpinout) { GotHit(); }
+        hasOrder = false;
+        ball.SetBoostModifier(hasOrder);
     }
 
     /// <summary>
@@ -189,6 +200,10 @@ public class OrderHandler : MonoBehaviour
             order2.RemovePlayerHolding();
             order2 = null;
         }
+        if(order1 == null && order2 == null)
+        {
+            ball.SetBoostModifier(hasOrder);
+        }
     }
 
     /// <summary>
@@ -228,6 +243,7 @@ public class OrderHandler : MonoBehaviour
         hasGoldenOrder = false;
         placement = 0;
         score = 0;
+        ball.SetBoostModifier(hasOrder);
     }
 
     /// <summary>
