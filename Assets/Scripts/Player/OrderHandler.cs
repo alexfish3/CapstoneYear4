@@ -18,11 +18,11 @@ public class OrderHandler : MonoBehaviour
     private Order order1 = null; // first order the player is holding
     private Order order2 = null; // second order the player is holding
 
-    [Tooltip("Positions the orders will snap to on the back of the scooter")]
+    [Tooltip("Positions the orders will snap to on the back of the scooter.")]
     [SerializeField] private Transform order1Position;
     [SerializeField] private Transform order2Position;
-
-    private BallDriving ball;
+    [Tooltip("Reference to the ball for event subscription.")]
+    [SerializeField] private BallDriving ball;
     public bool IsBoosting { get { return ball.Boosting; } }
     private bool hasGoldenOrder;
     public bool HasGoldenOrder { get { return hasGoldenOrder; } set { hasGoldenOrder = value; } }
@@ -36,6 +36,10 @@ public class OrderHandler : MonoBehaviour
 
     public delegate void ClashDelegate(OrderHandler other);
     public event ClashDelegate Clash;
+
+    // if the player is in another player's collider but nobody's boosting
+    private OrderHandler playerTouching = null;
+    public OrderHandler PlayerTouching { get { return playerTouching; } set {  playerTouching = value; } }
 
 
     private void Start()
@@ -51,11 +55,13 @@ public class OrderHandler : MonoBehaviour
 
     private void OnEnable()
     {
+        ball.OnBoostStart += AttemptSteal;
         GameManager.Instance.OnSwapMenu += ResetHandler;
     }
 
     private void OnDisable()
     {
+        ball.OnBoostStart -= AttemptSteal;
         GameManager.Instance.OnSwapMenu -= ResetHandler;
     }
 
@@ -247,9 +253,34 @@ public class OrderHandler : MonoBehaviour
     }
 
     /// <summary>
-    /// Typical onCollisionEnter. Handles stealing orders from other players.
+    /// Call when boost activates.
     /// </summary>
-    /// <param name="other">Collision player has hit. Will attempt to steal if this hitbox is another player</param>
+    public void AttemptSteal()
+    {
+        if (playerTouching == null)
+        {
+            Debug.Log("playertouching = null ...");
+            return;
+        }
+
+        if (!playerTouching.IsBoosting)
+        {
+            Debug.Log("stealing...");
+            StealOrder(playerTouching);
+        }
+        else
+        {
+            Debug.Log("clash....");
+            Clash(playerTouching);
+            playerTouching.Clash(this);
+        }
+        ;
+    }
+
+    /// <summary>
+    /// Typical OnTriggerEnter. Handles stealing orders from other players.
+    /// </summary>
+    /// <param name="other">Collider player has hit. Will attempt to steal if this hitbox is another player</param>
     private void OnTriggerEnter(Collider other)
     {
         OrderHandler otherHandler;
@@ -260,6 +291,10 @@ public class OrderHandler : MonoBehaviour
             if(otherHandler == this)
             {
                 return;
+            }
+            else
+            {
+                otherHandler.PlayerTouching = this;
             }
         }
         catch
@@ -279,7 +314,27 @@ public class OrderHandler : MonoBehaviour
                     Clash(otherHandler);
                     otherHandler.Clash(this);
                 }
+                playerTouching = null;
+                otherHandler.playerTouching = null;
             }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        OrderHandler otherHandler;
+        try
+        {
+            otherHandler = other.gameObject.transform.parent.GetComponentInChildren<OrderHandler>();
+
+            if(otherHandler.PlayerTouching == this)
+            {
+                otherHandler.PlayerTouching = null;
+            }
+        }
+        catch
+        {
+            return;
         }
     }
 }
