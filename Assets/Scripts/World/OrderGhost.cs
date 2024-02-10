@@ -23,6 +23,7 @@ public class OrderGhost : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        DOTween.Kill(transform);
         this.gameObject.SetActive(false);
         startedWaiting = false;
         delivered = false;
