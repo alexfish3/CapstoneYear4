@@ -59,8 +59,6 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private TrailRenderer leftSlipstreamTrail;
     [Tooltip("Reference to the right slipstream trail")]
     [SerializeField] private TrailRenderer rightSlipstreamTrail;
-    [Tooltip("Reference to the shitty temp drift boost trail")]
-    [SerializeField] private TrailRenderer driftTrail;
     [Tooltip("Reference to the particles basket")]
     [SerializeField] private Transform particleBasket;
     [Tooltip("Reference to the left-side sparks position")]
@@ -486,15 +484,12 @@ public class BallDriving : MonoBehaviour
             {
                 case 1:
                     driftBoost = driftBoost1;
-                    driftTrail.time = 0.5f;
                     break;
                 case 2:
                     driftBoost = driftBoost2;
-                    driftTrail.time = 1.0f;
                     break;
                 case 3:
                     driftBoost = driftBoost3;
-                    driftTrail.time = 1.5f;
                     break;
             }
             totalForce += driftBoost;
@@ -503,7 +498,6 @@ public class BallDriving : MonoBehaviour
             StartSlowdownImmunity();
         }
 
-        driftTrail.time -= Time.fixedDeltaTime;
 
         //Adds the boost from rocket boosting
         if (boostInitialburst)
