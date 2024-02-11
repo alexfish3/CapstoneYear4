@@ -1207,7 +1207,7 @@ public class BallDriving : MonoBehaviour
         difference.Normalize();
 
         sphereBody.AddForce(difference * clashForce, ForceMode.Impulse);
-        //StartEndBoost();
+        PeterSparker.Instance.CreateImpactFromCollider(opponent.gameObject.GetComponent<Collider>(), sphereCollider.transform);
     }
 
     /// <summary>
