@@ -17,13 +17,13 @@ public class RespawnManager : SingletonMonobehaviour<RespawnManager>
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapBegin += InitMainRSPs;
+        GameManager.Instance.OnSwapStartingCutscene += InitMainRSPs;
         GameManager.Instance.OnSwapGoldenCutscene += InitFinalRSPs;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapBegin -= InitMainRSPs;
+        GameManager.Instance.OnSwapStartingCutscene -= InitMainRSPs;
         GameManager.Instance.OnSwapGoldenCutscene -= InitFinalRSPs;
     }
 

@@ -259,18 +259,15 @@ public class OrderHandler : MonoBehaviour
     {
         if (playerTouching == null)
         {
-            Debug.Log("playertouching = null ...");
             return;
         }
 
         if (!playerTouching.IsBoosting)
         {
-            Debug.Log("stealing...");
             StealOrder(playerTouching);
         }
         else
         {
-            Debug.Log("clash....");
             Clash(playerTouching);
             playerTouching.Clash(this);
         }

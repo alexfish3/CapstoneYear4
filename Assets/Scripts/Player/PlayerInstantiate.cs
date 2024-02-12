@@ -54,7 +54,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapStartingCutscene += DisablePlayerSpawn;
         gameManager.OnSwapStartingCutscene += PlayerUpdateDrivingIndicators;
 
-        gameManager.OnSwapBegin += SwapForDriving;
+        gameManager.OnSwapTutorial += SwapForDriving;
 
         gameManager.OnSwapStartingCutscene += SwapForCutscene;
         gameManager.OnSwapGoldenCutscene += SwapForCutscene;
@@ -81,7 +81,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapStartingCutscene -= DisablePlayerSpawn;
         gameManager.OnSwapStartingCutscene -= PlayerUpdateDrivingIndicators;
 
-        gameManager.OnSwapBegin -= SwapForDriving;
+        gameManager.OnSwapTutorial -= SwapForDriving;
 
         gameManager.OnSwapStartingCutscene -= SwapForCutscene;
         gameManager.OnSwapGoldenCutscene -= SwapForCutscene;

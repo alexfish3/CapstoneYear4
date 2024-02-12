@@ -124,7 +124,7 @@ public class CutsceneManager : SingletonMonobehaviour<CutsceneManager>
         switch (cutsceneBeingPlayed)
         {
             case 0: // Begining Cutscene
-                GameManager.Instance.SetGameState(GameState.Begin);
+                GameManager.Instance.SetGameState(GameState.Tutorial);
                 break;
             case 1:
                 GameManager.Instance.SetGameState(GameState.FinalPackage);

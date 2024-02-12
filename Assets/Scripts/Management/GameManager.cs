@@ -6,6 +6,7 @@ public enum GameState {
     Options,
     PlayerSelect,
     StartingCutscene,
+    Tutorial,
     Begin,
     MainLoop,
     GoldenCutscene,
@@ -28,6 +29,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public event Action OnSwapOptions;
     public event Action OnSwapPlayerSelect;
     public event Action OnSwapStartingCutscene;
+    public event Action OnSwapTutorial;
     public event Action OnSwapBegin;
     public event Action OnSwapMainLoop;
     public event Action OnSwapGoldenCutscene;
@@ -64,6 +66,9 @@ public class GameManager : SingletonMonobehaviour<GameManager>
                 break;
             case GameState.StartingCutscene:
                 OnSwapStartingCutscene?.Invoke();
+                break;
+            case GameState.Tutorial:
+                OnSwapTutorial?.Invoke();
                 break;
             case GameState.Begin:
                 OnSwapBegin?.Invoke();

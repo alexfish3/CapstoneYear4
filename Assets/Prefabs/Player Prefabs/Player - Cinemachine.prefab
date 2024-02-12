@@ -31266,8 +31266,8 @@ GameObject:
   - component: {fileID: 5015565727317792321}
   - component: {fileID: 6840122069703632551}
   - component: {fileID: 6355295014402667270}
+  - component: {fileID: 138630427348282848}
   - component: {fileID: 267954890541210731}
-  - component: {fileID: 890723998163202814}
   - component: {fileID: 3382091636616336334}
   m_Layer: 7
   m_Name: Control
@@ -31575,6 +31575,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfb6c2de3be90aa4b934291a8ca5f9c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &138630427348282848
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5659362900598450531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6223c6502eec0745a9b37a529135d3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &267954890541210731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31591,27 +31603,6 @@ MonoBehaviour:
   iconHeight: 5
   deathIcon: {fileID: 6610777362765945118, guid: 45003b8e6211a6848bf64ed46e5f6051, type: 3}
   trailParent: {fileID: 8190429145956856732}
---- !u!65 &890723998163202814
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5659362900598450531}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Size: {x: 3.859176, y: 2, z: 3.3739984}
-  m_Center: {x: -0, y: 1, z: -0.30892837}
 --- !u!136 &3382091636616336334
 CapsuleCollider:
   m_ObjectHideFlags: 0

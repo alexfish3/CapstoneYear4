@@ -1325,6 +1325,15 @@ public class BallDriving : MonoBehaviour
         boostRechargeModifier = holdingPackage ? handsFullBoostModifier : defaultBoostModifier;
     }
 
+    /// <summary>
+    /// Sets the boost modifier to a set value. Will add that value if add is true.
+    /// </summary>
+    /// <param name="mod">Modifier value</param>
+    public void HardCodeBoostModifier(float mod)
+    {
+        boostRechargeModifier = mod;
+    }
+
     private void StartBoostActive()
     {
         boostActiveCoroutine = BoostActive();
