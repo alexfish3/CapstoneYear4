@@ -1,12 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.UI;
 
 public class MainMenu : SingletonMonobehaviour<MainMenu>
 {
     [Header("Selector Objects")]
     [SerializeField] GameObject selector;
     [SerializeField] GameObject[] selectorObjects;
+    [SerializeField] Image menuGhostImage;
+    [SerializeField] Sprite[] selectorGhostSprites;
     int selectorPos;
 
     [Header("Canvas Objects")]
@@ -58,6 +61,8 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
                 selectorPos = selectorPos - 1;
             }
         }
+
+        menuGhostImage.sprite = selectorGhostSprites[selectorPos];
 
         // Updates selector for current slider selected
         selector.transform.position = new Vector3(selector.transform.position.x, selectorObjects[selectorPos].transform.position.y, selector.transform.position.z);
