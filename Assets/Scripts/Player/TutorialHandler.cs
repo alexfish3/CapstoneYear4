@@ -45,7 +45,8 @@ public class TutorialHandler : MonoBehaviour
         }
         else
         {
-            TeachHandler();
+            ball.SetBoostModifier(false);
+            tutorialText.text = "";
         }
     }
 

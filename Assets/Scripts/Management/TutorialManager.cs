@@ -8,6 +8,9 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
     public bool ShouldTutorialize { get { return shouldTutorialize; } set { shouldTutorialize = value; } }
     private int alumni = 0;
 
+    public delegate void TutorialComplete();
+    public TutorialComplete OnTutorialComplete;
+
     private void OnEnable()
     {
         GameManager.Instance.OnSwapTutorial += SkipTutorial;
@@ -31,6 +34,7 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
         if(alumni >= PlayerInstantiate.Instance.PlayerCount)
         {
             GameManager.Instance.SetGameState(GameState.Begin);
+            OnTutorialComplete?.Invoke();
         }
     }
 
