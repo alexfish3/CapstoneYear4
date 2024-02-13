@@ -39,7 +39,6 @@ public class TutorialHandler : MonoBehaviour
         hasLearnt = false;
         if (TutorialManager.Instance.ShouldTutorialize)
         {
-            TutorialManager.Instance.IncrementAlumni(-1);
             ball.HardCodeBoostModifier(tutorialBoostMod);
             tutorialText.text = "Press A to Boost";
         }
@@ -60,7 +59,7 @@ public class TutorialHandler : MonoBehaviour
 
         hasLearnt = true;
         ball.SetBoostModifier(false);
-        TutorialManager.Instance.IncrementAlumni();
+        TutorialManager.Instance.IncrementAlumni(this);
         tutorialText.text = "";
     }
 }

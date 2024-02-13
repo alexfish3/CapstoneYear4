@@ -6,7 +6,8 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
 {
     private bool shouldTutorialize = true;
     public bool ShouldTutorialize { get { return shouldTutorialize; } set { shouldTutorialize = value; } }
-    private int alumni = 0;
+
+    private List<TutorialHandler> handlers = new List<TutorialHandler>();
 
     public delegate void TutorialComplete();
     public TutorialComplete OnTutorialComplete;
@@ -21,19 +22,21 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
         GameManager.Instance.OnSwapTutorial -= SkipTutorial;
     }
     /// <summary>
-    /// Simple counter for checking if every player has completed the tutorial. Will start the game proper if they all have.
+    /// Adds a tutorial handler to a list if it's not already there.
     /// </summary>
-    /// <param name="amount">Amount to increment by, default is 1</param>
-    public void IncrementAlumni(int amount = 1)
+    /// <param name="inHandler">Handler to to be added to the list</param>
+    public void IncrementAlumni(TutorialHandler inHandler)
     {
-        alumni+=amount;
-        
-        if (alumni < 0)
-            alumni = 0;
-
-        if(alumni >= PlayerInstantiate.Instance.PlayerCount)
+        if(!handlers.Contains(inHandler))
         {
-            GameManager.Instance.SetGameState(GameState.Begin);
+            handlers.Add(inHandler);
+        }
+
+        if(handlers.Count >= PlayerInstantiate.Instance.PlayerCount)
+        {
+            if(shouldTutorialize)
+                GameManager.Instance.SetGameState(GameState.Begin);
+            
             OnTutorialComplete?.Invoke();
         }
     }
@@ -43,7 +46,7 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
     /// </summary>
     public void SkipTutorial()
     {
-        alumni = 0;
+        handlers.Clear();
 
         if (shouldTutorialize)
             return;

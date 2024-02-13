@@ -68,6 +68,9 @@ public class Order : MonoBehaviour
     [Tooltip("The HDR color options for the different tiers of packages")]
     [SerializeField][ColorUsageAttribute(true, true)]public Color[] packageColors;
 
+    [Tooltip("Materials for different orders")]
+    [SerializeField] private Material[] orderMaterials;
+
     [Tooltip("Different meshes of the package depending on the difficulty")]
     [SerializeField] private Mesh[] orderMesh;
 
@@ -126,7 +129,7 @@ public class Order : MonoBehaviour
                 break;
         }
 
-        meshRenderer.material.color = packageColors[packageType];
+        meshRenderer.material = orderMaterials[packageType];
         meshFilter.mesh = orderMesh[packageType];
         orderMeshObject.transform.localScale = new Vector3(meshScale[packageType], meshScale[packageType], meshScale[packageType]);
 
