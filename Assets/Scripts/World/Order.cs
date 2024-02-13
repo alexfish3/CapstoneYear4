@@ -19,6 +19,8 @@ public class Order : MonoBehaviour
     [SerializeField] private GameObject orderMeshObject;
     private MeshRenderer meshRenderer;
     private MeshFilter meshFilter;
+    [Tooltip("Scale of the mesh based on order difficulty.")]
+    [SerializeField]private float[] meshScale = new float[4];
 
     [Header("Order Information")]
     [SerializeField] private Transform pickup;
@@ -126,6 +128,7 @@ public class Order : MonoBehaviour
 
         meshRenderer.material.color = packageColors[packageType];
         meshFilter.mesh = orderMesh[packageType];
+        orderMeshObject.transform.localScale = new Vector3(meshScale[packageType], meshScale[packageType], meshScale[packageType]);
 
         Color beaconColor = new Color(packageColors[packageType].r, packageColors[packageType].g, packageColors[packageType].b, 0.3f);
         beacon.InitBeacon(this, beaconColor);
