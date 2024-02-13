@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class TutorialHandler : MonoBehaviour
 {
@@ -11,8 +12,10 @@ public class TutorialHandler : MonoBehaviour
 
     private BallDriving ball;
 
-    [Tooltip("Boost modifier when the player is being tutorialized")]
+    [Tooltip("Boost modifier when the player is being tutorialized.")]
     [SerializeField] private float tutorialBoostMod = 10;
+    [Tooltip("Text shown on the driving canvas when the player is being tutorialized.")]
+    [SerializeField] private TextMeshProUGUI tutorialText;
 
     private void OnEnable()
     {
@@ -26,7 +29,6 @@ public class TutorialHandler : MonoBehaviour
     private void Start()
     {
         ball = GetComponent<BallDriving>();
-        ball.HardCodeBoostModifier(tutorialBoostMod);
     }
 
     /// <summary>
@@ -34,8 +36,17 @@ public class TutorialHandler : MonoBehaviour
     /// </summary>
     public void ResetHandler()
     {
-        hasLearnt = false;
-        TutorialManager.Instance.IncrementAlumni(-1);
+        if (TutorialManager.Instance.ShouldTutorialize)
+        {
+            hasLearnt = false;
+            TutorialManager.Instance.IncrementAlumni(-1);
+            ball.HardCodeBoostModifier(tutorialBoostMod);
+            tutorialText.text = "Press A to Boost";
+        }
+        else
+        {
+            TeachHandler();
+        }
     }
 
     /// <summary>
@@ -49,5 +60,6 @@ public class TutorialHandler : MonoBehaviour
         hasLearnt = true;
         ball.SetBoostModifier(false);
         TutorialManager.Instance.IncrementAlumni();
+        tutorialText.text = "";
     }
 }

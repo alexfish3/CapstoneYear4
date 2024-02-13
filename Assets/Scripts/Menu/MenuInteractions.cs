@@ -34,6 +34,7 @@ public class MenuInteractions : MonoBehaviour
     [SerializeField] OptionsMenu optionsMenu;
     [SerializeField] ResultsMenu resultsMenu;
     [SerializeField] GameObject readyUpText;
+    [SerializeField] TutorialToggle tutorialToggle;
 
     private SoundPool soundPool;
 
@@ -204,6 +205,12 @@ public class MenuInteractions : MonoBehaviour
     {
         readyUpText.SetActive(true);
         readiedUp = true;
+
+        if (hostPlayer)
+        {
+            tutorialToggle.gameObject.SetActive(true);
+            uiHandler.SouthFaceEvent.AddListener(tutorialToggle.SetTutorial);
+        }
         PlayerInstantiate.Instance.ReadyUp(ballDriving.playerIndex - 1);
         soundPool.PlayEnterUI();
     }
@@ -229,6 +236,11 @@ public class MenuInteractions : MonoBehaviour
         }
         else
         {
+            if(hostPlayer)
+            {
+                tutorialToggle.gameObject.SetActive(false);
+                uiHandler.SouthFaceEvent.RemoveListener(tutorialToggle.SetTutorial);
+            }
             readyUpText.SetActive(false);
             readiedUp = false;
             PlayerInstantiate.Instance.UnreadyUp(ballDriving.playerIndex - 1);
@@ -484,6 +496,14 @@ public class MenuInteractions : MonoBehaviour
         soundPool.PlayScrollUI();
     }
 
+
+    private void TutorialToggle(bool button)
+    {
+        if (!hostPlayer)
+            return;
+
+
+    }
     ///<summary>
     /// Calls method to reset canvas
     ///</summary>
