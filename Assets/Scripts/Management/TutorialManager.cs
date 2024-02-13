@@ -43,10 +43,11 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
     /// </summary>
     public void SkipTutorial()
     {
+        alumni = 0;
+
         if (shouldTutorialize)
             return;
 
-        alumni = 0;
         GameManager.Instance.SetGameState(GameState.Begin);
     }
 }
