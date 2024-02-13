@@ -30,6 +30,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [Tooltip("The indexed array of player render texutres")]
     [SerializeField] RenderTexture[] playerRenderTextures = new RenderTexture[Constants.MAX_PLAYERS];
 
+    [Header("Company Information")]
+    [SerializeField] CompanyInformation[] companies;
+
     [Header("Ready Up Information")]
     [Tooltip("The indexed array tracking players' ready up status")]
     [SerializeField] bool[] playerReadyUp = new bool[Constants.MAX_PLAYERS];
@@ -177,6 +180,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[3];
                 break;
         }
+
+        playerCameraResizer.InitalizeCompanyScooter(companies[nextFillSlot - 1]);
 
         // Updates the main virtual camera based on the player number
         playerCameraResizer.UpdateMainVirtualCameras(nextFillSlot);

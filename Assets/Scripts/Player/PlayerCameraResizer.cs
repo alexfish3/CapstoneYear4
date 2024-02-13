@@ -60,6 +60,13 @@ public class PlayerCameraResizer : MonoBehaviour
     Coroutine phaseCameraUpdateCoroutine;
 
     [Space(10)]
+    [Header("Scooter Information")]
+    [SerializeField] MeshRenderer scooterModel;
+    [SerializeField] DecalProjector[] logoDecal;
+
+    [SerializeField] Company displayCompany;
+
+    [Space(10)]
     [Header("Other")]
     [SerializeField] GameObject customizationSelector;
     [SerializeField] BallDriving ballDriving;
@@ -346,5 +353,20 @@ public class PlayerCameraResizer : MonoBehaviour
 
         // Add via bitwise to include the camera layer
         phaseCamera.cullingMask |= (1 << cameraLayer);
+    }
+
+    /// <summary>
+    /// Initalizes the company scooter rendering features
+    /// </summary>
+    public void InitalizeCompanyScooter(CompanyInformation companyInformation)
+    {
+        scooterModel.material = companyInformation.scooterColorMaterial;
+
+        foreach(DecalProjector decal in logoDecal)
+        {
+            decal.material = companyInformation.scooterDecalMaterial;
+        }
+
+        displayCompany = companyInformation.companyName;
     }
 }
