@@ -1256,6 +1256,10 @@ public class BallDriving : MonoBehaviour
         if (sphereBody == null)
             return;
 
+        DirtyDriftDrop();
+        driftTier = 0;
+        sphereBody.velocity = Vector3.zero;
+
         canDrive = !toFreeze;
         Debug.Log($"Can Drive : {canDrive}");
         sphereBody.constraints = toFreeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
