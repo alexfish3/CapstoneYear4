@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class RumbleManager : SingletonMonobehaviour<RumbleManager>
+public class Rumbler : MonoBehaviour
 {
     private IEnumerator pulseTimeCoroutine;
 

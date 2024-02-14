@@ -180,6 +180,9 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private bool debugCSVEnable = false;
     [SerializeField] private TextMeshProUGUI debugCSV;
 
+    private Gamepad pad;
+    private Rumbler rumble;
+
     private Rigidbody sphereBody; //just reference to components of the sphere
     private Transform sphereTransform;
     private Collider sphereCollider;
@@ -234,7 +237,6 @@ public class BallDriving : MonoBehaviour
 
     private float boostRechargeModifier = 1f;
 
-
     private float slipstreamPortion = 0.0f;
 
     private float csv;
@@ -275,6 +277,9 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void Start()
     {
+        pad = PlayerInstantiate.Instance.PlayerGamepads[playerIndex - 1];
+        rumble = gameObject.GetComponent<Rumbler>();
+
         // Sets horn glow to max
         phaseIndicator.SetHornColor(1f);
 
@@ -944,9 +949,7 @@ public class BallDriving : MonoBehaviour
             StartBoostActive();
             OnBoostStart?.Invoke();
 
-            Gamepad pad = PlayerInstantiate.Instance.PlayerGamepads[playerIndex - 1];
-
-            RumbleManager.Instance.RumblePulse(pad, 0.25f, 0.75f, 1f);
+            rumble.RumblePulse(pad, 0.25f, 0.75f, 1f);
             soundPool.PlayBoostActivate();
             qa.Boosts++;
         }
