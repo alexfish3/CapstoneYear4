@@ -139,11 +139,25 @@ public class Order : MonoBehaviour
     }
     
     /// <summary>
+    /// Sets mesh position so stealing doesn't make it rise.
+    /// </summary>
+    /// <param name="inPosition"></param>
+    public void SetMeshPosition(Vector3 inPosition)
+    {
+        this.transform.position = inPosition;
+        orderMeshObject.transform.parent = transform;
+        orderMeshObject.transform.localPosition = -Vector3.up;
+    }
+
+    /// <summary>
     /// This method is called when the order is picked up by a player.
     /// </summary>
     public void Pickup(OrderHandler player)
     {
-        //this.gameObject.transform.rotation = Quaternion.identity;
+        floatyTween.Kill(true);
+        bobbyTween.Kill(true);
+        arrowTween.Kill(true);
+
         arrow.SetActive(true);
         playerHolding = player;
 
@@ -239,9 +253,9 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseOrder()
     {
-        floatyTween.Kill();
-        bobbyTween.Kill();
-        arrowTween.Kill();
+        floatyTween.Kill(true);
+        bobbyTween.Kill(true);
+        arrowTween.Kill(true);
 
         orderMeshObject.transform.rotation = initMeshRotation;
 

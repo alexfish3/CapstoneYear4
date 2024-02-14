@@ -86,14 +86,14 @@ public class OrderHandler : MonoBehaviour
                 if (order2 == null)
                 {
                     order2 = inOrder;
-                    order2.transform.position = order2Position.position;
                     order2.transform.parent = order2Position;
+                    order2.SetMeshPosition(order2Position.position);
                 }
                 else
                 {
                     order1 = inOrder;
-                    order1.transform.position = order1Position.position;
                     order1.transform.parent = order1Position;
+                    order1.SetMeshPosition(order1Position.position);
                 }
                 inOrder.Pickup(this);
                 hasOrder = true;
