@@ -27,6 +27,8 @@ public class OrderBeacon : MonoBehaviour
     [SerializeField] private Material[] pickupMats;
     [SerializeField] private Material dropoffMat;
 
+    private Material cachedMat;
+
     /// <summary>
     /// This method initializes the beacon. It sets the order the beacon is tracking, sets the color, and the position.
     /// </summary>
@@ -36,6 +38,7 @@ public class OrderBeacon : MonoBehaviour
         ToggleBeaconMesh(true);
         order = inOrder;
         meshRenderer.material = pickupMats[orderIndex];
+        cachedMat = meshRenderer.material;
         this.transform.position = order.transform.position;
 
         // set the color of the dissolve
@@ -88,6 +91,7 @@ public class OrderBeacon : MonoBehaviour
     {
         compassMarker.RemoveCompassUIFromAllPlayers();
         order.compassMarker.InitalizeCompassUIOnAllPlayers();
+        meshRenderer.material = cachedMat;
 
         customer.transform.parent = OrderManager.Instance.transform;
         this.transform.position = order.transform.position;
