@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEditor;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position.
@@ -943,6 +944,9 @@ public class BallDriving : MonoBehaviour
             StartBoostActive();
             OnBoostStart?.Invoke();
 
+            Gamepad pad = PlayerInstantiate.Instance.PlayerGamepads[playerIndex - 1];
+
+            RumbleManager.Instance.RumblePulse(pad, 0.25f, 0.75f, 1f);
             soundPool.PlayBoostActivate();
             qa.Boosts++;
         }
