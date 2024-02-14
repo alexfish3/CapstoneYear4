@@ -198,10 +198,11 @@ MonoBehaviour:
   - {fileID: 7155417236463631810}
   - {fileID: -9102460134291223361}
   - {fileID: 1882900383052072918}
+  - {fileID: 999744163982048838}
+  - {fileID: 4645851673546684642}
   - {fileID: -1808948246719126868}
   - {fileID: -8123595742492509647}
-  - {fileID: 999744163982048838}
-  m_RendererFeatureMap: 805dad751807cabffd5c3be5d2f220e0f45628112d1924cbc23d1fc710264d63bfcc6a19bc90ad81d607441fec67211aaca23d612753e5e631badb7db630438f467e6b3005cedf0d
+  m_RendererFeatureMap: 805dad751807cabffd5c3be5d2f220e0f45628112d1924cbc23d1fc710264d63bfcc6a19bc90ad81d607441fec67211a467e6b3005cedf0de278e7787b617940aca23d612753e5e631badb7db630438f
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -305,6 +306,23 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
+--- !u!114 &4645851673546684642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7afc38c2d1fc5794db8af8261ba5f3b1, type: 3}
+  m_Name: OutlineObjectFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  mask:
+    serializedVersion: 2
+    m_Bits: 1
+  Event: 550
 --- !u!114 &7155417236463631810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,4 +339,4 @@ MonoBehaviour:
   passMaterial: {fileID: 2100000, guid: 9602a3016b3d58f4882453bb4f9e7def, type: 2}
   injectionPoint: 550
   requirements: 1
-  passIndex: 1
+  passIndex: 0

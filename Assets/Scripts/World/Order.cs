@@ -133,8 +133,7 @@ public class Order : MonoBehaviour
         meshFilter.mesh = orderMesh[packageType];
         orderMeshObject.transform.localScale = new Vector3(meshScale[packageType], meshScale[packageType], meshScale[packageType]);
 
-        Color beaconColor = new Color(packageColors[packageType].r, packageColors[packageType].g, packageColors[packageType].b, 0.3f);
-        beacon.InitBeacon(this, beaconColor);
+        beacon.InitBeacon(this, packageType);
         compassMarker.icon = possiblePackageTypes[packageType];
         compassMarker.InitalizeCompassUIOnAllPlayers();
     }

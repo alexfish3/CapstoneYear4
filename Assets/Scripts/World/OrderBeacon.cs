@@ -15,32 +15,27 @@ public class OrderBeacon : MonoBehaviour
     private bool isPickup = true;
     public bool IsPickup { get { return isPickup; } }
 
-    private MeshRenderer meshRenderer; // renderer to change the color
+    [SerializeField] private MeshRenderer meshRenderer; // renderer to change the color
     private Color color;
 
-    private CompassMarker compassMarker; // for the dropoff location on the compass marker
+    [SerializeField] private CompassMarker compassMarker; // for the dropoff location on the compass marker
     public CompassMarker CompassMarker { get { return compassMarker; } }
 
     [SerializeField] private OrderGhost customer;
     [SerializeField] private MeshRenderer dissolveRend;
     [SerializeField] private Material[] dissolveMats;
-
-    private void Awake()
-    {
-        meshRenderer = this.gameObject.GetComponent<MeshRenderer>();
-        compassMarker = this.gameObject.GetComponent<CompassMarker>();
-    }
+    [SerializeField] private Material[] pickupMats;
+    [SerializeField] private Material dropoffMat;
 
     /// <summary>
     /// This method initializes the beacon. It sets the order the beacon is tracking, sets the color, and the position.
     /// </summary>
-    /// <param name="inOrder">Order the beacon will track</param>
-    public void InitBeacon(Order inOrder, Color beaconColor)
+    /// <param name="</param>
+    public void InitBeacon(Order inOrder, int orderIndex)
     {
         ToggleBeaconMesh(true);
         order = inOrder;
-        color = beaconColor;
-        meshRenderer.material.color = color;
+        meshRenderer.material = pickupMats[orderIndex];
         this.transform.position = order.transform.position;
 
         // set the color of the dissolve
@@ -77,7 +72,7 @@ public class OrderBeacon : MonoBehaviour
         customer.InitCustomer();
         
         isPickup = false;
-        meshRenderer.material.color = new Color(1, 1, 1, 0.5f);
+        meshRenderer.material = dropoffMat;
 
         compassMarker.RemoveCompassUIFromAllPlayers();
 

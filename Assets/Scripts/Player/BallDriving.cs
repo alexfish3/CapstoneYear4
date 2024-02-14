@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using UnityEditor;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position.
@@ -179,6 +180,9 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private bool debugCSVEnable = false;
     [SerializeField] private TextMeshProUGUI debugCSV;
 
+    private Gamepad pad;
+    private Rumbler rumble;
+
     private Rigidbody sphereBody; //just reference to components of the sphere
     private Transform sphereTransform;
     private Collider sphereCollider;
@@ -233,7 +237,6 @@ public class BallDriving : MonoBehaviour
 
     private float boostRechargeModifier = 1f;
 
-
     private float slipstreamPortion = 0.0f;
 
     private float csv;
@@ -274,6 +277,9 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void Start()
     {
+        pad = PlayerInstantiate.Instance.PlayerGamepads[playerIndex - 1];
+        rumble = gameObject.GetComponent<Rumbler>();
+
         // Sets horn glow to max
         phaseIndicator.SetHornColor(1f);
 
@@ -496,6 +502,8 @@ public class BallDriving : MonoBehaviour
             driftBoostAchieved = false;
             driftTier = 0;
             StartSlowdownImmunity();
+            rumble.EndSuspension(pad);
+            rumble.RumblePulse(pad, 0.3f, 0.65f, 0.3f);
         }
 
 
@@ -813,23 +821,28 @@ public class BallDriving : MonoBehaviour
 
         driftPoints += (2 * Time.deltaTime * (1 - driftBoostMode)) + (Time.deltaTime * scaledInput * driftBoostMode) * 100.0f;
 
+        rumble.SuspendedRumble(pad, 0.15f, 0.3f);
+
         if (driftPoints > driftBoostThreshold) 
         {
             driftTier = 1;
             DriftSparkSet(1);
             soundPool.PlayDriftSpark(0);
+            rumble.SuspendedRumble(pad, 0.1f, 0.3f);
         }
         if (driftPoints > (driftBoostThreshold * 2))
         {
             driftTier = 2;
             DriftSparkSet(2);
             //soundPool.PlayDriftSpark(1);
+            rumble.SuspendedRumble(pad, 0.12f, 0.35f);
         }
         if (driftPoints > (driftBoostThreshold * 3))
         {
             driftTier = 3;
             DriftSparkSet(3);
             //soundPool.PlayDriftSpark(2);
+            rumble.SuspendedRumble(pad, 0.14f, 0.4f);
         }
 
         return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax); //scales steering by speed (also prevents turning on the spot)
@@ -846,6 +859,7 @@ public class BallDriving : MonoBehaviour
         callToDrift = false;
         driftPoints = 0;
         DriftSparkSet(0);
+        rumble.EndSuspension(pad);
     }
 
     /// <summary>
@@ -943,6 +957,7 @@ public class BallDriving : MonoBehaviour
             StartBoostActive();
             OnBoostStart?.Invoke();
 
+            rumble.RumblePulse(pad, 0.45f, 0.9f, 1f);
             soundPool.PlayBoostActivate();
             qa.Boosts++;
         }

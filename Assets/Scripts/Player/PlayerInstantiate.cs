@@ -21,9 +21,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [SerializeField] int playerCount = 0;
     public int PlayerCount { get { return playerCount; } }
 
-    [Tooltip("the list of avalible player input class objects")]
-    [SerializeField] PlayerInput[] avaliblePlayerInputs = new PlayerInput[Constants.MAX_PLAYERS];
-    public PlayerInput[] PlayerInputs { get { return avaliblePlayerInputs; } }
+    [Tooltip("the list of availible player input class objects")]
+    [SerializeField] PlayerInput[] availiblePlayerInputs = new PlayerInput[Constants.MAX_PLAYERS];
+    public PlayerInput[] PlayerInputs { get { return availiblePlayerInputs; } }
     [Tooltip("The indexed array of player spawn positions")]
     [SerializeField] GameObject[] menuSpawnPositions = new GameObject[Constants.MAX_PLAYERS];
 
@@ -43,6 +43,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [Tooltip("The time it takes to start the match")]
     [SerializeField] float countdownTimer = 5f;
     Coroutine readyUpCountdown;
+
+    private Gamepad[] playerGamepads = new Gamepad[Constants.MAX_PLAYERS];
+    public Gamepad[] PlayerGamepads => playerGamepads;
 
     CutsceneManager cutsceneManager;
        
@@ -143,9 +146,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         int nextFillSlot = 0;
 
-        for(int i = 0; i < avaliblePlayerInputs.Length; i++)
+        for(int i = 0; i < availiblePlayerInputs.Length; i++)
         {
-            if (avaliblePlayerInputs[i] == null)
+            if (availiblePlayerInputs[i] == null)
             {
                 nextFillSlot = i + 1;
                 break;
@@ -160,24 +163,28 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 ballDriving.playerIndex = 1;
                 baseCam.cullingMask |= (1 << 10);
                 playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[0];
+                playerGamepads[0] = playerInput.GetDevice<Gamepad>();
                 break;
             case 2:
                 ColliderObject.layer = 11; // Player 2;
                 ballDriving.playerIndex = 2;
                 baseCam.cullingMask |= (1 << 11);
                 playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[1];
+                playerGamepads[1] = playerInput.GetDevice<Gamepad>();
                 break;
             case 3:
                 ColliderObject.layer = 12; // Player 3;
                 ballDriving.playerIndex = 3;
                 baseCam.cullingMask |= (1 << 12);
                 playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[2];
+                playerGamepads[2] = playerInput.GetDevice<Gamepad>();
                 break;
             case 4:
                 ColliderObject.layer = 13; // Player 4;
                 ballDriving.playerIndex = 4;
                 baseCam.cullingMask |= (1 << 13);
                 playerCameraResizer.PlayerRenderCamera.targetTexture = playerRenderTextures[3];
+                playerGamepads[3] = playerInput.GetDevice<Gamepad>();
                 break;
         }
 
@@ -222,20 +229,20 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         Debug.Log("Spawn Players at right positions");
 
         // Loops for all spawned players
-        for (int i = 0; i < avaliblePlayerInputs.Length; i++)
+        for (int i = 0; i < availiblePlayerInputs.Length; i++)
         {
-            if (avaliblePlayerInputs[i] == null)
+            if (availiblePlayerInputs[i] == null)
                 continue;
 
             // Resets the velocity of the players
-            avaliblePlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
+            availiblePlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
 
             // reset position and rotation of ball and controller
-            avaliblePlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = menuSpawnPositions[i].transform.position;
-            avaliblePlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = menuSpawnPositions[i].transform.rotation;
+            availiblePlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = menuSpawnPositions[i].transform.position;
+            availiblePlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = menuSpawnPositions[i].transform.rotation;
 
-            avaliblePlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = menuSpawnPositions[i].transform.position;
-            avaliblePlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = menuSpawnPositions[i].transform.rotation;
+            availiblePlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = menuSpawnPositions[i].transform.position;
+            availiblePlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = menuSpawnPositions[i].transform.rotation;
         }
     }
 
@@ -251,15 +258,15 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         int cameraRectCounter = 0;
 
-        for (int i = 0; i < avaliblePlayerInputs.Length; i++)
+        for (int i = 0; i < availiblePlayerInputs.Length; i++)
         {
-            if (avaliblePlayerInputs[i] != null)
+            if (availiblePlayerInputs[i] != null)
             {
                 if (cameraRectCounter < cameraRects.Length)
                 {
                     Debug.Log("Resize Camera");
                     Rect temp = cameraRects[cameraRectCounter];
-                    avaliblePlayerInputs[i].camera.rect = temp;
+                    availiblePlayerInputs[i].camera.rect = temp;
                     cameraRectCounter++;
                 }
                 else
@@ -326,8 +333,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         //Enabled text for fillslot text based on player's removed position
         PlayerSelectCanvas.Instance.TogglePressButtonTexts(position, true);
 
-        ScoreManager.Instance.UpdateOrderHandlers(avaliblePlayerInputs);
-        QAManager.Instance.UpdateQAHandlers(avaliblePlayerInputs);
+        ScoreManager.Instance.UpdateOrderHandlers(availiblePlayerInputs);
+        QAManager.Instance.UpdateQAHandlers(availiblePlayerInputs);
         
         Destroy(playerInput.gameObject);
 
@@ -346,10 +353,10 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (avaliblePlayerInputs[i] != null)
+            if (availiblePlayerInputs[i] != null)
             {
-                Destroy(avaliblePlayerInputs[i].gameObject);
-                avaliblePlayerInputs[i] = null;
+                Destroy(availiblePlayerInputs[i].gameObject);
+                availiblePlayerInputs[i] = null;
                 playerCount--;
             }
         }
@@ -362,9 +369,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (avaliblePlayerInputs[i] == null)
+            if (availiblePlayerInputs[i] == null)
             {
-                avaliblePlayerInputs[i] = playerInput;
+                availiblePlayerInputs[i] = playerInput;
                 break;
             }
         }
@@ -377,9 +384,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (avaliblePlayerInputs[i] == playerInput)
+            if (availiblePlayerInputs[i] == playerInput)
             {
-                avaliblePlayerInputs[i] = null;
+                availiblePlayerInputs[i] = null;
                 return i;
             }
         }
@@ -508,20 +515,20 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (avaliblePlayerInputs[i] == null)
+            if (availiblePlayerInputs[i] == null)
                 continue;
 
-            avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().menuInteractions.SwapMenuType(menuType);
+            availiblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().menuInteractions.SwapMenuType(menuType);
 
             // If swapping to pause menu, reparent menu ui to game-camera
             if (menuType == MenuType.PauseMenu)
             {
-                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().ReparentMenuCameraStack(true);
+                availiblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().ReparentMenuCameraStack(true);
             }
             // If swapping to other menu, reparent menu ui to player-camera on main menu
             else if (menuType == MenuType.MainMenu)
             {
-                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().ReparentMenuCameraStack(false);
+                availiblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().ReparentMenuCameraStack(false);
             }
         }
     }
@@ -545,13 +552,13 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (avaliblePlayerInputs[i] == null)
+            if (availiblePlayerInputs[i] == null)
                 continue;
 
-            avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().SwapCanvas(true);
+            availiblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().SwapCanvas(true);
 
-            avaliblePlayerInputs[i].actions.FindActionMap("UI").Enable();
-            avaliblePlayerInputs[i].actions.FindActionMap("Player").Disable();
+            availiblePlayerInputs[i].actions.FindActionMap("UI").Enable();
+            availiblePlayerInputs[i].actions.FindActionMap("Player").Disable();
         }
     }
 
@@ -564,13 +571,13 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (avaliblePlayerInputs[i] == null)
+            if (availiblePlayerInputs[i] == null)
                 continue;
 
-            avaliblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().SwapCanvas(false);
+            availiblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().SwapCanvas(false);
 
-            avaliblePlayerInputs[i].actions.FindActionMap("UI").Disable();
-            avaliblePlayerInputs[i].actions.FindActionMap("Player").Enable();
+            availiblePlayerInputs[i].actions.FindActionMap("UI").Disable();
+            availiblePlayerInputs[i].actions.FindActionMap("Player").Enable();
         }
     }
 
@@ -617,10 +624,10 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (avaliblePlayerInputs[i] == null)
+            if (availiblePlayerInputs[i] == null)
                 continue;
 
-            avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().ResetCanvas();
+            availiblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().ResetCanvas();
         }
     }
 
@@ -635,19 +642,19 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (avaliblePlayerInputs[i] == null)
+            if (availiblePlayerInputs[i] == null)
                 continue;
 
             // For one who paused
-            if (playerInput == avaliblePlayerInputs[i])
+            if (playerInput == availiblePlayerInputs[i])
             {
-                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().hostPause = true;
-                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPause(PauseMenu.PauseType.Host);
+                availiblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().hostPause = true;
+                availiblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPause(PauseMenu.PauseType.Host);
             }
             else
             {
-                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().hostPause = false;
-                avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPause(PauseMenu.PauseType.Sub);
+                availiblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().hostPause = false;
+                availiblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPause(PauseMenu.PauseType.Sub);
             }
         }
     }
@@ -663,10 +670,10 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (avaliblePlayerInputs[i] == null)
+            if (availiblePlayerInputs[i] == null)
                 continue;
 
-            avaliblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPlay();
+            availiblePlayerInputs[i].gameObject.GetComponent<PlayerUIHandler>().MenuCanvas.GetComponent<MenuInteractions>().pauseMenu.OnPlay();
         }
     }
 
@@ -674,10 +681,10 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
-            if (avaliblePlayerInputs[i] == null)
+            if (availiblePlayerInputs[i] == null)
                 continue;
 
-            avaliblePlayerInputs[i].gameObject.GetComponentInChildren<DrivingIndicators>().UpdatePlayerReferencesForObjects();
+            availiblePlayerInputs[i].gameObject.GetComponentInChildren<DrivingIndicators>().UpdatePlayerReferencesForObjects();
         }
     }
 

@@ -176,7 +176,7 @@ MonoBehaviour:
   arrow: {fileID: 2471757960971766071}
   pickupCooldown: 3
   height: 4.43
-  beacon: {fileID: 5119566958450804217}
+  beacon: {fileID: 6333686789356465588}
   compassMarker: {fileID: 1102462634237522931}
   rotationDuration: 1
   meshRotation: {x: 0, y: 45, z: 0}
@@ -198,10 +198,10 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 8cc93cf7640011341a57b1a67dec4355, type: 2}
   - {fileID: 2100000, guid: f8830aa4cf2a41942ac387d6945c8def, type: 2}
   orderMesh:
-  - {fileID: 8330442659193459288, guid: a53e59b996a79914b858fa8d3241a81c, type: 3}
-  - {fileID: -1657488969148862022, guid: dbf2267d12465bd4c9c82c814fcb09ff, type: 3}
-  - {fileID: -3527494723027698959, guid: 04e0f79d077b99e469b5bae2de972f78, type: 3}
-  - {fileID: -3527494723027698959, guid: 04e0f79d077b99e469b5bae2de972f78, type: 3}
+  - {fileID: 8330442659193459288, guid: 5ad9779761890994a86fa2f73a28f4d3, type: 3}
+  - {fileID: -1657488969148862022, guid: 83b4eaea029a22149af952235cde5dd3, type: 3}
+  - {fileID: -3527494723027698959, guid: c30ffbe8ddc90a649a0f5eb040b86415, type: 3}
+  - {fileID: -3527494723027698959, guid: c30ffbe8ddc90a649a0f5eb040b86415, type: 3}
 --- !u!114 &1102462634237522931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -411,6 +411,14 @@ PrefabInstance:
       propertyPath: customer
       value: 
       objectReference: {fileID: 5775024259634016442}
+    - target: {fileID: 9216095826110194695, guid: 746cf1907e11a7f41aa9a4b7ee56a883, type: 3}
+      propertyPath: customer
+      value: 
+      objectReference: {fileID: 5775024259634016442}
+    - target: {fileID: 9216095826110194695, guid: 746cf1907e11a7f41aa9a4b7ee56a883, type: 3}
+      propertyPath: dissolveRend
+      value: 
+      objectReference: {fileID: 5184563291314215300}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -419,9 +427,14 @@ PrefabInstance:
       addedObject: {fileID: 3149610689256926447}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 746cf1907e11a7f41aa9a4b7ee56a883, type: 3}
---- !u!114 &5119566958450804217 stripped
+--- !u!23 &5184563291314215300 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 8066127359285088311, guid: 746cf1907e11a7f41aa9a4b7ee56a883, type: 3}
+  m_PrefabInstance: {fileID: 2883395305803286963}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6333686789356465588 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8002821525682424906, guid: 746cf1907e11a7f41aa9a4b7ee56a883, type: 3}
+  m_CorrespondingSourceObject: {fileID: 9216095826110194695, guid: 746cf1907e11a7f41aa9a4b7ee56a883, type: 3}
   m_PrefabInstance: {fileID: 2883395305803286963}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
