@@ -821,28 +821,28 @@ public class BallDriving : MonoBehaviour
 
         driftPoints += (2 * Time.deltaTime * (1 - driftBoostMode)) + (Time.deltaTime * scaledInput * driftBoostMode) * 100.0f;
 
-        rumble.SuspendedRumble(pad, 0.15f, 0.3f);
+        rumble.SuspendedRumble(pad, 0.0f, 0.07f);
 
         if (driftPoints > driftBoostThreshold) 
         {
             driftTier = 1;
             DriftSparkSet(1);
             soundPool.PlayDriftSpark(0);
-            rumble.SuspendedRumble(pad, 0.1f, 0.3f);
+            rumble.SuspendedRumble(pad, 0.0f, 0.1f);
         }
         if (driftPoints > (driftBoostThreshold * 2))
         {
             driftTier = 2;
             DriftSparkSet(2);
             //soundPool.PlayDriftSpark(1);
-            rumble.SuspendedRumble(pad, 0.12f, 0.35f);
+            rumble.SuspendedRumble(pad, 0.02f, 0.13f);
         }
         if (driftPoints > (driftBoostThreshold * 3))
         {
             driftTier = 3;
             DriftSparkSet(3);
             //soundPool.PlayDriftSpark(2);
-            rumble.SuspendedRumble(pad, 0.14f, 0.4f);
+            rumble.SuspendedRumble(pad, 0.04f, 0.16f);
         }
 
         return steeringPower * driftDirection * scaledInput * RangeMutations.Map_SpeedToSteering(currentVelocity, scaledVelocityMax); //scales steering by speed (also prevents turning on the spot)
