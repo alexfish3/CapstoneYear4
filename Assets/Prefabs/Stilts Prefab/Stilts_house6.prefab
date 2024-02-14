@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2738186543040709324}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10623163, y: -0.6990815, z: -0.6990814, w: 0.10623127}
-  m_LocalPosition: {x: -0.073883, y: 0.029283, z: 0.03798}
+  m_LocalPosition: {x: -0.07388, y: 0.02928, z: 0.03756}
   m_LocalScale: {x: 0.019793397, y: 0.032999557, z: 0.029794795}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8116400631845418438}
   - component: {fileID: 6863289147368585859}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Stilts_house6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,6 +113,8 @@ Transform:
   m_LocalScale: {x: 500, y: 500, z: 500}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 132421246935444720}
+  - {fileID: 7316669466217075637}
   - {fileID: 5038674066988618543}
   - {fileID: 1582853752804302927}
   - {fileID: 2018472348293866428}
@@ -125,8 +127,6 @@ Transform:
   - {fileID: 1432160677742516946}
   - {fileID: 1415177008883970406}
   - {fileID: 3598235096407590937}
-  - {fileID: 132421246935444720}
-  - {fileID: 7316669466217075637}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 261.00702}
 --- !u!65 &6863289147368585859
@@ -177,7 +177,7 @@ Transform:
   m_GameObject: {fileID: 7813079909064269361}
   serializedVersion: 2
   m_LocalRotation: {x: 0.10623163, y: -0.6990815, z: -0.6990814, w: 0.10623127}
-  m_LocalPosition: {x: -0.073732, y: 0.029361, z: 0.03798}
+  m_LocalPosition: {x: -0.07373, y: 0.02936, z: 0.03756}
   m_LocalScale: {x: 0.018808687, y: 0.032942597, z: 0.02900481}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -301,6 +301,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stilt_Window_Closed (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 712d7e63df1937049ba85658ec01f267, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -383,6 +387,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stilt_Window_Open (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fdde1754b35c7ab408b55d8d14b86dd3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -456,6 +464,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: ddc684fee95f59046afb1cdad10bc3b3, type: 3}
       propertyPath: m_Name
       value: StiltWindow_Closed (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ddc684fee95f59046afb1cdad10bc3b3, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ddc684fee95f59046afb1cdad10bc3b3, type: 3}
       propertyPath: m_IsActive
@@ -540,6 +552,10 @@ PrefabInstance:
       value: StiltWindow_Closed
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ddc684fee95f59046afb1cdad10bc3b3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ddc684fee95f59046afb1cdad10bc3b3, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -620,6 +636,10 @@ PrefabInstance:
     - target: {fileID: 3389636723009243867, guid: fb7d83bfdca13c646ac2c47816c16f0e, type: 3}
       propertyPath: m_Name
       value: platform1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3389636723009243867, guid: fb7d83bfdca13c646ac2c47816c16f0e, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3389636723009243867, guid: fb7d83bfdca13c646ac2c47816c16f0e, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -707,6 +727,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stilt_Window_Open (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fdde1754b35c7ab408b55d8d14b86dd3, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -780,6 +804,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 896587c0375d6554ebc4d43cfb616582, type: 3}
       propertyPath: m_Name
       value: StiltDoor_02
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 896587c0375d6554ebc4d43cfb616582, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 896587c0375d6554ebc4d43cfb616582, type: 3}
       propertyPath: m_IsActive
@@ -867,6 +895,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stilt_Window_Closed (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 712d7e63df1937049ba85658ec01f267, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -945,6 +977,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stilt_Ladder (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 48d4dd10d293063449309176ac48fb9f, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1018,6 +1054,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: efc8d185b6b94964e93aa03367c58e7c, type: 3}
       propertyPath: m_Name
       value: StiltBuilding_03
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: efc8d185b6b94964e93aa03367c58e7c, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: efc8d185b6b94964e93aa03367c58e7c, type: 3}
       propertyPath: m_IsActive
@@ -1134,6 +1174,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stilt_House_Medium (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 9bdd0067cadc3f34a8a54049045e6cb9, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1240,6 +1284,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 7efc386599881ba4c946a452a2c58174, type: 3}
       propertyPath: m_Name
       value: Stilt_Door_Square (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7efc386599881ba4c946a452a2c58174, type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
