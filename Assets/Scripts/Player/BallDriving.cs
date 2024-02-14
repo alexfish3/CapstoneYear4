@@ -377,7 +377,7 @@ public class BallDriving : MonoBehaviour
 
         //Checks for whether the scooter has been still long enough to be considered stopped
         currentVelocity = sphereBody.velocity.magnitude;
-        if (currentVelocity > 0.1f)
+        if (currentVelocity > 0.5f)
         {
             csv = currentForce / currentVelocity;
             stopped = false;
