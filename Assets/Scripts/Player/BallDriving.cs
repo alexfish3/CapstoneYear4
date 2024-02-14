@@ -218,6 +218,7 @@ public class BallDriving : MonoBehaviour
     private float driftPoints = 0.0f;
     private float driftBoost = 0.0f;
     private int driftTier = 0;
+    private bool moveOnTransform = false;
 
     private bool groundBoostFlag = false;
     private bool groundSlowFlag = false;
@@ -485,6 +486,7 @@ public class BallDriving : MonoBehaviour
         //Adds the boost from a successful drift
         if (driftBoostAchieved)
         {
+            sphereBody.velocity *= 0.65f;
             soundPool.PlayMiniBoost();
             switch (driftTier)
             {
@@ -504,6 +506,7 @@ public class BallDriving : MonoBehaviour
             StartSlowdownImmunity();
             rumble.EndSuspension(pad);
             rumble.RumblePulse(pad, 0.3f, 0.65f, 0.3f);
+            moveOnTransform = true;
         }
 
 
@@ -552,9 +555,10 @@ public class BallDriving : MonoBehaviour
                 {
                     sphereBody.AddForce((driftDirection == 1 ? ((driftSidewaysScalar * transform.forward) - transform.right).normalized : ((driftSidewaysScalar * transform.forward) + transform.right).normalized) * totalForce, ForceMode.Acceleration);
                 }
-                else if (wheelying)
+                else if (wheelying || moveOnTransform)
                 {
                     sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
+                    moveOnTransform = false;
                 }
                 else
                 {
