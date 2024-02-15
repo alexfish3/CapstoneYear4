@@ -50,7 +50,8 @@ public class GameManager : SingletonMonobehaviour<GameManager>
         Debug.Log($"Setting state to: {state}");
         mainState = state;
 
-        OnSwapAnything?.Invoke();
+        if(mainState != GameState.Tutorial)
+            OnSwapAnything?.Invoke();
 
         // Calls an event for the certain state that is swapped to
         switch(mainState)
