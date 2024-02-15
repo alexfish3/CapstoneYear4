@@ -76,11 +76,15 @@ public class Order : MonoBehaviour
 
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
 
+    private Transform ogMesh;
+
     private void Start()
     {
         meshRenderer = orderMeshObject.GetComponent<MeshRenderer>();
         meshFilter = orderMeshObject.GetComponent<MeshFilter>();
         initMeshRotation = orderMeshObject.transform.localRotation;
+
+        ogMesh = orderMeshObject.transform;
     }
 
     private void Update()
@@ -89,7 +93,7 @@ public class Order : MonoBehaviour
         beacon.gameObject.SetActive(isActive);
         if (playerHolding != null)
         {
-            //this.gameObject.transform.forward = -playerHolding.transform.right;
+            this.gameObject.transform.forward = -playerHolding.transform.right;
         }
 
         Vector3 newDir = (arrow.transform.position - dropoff.position);
@@ -154,9 +158,7 @@ public class Order : MonoBehaviour
     /// </summary>
     public void Pickup(OrderHandler player)
     {
-        floatyTween.Kill(true);
-        bobbyTween.Kill(true);
-        arrowTween.Kill(true);
+        ResetMesh();
 
         arrow.SetActive(true);
         playerHolding = player;
@@ -193,9 +195,7 @@ public class Order : MonoBehaviour
     /// </summary>
     public void Drop(Vector3 newPosition)
     {
-        floatyTween.Kill();
-        bobbyTween.Kill();
-        arrowTween.Kill();
+        ResetMesh();
 
         this.transform.parent = OrderManager.Instance.transform;
         orderMeshObject.transform.rotation = initMeshRotation;
@@ -253,9 +253,7 @@ public class Order : MonoBehaviour
     /// </summary>
     public void EraseOrder()
     {
-        floatyTween.Kill(true);
-        bobbyTween.Kill(true);
-        arrowTween.Kill(true);
+        ResetMesh();
 
         orderMeshObject.transform.rotation = initMeshRotation;
 
@@ -323,6 +321,8 @@ public class Order : MonoBehaviour
     /// </summary>
     public void RemovePlayerHolding()
     {
+        ResetMesh();
+
         if (playerHolding != null)
         {
             // Removes the ui from all players
@@ -330,6 +330,17 @@ public class Order : MonoBehaviour
             //playerHolding.GetComponent<Compass>().RemoveCompassMarker(beacon.CompassMarker, );
         }
         playerHolding = null;
+    }
+
+    private void ResetMesh()
+    {
+        floatyTween.Kill();
+        bobbyTween.Kill();
+        arrowTween.Kill();
+
+        arrow.transform.localPosition = Vector3.zero;
+        orderMeshObject.transform.position = ogMesh.position;
+        orderMeshObject.transform.rotation = ogMesh.rotation;
     }
 
     private void StartPickupCooldownCoroutine()
