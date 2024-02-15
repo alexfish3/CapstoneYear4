@@ -501,6 +501,7 @@ public class BallDriving : MonoBehaviour
                     break;
             }
             totalForce += driftBoost;
+            driftTier = 0;
             driftBoostAchieved = false;
             StartSlowdownImmunity();
             rumble.EndSuspension(pad);
