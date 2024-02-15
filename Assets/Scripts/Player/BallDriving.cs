@@ -440,7 +440,7 @@ public class BallDriving : MonoBehaviour
         }
         else if (reverseGear)
         {
-            DirtyDriftDrop(); //only needed like 1% of the time but fixes a weird little collision behavior
+            DriftDrop(); //only needed like 1% of the time but fixes a weird little collision behavior
             
             //Determines actual rotation
             rotationAmount = leftStick * reverseSteeringPower;
@@ -502,7 +502,6 @@ public class BallDriving : MonoBehaviour
             }
             totalForce += driftBoost;
             driftBoostAchieved = false;
-            driftTier = 0;
             StartSlowdownImmunity();
             rumble.EndSuspension(pad);
             rumble.RumblePulse(pad, 0.3f, 0.65f, 0.3f);
@@ -529,7 +528,7 @@ public class BallDriving : MonoBehaviour
         }
 
         //Applies slow from grass patches
-        if (groundSlowFlag && !boosting )
+        if (groundSlowFlag && !boosting)
         {
             totalForce *= slowPatchMultiplier;
             groundSlowFlag = false;
@@ -578,18 +577,14 @@ public class BallDriving : MonoBehaviour
         //Clamping to make it easier to come to a complete stop
         if (sphereBody.velocity.magnitude < 3)
         {
-            DirtyDriftDrop();
-
             if (sphereBody.velocity.magnitude < 1 && currentForce < 2)
             {
                 sphereBody.velocity = new Vector3(0, sphereBody.velocity.y, 0);
             }
         }
 
-        if (rightTrig < 0.05f)
-        {
-            DirtyDriftDrop();
-        }
+        if (sphereBody.velocity.magnitude < 6 || rightTrig < 0.05f)
+            DriftDrop();
 
         // Enables raycasting for boosting while in a phase
         if (phaseSetMap)
@@ -778,7 +773,7 @@ public class BallDriving : MonoBehaviour
                 driftBoostAchieved = true;
             }
 
-            DirtyDriftDrop();
+            DriftDrop(false);
         }
     }
 
@@ -855,15 +850,23 @@ public class BallDriving : MonoBehaviour
     /// <summary>
     /// Ends drifting; can work with or without boost.
     /// </summary>
-    private void DirtyDriftDrop()
+    /// <param name="dirty">Whether the drop is dirty</param>
+    private void DriftDrop(bool dirty = true)
     {
         soundPool.StopDriftSound();
         soundPool.StopDriftSpark();
+
         drifting = false;
         callToDrift = false;
         driftPoints = 0;
+
         DriftSparkSet(0);
         rumble.EndSuspension(pad);
+
+        if (dirty)
+        {
+            driftTier = 0;
+        }
     }
 
     /// <summary>
@@ -976,7 +979,7 @@ public class BallDriving : MonoBehaviour
         boosting = true;
         boostAble = false;
         boostInitialburst = true;
-        DirtyDriftDrop();
+        DriftDrop();
 
         stopped = false;
         reverseGear = false;
@@ -1181,7 +1184,7 @@ public class BallDriving : MonoBehaviour
         {
             canDrive = false;
             spinningOut = true;
-            DirtyDriftDrop();
+            DriftDrop();
             StartSpinOutTime();
         }
     }
@@ -1260,7 +1263,7 @@ public class BallDriving : MonoBehaviour
         if (sphereBody == null)
             return;
 
-        DirtyDriftDrop();
+        DriftDrop();
         driftTier = 0;
         sphereBody.velocity = Vector3.zero;
 
