@@ -236,10 +236,10 @@ public class Order : MonoBehaviour
     /// </summary>
     public void DeliverOrder()
     {
-        RemovePlayerHolding();
         arrow.SetActive(false);
         if (value != Constants.OrderValue.Golden)
         {
+            RemovePlayerHolding();
             beacon.ThrowOrder(0.25f); // hard coded value for throwing the order to a customer
         }
         else

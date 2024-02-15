@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -41,7 +42,6 @@ public class OrderHandler : MonoBehaviour
     private OrderHandler playerTouching = null;
     public OrderHandler PlayerTouching { get { return playerTouching; } set {  playerTouching = value; } }
 
-
     private void Start()
     {
         score = 0; // init score to 0
@@ -57,12 +57,14 @@ public class OrderHandler : MonoBehaviour
     {
         ball.OnBoostStart += AttemptSteal;
         GameManager.Instance.OnSwapMenu += ResetHandler;
+        GameManager.Instance.OnSwapAnything += UpdateScore;
     }
 
     private void OnDisable()
     {
         ball.OnBoostStart -= AttemptSteal;
         GameManager.Instance.OnSwapMenu -= ResetHandler;
+        GameManager.Instance.OnSwapAnything -= UpdateScore;
     }
 
     private void Update()
@@ -250,6 +252,13 @@ public class OrderHandler : MonoBehaviour
         placement = 0;
         score = 0;
         ball.SetBoostModifier(hasOrder);
+        numberHandler.UpdateScoreUI(score.ToString());
+    }
+
+    private void UpdateScore()
+    {
+        numberHandler.UpdateScoreUI(score.ToString());
+        ScoreManager.Instance.UpdatePlacement();
     }
 
     /// <summary>
