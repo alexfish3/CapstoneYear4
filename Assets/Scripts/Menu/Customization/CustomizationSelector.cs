@@ -18,6 +18,9 @@ public class CustomizationSelector : MonoBehaviour
     [Header("References")]
     [SerializeField] GameObject selector;
     [SerializeField] MeshRenderer ghostModel;
+    [SerializeField] MeshRenderer ghostEyelid1;
+    [SerializeField] MeshRenderer ghostEyelid2;
+
     [SerializeField] MeshRenderer hatModel;
     Material[] ghostMats;
 
@@ -154,6 +157,9 @@ public class CustomizationSelector : MonoBehaviour
         ghostMats = ghostModel.materials;
         ghostMats[0] = playerColors[currentPlayerColor].colorMaterial;
         ghostModel.materials = ghostMats;
+
+        ghostEyelid1.material = playerColors[currentPlayerColor].colorMaterial;
+        ghostEyelid2.material = playerColors[currentPlayerColor].colorMaterial;
 
         phaseIndicator.ReferenceHornMaterial();
     }
