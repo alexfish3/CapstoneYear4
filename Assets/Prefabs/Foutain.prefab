@@ -27,8 +27,8 @@ Transform:
   m_GameObject: {fileID: 1923145743640797115}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7039742, y: 0.06648569, z: 0.06648569, w: 0.7039742}
-  m_LocalPosition: {x: 1.1264e-10, y: -5.9101e-10, z: 0.00781}
-  m_LocalScale: {x: 0.021392046, y: 0.012615786, z: 0.022464003}
+  m_LocalPosition: {x: 1.1264e-10, y: -5.9101e-10, z: 0.0059016}
+  m_LocalScale: {x: 0.021392046, y: 0.011929956, z: 0.022464015}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6770203943783681892}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 3332742749103883274}
   - component: {fileID: 8175762166474548250}
   m_Layer: 9
-  m_Name: GameObject
+  m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,8 +165,8 @@ Transform:
   m_GameObject: {fileID: 2449502895344514276}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7039742, y: 0.06648569, z: 0.06648569, w: 0.7039742}
-  m_LocalPosition: {x: 0, y: -0, z: 0.00781}
-  m_LocalScale: {x: 0.022512006, y: 0.012637598, z: 0.02307582}
+  m_LocalPosition: {x: 0, y: -0, z: 0.0059016}
+  m_LocalScale: {x: 0.022512006, y: 0.011950581, z: 0.023075832}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6770203943783681892}
@@ -289,6 +289,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: water
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 510f5ab2cfeca23449bacfe64972996e, type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -360,6 +364,10 @@ PrefabInstance:
       value: -10.79
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: e74b9fa79d5b2574fafa5aa1f00a6970, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e74b9fa79d5b2574fafa5aa1f00a6970, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: c69f41ff91dddeb4bb6a729793740b81, type: 2}
@@ -386,6 +394,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e74b9fa79d5b2574fafa5aa1f00a6970, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: e74b9fa79d5b2574fafa5aa1f00a6970, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
