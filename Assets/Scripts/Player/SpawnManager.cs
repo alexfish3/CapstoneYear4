@@ -9,6 +9,7 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
 
     [Tooltip("The spawn positions of the players as they start the game")]
     [SerializeField] GameObject[] gameSpawnPositions = new GameObject[Constants.MAX_PLAYERS];
+    [SerializeField] GameObject[] nonTutorialSpawnPositions = new GameObject[Constants.MAX_PLAYERS];
     [SerializeField] GameObject[] goldenPackageSpawnPositions = new GameObject[Constants.MAX_PLAYERS];
 
     ///<summary>
