@@ -71,6 +71,11 @@ public class QAHandler : MonoBehaviour
         med = 0;
         hard = 0;
         gold = 0;
+
+        boosts = 0;
+        steals = 0;
+        goldSteals = 0;
+        deaths = 0;
     }
 
     public string[] GetData()
