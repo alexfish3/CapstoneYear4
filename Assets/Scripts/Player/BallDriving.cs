@@ -269,8 +269,8 @@ public class BallDriving : MonoBehaviour
         GameManager.Instance.OnSwapGoldenCutscene -= () => FreezeBall(true);
         GameManager.Instance.OnSwapStartingCutscene -= () => FreezeBall(true);
 
-        GameManager.Instance.OnSwapBegin += () => FreezeBall(false);
-        GameManager.Instance.OnSwapFinalPackage += () => FreezeBall(false);
+        GameManager.Instance.OnSwapBegin -= () => FreezeBall(false);
+        GameManager.Instance.OnSwapFinalPackage -= () => FreezeBall(false);
     }
 
     /// <summary>

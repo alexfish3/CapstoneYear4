@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using UnityEngine;
 
@@ -84,6 +85,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
                 OnSwapGoldenCutscene?.Invoke();
                 break;
             case GameState.Results:
+                DOTween.CompleteAll();
                 OnSwapResults?.Invoke();
                 break;
             default:
