@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d155ebd6b95c80140b69d2bbb5a37d5d, type: 3}
   m_Name: MultiPassRendererFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   lightModePasses:
   - Outline
   - Outline Two
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c75607c1a047e22428a583c76deb305e, type: 3}
   m_Name: Custom Bloom
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   m_bloomShader: {fileID: 4800000, guid: ad34626e025245c4396ed8f1a1c356e1, type: 3}
   m_compositeShader: {fileID: -6465566751694194690, guid: 7d9583a2be45cc9478b3b3be26017fd9, type: 3}
   m_ssaoShader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
@@ -249,11 +249,11 @@ MonoBehaviour:
     passOperation: 2
     failOperation: 0
     zFailOperation: 0
-  m_ShadowTransparentReceive: 1
-  m_RenderingMode: 0
-  m_DepthPrimingMode: 0
-  m_CopyDepthMode: 0
-  m_AccurateGbufferNormals: 0
+  m_ShadowTransparentReceive: 0
+  m_RenderingMode: 1
+  m_DepthPrimingMode: 2
+  m_CopyDepthMode: 1
+  m_AccurateGbufferNormals: 1
   m_IntermediateTextureMode: 1
 --- !u!114 &1019413497999485541
 MonoBehaviour:
