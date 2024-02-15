@@ -8,6 +8,8 @@ public class TutorialTrigger : MonoBehaviour
     [Tooltip("Reference to the ground to be disabled once tutorial is complete.")]
     [SerializeField] private GameObject tutorialGround;
 
+    private IEnumerator disableRoutine;
+
     private void OnEnable()
     {
         TutorialManager.Instance.OnTutorialComplete += DisableTutorialGround;
@@ -31,6 +33,17 @@ public class TutorialTrigger : MonoBehaviour
 
     private void DisableTutorialGround()
     {
+        if(disableRoutine == null)
+        {
+            disableRoutine = DisableCooldown();
+            StartCoroutine(disableRoutine);
+        }
+    }
+
+    private IEnumerator DisableCooldown()
+    {
+        yield return new WaitForSeconds(1f);
         tutorialGround.SetActive(false);
+        disableRoutine = null;
     }
 }

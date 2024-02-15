@@ -51,6 +51,8 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
         if (shouldTutorialize)
             return;
 
+        OnTutorialComplete?.Invoke();
+        
         GameManager.Instance.SetGameState(GameState.Begin);
     }
 }

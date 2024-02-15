@@ -45,6 +45,7 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     ///</summary>
     private void SpawnPlayersStartOfGame()
     {
+        GameObject[] spawnPoints = TutorialManager.Instance.ShouldTutorialize ? gameSpawnPositions : nonTutorialSpawnPositions;
         // Loops for all spawned players
         for (int i = 0; i <= Constants.MAX_PLAYERS; i++)
         {
@@ -57,13 +58,13 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
                 playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().velocity = Vector3.zero;
 
                 // reset position and rotation of ball and controller
-                playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = gameSpawnPositions[i].transform.position;
-                playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = gameSpawnPositions[i].transform.rotation;
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.position = spawnPoints[i].transform.position;
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<Rigidbody>().transform.rotation = spawnPoints[i].transform.rotation;
 
-                playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = gameSpawnPositions[i].transform.position;
-                playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = gameSpawnPositions[i].transform.rotation;
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.position = spawnPoints[i].transform.position;
+                playerInstantiate.PlayerInputs[i].GetComponentInChildren<BallDriving>().transform.rotation = spawnPoints[i].transform.rotation;
 
-                // Initalize the compass ui on each of the players
+                    // Initalize the compass ui on each of the players
                 playerInstantiate.PlayerInputs[i].gameObject.GetComponentInChildren<CompassMarker>().InitalizeCompassUIOnAllPlayers();
             }
             catch { }
