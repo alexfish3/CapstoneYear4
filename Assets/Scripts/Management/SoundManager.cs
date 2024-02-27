@@ -70,8 +70,11 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [Range(1f, 2f)] [SerializeField] private float emotePitchMax;
 
     [Header("Looping Logic")]
+    [Tooltip("Length of the intro for the menu theme.")]
+    [SerializeField] private float menuThemeIntroLength = 1.775f;
     [Tooltip("Length of the intro for the main gameplay theme.")]
     [SerializeField] private float gameThemeIntroLength = 1f;
+    [Tooltip("Length of the intro for the final order theme.")]
     [SerializeField] private float finalThemeIntroLength = 1f;
 
     [Header("Debug")]
@@ -156,13 +159,17 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
         shouldPlayMain = false;
 
-        if(bgmRoutine != null)
+        if (bgmRoutine != null)
+        {
             StopCoroutine(bgmRoutine);
+            bgmRoutine = null;
+        }
 
-        musicSource.timeSamples = 0;
+        musicSource.Pause();
         musicSource.clip = mainMenuBGM.clip;
         musicSource.volume = mainMenuBGM.volume;
-        musicSource.Play();
+        bgmRoutine = PlayLoopedSongWithIntro(musicSource, menuThemeIntroLength);
+        StartCoroutine(bgmRoutine);
     }
 
     private void PlayPlayerSelectTheme()
