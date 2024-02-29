@@ -99,7 +99,7 @@ public class OrderBeacon : MonoBehaviour
         meshRenderer.material.color = color;
         isPickup = true;
         order.RemovePlayerHolding();
-        gameObject.layer = 0; // reset to default layer
+        meshRenderer.gameObject.layer = 0; // reset to default layer
     }
 
     /// <summary>
