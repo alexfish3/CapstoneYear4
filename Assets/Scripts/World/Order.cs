@@ -12,6 +12,7 @@ public class Order : MonoBehaviour
     [SerializeField] private Constants.OrderValue value;
     public Constants.OrderValue Value { get { return value; } }
 
+    [Tooltip("Order will spawn at runtime. Use this for the tutorial orders.")]
     [SerializeField] private bool isActive = false;
     public bool IsActive { get { return isActive; } set { isActive = value; } }
     [Header("Mesh Information")]
@@ -229,6 +230,7 @@ public class Order : MonoBehaviour
         }
 
         playerDropped = playerHolding;
+        beacon.ResetPickup();
         RemovePlayerHolding();
     }
     /// <summary>
