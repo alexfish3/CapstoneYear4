@@ -32,7 +32,7 @@ public class CanKicker : MonoBehaviour
 
             other.gameObject.GetComponent<Kickable>().GetKicked(sphereCol);
 
-            PeterSparker.Instance.CreateImpactFromCollider(other, sphereCol.transform);
+            PeterSparker.Instance.CreateImpactFromCollider(other, sphereCol.transform.position);
         }
     }
 }

@@ -8,13 +8,13 @@ public class PeterSparker : SingletonMonobehaviour<PeterSparker>
     [SerializeField] private GameObject impactParticle;
 
     /// <summary>
-    /// Creates sparks at the point of impact between two colliders. The class calling the script should pass reference to the *other* collider
+    /// Creates sparks on the surface of a collider
     /// </summary>
-    /// <param name="input">The *other* collider in the collision</param>
-    /// <param name="selfPosition">The position of the object calling for particles</param>
-    public void CreateImpactFromCollider(Collider input, Transform selfPosition)
+    /// <param name="input">The collider</param>
+    /// <param name="pos">The position of a point in the direction that the sparks should arrive relative to the collider's centre</param>
+    public void CreateImpactFromCollider(Collider input, Vector3 pos)
     {
-        Vector3 closestPoint = input.ClosestPoint(selfPosition.position);
+        Vector3 closestPoint = input.ClosestPoint(pos);
         CreateCollisionSparks(closestPoint);
     }
 

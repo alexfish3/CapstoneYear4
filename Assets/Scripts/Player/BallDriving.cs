@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEditor;
 using UnityEngine.InputSystem;
+using System.ComponentModel;
 
 /// <summary>
 /// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position.
@@ -315,7 +316,7 @@ public class BallDriving : MonoBehaviour
         longSpark = particleBasket.GetChild(5).GetComponent<ParticleManipulator>();
 
         orderHandler.GotHit += SpinOut;
-        orderHandler.Clash += BounceOff;
+        orderHandler.Clash += BallClash;
     }
 
     /// <summary>
@@ -1216,7 +1217,7 @@ public class BallDriving : MonoBehaviour
     /// Slams balls together
     /// </summary>
     /// <param name="opponent">The other person in the collision</param>
-    private void BounceOff(OrderHandler opponent)
+    private void BallClash(OrderHandler opponent)
     {
         if (phasing)
             return;
@@ -1225,12 +1226,23 @@ public class BallDriving : MonoBehaviour
 
         Rigidbody opponentBall = opponent.gameObject.GetComponent<BallDriving>().Sphere.GetComponent<Rigidbody>(); //woof
 
-        Vector3 difference = (sphereBody.position - opponentBall.position).normalized;
+        BounceOff(opponentBall.position, clashForce);
+    }
+
+    /// <summary>
+    /// Bounces the player off in the opposite direction of a given point
+    /// </summary>
+    /// <param name="oppositePoint">The point to move away from</param>
+    /// <param name="force">The force of the bounce</param>
+    /// <param name="spark">Optional parameter for whether the bounce generates sparks. Defaults to true</param>
+    public void BounceOff(Vector3 oppositePoint, float force, bool spark = true)
+    {
+        Vector3 difference = (sphereBody.position - oppositePoint).normalized;
         difference.y = 0.15f;
         difference.Normalize();
 
         sphereBody.AddForce(difference * clashForce, ForceMode.Impulse);
-        PeterSparker.Instance.CreateImpactFromCollider(opponent.gameObject.GetComponent<Collider>(), sphereCollider.transform);
+        PeterSparker.Instance.CreateImpactFromCollider(sphereCollider, oppositePoint);
     }
 
     /// <summary>
