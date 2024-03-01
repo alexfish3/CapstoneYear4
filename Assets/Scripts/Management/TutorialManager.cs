@@ -15,6 +15,7 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
     private void OnEnable()
     {
         GameManager.Instance.OnSwapTutorial += SkipTutorial;
+        shouldTutorialize = true;
     }
 
     private void OnDisable()

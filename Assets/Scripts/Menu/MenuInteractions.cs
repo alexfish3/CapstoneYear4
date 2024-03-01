@@ -206,11 +206,11 @@ public class MenuInteractions : MonoBehaviour
         readyUpText.SetActive(true);
         readiedUp = true;
 
-        if (hostPlayer)
+/*        if (hostPlayer) // outdated tutorial toggle stuff
         {
             tutorialToggle.gameObject.SetActive(true);
             uiHandler.SouthFaceEvent.AddListener(tutorialToggle.SetTutorial);
-        }
+        }*/
         PlayerInstantiate.Instance.ReadyUp(ballDriving.playerIndex - 1);
         soundPool.PlayEnterUI();
     }
@@ -236,11 +236,11 @@ public class MenuInteractions : MonoBehaviour
         }
         else
         {
-            if(hostPlayer)
+/*            if(hostPlayer) // outdated tutorial enabling stuff
             {
                 tutorialToggle.gameObject.SetActive(false);
                 uiHandler.SouthFaceEvent.RemoveListener(tutorialToggle.SetTutorial);
-            }
+            }*/
             readyUpText.SetActive(false);
             readiedUp = false;
             PlayerInstantiate.Instance.UnreadyUp(ballDriving.playerIndex - 1);

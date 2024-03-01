@@ -25,7 +25,7 @@ public class TutorialTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         TutorialHandler handler = other.transform.parent.GetComponentInChildren<TutorialHandler>();
-        if(handler != null)
+        if (handler != null)
         {
             handler.TeachHandler();
         }
