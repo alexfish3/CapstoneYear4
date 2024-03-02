@@ -58,22 +58,6 @@ MonoBehaviour:
   settings:
     material: {fileID: 2100000, guid: a3bdda65cfd87ac41a90175d93cd3050, type: 2}
     renderPassEvent: 550
---- !u!114 &-4626877865534857856
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d155ebd6b95c80140b69d2bbb5a37d5d, type: 3}
-  m_Name: MultiPassRendererFeature
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  lightModePasses:
-  - Outline
-  - Outline Two
 --- !u!114 &-3808891703496517900
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,31 +93,6 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3302065f671a8450b82c9ddf07426f3a, type: 3}
   - {fileID: 2800000, guid: 56a77a3e8d64f47b6afe9e3c95cb57d5, type: 3}
   m_Shader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
---- !u!114 &-2296568822356026115
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c75607c1a047e22428a583c76deb305e, type: 3}
-  m_Name: Custom Bloom
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  m_bloomShader: {fileID: 4800000, guid: ad34626e025245c4396ed8f1a1c356e1, type: 3}
-  m_compositeShader: {fileID: -6465566751694194690, guid: 7d9583a2be45cc9478b3b3be26017fd9, type: 3}
-  m_ssaoShader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
-  m_BlueNoise256Textures:
-  - {fileID: 2800000, guid: 437642d02a02efd4fb6fd567922e9ec4, type: 3}
-  - {fileID: 2800000, guid: 0173e3d56a826084599866481024582a, type: 3}
-  - {fileID: 2800000, guid: 0237c4873a9fc394dae339b29dfba653, type: 3}
-  - {fileID: 2800000, guid: ddb81e895bbc32a44ae67b69c4ee4b07, type: 3}
-  - {fileID: 2800000, guid: 1e287450e29bc3e4cb70e14e39c5bb7f, type: 3}
-  - {fileID: 2800000, guid: a61ad2a794db98f40ad298bb3187bac9, type: 3}
-  - {fileID: 2800000, guid: 096086165d665ba48af19b1fff7d9a9c, type: 3}
-  - {fileID: 2800000, guid: 2342567b3d0ca2c41994aa404d2e998d, type: 3}
 --- !u!114 &-1808948246719126868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,29 +135,6 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
---- !u!114 &-1190065227355686593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1614fc811f8f184697d9bee70ab9fe5, type: 3}
-  m_Name: DecalRendererFeature
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  m_Settings:
-    technique: 2
-    maxDrawDistance: 1000
-    decalLayers: 0
-    dBufferSettings:
-      surfaceData: 2
-    screenSpaceSettings:
-      normalBlend: 1
-  m_CopyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
-  m_DBufferClear: {fileID: 4800000, guid: f056d8bd2a1c7e44e9729144b4c70395, type: 3}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,16 +151,15 @@ MonoBehaviour:
     debugReplacementPS: {fileID: 4800000, guid: cf852408f2e174538bcd9b7fda1c5ae7, type: 3}
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
-  - {fileID: -4626877865534857856}
-  - {fileID: -2296568822356026115}
   - {fileID: -3808891703496517900}
   - {fileID: 7155417236463631810}
   - {fileID: -9102460134291223361}
   - {fileID: 1882900383052072918}
+  - {fileID: 999744163982048838}
+  - {fileID: 4645851673546684642}
   - {fileID: -1808948246719126868}
   - {fileID: -8123595742492509647}
-  - {fileID: -1190065227355686593}
-  m_RendererFeatureMap: 805dad751807cabffd5c3be5d2f220e0f45628112d1924cbc23d1fc710264d63bfcc6a19bc90ad81d607441fec67211aaca23d612753e5e631badb7db630438f3f79eb1ffb097cef
+  m_RendererFeatureMap: f45628112d1924cbc23d1fc710264d63bfcc6a19bc90ad81d607441fec67211a467e6b3005cedf0de278e7787b617940aca23d612753e5e631badb7db630438f
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -261,8 +196,31 @@ MonoBehaviour:
   m_RenderingMode: 0
   m_DepthPrimingMode: 0
   m_CopyDepthMode: 0
-  m_AccurateGbufferNormals: 0
+  m_AccurateGbufferNormals: 1
   m_IntermediateTextureMode: 1
+--- !u!114 &999744163982048838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1614fc811f8f184697d9bee70ab9fe5, type: 3}
+  m_Name: DecalRendererFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  m_Settings:
+    technique: 2
+    maxDrawDistance: 1000
+    decalLayers: 0
+    dBufferSettings:
+      surfaceData: 2
+    screenSpaceSettings:
+      normalBlend: 1
+  m_CopyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
+  m_DBufferClear: {fileID: 4800000, guid: f056d8bd2a1c7e44e9729144b4c70395, type: 3}
 --- !u!114 &1882900383052072918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,6 +263,23 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
+--- !u!114 &4645851673546684642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7afc38c2d1fc5794db8af8261ba5f3b1, type: 3}
+  m_Name: OutlineObjectFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  mask:
+    serializedVersion: 2
+    m_Bits: 1
+  Event: 550
 --- !u!114 &7155417236463631810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,4 +296,4 @@ MonoBehaviour:
   passMaterial: {fileID: 2100000, guid: 9602a3016b3d58f4882453bb4f9e7def, type: 2}
   injectionPoint: 550
   requirements: 1
-  passIndex: 1
+  passIndex: 0
