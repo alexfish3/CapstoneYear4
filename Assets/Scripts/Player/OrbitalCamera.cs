@@ -23,6 +23,8 @@ public class OrbitalCamera : MonoBehaviour
     [SerializeField] float realYAxis;
     public float smoothYAxis;
 
+    bool reverseCamera;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +36,7 @@ public class OrbitalCamera : MonoBehaviour
     void Update()
     {
         // Custom joystick camera aim
-        if (!inputManager.RightStickValue)
+        if (!inputManager.RightStickValue && reverseCamera == false)
         {
             realXAxis = RangeMutations.Map_Linear(inputManager.RightStickXValue, -1, 1, -maxXAngle, maxXAngle);
             realYAxis = RangeMutations.Map_Linear(inputManager.RightStickYValue, -1, 1, yAngleMinMax.x, yAngleMinMax.y);
@@ -47,11 +49,25 @@ public class OrbitalCamera : MonoBehaviour
 
             CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
         }
-        // Static look behind
-        else
+        // Reset look behind
+        if (!inputManager.RightStickValue && reverseCamera == true)
         {
+            reverseCamera = false;
+            smoothXAxis = 0f;
+        }
+        // Static look behind
+        else if(inputManager.RightStickValue)
+        {
+            reverseCamera = true;
+
             mainOrb.m_XAxis.Value = -180;
             iconOrb.m_XAxis.Value = -180;
+
+            realXAxis = 180;
+            realYAxis = 0;
+            
+            smoothYAxis = 0;
+            smoothXAxis = 180f;
 
             CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
         }
