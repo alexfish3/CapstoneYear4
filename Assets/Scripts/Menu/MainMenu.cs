@@ -2,9 +2,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening.Core.Easing;
 
 public class MainMenu : SingletonMonobehaviour<MainMenu>
 {
+    GameManager gameManager;
+
     [Header("Selector Objects")]
     [SerializeField] GameObject selector;
     [SerializeField] GameObject[] selectorObjects;
@@ -18,6 +21,17 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
 
     [SerializeField] TMP_Text p1ConnectedController;
     PlayerInstantiate playerInstantiate;
+
+    public void OnEnable()
+    {
+        gameManager = GameManager.Instance;
+    }
+
+    public void Start()
+    {
+        // Set game to begin upon loading into scene
+        gameManager.SetGameState(GameState.Menu);
+    }
 
     public void Update()
     {

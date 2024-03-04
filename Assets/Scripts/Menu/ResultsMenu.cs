@@ -33,6 +33,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     public void ConfirmMenu()
     {
-        GameManager.Instance.SetGameState(GameState.Menu);
+        SceneManager.Instance.InvokeMenuSceneEvent();
+        //GameManager.Instance.SetGameState(GameState.Menu);
     }
 }
