@@ -238,7 +238,8 @@ public class BallDriving : MonoBehaviour
     public bool Boosting { get { return boosting; } }
     private bool boostAble = true;
     public bool BoostAble { set { boostAble = value; } }
-    [SerializeField] bool phasing = false;
+    private bool phasing = false;
+    public bool Phasing { get { return boosting; } }
 
     private float boostRechargeModifier = 1f;
 
@@ -293,7 +294,7 @@ public class BallDriving : MonoBehaviour
         sphereCollider = sphere.GetComponent<Collider>();
 
         pMat = new PhysicMaterial();
-        pMat.bounciness = 0.3f;
+        pMat.bounciness = 1.0f;
         pMat.staticFriction = RESTING_STATIC_FRICTION;
         pMat.dynamicFriction = RESTING_DYNAMIC_FRICTION;
         sphereCollider.material = pMat;

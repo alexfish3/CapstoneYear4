@@ -17,6 +17,7 @@ public class BallCollision : MonoBehaviour
         if (other.tag == "Kickable" || other.tag == "Speed" || other.tag == "TouchGrass" || other.tag == "Water" || other.tag == "Pickup" || other.tag == "IgnoreBallCollision") return;
         if (other.gameObject.GetComponent<Respawn>() != null) return; //collectively this and the line below ensure its not a player being touched, since that's handled separately
         if (other.gameObject.GetComponent<BallDriving>() != null) return;
+        if (control.Phasing) return;
 
         control.DriftDrop(true);
 
