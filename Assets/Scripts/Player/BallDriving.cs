@@ -262,7 +262,7 @@ public class BallDriving : MonoBehaviour
         GameManager.Instance.OnSwapStartingCutscene += () => FreezeBall(true);
         GameManager.Instance.OnSwapGoldenCutscene += () => FreezeBall(true);
 
-        GameManager.Instance.OnSwapBegin += () => FreezeBall(false);
+        GameManager.Instance.OnSwapTutorial += () => FreezeBall(false);
         GameManager.Instance.OnSwapFinalPackage += () => FreezeBall(false);
     }
 
@@ -273,7 +273,7 @@ public class BallDriving : MonoBehaviour
         GameManager.Instance.OnSwapGoldenCutscene -= () => FreezeBall(true);
         GameManager.Instance.OnSwapStartingCutscene -= () => FreezeBall(true);
 
-        GameManager.Instance.OnSwapBegin -= () => FreezeBall(false);
+        GameManager.Instance.OnSwapTutorial -= () => FreezeBall(false);
         GameManager.Instance.OnSwapFinalPackage -= () => FreezeBall(false);
     }
 
@@ -692,6 +692,7 @@ public class BallDriving : MonoBehaviour
         else
         {
             grounded = false;
+            Debug.Log("NOT GROUNDED");
         }
 
 
