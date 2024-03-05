@@ -6,6 +6,7 @@ using DG.Tweening;
 using UnityEditor;
 using UnityEngine.InputSystem;
 using System.ComponentModel;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 /// <summary>
 /// Version 3.0 of the vehicle controller. Drives by rolling a sphere collider around the world then simply matching the bike model to its position.
@@ -187,6 +188,7 @@ public class BallDriving : MonoBehaviour
     private Rigidbody sphereBody; //just reference to components of the sphere
     private Transform sphereTransform;
     private Collider sphereCollider;
+    public Collider SphereCollider { get { return sphereCollider; } }
     private Respawn respawn; // used to update the respawn point when grounded
     private QAHandler qa;
     private float startingDrag;
@@ -853,7 +855,7 @@ public class BallDriving : MonoBehaviour
     /// Ends drifting; can work with or without boost.
     /// </summary>
     /// <param name="dirty">Whether the drop is dirty</param>
-    private void DriftDrop(bool dirty = true)
+    public void DriftDrop(bool dirty = true)
     {
         soundPool.StopDriftSound();
         soundPool.StopDriftSpark();

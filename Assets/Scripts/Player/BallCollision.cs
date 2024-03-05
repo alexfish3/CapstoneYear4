@@ -15,10 +15,11 @@ public class BallCollision : MonoBehaviour
     {
         if (control.CurrentVelocity < 10) return;
         if (other.tag == "Kickable" || other.tag == "Speed" || other.tag == "TouchGrass" || other.tag == "Water" || other.tag == "Pickup") return;
-        if (other.gameObject.GetComponent<Respawn>() != null) return;
+        if (other.gameObject.GetComponent<Respawn>() != null) return; //collectively this and the line below ensure its not a player being touched, since that's handled separately
         if (other.gameObject.GetComponent<BallDriving>() != null) return;
 
-        control.BounceOff(other.ClosestPoint(transform.position), 1000 + (20 * control.CurrentVelocity));
-        Debug.Log("Bounce with " + (1000 + (20 * control.CurrentVelocity)));
+        control.DriftDrop(true);
+
+        PeterSparker.Instance.CreateImpactFromCollider(other, control.transform.position);
     }
 }
