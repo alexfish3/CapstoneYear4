@@ -132,6 +132,7 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float boostingSteerModifier = 0.4f;
     [Tooltip("How much force is used when clashing")]
     [SerializeField] private float clashForce = 50.0f;
+    public float ClashForce { get { return clashForce; } }
 
     [Header("Slipstream")]
     [Tooltip("Maximum distance that two vehicles can be from each other to get slipstream")]
