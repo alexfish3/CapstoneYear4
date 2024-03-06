@@ -10,10 +10,19 @@ using UnityEngine.UIElements;
 /// </summary>
 public class CivilianAgent : MonoBehaviour
 {
+    [Header("Setup")]
+    [Tooltip("Reference to the particle prefab")]
+    [SerializeField] private GameObject flashParticles;
+    [Tooltip("Reference to the renderers' parent")]
+    [SerializeField] private GameObject renderBasket;
+
+    [Header("Values")]
+    [Tooltip("How long after being hit it takes for the civilian to reappear")]
+    [SerializeField] private float respawnTime = 1.0f;
+
     private NavMeshAgent agent;
     private float wayPointDistance = 4f;
 
-    [SerializeField]
     private Transform[] points;
     public Transform[] Points { set { points = value; } }
 
@@ -22,7 +31,11 @@ public class CivilianAgent : MonoBehaviour
     private float slowUpdateTickSpeed = 0.1f; //How frequently, in seconds, SlowUpdate runs
     private IEnumerator slowUpdateCoroutine;
 
+    private IEnumerator deathCoroutine;
+
     private Transform model;
+
+    private bool moving;
 
     private void Awake()
     {
@@ -58,7 +71,7 @@ public class CivilianAgent : MonoBehaviour
     {
         while (true)
         {
-            if ((agent.destination - agent.transform.position).magnitude <= wayPointDistance)
+            if (moving && (agent.destination - agent.transform.position).magnitude <= wayPointDistance)
             {
                 CyclePoints();
             }
@@ -80,6 +93,41 @@ public class CivilianAgent : MonoBehaviour
         agent.SetDestination(points[currentIntendedPoint].position);
     }
 
+    /// <summary>
+    /// Public method to be called when the ghost should 'die'
+    /// Stops it moving, hides the model, calls the particle effect, and starts the respawn timer
+    /// </summary>
+    public void Die()
+    {
+        moving = false;
+        renderBasket.SetActive(false);
+
+        CreateFlash();
+        StartDeath();
+    }
+
+    /// <summary>
+    /// Waits a duration before reappearing the ghost with another flash
+    /// </summary>
+    /// <returns>Boilerplate IEnumerator</returns>
+    private IEnumerator Death()
+    {
+        yield return new WaitForSeconds(respawnTime);
+
+        CreateFlash();
+
+        moving = true;
+        renderBasket.SetActive(true);
+    }
+
+    /// <summary>
+    /// Creates a flash particle then destroys it after 1.5 seconds
+    /// </summary>
+    private void CreateFlash()
+    {
+        Destroy(Instantiate(flashParticles, transform.position, Quaternion.identity), 1.5f);
+    }
+
 
     private void StartSlowUpdate()
     {
@@ -92,6 +140,20 @@ public class CivilianAgent : MonoBehaviour
         {
             StopCoroutine(slowUpdateCoroutine);
             slowUpdateCoroutine = null;
+        }
+    }
+
+    private void StartDeath()
+    {
+        deathCoroutine = Death();
+        StartCoroutine(deathCoroutine);
+    }
+    private void StopDeath()
+    {
+        if (deathCoroutine != null)
+        {
+            StopCoroutine(deathCoroutine);
+            deathCoroutine = null;
         }
     }
 }
