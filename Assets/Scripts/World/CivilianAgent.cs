@@ -35,7 +35,7 @@ public class CivilianAgent : MonoBehaviour
 
     private Transform model;
 
-    private bool moving;
+    private bool moving = true;
 
     private void Awake()
     {
