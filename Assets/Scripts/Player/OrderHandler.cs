@@ -42,6 +42,9 @@ public class OrderHandler : MonoBehaviour
     private OrderHandler playerTouching = null;
     public OrderHandler PlayerTouching { get { return playerTouching; } set {  playerTouching = value; } }
 
+    private CompanyInformation companyInfo;
+    public CompanyInformation CompanyInfo { get {  return companyInfo; } set {  companyInfo = value; } }
+
     private void Start()
     {
         score = 0; // init score to 0
@@ -56,14 +59,14 @@ public class OrderHandler : MonoBehaviour
     private void OnEnable()
     {
         ball.OnBoostStart += AttemptSteal;
-        GameManager.Instance.OnSwapMenu += ResetHandler;
+        SceneManager.Instance.OnReturnToMenu += ResetHandler;
         GameManager.Instance.OnSwapAnything += UpdateScore;
     }
 
     private void OnDisable()
     {
         ball.OnBoostStart -= AttemptSteal;
-        GameManager.Instance.OnSwapMenu -= ResetHandler;
+        SceneManager.Instance.OnReturnToMenu -= ResetHandler;
         GameManager.Instance.OnSwapAnything -= UpdateScore;
     }
 

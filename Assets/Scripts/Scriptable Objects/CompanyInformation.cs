@@ -9,6 +9,9 @@ public class CompanyInformation : ScriptableObject
     public Company companyName;
     public Material scooterColorMaterial;
     public Material scooterDecalMaterial;
+
+    [Header("Player Information")]
+    public RenderTexture playerTexture;
 }
 
 public enum Company

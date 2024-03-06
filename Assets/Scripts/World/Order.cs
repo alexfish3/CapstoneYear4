@@ -101,7 +101,9 @@ public class Order : MonoBehaviour
     private void Update()
     {
         meshRenderer.enabled = isActive;
+        
         beacon.gameObject.SetActive(isActive);
+        
         if (playerHolding != null)
         {
             this.gameObject.transform.forward = -playerHolding.transform.right;
@@ -268,7 +270,7 @@ public class Order : MonoBehaviour
 
         orderMeshObject.transform.rotation = initMeshRotation;
 
-        Debug.Log("Erase Order");
+        Debug.Log("Erase Order " + GameManager.Instance.MainState);
         DOTween.Kill(transform);
         arrow.SetActive(false);
         

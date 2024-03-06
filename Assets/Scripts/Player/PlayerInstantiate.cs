@@ -202,6 +202,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         // Update the naming scheme of the input reciever
         playerInput.gameObject.name = "Player " + nextFillSlot.ToString();
         playerInput.gameObject.transform.parent = playerHolder.transform;
+        // assign a company to each player
+        playerInput.gameObject.GetComponentInChildren<OrderHandler>().CompanyInfo = companies[nextFillSlot - 1];
 
         AddToPlayerArray(playerInput);
 

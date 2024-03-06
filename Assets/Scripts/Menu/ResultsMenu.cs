@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 {
     [SerializeField] private TMP_Text[] displayText;
     [SerializeField] Canvas resultsCanvas;
+
+    [SerializeField] private RawImage[] playerImages;
 
     private void OnEnable()
     {
@@ -21,11 +24,12 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
     private void UpdateResults()
     {
         resultsCanvas.enabled = true;
-        for (int i = 0; i < displayText.Length; i++)
+        for (int i = 0; i < PlayerInstantiate.Instance.PlayerCount; i++)
         {
             OrderHandler currHandler = ScoreManager.Instance.GetHandlerOfIndex(i);
             if (currHandler != null)
             {
+                //playerImages[i].texture = currHandler.CompanyInfo.playerTexture; readd when the eotm menu is working
                 displayText[i].text = currHandler.Placement + ". " + currHandler.gameObject.transform.parent.name + " | $" + currHandler.Score;
             }
         }
