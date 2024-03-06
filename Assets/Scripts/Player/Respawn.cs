@@ -65,6 +65,9 @@ public class Respawn : MonoBehaviour
     // Sound stuff
     private SoundPool soundPool;
 
+    private bool isRespawning;
+    public bool IsRespawning { get { return isRespawning; } }
+
     // qa
     private QAHandler qa;
 
@@ -189,6 +192,7 @@ public class Respawn : MonoBehaviour
 
     public void StartRespawnCoroutine()
     {
+        isRespawning = true;
         qa.Deaths++;
         qa.SetDeath();
         soundPool.PlayDeathSound();
@@ -216,6 +220,8 @@ public class Respawn : MonoBehaviour
         {
             StopCoroutine(respawnCoroutine);
         }
+
+        isRespawning = false;
 
         respawnWisp.time = 0f;
         modelParent.SetActive(true);
