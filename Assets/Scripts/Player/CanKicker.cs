@@ -25,14 +25,18 @@ public class CanKicker : MonoBehaviour
     {
         if (other.tag == "Kickable")
         {
-            Physics.IgnoreCollision(sphereCol, other);
-
-            Vector3 kickDirection = (other.transform.position - canKickingSpot.position).normalized;
-            other.GetComponent<Rigidbody>().AddForce(kickDirection * kickingForce * control.CurrentVelocity);
-
-            other.gameObject.GetComponent<Kickable>().GetKicked(sphereCol);
-
+            DoKick(other);            
             PeterSparker.Instance.CreateImpactFromCollider(other, sphereCol.transform.position);
         }
+    }
+
+    public void DoKick(Collider col, float kickingModifier = 1.0f)
+    {
+        Physics.IgnoreCollision(sphereCol, col);
+
+        Vector3 kickDirection = (col.transform.position - canKickingSpot.position).normalized;
+        col.GetComponent<Rigidbody>().AddForce(kickDirection * kickingForce * control.CurrentVelocity);
+
+        col.gameObject.GetComponent<Kickable>().GetKicked(sphereCol);
     }
 }

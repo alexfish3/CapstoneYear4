@@ -10,11 +10,15 @@ using UnityEngine.UIElements;
 /// </summary>
 public class CivilianAgent : MonoBehaviour
 {
+    private const float FLING_CHANCE = 00.0f;
+
     [Header("Setup")]
     [Tooltip("Reference to the particle prefab")]
     [SerializeField] private GameObject flashParticles;
     [Tooltip("Reference to the renderers' parent")]
     [SerializeField] private GameObject renderBasket;
+    [Tooltip("Reference to the secondary renderer parent w/ rigidbody")]
+    [SerializeField] private GameObject fuckDoll;
 
     [Header("Values")]
     [Tooltip("How long after being hit it takes for the civilian to reappear")]
@@ -97,11 +101,19 @@ public class CivilianAgent : MonoBehaviour
     /// Public method to be called when the ghost should 'die'
     /// Stops it moving, hides the model, calls the particle effect, and starts the respawn timer
     /// </summary>
-    public void Die()
+    public void Die(CanKicker ck)
     {
         moving = false;
-        renderBasket.SetActive(false);
 
+        if (Random.Range(0,100) < FLING_CHANCE)
+        {
+            fuckDoll.transform.position = renderBasket.transform.position;
+            fuckDoll.transform.rotation = renderBasket.transform.rotation;
+            fuckDoll.SetActive(true);
+            ck.DoKick(fuckDoll.GetComponent<Collider>(), 2);
+        }
+
+        renderBasket.SetActive(false);
         CreateFlash();
         StartDeath();
     }
@@ -142,7 +154,6 @@ public class CivilianAgent : MonoBehaviour
             slowUpdateCoroutine = null;
         }
     }
-
     private void StartDeath()
     {
         deathCoroutine = Death();

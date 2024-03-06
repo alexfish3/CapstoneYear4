@@ -23,7 +23,7 @@ public class BallCollision : MonoBehaviour
         CivilianAgent oth;
         if ((oth = other.gameObject.GetComponent<CivilianAgent>()) != null)
         {
-            oth.Die();
+            oth.Die(gameObject.GetComponent<CanKicker>());
             return;
         }
 
