@@ -18,6 +18,7 @@ public class BallCollision : MonoBehaviour
         if (other.gameObject.GetComponent<Respawn>() != null) return; //collectively this and the line below ensure its not a player being touched, since that's handled separately
         if (other.gameObject.GetComponent<BallDriving>() != null) return;
         if (control.Phasing) return;
+        if (control.Respawn.IsRespawning) return;
 
         CivilianAgent oth;
         if ((oth = other.gameObject.GetComponent<CivilianAgent>()) != null)

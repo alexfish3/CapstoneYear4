@@ -191,6 +191,7 @@ public class BallDriving : MonoBehaviour
     private Collider sphereCollider;
     public Collider SphereCollider { get { return sphereCollider; } }
     private Respawn respawn; // used to update the respawn point when grounded
+    public Respawn Respawn { get { return respawn; } }
     private QAHandler qa;
     private float startingDrag;
     private PhysicMaterial pMat;
