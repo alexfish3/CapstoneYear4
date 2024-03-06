@@ -298,6 +298,7 @@ public class BallDriving : MonoBehaviour
         pMat.bounciness = 0.3f;
         pMat.staticFriction = RESTING_STATIC_FRICTION;
         pMat.dynamicFriction = RESTING_DYNAMIC_FRICTION;
+        pMat.bounceCombine = PhysicMaterialCombine.Maximum;
         sphereCollider.material = pMat;
 
         startingDrag = sphereBody.drag;
