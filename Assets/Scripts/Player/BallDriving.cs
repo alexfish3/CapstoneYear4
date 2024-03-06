@@ -295,7 +295,7 @@ public class BallDriving : MonoBehaviour
         sphereCollider = sphere.GetComponent<Collider>();
 
         pMat = new PhysicMaterial();
-        pMat.bounciness = 1.0f;
+        pMat.bounciness = 0.3f;
         pMat.staticFriction = RESTING_STATIC_FRICTION;
         pMat.dynamicFriction = RESTING_DYNAMIC_FRICTION;
         sphereCollider.material = pMat;
