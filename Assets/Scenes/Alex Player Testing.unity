@@ -4689,7 +4689,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1207002406
 AudioListener:
   m_ObjectHideFlags: 0
@@ -7454,6 +7454,7 @@ GameObject:
   - component: {fileID: 1877960766}
   - component: {fileID: 1877960765}
   - component: {fileID: 1877960767}
+  - component: {fileID: 1877960768}
   m_Layer: 0
   m_Name: Sound Manager
   m_TagString: Untagged
@@ -7514,7 +7515,7 @@ MonoBehaviour:
   emotePitchMax: 1.193459
   menuThemeIntroLength: 1.775
   gameThemeIntroLength: 3.5
-  finalThemeIntroLength: 1
+  finalThemeIntroLength: 0
   simulatePlayers: 0
   playPlayerSelect: 0
 --- !u!4 &1877960766
@@ -7628,6 +7629,14 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!81 &1877960768
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877960763}
+  m_Enabled: 1
 --- !u!1 &1942856767
 GameObject:
   m_ObjectHideFlags: 0

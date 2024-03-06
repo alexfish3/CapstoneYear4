@@ -79,6 +79,16 @@ public class Order : MonoBehaviour
 
     private Transform ogMesh;
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapGoldenCutscene += EraseWhenSwappingToGold;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapGoldenCutscene -= EraseWhenSwappingToGold;
+    }
+
     private void Start()
     {
         meshRenderer = orderMeshObject.GetComponent<MeshRenderer>();
@@ -106,15 +116,14 @@ public class Order : MonoBehaviour
     /// <summary>
     /// This method initializes this order to be ready for pickup. It also initializes the beacon for this order.
     /// </summary>
-    public void InitOrder()
+    public void InitOrder(bool shouldAdd = true)
     {
-        OrderManager.Instance.AddOrder(this);
+        if (shouldAdd)
+            OrderManager.Instance.AddOrder(this);
+        
         isActive = true;
         arrow.SetActive(false);
         this.transform.position = pickup.position;
-        
-        // setting the color of the order
-        //meshRenderer = GetComponent<MeshRenderer>();
 
         // Determines the pacakge type value based on the order type
         int packageType = 0;
@@ -316,6 +325,17 @@ public class Order : MonoBehaviour
             isActive = false;
         }
         transform.position = pickup.position;
+    }
+
+    /// <summary>
+    /// Erases order when the game swaps to the final order sequence. Doesn't erase gold order.
+    /// </summary>
+    private void EraseWhenSwappingToGold()
+    {
+        if (value == Constants.OrderValue.Golden)
+            return;
+
+        EraseOrder();
     }
 
     /// <summary>

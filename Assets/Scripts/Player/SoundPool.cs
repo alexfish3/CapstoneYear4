@@ -66,6 +66,7 @@ public class SoundPool : MonoBehaviour
         if (source == null)
             return;
 
+        Debug.Log("Resetting source (playing)");
         source.Stop();
         source.gameObject.SetActive(false);
         SoundManager.Instance.SwitchSource(ref source, "SFX");
@@ -152,6 +153,7 @@ public class SoundPool : MonoBehaviour
     }
     public void StopDriftSound()
     {
+        return; // yeah we're not playing a drift sound
         if(driftSource == null) { return; }
         ResetSource(driftSource);
         driftSource = null;
@@ -166,12 +168,14 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayBoostReady()
     {
+        Debug.Log("Playing boost ready");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("boost_charged", source);
         StartCoroutine(KillSource(source));
     }
     public void PlayBoostActivate()
     {
+        Debug.Log("Playing boost activate");
         boostSource = GetAvailableSource();
         SoundManager.Instance.SwitchSource(ref boostSource, "Player");
         SoundManager.Instance.PlaySFX("boost_used", boostSource);
@@ -179,8 +183,19 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayMiniBoost()
     {
-        if(miniBoostSource == null) { miniBoostSource = GetAvailableSource(); }
-        if (miniBoostSource.isPlaying || !shouldPlay) { return; }
+        if (!shouldPlay) 
+        { 
+            return; 
+        }
+
+        if (miniBoostSource == null) 
+        { 
+            miniBoostSource = GetAvailableSource(); 
+        }
+        
+        
+        Debug.Log("Playing mini boost");
+        miniBoostSource.loop = false;
         SoundManager.Instance.SwitchSource(ref miniBoostSource, "Player");
         SoundManager.Instance.PlaySFX("mini", miniBoostSource);
         StartCoroutine(KillSource(miniBoostSource));
@@ -201,24 +216,28 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayOrderPickup()
     {
+        Debug.Log("Playing pickup sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("pickup", source);
         StartCoroutine(KillSource(source));
     }
     public void PlayOrderDropoff(string dropoffType = "dropoff")
     {
+        Debug.Log("Playing dropoff sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX(dropoffType, source);
         StartCoroutine(KillSource(source));
     }
     public void PlayOrderTheft()
     {
+        Debug.Log("Playing theft sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("whoosh", source);
         StartCoroutine(KillSource(source));
     }
     public void PlayDeathSound()
     {
+        Debug.Log("Playing death sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.SwitchSource(ref source, "Player");
         SoundManager.Instance.PlaySFX("death", source);
@@ -264,8 +283,12 @@ public class SoundPool : MonoBehaviour
 
     public void StopDriftSpark()
     {
+        Debug.Log("Stopping drift spark (playing)");
         if (driftSparkSource != null)
+        {
             ResetSource(driftSparkSource);
+            driftSparkSource = null;
+        }
         currDriftIndex = -1;
     }    
 

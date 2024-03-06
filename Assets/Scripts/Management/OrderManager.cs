@@ -46,6 +46,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [SerializeField] private List<Order> normalOrders;
     [Tooltip("The final order in the game.")]
     [SerializeField] private Order finalOrder;
+    [Tooltip("The orders used for tutorialization.")]
+    [SerializeField] private Order[] tutorialOrders = new Order[4];
 
     [Tooltip("The audio source of the clocktower for the bell chimes on new wave.")]
     [SerializeField] private AudioSource clockSource;
@@ -76,6 +78,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void OnEnable()
     {
+        GameManager.Instance.OnSwapTutorial += InitTutorial;
         GameManager.Instance.OnSwapBegin += InitGame;
         GameManager.Instance.OnSwapGoldenCutscene += DisableSpawning;
         GameManager.Instance.OnSwapGoldenCutscene += SpawnFinalOrder;
@@ -85,6 +88,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void OnDisable()
     {
+        GameManager.Instance.OnSwapTutorial -= InitTutorial;
         GameManager.Instance.OnSwapBegin -= InitGame;
         GameManager.Instance.OnSwapGoldenCutscene -= DisableSpawning;
         GameManager.Instance.OnSwapGoldenCutscene -= SpawnFinalOrder;
@@ -187,6 +191,15 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             ShuffleList(easy);
             ShuffleList(medium);
             ShuffleList(hard);
+        }
+    }
+
+    private void InitTutorial()
+    {
+        for(int i=0;i<PlayerInstantiate.Instance.PlayerCount;i++)
+        {
+            tutorialOrders[i].InitOrder(false);
+            //IncrementCounters(tutorialOrders[i].Value, 1);
         }
     }
 
@@ -397,7 +410,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     {
         Debug.Log("Spawn Final Order Start");
 
-        OnDeleteActiveOrders?.Invoke();
+        //OnDeleteActiveOrders?.Invoke();
         finalOrderActive = true;
         finalOrder.InitOrder();
 

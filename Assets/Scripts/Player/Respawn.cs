@@ -70,13 +70,16 @@ public class Respawn : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapAnything += StopRespawnCoroutine;
+        GameManager.Instance.OnSwapStartingCutscene += StopRespawnCoroutine;
+        GameManager.Instance.OnSwapGoldenCutscene += StopRespawnCoroutine;
+        GameManager.Instance.OnSwapResults += StopRespawnCoroutine;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapAnything -= StopRespawnCoroutine;
-
+        GameManager.Instance.OnSwapStartingCutscene -= StopRespawnCoroutine;
+        GameManager.Instance.OnSwapGoldenCutscene -= StopRespawnCoroutine;
+        GameManager.Instance.OnSwapResults -= StopRespawnCoroutine;
     }
 
     private void Update()
