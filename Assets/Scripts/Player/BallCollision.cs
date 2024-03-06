@@ -19,6 +19,13 @@ public class BallCollision : MonoBehaviour
         if (other.gameObject.GetComponent<BallDriving>() != null) return;
         if (control.Phasing) return;
 
+        CivilianAgent oth;
+        if ((oth = other.gameObject.GetComponent<CivilianAgent>()) != null)
+        {
+            oth.Die();
+            return;
+        }
+
         control.DriftDrop(true);
 
         PeterSparker.Instance.CreateImpactFromCollider(other, control.transform.position);
