@@ -14,6 +14,7 @@ Material:
   m_ValidKeywords:
   - _NORMALMAP
   - _PARALLAXMAP
+  - _SPECULAR_SETUP
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -47,7 +48,9 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _Smoothness: 0
+    - _WorkflowMode: 0
     m_Colors: []
   m_BuildTextureStacks: []
 --- !u!114 &5358799475323849608
