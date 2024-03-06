@@ -15,6 +15,11 @@ public class Order : MonoBehaviour
     [Tooltip("Order will spawn at runtime. Use this for the tutorial orders.")]
     [SerializeField] private bool isActive = false;
     public bool IsActive { get { return isActive; } set { isActive = value; } }
+
+    [Header("Positional Information")]
+    [Tooltip("How far above the ground the order is by default.")]
+    [SerializeField] private float orderHeight = 4.43f;
+
     [Header("Mesh Information")]
     [Tooltip("Actual mesh of the order for rotation and swapping models.")]
     [SerializeField] private GameObject orderMeshObject;
@@ -152,6 +157,7 @@ public class Order : MonoBehaviour
         beacon.InitBeacon(this, packageType);
         compassMarker.icon = possiblePackageTypes[packageType];
         compassMarker.InitalizeCompassUIOnAllPlayers();
+        CalculateOrderPos();
     }
     
     /// <summary>
@@ -243,6 +249,7 @@ public class Order : MonoBehaviour
         playerDropped = playerHolding;
         beacon.ResetPickup();
         RemovePlayerHolding();
+        CalculateOrderPos();
     }
     /// <summary>
     /// This method performs the first half of the delivery, basically just hands the order to the customer.
@@ -258,6 +265,23 @@ public class Order : MonoBehaviour
         else
         {
             EraseOrder(); // temp fix for dotween handoff bug
+        }
+    }
+
+    /// <summary>
+    /// Calculates the position of the order so flames don't clip in the ground.
+    /// </summary>
+    private void CalculateOrderPos()
+    {
+        orderMeshObject.transform.position = ogMesh.transform.position;
+        int lm = 1 << 0; // default layer only
+        RaycastHit hit;
+
+        if(Physics.Raycast(orderMeshObject.transform.position, Vector3.down, out hit, Mathf.Infinity, lm))
+        {
+            float diff = orderHeight - hit.distance;
+            transform.position += diff * Vector3.up;
+            Debug.Log($"Ray hit {hit.collider.name}, original distance is {hit.distance}, difference is {diff}");
         }
     }
 
