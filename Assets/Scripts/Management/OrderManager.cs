@@ -198,7 +198,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     {
         for(int i=0;i<PlayerInstantiate.Instance.PlayerCount;i++)
         {
-            tutorialOrders[i].InitOrder(true);
+            tutorialOrders[i].InitOrder(false);
             IncrementCounters(tutorialOrders[i].Value, 1);
         }
     }
