@@ -34,7 +34,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [Header("Music")]
     [SerializeField] private AudioObject mainGameLoop;
     [SerializeField] private AudioObject mainMenuBGM;
-    [SerializeField] private AudioObject playerSelectBGM;
+    //[SerializeField] private AudioObject playerSelectBGM;
     [SerializeField] private AudioObject finalOrderBGM;
     [SerializeField] private AudioObject resultsBGM;
 
@@ -93,7 +93,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         musicSource = GetComponent<AudioSource>();
         // events for music
         GameManager.Instance.OnSwapMenu += PlayMenuTheme;
-        GameManager.Instance.OnSwapPlayerSelect += PlayPlayerSelectTheme;
+        //GameManager.Instance.OnSwapPlayerSelect += PlayPlayerSelectTheme;
         GameManager.Instance.OnSwapStartingCutscene += PlayMainTheme;
         GameManager.Instance.OnSwapGoldenCutscene += PlayFinalTheme;
         GameManager.Instance.OnSwapResults += PlayResultsTheme;
@@ -101,7 +101,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     private void OnDisable()
     {
         GameManager.Instance.OnSwapMenu -= PlayMenuTheme;
-        GameManager.Instance.OnSwapPlayerSelect += PlayPlayerSelectTheme;
+        //GameManager.Instance.OnSwapPlayerSelect += PlayPlayerSelectTheme;
         GameManager.Instance.OnSwapStartingCutscene -= PlayMainTheme;
         GameManager.Instance.OnSwapGoldenCutscene -= PlayFinalTheme;
         GameManager.Instance.OnSwapResults -= PlayResultsTheme;
@@ -172,7 +172,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         StartCoroutine(bgmRoutine);
     }
 
-    private void PlayPlayerSelectTheme()
+    // we no longer have a player select theme
+/*    private void PlayPlayerSelectTheme()
     {
         if (!playPlayerSelect)
             return;
@@ -184,7 +185,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         musicSource.clip = playerSelectBGM.clip;
         musicSource.volume = playerSelectBGM.volume;
         musicSource.Play();
-    }
+    }*/
 
     private void PlayMainTheme()
     {
