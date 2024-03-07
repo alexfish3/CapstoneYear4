@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
@@ -10,7 +11,7 @@ using UnityEngine.UIElements;
 /// </summary>
 public class CivilianAgent : MonoBehaviour
 {
-    private const float FLING_CHANCE = 00.0f;
+    private const float FLING_CHANCE = 10.0f;
 
     [Header("Setup")]
     [Tooltip("Reference to the particle prefab")]
@@ -36,15 +37,20 @@ public class CivilianAgent : MonoBehaviour
     private IEnumerator slowUpdateCoroutine;
 
     private IEnumerator deathCoroutine;
+    private IEnumerator kickDeathCoroutine;
 
     private Transform model;
 
+    private Rigidbody fuckBody;
+
     private bool moving = true;
+    public bool Moving => moving;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         model = transform.GetChild(0);
+        fuckBody = fuckDoll.GetComponent<Rigidbody>();
     }
 
     /// <summary>
@@ -109,13 +115,21 @@ public class CivilianAgent : MonoBehaviour
         {
             fuckDoll.transform.position = renderBasket.transform.position;
             fuckDoll.transform.rotation = renderBasket.transform.rotation;
-            fuckDoll.SetActive(true);
-            ck.DoKick(fuckDoll.GetComponent<Collider>(), 2);
-        }
+            fuckBody.velocity = Vector3.zero;
+            fuckBody.angularVelocity = Vector3.zero;
 
-        renderBasket.SetActive(false);
-        CreateFlash();
-        StartDeath();
+            fuckDoll.SetActive(true);
+            renderBasket.SetActive(false);
+
+            ck.DoKick(fuckDoll.GetComponent<Collider>(), 2, fuckDoll.transform.position - (0.75f * Vector3.up));
+            StartKickDeath();
+        }
+        else
+        {
+            renderBasket.SetActive(false);
+            CreateFlash(transform.position);
+            StartDeath();
+        }
     }
 
     /// <summary>
@@ -126,18 +140,31 @@ public class CivilianAgent : MonoBehaviour
     {
         yield return new WaitForSeconds(respawnTime);
 
-        CreateFlash();
+        CreateFlash(transform.position);
 
         moving = true;
         renderBasket.SetActive(true);
     }
 
+    private IEnumerator KickDeath()
+    {
+        yield return new WaitForSeconds(2 * respawnTime);
+
+        CreateFlash(fuckBody.position);
+        CreateFlash(transform.position);
+
+        moving = true;
+        renderBasket.SetActive(true);
+        fuckDoll.SetActive(false);
+    }
+
     /// <summary>
     /// Creates a flash particle then destroys it after 1.5 seconds
     /// </summary>
-    private void CreateFlash()
+    /// <param name="location">The position to create the flash at</param>
+    private void CreateFlash(Vector3 location)
     {
-        Destroy(Instantiate(flashParticles, transform.position, Quaternion.identity), 1.5f);
+        Destroy(Instantiate(flashParticles, location, Quaternion.identity), 1.5f);
     }
 
 
@@ -165,6 +192,19 @@ public class CivilianAgent : MonoBehaviour
         {
             StopCoroutine(deathCoroutine);
             deathCoroutine = null;
+        }
+    }
+    private void StartKickDeath()
+    {
+        kickDeathCoroutine = KickDeath();
+        StartCoroutine(kickDeathCoroutine);
+    }
+    private void StopKickDeath()
+    {
+        if (kickDeathCoroutine != null)
+        {
+            StopCoroutine(kickDeathCoroutine);
+            kickDeathCoroutine = null;
         }
     }
 }

@@ -21,9 +21,9 @@ public class BallCollision : MonoBehaviour
         if (control.Respawn.IsRespawning) return;
 
         CivilianAgent oth;
-        if ((oth = other.gameObject.GetComponent<CivilianAgent>()) != null)
+        if ((oth = other.gameObject.GetComponent<CivilianAgent>()) != null && oth.Moving)
         {
-            oth.Die(gameObject.GetComponent<CanKicker>());
+            oth.Die(control.Sphere.GetComponent<CanKicker>());
             return;
         }
 
