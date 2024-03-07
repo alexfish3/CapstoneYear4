@@ -374,8 +374,8 @@ public class Order : MonoBehaviour
         if (playerHolding != null)
         {
             // Removes the ui from all players
-            //compassMarker.RemoveCompassUIFromAllPlayers();
-            //playerHolding.GetComponent<Compass>().RemoveCompassMarker(beacon.CompassMarker, );
+            compassMarker.RemoveCompassUIFromAllPlayers();
+            playerHolding.GetComponent<Compass>().RemoveCompassMarker(beacon.CompassMarker);
         }
         playerHolding = null;
     }

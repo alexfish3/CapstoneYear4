@@ -213,6 +213,7 @@ public class OrderHandler : MonoBehaviour
         }
         if(order1 == null && order2 == null)
         {
+            hasOrder = false;
             ball.SetBoostModifier(hasOrder);
         }
     }
