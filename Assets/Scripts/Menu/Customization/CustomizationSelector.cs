@@ -5,6 +5,8 @@ using UnityEngine;
 public class CustomizationSelector : MonoBehaviour
 {
     const int CUSTOMIZATION_OPTIONS = 2;
+    private bool disableOptionsCustomization = false;
+    public void SetDisableOptionsCustomization(bool newValue) { disableOptionsCustomization = newValue; }
 
     [Header("Character Customization Options")]
     [SerializeField] CustomizationChanging customizationChanging;
@@ -66,6 +68,9 @@ public class CustomizationSelector : MonoBehaviour
 
     public void SetCustomizationType(bool direction)
     {
+        if (disableOptionsCustomization)
+            return;
+
         // Positive Scroll
         if (direction)
         {
@@ -97,6 +102,9 @@ public class CustomizationSelector : MonoBehaviour
 
     public void SetCustomizationValue(bool direction)
     {
+        if (disableOptionsCustomization)
+            return;
+
         switch (customizationChanging)
         {
             case CustomizationChanging.playerColor:

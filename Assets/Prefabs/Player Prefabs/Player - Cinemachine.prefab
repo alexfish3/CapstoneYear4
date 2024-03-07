@@ -20934,6 +20934,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MenuCanvas: {fileID: 1730626662847112208}
   menuInteractions: {fileID: 437342487100121777}
+  customizationSelector: {fileID: 1443191268262829466}
   scrollSpeed: 0.2
   uiDelayTime: 0.1
   canInput: 0
@@ -33624,7 +33625,7 @@ Transform:
   m_GameObject: {fileID: 8501127692924196179}
   serializedVersion: 2
   m_LocalRotation: {x: -0.07663677, y: -0, z: -0, w: -0.99705917}
-  m_LocalPosition: {x: -31.84493, y: 3.9433675, z: 76.57001}
+  m_LocalPosition: {x: 0, y: 2.9, z: -6.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -35183,6 +35184,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8575081755562220092, guid: fc1b261755a959d45b08825329d3089a, type: 3}
   m_PrefabInstance: {fileID: 7362872049355395915}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1443191268262829466 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8226127984948104913, guid: fc1b261755a959d45b08825329d3089a, type: 3}
+  m_PrefabInstance: {fileID: 7362872049355395915}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1238175930791430519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8b477abd218a6a4aa557b1ae59955a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1730626662847112208 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9091156698603288411, guid: fc1b261755a959d45b08825329d3089a, type: 3}

@@ -9,6 +9,7 @@ public class PlayerUIHandler : MonoBehaviour
 {
     public GameObject MenuCanvas;
     public MenuInteractions menuInteractions;
+    public CustomizationSelector customizationSelector;
     public float scrollSpeed = 0.2f;
 
     public float uiDelayTime = 0.1f;

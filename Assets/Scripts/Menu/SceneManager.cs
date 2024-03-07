@@ -40,7 +40,9 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         GameManager.Instance.OnSwapStartingCutscene -= HideLoadingScreen;
     }
 
-    public void InvokeMenuSceneEvent() { OnReturnToMenu?.Invoke(); }
+    public void InvokeMenuSceneEvent() {
+        Debug.Log("Return to main menu");
+        OnReturnToMenu?.Invoke(); }
 
     ///<summary>
     /// Main method that loads the player select scene
@@ -48,15 +50,11 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     private void LoadMenuScene()
     {
         Debug.Log("Load menu");
-
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != PlayerSelectScene.BuildIndex)
         {
             ShowLoadingScreen();
-            StartCoroutine(LoadSceneAsync(PlayerSelectScene.BuildIndex, loadingScreenDelay));
+            StartCoroutine(LoadSceneAsync(PlayerSelectScene.BuildIndex, loadingScreenDelay, true));
         }
-
-        // Once menu scene is loaded, set players to spawn, if there are any
-        playerInstantiate.SetAllPlayerSpawn();
     }
 
     ///<summary>
@@ -67,15 +65,18 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != GameScene.BuildIndex)
         {
             ShowLoadingScreen();
-            StartCoroutine(LoadSceneAsync(GameScene.BuildIndex, loadingScreenDelay));
+            StartCoroutine(LoadSceneAsync(GameScene.BuildIndex, loadingScreenDelay, false));
         }
     }
 
     ///<summary>
     /// Loads the scene async
     ///</summary>
-    private IEnumerator LoadSceneAsync(int sceneToLoad, float delayTime)
+    private IEnumerator LoadSceneAsync(int sceneToLoad, float delayTime, bool spawnMenu)
     {
+        // Sets all players to no input during loading screen
+        playerInstantiate.SwapPlayerControlSchemeToNoInput();
+
         // Loads the first scene asynchronously
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Single);
         asyncLoad.allowSceneActivation = false;
@@ -90,6 +91,12 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
                 asyncLoad.allowSceneActivation = true;
             }
             yield return null;
+        }
+
+        if(spawnMenu)
+        {
+            // Once menu scene is loaded, set players to spawn, if there are any
+            playerInstantiate.SetAllPlayerSpawn();
         }
     }
 

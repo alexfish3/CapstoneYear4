@@ -561,6 +561,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
             availiblePlayerInputs[i].actions.FindActionMap("UI").Enable();
             availiblePlayerInputs[i].actions.FindActionMap("Player").Disable();
+            availiblePlayerInputs[i].actions.FindActionMap("NoInput").Disable();
         }
     }
 
@@ -580,6 +581,25 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
             availiblePlayerInputs[i].actions.FindActionMap("UI").Disable();
             availiblePlayerInputs[i].actions.FindActionMap("Player").Enable();
+            availiblePlayerInputs[i].actions.FindActionMap("NoInput").Disable();
+        }
+    }
+
+    ///<summary>
+    /// Swaps all player's control schemes to "NoInput" Player movement
+    ///</summary>
+    public void SwapPlayerControlSchemeToNoInput()
+    {
+        Debug.Log("<color=green>Swapping To No Input Controls</color>");
+
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
+        {
+            if (availiblePlayerInputs[i] == null)
+                continue;
+
+            availiblePlayerInputs[i].actions.FindActionMap("UI").Disable();
+            availiblePlayerInputs[i].actions.FindActionMap("Player").Disable();
+            availiblePlayerInputs[i].actions.FindActionMap("NoInput").Enable();
         }
     }
 
@@ -589,6 +609,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     public void ReadyUp(int playerIndexToReadyUp) 
     { 
         playerReadyUp[playerIndexToReadyUp] = true;
+        availiblePlayerInputs[playerIndexToReadyUp].gameObject.GetComponent<PlayerUIHandler>().customizationSelector.SetDisableOptionsCustomization(true);
         CheckReadyUpCount();
     }
 
@@ -597,8 +618,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void UnreadyUp(int playerIndexToReadyUp) 
     { 
-        playerReadyUp[playerIndexToReadyUp] = false; 
-        if(readyUpCountdown != null)
+        playerReadyUp[playerIndexToReadyUp] = false;
+        availiblePlayerInputs[playerIndexToReadyUp].gameObject.GetComponent<PlayerUIHandler>().customizationSelector.SetDisableOptionsCustomization(false);
+        if (readyUpCountdown != null)
         {
             PlayerSelectCanvas.Instance.StopCountdown();
             StopCoroutine(readyUpCountdown);
