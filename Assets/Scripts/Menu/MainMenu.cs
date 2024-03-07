@@ -123,6 +123,7 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
         OptionsMenu.Instance.UpdateSelectors();
 
         selectorPos = 0;
+        menuGhostImage.sprite = selectorGhostSprites[0];
         // Updates selector for current slider selected
         selector.transform.position = new Vector3(selector.transform.position.x, selectorObjects[selectorPos].transform.position.y, selector.transform.position.z);
     }
