@@ -341,6 +341,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         Destroy(playerInput.gameObject);
 
         UpdatePlayerCameraRects();
+
+        CheckReadyUpCount();
     }
 
     public void SubtractPlayerCount()

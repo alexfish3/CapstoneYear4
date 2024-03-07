@@ -17,7 +17,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
+  m_CustomRenderQueue: 2000
   stringTagMap:
     RenderType: Transparent
   disabledShaderPasses:
@@ -52,8 +52,8 @@ Material:
     - _Cull: 2
     - _DstBlend: 10
     - _IntersectionDepth: 0.5
-    - _QueueControl: 0
-    - _QueueOffset: 0
+    - _QueueControl: 1
+    - _QueueOffset: -50
     - _ReceiveShadows: 1
     - _RippleDensity: 72.57
     - _RippleSpeed: 0.87
@@ -67,7 +67,7 @@ Material:
     - _ZWriteControl: 0
     m_Colors:
     - _BaseColor: {r: 0.1764706, g: 0.39607844, b: 0.31764707, a: 0}
-    - _IntersectionColor: {r: 1, g: 1, b: 1, a: 1}
+    - _IntersectionColor: {r: 0, g: 0, b: 0, a: 1}
     - _RippleColour: {r: 0.047058824, g: 0.19607843, b: 0.06666667, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &5174084999673914451
