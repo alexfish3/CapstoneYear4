@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 /// </summary>
 public class CivilianAgent : MonoBehaviour
 {
-    private const float FLING_CHANCE = 10.0f;
+    private const float FLING_CHANCE = 25.0f;
 
     [Header("Setup")]
     [Tooltip("Reference to the particle prefab")]
