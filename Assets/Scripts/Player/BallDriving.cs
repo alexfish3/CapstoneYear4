@@ -164,6 +164,7 @@ public class BallDriving : MonoBehaviour
     [SerializeField] GameObject[] phaseRaycastPositions;
     [Tooltip("Whether the current map is set up for phase testing; Will uses this for things dwai")]
     [SerializeField] bool phaseSetMap = true;
+    [SerializeField] OrbitalCamera orbitalCamera;
 
     public enum PhaseType
     {
@@ -1261,11 +1262,18 @@ public class BallDriving : MonoBehaviour
         {
             speedLineValue = 0.8f;
             speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
+
+            orbitalCamera.passInFOV = orbitalCamera.maxFOV;
         }
         else
         {
             float clampedSpeedLineValue = RangeMutations.Map_Linear(currentVelocity, 23, 30, 1, 0.85f);
             clampedSpeedLineValue = Mathf.Clamp(clampedSpeedLineValue, 0.85f, 1f);
+
+            float clampedFOVValue = RangeMutations.Map_Linear(currentVelocity, 30, 40, 60f, orbitalCamera.maxFOV);
+            clampedFOVValue = Mathf.Clamp(clampedFOVValue, 60f, orbitalCamera.maxFOV);
+
+            orbitalCamera.passInFOV = clampedFOVValue;
 
             speedLineValue = clampedSpeedLineValue;
             speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
@@ -1283,9 +1291,10 @@ public class BallDriving : MonoBehaviour
         if (sphereBody == null)
             return;
 
-        DriftDrop();
+        DriftDrop(true);
         driftTier = 0;
         sphereBody.velocity = Vector3.zero;
+        sphereBody.angularVelocity = Vector3.zero;
 
         canDrive = !toFreeze;
         Debug.Log($"Can Drive : {canDrive}");

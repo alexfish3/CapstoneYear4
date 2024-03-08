@@ -32091,6 +32091,7 @@ MonoBehaviour:
   - {fileID: 3254836890511871840}
   - {fileID: 2380944669743348929}
   phaseSetMap: 1
+  orbitalCamera: {fileID: 7498757000421237578}
   debugSpeedometerEnable: 0
   debugSpeedText: {fileID: 0}
   debugDriftStateEnable: 0
@@ -32128,6 +32129,10 @@ MonoBehaviour:
   yAngleMinMax: {x: -2.5, y: 2.5}
   realYAxis: 0
   smoothYAxis: 0
+  fovValue: 60
+  passInFOV: 0
+  maxFOV: 75
+  changeSpeed: 0.2
 --- !u!114 &1461959447911348377
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class OrbitalCamera : MonoBehaviour
@@ -23,6 +24,12 @@ public class OrbitalCamera : MonoBehaviour
     [SerializeField] float realYAxis;
     public float smoothYAxis;
 
+    [Header("FOV")]
+    [SerializeField] float fovValue = 60f;
+    public float passInFOV;
+    public float maxFOV = 80;
+    [SerializeField] float changeSpeed;
+
     bool reverseCamera;
 
     // Start is called before the first frame update
@@ -35,6 +42,8 @@ public class OrbitalCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        fovValue = Mathf.Lerp(fovValue, passInFOV, changeSpeed);
+
         // Custom joystick camera aim
         if (!inputManager.RightStickValue && reverseCamera == false)
         {
@@ -48,6 +57,10 @@ public class OrbitalCamera : MonoBehaviour
             iconOrb.m_XAxis.Value = smoothXAxis;
 
             CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
+
+            virtualCameraMain.m_Lens.FieldOfView = fovValue;
+            virtualCameraIcon.m_Lens.FieldOfView = fovValue;
+
         }
         // Reset look behind
         if (!inputManager.RightStickValue && reverseCamera == true)
@@ -68,6 +81,9 @@ public class OrbitalCamera : MonoBehaviour
             
             smoothYAxis = 0;
             smoothXAxis = 180f;
+
+            virtualCameraMain.m_Lens.FieldOfView = 60;
+            virtualCameraIcon.m_Lens.FieldOfView = 60;
 
             CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
         }
