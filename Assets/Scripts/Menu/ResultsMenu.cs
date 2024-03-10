@@ -29,8 +29,8 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
             OrderHandler currHandler = ScoreManager.Instance.GetHandlerOfIndex(i);
             if (currHandler != null)
             {
-                //playerImages[i].texture = currHandler.CompanyInfo.playerTexture; readd when the eotm menu is working
-                displayText[i].text = currHandler.Placement + ". " + currHandler.gameObject.transform.parent.name + " | $" + currHandler.Score;
+                playerImages[i].texture = currHandler.CompanyInfo.playerTexture; //readd when the eotm menu is working
+                //displayText[i].text = currHandler.Placement + ". " + currHandler.gameObject.transform.parent.name + " | $" + currHandler.Score;
             }
         }
     }
