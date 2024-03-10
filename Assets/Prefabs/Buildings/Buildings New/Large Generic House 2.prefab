@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &2689111104718291725
 Transform:
@@ -27,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188628510664382194}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0000005662441, y: 0.009599656, z: -0.2607923, w: 0.9653473}
-  m_LocalPosition: {x: 0.01339, y: -0.027059998, z: -0.0002850003}
+  m_LocalRotation: {x: -0.00000008940698, y: -0, z: -0.19817941, w: 0.9801658}
+  m_LocalPosition: {x: 0.013389993, y: -0.027060013, z: -0.00028500037}
   m_LocalScale: {x: 0.0077140033, y: 0.08421706, z: 0.023157412}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8321039628901169793}
-  m_LocalEulerAnglesHint: {x: 0.287, y: 1.062, z: -30.233}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -22.861}
 --- !u!33 &3243259450606916317
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -50,7 +50,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188628510664382194}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -357,7 +357,6 @@ Transform:
   - {fileID: 7129920236516071602}
   - {fileID: 1133083302992579881}
   - {fileID: 7353857915215081714}
-  - {fileID: 8321039628901169793}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5738947641184577592
@@ -465,6 +464,7 @@ Transform:
   - {fileID: 1249030157820101185}
   - {fileID: 1343830180169761245}
   - {fileID: 8164315167639518569}
+  - {fileID: 8321039628901169793}
   m_Father: {fileID: 7325156735232991719}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8362544876587557536
@@ -516,7 +516,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8362544876587557536}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -720,6 +720,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 062a9b49d597ecc49af442f84071dd20, type: 2}
@@ -804,6 +808,14 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: a85f1e8f5f62e674bbcb0c285985a2f6, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a85f1e8f5f62e674bbcb0c285985a2f6, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: a85f1e8f5f62e674bbcb0c285985a2f6, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: a85f1e8f5f62e674bbcb0c285985a2f6, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -924,6 +936,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
       propertyPath: m_Name
       value: pipeElbow (1)
@@ -1010,6 +1026,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
       propertyPath: m_Name
       value: pot (6)
@@ -1090,6 +1110,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0a5e9f7aa10dfc143be761e8a38d1618, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0a5e9f7aa10dfc143be761e8a38d1618, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 0a5e9f7aa10dfc143be761e8a38d1618, type: 3}
@@ -1186,6 +1210,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f533e848b4dc9a1429b9dd5b925c31f2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f533e848b4dc9a1429b9dd5b925c31f2, type: 3}
       propertyPath: m_Name
       value: eavesdropStraight (1)
@@ -1273,6 +1301,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 062a9b49d597ecc49af442f84071dd20, type: 2}
@@ -1357,6 +1389,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 68fc5c22b8df57643a2992cc66fbe30c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 68fc5c22b8df57643a2992cc66fbe30c, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 68fc5c22b8df57643a2992cc66fbe30c, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -1448,6 +1484,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
       value: pipeConnector (1)
@@ -1516,6 +1556,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 206c7e3e218329e4eacae4ce1db1780c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 206c7e3e218329e4eacae4ce1db1780c, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 206c7e3e218329e4eacae4ce1db1780c, type: 3}
@@ -1612,6 +1656,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
       propertyPath: m_Name
       value: pipeElbow (4)
@@ -1697,6 +1745,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 2d38de44d98d6e840b138afe1e019bc8, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 2d38de44d98d6e840b138afe1e019bc8, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2d38de44d98d6e840b138afe1e019bc8, type: 3}
       propertyPath: m_Name
@@ -1784,6 +1836,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
       propertyPath: m_Name
       value: pipeElbow (2)
@@ -1869,6 +1925,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
@@ -1956,6 +2016,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
       propertyPath: m_Name
       value: pot (1)
@@ -1989,6 +2053,10 @@ PrefabInstance:
     - target: {fileID: 6021937240197374368, guid: dd58982ce90babb40af570050d02fa6b, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7169661970140992733, guid: dd58982ce90babb40af570050d02fa6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8301520940567523250, guid: dd58982ce90babb40af570050d02fa6b, type: 3}
       propertyPath: m_LocalScale.x
@@ -2117,6 +2185,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 5f3d5a47555e44b48b1a5a7ca2584fe6, type: 2}
@@ -2192,6 +2264,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 36c4a0d820ad5474cada0bc4519b4dc7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 36c4a0d820ad5474cada0bc4519b4dc7, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 36c4a0d820ad5474cada0bc4519b4dc7, type: 3}
@@ -2284,6 +2360,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
       propertyPath: m_Name
       value: pot (4)
@@ -2370,6 +2450,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
       value: pipeConnector (11)
@@ -2455,6 +2539,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
@@ -2546,6 +2634,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wallLamp_01 (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6023921809641151699, guid: 66eaf02178c9dd746baaecc9b04ca96e, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2619,6 +2711,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
@@ -2706,6 +2802,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
       propertyPath: m_Name
       value: pipeElbow (5)
@@ -2792,6 +2892,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 16836b62caf07cb43bcfe87828ff3079, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 16836b62caf07cb43bcfe87828ff3079, type: 3}
       propertyPath: m_Name
       value: pipeFaucet
@@ -2877,6 +2981,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
       propertyPath: m_Materials.Array.data[1]
@@ -2968,6 +3076,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
       propertyPath: m_Name
       value: pot (3)
@@ -3054,6 +3166,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 16836b62caf07cb43bcfe87828ff3079, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 16836b62caf07cb43bcfe87828ff3079, type: 3}
       propertyPath: m_Name
       value: pipeFaucet (1)
@@ -3139,6 +3255,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
       propertyPath: m_Materials.Array.data[1]
@@ -3230,6 +3350,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
       value: pipeConnector (4)
@@ -3315,6 +3439,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: f533e848b4dc9a1429b9dd5b925c31f2, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f533e848b4dc9a1429b9dd5b925c31f2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f533e848b4dc9a1429b9dd5b925c31f2, type: 3}
       propertyPath: m_Name
@@ -3406,6 +3534,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wallLamp_01
       objectReference: {fileID: 0}
+    - target: {fileID: 6023921809641151699, guid: 66eaf02178c9dd746baaecc9b04ca96e, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3475,6 +3607,14 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: fe5d926898feb2241af4db73a6b53163, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fe5d926898feb2241af4db73a6b53163, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fe5d926898feb2241af4db73a6b53163, type: 3}
+      propertyPath: m_StaticShadowCaster
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: fe5d926898feb2241af4db73a6b53163, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -3566,6 +3706,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0cbb2d2ea2ca5304eb580ba779bc3e15, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0cbb2d2ea2ca5304eb580ba779bc3e15, type: 3}
       propertyPath: m_Name
       value: eavesdropBend
@@ -3646,6 +3790,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 68fc5c22b8df57643a2992cc66fbe30c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 68fc5c22b8df57643a2992cc66fbe30c, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 68fc5c22b8df57643a2992cc66fbe30c, type: 3}
@@ -3738,6 +3886,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
       propertyPath: m_Name
       value: pot (2)
@@ -3806,6 +3958,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c096553e3cf8e9a44a781f89a23673fe, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: c096553e3cf8e9a44a781f89a23673fe, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: c096553e3cf8e9a44a781f89a23673fe, type: 3}
@@ -3894,6 +4050,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
       value: pipeConnector (3)
@@ -3979,6 +4139,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: fbcda9eef51f6a54cba9bd90f8c81e82, type: 3}
       propertyPath: m_Materials.Array.data[1]
@@ -4070,6 +4234,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
       propertyPath: m_Name
       value: pot
@@ -4103,6 +4271,10 @@ PrefabInstance:
     - target: {fileID: 6021937240197374368, guid: dd58982ce90babb40af570050d02fa6b, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7169661970140992733, guid: dd58982ce90babb40af570050d02fa6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8301520940567523250, guid: dd58982ce90babb40af570050d02fa6b, type: 3}
       propertyPath: m_LocalScale.x
@@ -4231,6 +4403,10 @@ PrefabInstance:
       value: -180
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 0a5e9f7aa10dfc143be761e8a38d1618, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 0a5e9f7aa10dfc143be761e8a38d1618, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 13325f7acb8439b4d9ca87e546ea848a, type: 2}
@@ -4320,6 +4496,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
       value: pipeConnector (10)
@@ -4400,6 +4580,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 68fc5c22b8df57643a2992cc66fbe30c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 68fc5c22b8df57643a2992cc66fbe30c, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 68fc5c22b8df57643a2992cc66fbe30c, type: 3}
@@ -4492,6 +4676,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e41e6e282ae832048a7bc34c189be23d, type: 3}
       propertyPath: m_Name
       value: pot (5)
@@ -4578,6 +4766,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 2d38de44d98d6e840b138afe1e019bc8, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 2d38de44d98d6e840b138afe1e019bc8, type: 3}
       propertyPath: m_Name
       value: pipeValve (1)
@@ -4646,6 +4838,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 36c4a0d820ad5474cada0bc4519b4dc7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 36c4a0d820ad5474cada0bc4519b4dc7, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 36c4a0d820ad5474cada0bc4519b4dc7, type: 3}
@@ -4736,6 +4932,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
+      propertyPath: m_CastShadows
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 9ff2c1e84ff4b4e4bb6ce117b002828a, type: 3}
@@ -4832,6 +5032,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: f533e848b4dc9a1429b9dd5b925c31f2, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f533e848b4dc9a1429b9dd5b925c31f2, type: 3}
       propertyPath: m_Name
       value: eavesdropStraight
@@ -4860,7 +5064,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 7325156735232991719}
+    m_TransformParent: {fileID: 1371229028529667727}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalScale.x
@@ -4872,39 +5076,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalScale.z
-      value: 76.78686
+      value: 76.786865
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.8
+      value: -0.452
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.83
+      value: 2.4457963
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.92
+      value: -8.919
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6577997
+      value: 0.6708305
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.6824603
+      value: -0.6708304
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.22114682
+      value: 0.2235766
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.22943752
+      value: 0.22357656
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -4912,11 +5116,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 36.865
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -4929,6 +5137,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
       propertyPath: m_Layer
       value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ef6a85ed6907d74468e89e2544e73e85, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5006,6 +5218,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
@@ -5093,6 +5309,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: be0bc1af0ecca7c4d930db7ccbbfa123, type: 3}
       propertyPath: m_Name
       value: pipeElbow
@@ -5178,6 +5398,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02c5f8c9dc0b3c04b85e9c18af707c6b, type: 3}
       propertyPath: m_Name
