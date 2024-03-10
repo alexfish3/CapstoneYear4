@@ -88,4 +88,10 @@ public class OrbitalCamera : MonoBehaviour
             CameraFocus.transform.localPosition = new Vector3(CameraFocus.transform.localPosition.x, smoothYAxis, CameraFocus.transform.localPosition.z);
         }
     }
+
+    public IEnumerator SetFOVAfterTime(float newFOVValue, float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        passInFOV = newFOVValue;
+    } 
 }

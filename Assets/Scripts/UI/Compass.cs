@@ -51,7 +51,7 @@ public class Compass : MonoBehaviour
     private void Update()
     {
         // Updates the uv rect of the compass image, to scroll based on player rotation
-        compassImage.uvRect = new Rect((player.localEulerAngles.y + orbitalCamera.smoothXAxis) / 360f, 0f, 1f, 1f);
+        //compassImage.uvRect = new Rect((player.localEulerAngles.y + orbitalCamera.smoothXAxis) / 360f, 0f, 1f, 1f);
 
         // Loops for all markers on player and updates their position on the compass ui
         foreach (CompassInformationInstance instance in compassInformationObjects)

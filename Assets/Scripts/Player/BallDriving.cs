@@ -1263,7 +1263,7 @@ public class BallDriving : MonoBehaviour
             speedLineValue = 0.8f;
             speedLinesMain.SetFloat("_SpeedLinesRemap", speedLineValue);
 
-            orbitalCamera.passInFOV = orbitalCamera.maxFOV;
+            StartCoroutine(orbitalCamera.SetFOVAfterTime(orbitalCamera.maxFOV, 0.3f));
         }
         else
         {
