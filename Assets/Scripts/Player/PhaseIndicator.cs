@@ -52,8 +52,11 @@ public class PhaseIndicator : MonoBehaviour
         hornGlow = new Material(hornGlowRef);
 
         float factor = Mathf.Pow(2, (1 + intensity));
+
         Color color = new Color(readyColor.r * factor, readyColor.g * factor, readyColor.b * factor);
-        hornGlow.SetColor("_MainColor", color);
+
+        hornGlow.SetColor("_BaseColor", readyColor);
+        hornGlow.SetColor("_EmissionColor", color);
 
         Material[] ghostMaterials = ghostRenderer.materials;
         ghostMaterials[1] = hornGlow;
@@ -83,14 +86,17 @@ public class PhaseIndicator : MonoBehaviour
             }
 
             Color color = new Color(readyColor.r * intensityFactor, readyColor.g * intensityFactor, readyColor.b * intensityFactor);
-            hornGlow.SetColor("_MainColor", color);
+            hornGlow.SetColor("_EmissionColor", color);
+            hornGlow.SetColor("_BaseColor", readyColor);
+
         }
         else
         {
             dirtyBoostReady = false;
             Color currentColor = (hornGlowGraident.Evaluate(hornGlowValue / hornValueMax));
             Color color = new Color(currentColor.r * intensityFactor, currentColor.g * intensityFactor, currentColor.b * intensityFactor);
-            hornGlow.SetColor("_MainColor", color);
+            hornGlow.SetColor("_EmissionColor", color);
+            hornGlow.SetColor("_BaseColor", currentColor);
         }
     }
 

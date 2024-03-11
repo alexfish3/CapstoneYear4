@@ -32146,7 +32146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hornSlider: {fileID: 4544940528001843062}
-  intensity: 3
+  intensity: 6
   hornGlowValue: 2
   hornValueMax: 2
   readyColor: {r: 0.21868706, g: 0, b: 1, a: 1}
@@ -32181,8 +32181,8 @@ MonoBehaviour:
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
   ghostRenderer: {fileID: 3969552975970188057}
-  hornGlowRef: {fileID: 2100000, guid: a3f6a7172c4400847ab3098fcd8e05a4, type: 2}
-  hornGlow: {fileID: 2100000, guid: a3f6a7172c4400847ab3098fcd8e05a4, type: 2}
+  hornGlowRef: {fileID: 2100000, guid: c09309cf1e4b9064eb91ab3c3529d172, type: 2}
+  hornGlow: {fileID: 2100000, guid: c09309cf1e4b9064eb91ab3c3529d172, type: 2}
   ShowPhase: 1
 --- !u!114 &6612634177998966307
 MonoBehaviour:
@@ -34784,6 +34784,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 386b78d51ba69154dab24d7a6015b32b, type: 2}
+    - target: {fileID: 137257820792818449, guid: 5e90cae5772d7c44e81729c4987c71d3, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: c09309cf1e4b9064eb91ab3c3529d172, type: 2}
     - target: {fileID: 342094001851354081, guid: 5e90cae5772d7c44e81729c4987c71d3, type: 3}
       propertyPath: m_Layer
       value: 7
@@ -34856,6 +34860,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4162449790392341948, guid: 5e90cae5772d7c44e81729c4987c71d3, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7afec215902e2db4fa354597e9cdaf9c, type: 2}
+    - target: {fileID: 4162449790392341948, guid: 5e90cae5772d7c44e81729c4987c71d3, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7afec215902e2db4fa354597e9cdaf9c, type: 2}
     - target: {fileID: 4275148766066752104, guid: 5e90cae5772d7c44e81729c4987c71d3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -35157,7 +35169,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1864800722992714799, guid: fc1b261755a959d45b08825329d3089a, type: 3}
-      insertIndex: 2
+      insertIndex: -1
       addedObject: {fileID: 2167181208578835836}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc1b261755a959d45b08825329d3089a, type: 3}
