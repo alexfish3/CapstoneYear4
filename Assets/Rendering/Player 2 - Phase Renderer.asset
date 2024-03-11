@@ -158,8 +158,9 @@ MonoBehaviour:
   - {fileID: 999744163982048838}
   - {fileID: 4645851673546684642}
   - {fileID: -1808948246719126868}
+  - {fileID: 7860764279093199435}
   - {fileID: -8123595742492509647}
-  m_RendererFeatureMap: f45628112d1924cbc23d1fc710264d63bfcc6a19bc90ad81d607441fec67211a467e6b3005cedf0de278e7787b617940aca23d612753e5e631badb7db630438f
+  m_RendererFeatureMap: f45628112d1924cbc23d1fc710264d63bfcc6a19bc90ad81d607441fec67211a467e6b3005cedf0de278e7787b617940aca23d612753e5e64b026eb6760b176d31badb7db630438f
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -297,3 +298,45 @@ MonoBehaviour:
   injectionPoint: 550
   requirements: 1
   passIndex: 0
+--- !u!114 &7860764279093199435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
+  m_Name: Render Objects in Phase Transparent
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    passTag: Render Objects in Phase Transparent
+    Event: 550
+    filterSettings:
+      RenderQueueType: 1
+      LayerMask:
+        serializedVersion: 2
+        m_Bits: 268435456
+      PassNames: []
+    overrideMaterial: {fileID: 0}
+    overrideMaterialPassIndex: 0
+    overrideShader: {fileID: 0}
+    overrideShaderPassIndex: 0
+    overrideMode: 1
+    overrideDepthState: 0
+    depthCompareFunction: 4
+    enableWrite: 1
+    stencilSettings:
+      overrideStencilState: 0
+      stencilReference: 0
+      stencilCompareFunction: 8
+      passOperation: 0
+      failOperation: 0
+      zFailOperation: 0
+    cameraSettings:
+      overrideCamera: 0
+      restoreCamera: 1
+      offset: {x: 0, y: 0, z: 0, w: 0}
+      cameraFieldOfView: 60
