@@ -31,6 +31,8 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
             {
                 playerImages[i].enabled = true;
                 playerImages[i].texture = currHandler.CompanyInfo.playerTexture; //readd when the eotm menu is working
+
+                displayText[i].enabled = true;
                 displayText[i].text = "$" + currHandler.Score;
             }
         }
@@ -38,9 +40,10 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     public void ConfirmMenu()
     {
-        foreach(RawImage img in playerImages)
+        for(int i=0;i<displayText.Length;i++)
         {
-            img.enabled = false;
+            playerImages[i].enabled = false;
+            displayText[i].enabled = false;
         }
 
         SceneManager.Instance.InvokeMenuSceneEvent();
