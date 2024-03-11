@@ -11,11 +11,13 @@ public class EnvironmentSwapper : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Instance.OnSwapStartingCutscene += SwapToMain;
+        GameManager.Instance.OnSwapGoldenCutscene += SwapToFinal;
     }
     
     private void OnDisable()
     {
         GameManager.Instance.OnSwapStartingCutscene -= SwapToMain;
+        GameManager.Instance.OnSwapStartingCutscene -= SwapToFinal;
     }
 
     private void SwapToMain()
