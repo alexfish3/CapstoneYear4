@@ -12,7 +12,6 @@ public class DynamicNumberUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI waveText;
     [SerializeField] TextMeshProUGUI centerText;
     [SerializeField] TextMeshProUGUI finalOrderText;
-    [SerializeField] TextMeshProUGUI placementText;
     private OrderHandler player;
 
     TimeSpan timeSpan;
@@ -25,7 +24,7 @@ public class DynamicNumberUI : MonoBehaviour
     private void Update()
     {
         // I figure in the future the placements will be individual sprites in an array or something so I didn't bother adding "st","nd","rd", etc...
-        placementText.text = "" + player.Placement;
+        //placementText.text = "" + player.Placement;
         if (OrderManager.Instance != null)
         {
             if (OrderManager.Instance.GameStarted)

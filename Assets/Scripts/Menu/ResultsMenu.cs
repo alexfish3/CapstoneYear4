@@ -31,7 +31,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
             {
                 playerImages[i].enabled = true;
                 playerImages[i].texture = currHandler.CompanyInfo.playerTexture; //readd when the eotm menu is working
-                //displayText[i].text = currHandler.Placement + ". " + currHandler.gameObject.transform.parent.name + " | $" + currHandler.Score;
+                displayText[i].text = "$" + currHandler.Score;
             }
         }
     }

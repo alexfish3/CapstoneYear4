@@ -15,6 +15,7 @@ public class NumberHandler : MonoBehaviour
     [SerializeField] Image[] moneyImages;
     [SerializeField] GameObject tipHolder;
     [SerializeField] GameObject dollarSign;
+    [SerializeField] Image placementImage;
 
     // Update is called once per frame
     void Update()
@@ -81,6 +82,12 @@ public class NumberHandler : MonoBehaviour
     {
         return numberSprites[intNum];
     }
+
+    public void UpdatePlacement(int inPlace)
+    {
+        StartCoroutine(animateNumber(placementImage, inPlace));
+    }
+
     private IEnumerator animateNumber(Image numToShrink, char charNum)
     {
         Sprite spriteToChangeTo = getNumSprite(charNum);
@@ -99,6 +106,7 @@ public class NumberHandler : MonoBehaviour
         numToShrink.transform.parent.GetComponent<Animator>().SetTrigger("Idle");
         yield break;
     }
+
     private IEnumerator animateNumber(Image numToShrink, int intNum)
     {
         Sprite spriteToChangeTo = getNumSprite(intNum);

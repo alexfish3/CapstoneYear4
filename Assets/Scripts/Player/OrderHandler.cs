@@ -267,6 +267,11 @@ public class OrderHandler : MonoBehaviour
         ScoreManager.Instance.UpdatePlacement();
     }
 
+    public void UpdatePlacement()
+    {
+        numberHandler.UpdatePlacement(placement);
+    }
+
     /// <summary>
     /// Call when boost activates.
     /// </summary>

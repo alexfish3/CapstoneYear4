@@ -77,6 +77,7 @@ public class ScoreManager : SingletonMonobehaviour<ScoreManager>
             {
                 orderHandlers[i].Placement = i + 1;
             }
+            orderHandlers[i].UpdatePlacement();
         }
     }
 
