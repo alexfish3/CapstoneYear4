@@ -530,7 +530,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 availiblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().ReparentMenuCameraStack(true);
             }
             // If swapping to other menu, reparent menu ui to player-camera on main menu
-            else if (menuType == MenuType.MainMenu)
+            else if (menuType == MenuType.MainMenu || menuType == MenuType.ResultsMenu)
             {
                 availiblePlayerInputs[i].gameObject.GetComponent<PlayerCameraResizer>().ReparentMenuCameraStack(false);
             }

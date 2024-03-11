@@ -29,6 +29,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
             OrderHandler currHandler = ScoreManager.Instance.GetHandlerOfIndex(i);
             if (currHandler != null)
             {
+                playerImages[i].enabled = true;
                 playerImages[i].texture = currHandler.CompanyInfo.playerTexture; //readd when the eotm menu is working
                 //displayText[i].text = currHandler.Placement + ". " + currHandler.gameObject.transform.parent.name + " | $" + currHandler.Score;
             }
@@ -37,6 +38,11 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     public void ConfirmMenu()
     {
+        foreach(RawImage img in playerImages)
+        {
+            img.enabled = false;
+        }
+
         SceneManager.Instance.InvokeMenuSceneEvent();
         //GameManager.Instance.SetGameState(GameState.Menu);
     }
