@@ -10,6 +10,8 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
     [SerializeField] Canvas resultsCanvas;
 
     [SerializeField] private RawImage[] playerImages;
+    [SerializeField] private GameObject quitInfo;
+    bool canQuit = false;
 
     private void OnEnable()
     {
@@ -23,7 +25,9 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     private void UpdateResults()
     {
+        quitInfo.SetActive(false);
         resultsCanvas.enabled = true;
+        StartCoroutine(QuitDelay());
         for (int i = 0; i < PlayerInstantiate.Instance.PlayerCount; i++)
         {
             OrderHandler currHandler = ScoreManager.Instance.GetHandlerOfIndex(i);
@@ -40,13 +44,26 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     public void ConfirmMenu()
     {
-        for(int i=0;i<displayText.Length;i++)
+        if(!canQuit)
+        {
+            return;
+        }
+        SceneManager.Instance.InvokeMenuSceneEvent();
+
+        for (int i=0;i<displayText.Length;i++)
         {
             playerImages[i].enabled = false;
             displayText[i].enabled = false;
         }
 
-        SceneManager.Instance.InvokeMenuSceneEvent();
         //GameManager.Instance.SetGameState(GameState.Menu);
+    }
+
+    private IEnumerator QuitDelay()
+    {
+        canQuit = false;
+        yield return new WaitForSeconds(2f);
+        quitInfo.SetActive(true);
+        canQuit = true;
     }
 }
