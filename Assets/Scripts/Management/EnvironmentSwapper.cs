@@ -22,12 +22,12 @@ public class EnvironmentSwapper : MonoBehaviour
 
     private void SwapToMain()
     {
-        //mainMap.SetActive(true); 
-        finalMap.SetActive(false);
+        ////mainMap.SetActive(true); 
+        //finalMap.SetActive(false);
     }
     public void SwapToFinal()
     {
-        //mainMap.SetActive(false);
-        finalMap.SetActive(true);
+        ////mainMap.SetActive(false);
+        //finalMap.SetActive(true);
     }
 }
