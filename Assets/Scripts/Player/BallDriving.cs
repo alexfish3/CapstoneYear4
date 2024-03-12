@@ -220,7 +220,7 @@ public class BallDriving : MonoBehaviour
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
     private int driftDirection; //-1 is drifting leftward, 1 is drifting rightward
-    private bool driftBoostAchieved = false;
+    private bool driftBoostAchieved, firstFrameDriftBoostFlag = false;
     private float driftPoints = 0.0f;
     private float driftBoost = 0.0f;
     private int driftTier = 0;
@@ -332,9 +332,7 @@ public class BallDriving : MonoBehaviour
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.B))
-        {
             ResetBoost();
-        }
 
         transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
 
@@ -344,18 +342,12 @@ public class BallDriving : MonoBehaviour
         {
             sphereBody.drag = fallingDrag;
             if (boosting)
-            {
                 airboost = true;
-            }
         }
         if (boosting)
-        {
             sphereBody.drag = boostingDrag;
-        }
         if (grounded)
-        {
             airboost = false;
-        }
 
         if (!canDrive)
             return;
@@ -366,23 +358,15 @@ public class BallDriving : MonoBehaviour
 
         // checks for playing engine and brake sounds
         if (csv == 0)
-        {
             soundPool.StopDrivingSound();
-        }
         else
-        {
             soundPool.PlayDrivingSound();
-        }
 
-        if(forwardGear && leftTrig == 1 && !drifting)
-        {
+        if (forwardGear && leftTrig == 1 && !drifting)
             soundPool.PlayBrakeSound();
-        }
 
         if (callToDrift && leftStick != 0)
-        {
             AssignDriftState();
-        }
 
         //Checks for whether the scooter has been still long enough to be considered stopped
         currentVelocity = sphereBody.velocity.magnitude;
@@ -477,8 +461,6 @@ public class BallDriving : MonoBehaviour
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
 
         ControlSpeedLines();
-
-        DebugUIUpdate();
     }
 
     /// <summary>
@@ -511,6 +493,7 @@ public class BallDriving : MonoBehaviour
             totalForce += driftBoost;
             driftTier = 0;
             driftBoostAchieved = false;
+            firstFrameDriftBoostFlag = true;
             StartSlowdownImmunity();
             rumble.EndSuspension(pad);
             rumble.RumblePulse(pad, 0.3f, 0.65f, 0.3f);
@@ -545,52 +528,38 @@ public class BallDriving : MonoBehaviour
 
         //Applies slow from holding the golden order
         if (orderHandler.HasGoldenOrder)
-        {
             totalForce *= goldenOrderMultiplier;
-        }
 
         //Adds the force to move forward
         if (grounded)
         {
             if (!onMovingPlatform && respawn != null)
-            {
                 respawn.LastGroundedPos = sphere.transform.position;
-            }
 
             if (forwardGear)
             {
                 if (drifting)
-                {
                     sphereBody.AddForce((driftDirection == 1 ? ((driftSidewaysScalar * transform.forward) - transform.right).normalized : ((driftSidewaysScalar * transform.forward) + transform.right).normalized) * totalForce, ForceMode.Acceleration);
-                }
                 else if (wheelying || moveOnTransform)
                 {
                     sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
                     moveOnTransform = false;
                 }
                 else
-                {
                     sphereBody.AddForce(-scooterModel.transform.right * totalForce, ForceMode.Acceleration);
-                }
             }
             else if (reverseGear)
-            {
                 sphereBody.AddForce(scooterModel.transform.right * totalForce, ForceMode.Acceleration);
-            }
         }
-        else if (wheelying) //allows boosting in mid-air. bit of a weird implementation; possibly refactor in the future.
+        else if (wheelying || firstFrameDriftBoostFlag) //allows boosting in mid-air. bit of a weird implementation; possibly refactor in the future.
         {
             sphereBody.AddForce(transform.forward * totalForce, ForceMode.Acceleration);
+            firstFrameDriftBoostFlag = false;
         }
 
         //Clamping to make it easier to come to a complete stop
-        if (sphereBody.velocity.magnitude < 3)
-        {
-            if (sphereBody.velocity.magnitude < 1 && currentForce < 2)
-            {
-                sphereBody.velocity = new Vector3(0, sphereBody.velocity.y, 0);
-            }
-        }
+        if (sphereBody.velocity.magnitude < 1 && currentForce < 2)
+            sphereBody.velocity = new Vector3(0, sphereBody.velocity.y, 0);
 
         if (sphereBody.velocity.magnitude < 6 || rightTrig < 0.05f)
             DriftDrop();
@@ -1301,65 +1270,6 @@ public class BallDriving : MonoBehaviour
         sphereBody.constraints = toFreeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
 
         Debug.Log("Freeze Ball Was Successful");
-    }
-
-    /// <summary>
-    /// Updates various debug UI elements
-    /// </summary>
-    private void DebugUIUpdate()
-    {
-        if (debugSpeedometerEnable)
-        {
-            debugSpeedText.text = "" + sphereBody.velocity.magnitude;
-        }
-
-        if (debugDriftStateEnable)
-        {
-            debugDriftStateText.text = "Drifting: " + (drifting ? "Yes" : "No");
-        }
-
-        if (debugDriftCompleteEnable)
-        {
-            switch (driftTier)
-            {
-                case 1:
-                    debugDriftComplete.enabled = true;
-                    debugDriftComplete.color = Color.yellow;
-                    break;
-                case 2:
-                    debugDriftComplete.enabled = true;
-                    debugDriftComplete.color = Color.red;
-                    break;
-                case 3:
-                    debugDriftComplete.enabled = true;
-                    debugDriftComplete.color = Color.magenta;
-                    break;
-                default:
-                    debugDriftComplete.enabled = false;
-                    break;
-            }
-        }
-
-        if (debugBoostabilityEnable)
-        {
-            if (boostAble)
-            {
-                debugBoostability.color = Color.white;
-            }
-            else if (boosting)
-            {
-                debugBoostability.color = Color.yellow;
-            }
-            else
-            {
-                debugBoostability.color = Color.red;
-            }
-        }
-
-        if (debugCSVEnable)
-        {
-            debugCSV.text = "CS/V: " + csv;
-        }
     }
 
     /// <summary>
