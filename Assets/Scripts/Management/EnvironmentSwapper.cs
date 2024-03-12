@@ -8,7 +8,7 @@ public class EnvironmentSwapper : MonoBehaviour
     [SerializeField] private GameObject finalMap;
 
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         GameManager.Instance.OnSwapStartingCutscene += SwapToMain;
         GameManager.Instance.OnSwapGoldenCutscene += SwapToFinal;
@@ -18,16 +18,16 @@ public class EnvironmentSwapper : MonoBehaviour
     {
         GameManager.Instance.OnSwapStartingCutscene -= SwapToMain;
         GameManager.Instance.OnSwapStartingCutscene -= SwapToFinal;
-    }
+    }*/
 
     private void SwapToMain()
     {
         ////mainMap.SetActive(true); 
-        //finalMap.SetActive(false);
+        finalMap.SetActive(false);
     }
     public void SwapToFinal()
     {
         ////mainMap.SetActive(false);
-        //finalMap.SetActive(true);
+        finalMap.SetActive(true);
     }
 }

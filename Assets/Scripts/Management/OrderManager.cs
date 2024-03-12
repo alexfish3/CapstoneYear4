@@ -76,9 +76,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("When true will randomize initial spawn order of all orders.")]
     [SerializeField] private bool randomizeWaves;
 
-    [SerializeField] private EnvironmentSwapper finalAreaSpawner;
-    private bool finalLandSpawned;
-
     private void OnEnable()
     {
         GameManager.Instance.OnSwapTutorial += InitTutorial;
@@ -157,12 +154,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         }
         waveTimer -= Time.deltaTime;
         gameTimer -= Time.deltaTime;
-
-        if (waveTimer < 10f && !finalLandSpawned)
-        {
-            finalAreaSpawner.SwapToFinal();
-            finalLandSpawned = true;
-        }
     }
 
     /// <summary>
@@ -205,7 +196,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void InitTutorial()
     {
-        finalLandSpawned = false;
         for(int i=0;i<PlayerInstantiate.Instance.PlayerCount;i++)
         {
             tutorialOrders[i].InitOrder(false);
