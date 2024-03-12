@@ -653,6 +653,7 @@ MonoBehaviour:
   cameraRects: []
   gameManager: {fileID: 1228516832}
   playerHolder: {fileID: 1523402770}
+  sceneManager: {fileID: 1202921221}
   allowPlayerSpawn: 0
   playerCount: 0
   availiblePlayerInputs:
@@ -678,6 +679,7 @@ MonoBehaviour:
   playerReadyUp: 00000000
   isAllReadedUp: 0
   countdownTimer: 2
+  playerLoadingConfirm: 00000000
 --- !u!4 &128304938
 Transform:
   m_ObjectHideFlags: 0
@@ -4145,7 +4147,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dontDestroyOnLoad: 1
   playerInstantiate: {fileID: 128304937}
-  LoadingScreenEnabled: 0
+  loadingScreenEnabled: 0
+  enableConfirm: 0
   loadingScreenDelay: 4
   UIRender: {fileID: 1664159849}
   loadingScreenAnimation: {fileID: 963049191}

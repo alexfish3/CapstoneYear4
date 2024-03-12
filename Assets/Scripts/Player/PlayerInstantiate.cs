@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 {
@@ -12,6 +11,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [Header("Player Info")]
     [SerializeField] GameManager gameManager;
     [SerializeField] GameObject playerHolder;
+    [SerializeField] SceneManager sceneManager;
 
     [Space(10)]
     [Tooltip("Enables or disables the ability for players to spawn into the lobby")]
@@ -44,9 +44,13 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     [SerializeField] float countdownTimer = 5f;
     Coroutine readyUpCountdown;
 
+    [Header("Loading Screen Ready Information")]
+    [Tooltip("The indexed array tracking players' loading screen ready status")]
+    [SerializeField] bool[] playerLoadingConfirm = new bool[Constants.MAX_PLAYERS];
+
+    [Header("Other")]
     private Gamepad[] playerGamepads = new Gamepad[Constants.MAX_PLAYERS];
     public Gamepad[] PlayerGamepads => playerGamepads;
-
     CutsceneManager cutsceneManager;
        
     ///<summary>
@@ -57,7 +61,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapPlayerSelect += EnablePlayerSpawn;
         gameManager.OnSwapPlayerSelect += SwapForCharacterSelect;
 
-        gameManager.OnSwapStartingCutscene += DisablePlayerSpawn;
+        gameManager.OnSwapLoading += DisablePlayerSpawn;
+
         gameManager.OnSwapStartingCutscene += PlayerUpdateDrivingIndicators;
 
         gameManager.OnSwapTutorial += SwapForDriving;
@@ -73,7 +78,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapResults += SwapForResults;
 
         gameManager.OnSwapMenu += SwapForMainMenu;
-
     }
 
     ///<summary>
@@ -84,7 +88,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapPlayerSelect -= EnablePlayerSpawn;
         gameManager.OnSwapPlayerSelect -= SwapForCharacterSelect;
 
-        gameManager.OnSwapStartingCutscene -= DisablePlayerSpawn;
+        gameManager.OnSwapLoading -= DisablePlayerSpawn;
+
         gameManager.OnSwapStartingCutscene -= PlayerUpdateDrivingIndicators;
 
         gameManager.OnSwapTutorial -= SwapForDriving;
@@ -100,11 +105,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapResults -= SwapForResults;
 
         gameManager.OnSwapMenu -= SwapForMainMenu;
-    }
-
-    public void Update()
-    {
-
     }
 
     ///<summary>
@@ -211,7 +211,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         UpdatePlayerCameraRects();
 
         // Swaps the player's control scheme to UI
-        SwapPlayerControlSchemeToUI();
+        SwapPlayerInputControlSchemeToUI();
 
         // Sets the player's spawn point above ground on map
         SetAllPlayerSpawn();
@@ -398,6 +398,44 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     }
 
     ///<summary>
+    /// Sets the index player to ready
+    ///</summary>
+    public void ReadyUp(int playerIndexToReadyUp)
+    {
+        playerReadyUp[playerIndexToReadyUp] = true;
+        availiblePlayerInputs[playerIndexToReadyUp].gameObject.GetComponent<PlayerUIHandler>().customizationSelector.SetDisableOptionsCustomization(true);
+        CheckReadyUpCount();
+    }
+
+    ///<summary>
+    /// Sets the index player to unready
+    ///</summary>
+    public void UnreadyUp(int playerIndexToReadyUp)
+    {
+        playerReadyUp[playerIndexToReadyUp] = false;
+        availiblePlayerInputs[playerIndexToReadyUp].gameObject.GetComponent<PlayerUIHandler>().customizationSelector.SetDisableOptionsCustomization(false);
+        if (readyUpCountdown != null)
+        {
+            PlayerSelectCanvas.Instance.StopCountdown();
+            StopCoroutine(readyUpCountdown);
+            readyUpCountdown = null;
+        }
+    }
+
+    ///<summary>
+    /// Disables all player's bools of readied up
+    ///</summary>
+    public void DisableReadiedUp()
+    {
+        isAllReadedUp = false;
+
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
+        {
+            playerReadyUp[i] = false;
+        }
+    }
+
+    ///<summary>
     /// Checks for how many players are readied up
     ///</summary>
     public void CheckReadyUpCount()
@@ -440,76 +478,89 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         readyUpCountdown = null;
     }
 
+    ///<summary>
+    /// Sets the player index for loading confirm
+    ///</summary>
+    public void LoadingConfirm(int playerIndexToReadyUp)
+    {
+        // Does not load confirm platy
+        if (sceneManager.EnableConfirm == false)
+            return;
+
+        playerLoadingConfirm[playerIndexToReadyUp] = true;
+        CheckLoadingConfirmCount();
+    }
+
+    ///<summary>
+    /// Checks for how many players are readied up
+    ///</summary>
+    public void CheckLoadingConfirmCount()
+    {
+        // Resets and loops to count amount of ready ups
+        readyUpCounter = 0;
+        foreach (bool readyUpValue in playerLoadingConfirm)
+        {
+            if (readyUpValue)
+                readyUpCounter++;
+        }
+
+        // Checks if players are greater then 1 and all players are readied up
+        if (readyUpCounter >= playerCount && playerCount >= 1)
+        {
+            SceneManager.Instance.SwapToSceneAfterConfirm();
+        }
+        else
+        {
+            return;
+        }
+    }
+
     /// <summary>
-    /// Swaps the control scheme for all players to main menu
+    /// Swaps the menu control scheme for all players to main menu
     /// </summary>
     private void SwapForMainMenu()
     {
         Debug.Log("Swap for Main Menu");
 
-        SwapPlayerControlSchemeToUI();
+        SwapPlayerInputControlSchemeToUI();
 
         SwapMenuTypeForAllPlayers(MenuType.MainMenu);
     }
 
     /// <summary>
-    /// Swaps the control scheme for all players to cutscenes
+    /// Swaps the menu control scheme for all players to cutscenes
     /// </summary>
     private void SwapForCutscene()
     {
         Debug.Log("Swap for Cutscene");
 
-        SwapPlayerControlSchemeToUI();
+        SwapPlayerInputControlSchemeToUI();
 
         SwapMenuTypeForAllPlayers(MenuType.Cutscene);
     }
 
     /// <summary>
-    /// Swaps the control scheme for all players to character select
+    /// Swaps the menu control scheme for all players to character select
     /// </summary>
     private void SwapForCharacterSelect()
     {
         Debug.Log("Swap for Charater Select");
 
-        SwapPlayerControlSchemeToUI();
+        SwapPlayerInputControlSchemeToUI();
 
         SwapMenuTypeForAllPlayers(MenuType.PlayerSelect);
     }
 
     /// <summary>
-    /// Swaps the control scheme for all players to results
+    /// Swaps the menu control scheme for all players to results
     /// </summary>
     private void SwapForResults()
     {
         Debug.Log("Swap for Results");
 
-        SwapPlayerControlSchemeToUI();
+        SwapPlayerInputControlSchemeToUI();
 
         SwapMenuTypeForAllPlayers(MenuType.ResultsMenu);
-    }
-
-    /// <summary>
-    /// Swaps the control scheme for all players to driving
-    /// </summary>
-    private void SwapForDriving()
-    {
-        StartCoroutine(PlayerMoverCountdown());
-    }
-
-    private IEnumerator PlayerMoverCountdown()
-    {
-        if (cutsceneManager == null)
-            cutsceneManager = CutsceneManager.Instance;
-
-        Debug.Log("Swap for Driving");
-
-        cutsceneManager.BeginCountdownAnimation();
-
-        yield return new WaitForSeconds(3f);
-        Debug.Log("Waited Three seconds");
-
-        SwapPlayerControlSchemeToDrive();
-        SwapMenuTypeForAllPlayers(MenuType.PauseMenu);
     }
 
     /// <summary>
@@ -538,19 +589,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     }
 
     ///<summary>
-    /// Enables the ability to spawn players
+    /// Swaps all player's input control schemes to UI
     ///</summary>
-    public void EnablePlayerSpawn() { allowPlayerSpawn = true;}
-
-    ///<summary>
-    /// Disables the ability to spawn players
-    ///</summary>
-    public void DisablePlayerSpawn() { allowPlayerSpawn = false; }
-
-    ///<summary>
-    /// Swaps all player's control schemes to UI
-    ///</summary>
-    public void SwapPlayerControlSchemeToUI()
+    public void SwapPlayerInputControlSchemeToUI()
     {
         Debug.Log("<color=green>Swapping To UI Controls</color>");
 
@@ -563,14 +604,14 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
             availiblePlayerInputs[i].actions.FindActionMap("UI").Enable();
             availiblePlayerInputs[i].actions.FindActionMap("Player").Disable();
-            availiblePlayerInputs[i].actions.FindActionMap("NoInput").Disable();
+            availiblePlayerInputs[i].actions.FindActionMap("Load").Disable();
         }
     }
 
     ///<summary>
-    /// Swaps all player's control schemes to "Driving" Player movement
+    /// Swaps all player's input control schemes to "Driving" Player movement
     ///</summary>
-    public void SwapPlayerControlSchemeToDrive()
+    public void SwapPlayerInputControlSchemeToDrive()
     {
         Debug.Log("<color=green>Swapping To Driving Controls</color>");
 
@@ -583,16 +624,16 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
             availiblePlayerInputs[i].actions.FindActionMap("UI").Disable();
             availiblePlayerInputs[i].actions.FindActionMap("Player").Enable();
-            availiblePlayerInputs[i].actions.FindActionMap("NoInput").Disable();
+            availiblePlayerInputs[i].actions.FindActionMap("Load").Disable();
         }
     }
 
     ///<summary>
-    /// Swaps all player's control schemes to "NoInput" Player movement
+    /// Swaps all player's input control schemes to "NoInput" Player movement
     ///</summary>
-    public void SwapPlayerControlSchemeToNoInput()
+    public void SwapPlayerInputControlSchemeToLoad()
     {
-        Debug.Log("<color=green>Swapping To No Input Controls</color>");
+        Debug.Log("<color=green>Swapping To Load Controls</color>");
 
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
@@ -601,47 +642,44 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
 
             availiblePlayerInputs[i].actions.FindActionMap("UI").Disable();
             availiblePlayerInputs[i].actions.FindActionMap("Player").Disable();
-            availiblePlayerInputs[i].actions.FindActionMap("NoInput").Enable();
+            availiblePlayerInputs[i].actions.FindActionMap("Load").Enable();
         }
     }
 
-    ///<summary>
-    /// Sets the index player to ready
-    ///</summary>
-    public void ReadyUp(int playerIndexToReadyUp) 
-    { 
-        playerReadyUp[playerIndexToReadyUp] = true;
-        availiblePlayerInputs[playerIndexToReadyUp].gameObject.GetComponent<PlayerUIHandler>().customizationSelector.SetDisableOptionsCustomization(true);
-        CheckReadyUpCount();
+
+    /// <summary>
+    /// Swaps the control scheme for all players to driving
+    /// </summary>
+    private void SwapForDriving()
+    {
+        StartCoroutine(PlayerMoverCountdown());
+    }
+
+    private IEnumerator PlayerMoverCountdown()
+    {
+        if (cutsceneManager == null)
+            cutsceneManager = CutsceneManager.Instance;
+
+        Debug.Log("Swap for Driving");
+
+        cutsceneManager.BeginCountdownAnimation();
+
+        yield return new WaitForSeconds(3f);
+        Debug.Log("Waited Three seconds");
+
+        SwapPlayerInputControlSchemeToDrive();
+        SwapMenuTypeForAllPlayers(MenuType.PauseMenu);
     }
 
     ///<summary>
-    /// Sets the index player to unready
+    /// Enables the ability to spawn players
     ///</summary>
-    public void UnreadyUp(int playerIndexToReadyUp) 
-    { 
-        playerReadyUp[playerIndexToReadyUp] = false;
-        availiblePlayerInputs[playerIndexToReadyUp].gameObject.GetComponent<PlayerUIHandler>().customizationSelector.SetDisableOptionsCustomization(false);
-        if (readyUpCountdown != null)
-        {
-            PlayerSelectCanvas.Instance.StopCountdown();
-            StopCoroutine(readyUpCountdown);
-            readyUpCountdown = null;
-        }
-    }
+    public void EnablePlayerSpawn() { allowPlayerSpawn = true;}
 
     ///<summary>
-    /// Disables all player's bools of readied up
+    /// Disables the ability to spawn players
     ///</summary>
-    public void DisableReadiedUp() 
-    { 
-        isAllReadedUp = false;
-        
-        for(int i = 0; i < Constants.MAX_PLAYERS; i++)
-        {
-            playerReadyUp[i] = false;
-        }
-    }
+    public void DisablePlayerSpawn() { allowPlayerSpawn = false; }
 
     ///<summary>
     /// Resets player canvas' when loading into scene
@@ -662,7 +700,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void PlayerPause(PlayerInput playerInput)
     {
-        SwapPlayerControlSchemeToUI();
+        SwapPlayerInputControlSchemeToUI();
 
         Time.timeScale = 0f;
 
@@ -690,7 +728,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void PlayerPlay()
     {
-        SwapPlayerControlSchemeToDrive();
+        SwapPlayerInputControlSchemeToDrive();
 
         Time.timeScale = 1f;
 
@@ -703,6 +741,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
     }
 
+    /// <summary>
+    /// Updates driving indicators for all players
+    /// </summary>
     public void PlayerUpdateDrivingIndicators()
     {
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)

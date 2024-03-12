@@ -9,6 +9,7 @@ public enum MenuType
     MainMenu,
     Options,
     PlayerSelect,
+    Loading,
     Cutscene,
     PauseMenu,
     ResultsMenu
@@ -58,6 +59,7 @@ public class MenuInteractions : MonoBehaviour
 
         GameManager.Instance.OnSwapStartingCutscene += PlayerUnready;
 
+        GameManager.Instance.OnSwapLoading += SwapToLoadingScreen;
     }
 
     private void OnDisable()
@@ -68,6 +70,8 @@ public class MenuInteractions : MonoBehaviour
         GameManager.Instance.OnSwapOptions -= SwapToOptions;
 
         GameManager.Instance.OnSwapStartingCutscene -= PlayerUnready;
+
+        GameManager.Instance.OnSwapLoading -= SwapToLoadingScreen;
     }
 
     public void SwapToPlayerSelect()
@@ -78,6 +82,11 @@ public class MenuInteractions : MonoBehaviour
     public void SwapToOptions()
     {
         SwapMenuType(MenuType.Options);
+    }
+
+    public void SwapToLoadingScreen()
+    {
+        SwapMenuType(MenuType.Loading);
     }
 
     public void SwapToCutscene()
@@ -101,6 +110,9 @@ public class MenuInteractions : MonoBehaviour
                 return;
             case MenuType.PlayerSelect:
                 CharacterSelectMenuInteractons();
+                return;
+            case MenuType.Loading:
+                LoadingMenuInteractons();
                 return;
             case MenuType.Cutscene:
                 Debug.Log("no input for cutscene");
@@ -174,6 +186,14 @@ public class MenuInteractions : MonoBehaviour
         uiHandler.LeftPadEvent.AddListener(CustomizationScrollLeft);
     }
 
+    private void LoadingMenuInteractons()
+    {
+        Debug.Log("<color=blue>Swap to Loading Menu</color>");
+
+        uiHandler.SouthFaceEvent.AddListener(PlayerConfirmLoad);
+    }
+
+
     private void PauseMenuInteractons()
     {
         Debug.Log("<color=blue>Swap to Pause Menu</color>");
@@ -206,11 +226,6 @@ public class MenuInteractions : MonoBehaviour
         readyUpText.SetActive(true);
         readiedUp = true;
 
-/*        if (hostPlayer) // outdated tutorial toggle stuff
-        {
-            tutorialToggle.gameObject.SetActive(true);
-            uiHandler.SouthFaceEvent.AddListener(tutorialToggle.SetTutorial);
-        }*/
         PlayerInstantiate.Instance.ReadyUp(ballDriving.playerIndex - 1);
         soundPool.PlayEnterUI();
     }
@@ -258,6 +273,15 @@ public class MenuInteractions : MonoBehaviour
         readyUpText.SetActive(false);
         readiedUp = false;
         PlayerInstantiate.Instance.UnreadyUp(ballDriving.playerIndex - 1);
+    }
+
+    ///<summary>
+    /// Calls method when player wants to ready
+    ///</summary>
+    private void PlayerConfirmLoad(bool button)
+    {
+        PlayerInstantiate.Instance.LoadingConfirm(ballDriving.playerIndex - 1);
+        soundPool.PlayEnterUI();
     }
 
     ///<summary>

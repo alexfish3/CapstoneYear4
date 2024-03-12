@@ -283,7 +283,6 @@ public class SoundPool : MonoBehaviour
 
     public void StopDriftSpark()
     {
-        Debug.Log("Stopping drift spark (playing)");
         if (driftSparkSource != null)
         {
             ResetSource(driftSparkSource);

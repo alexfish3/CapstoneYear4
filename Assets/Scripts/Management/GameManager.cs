@@ -6,6 +6,7 @@ public enum GameState {
     Menu,
     Options,
     PlayerSelect,
+    Loading,
     StartingCutscene,
     Tutorial,
     Begin,
@@ -29,6 +30,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public event Action OnSwapMenu;
     public event Action OnSwapOptions;
     public event Action OnSwapPlayerSelect;
+    public event Action OnSwapLoading;
     public event Action OnSwapStartingCutscene;
     public event Action OnSwapTutorial;
     public event Action OnSwapBegin;
@@ -65,6 +67,9 @@ public class GameManager : SingletonMonobehaviour<GameManager>
                 break;
             case GameState.PlayerSelect:
                 OnSwapPlayerSelect?.Invoke();
+                break;
+            case GameState.Loading:
+                OnSwapLoading?.Invoke();
                 break;
             case GameState.StartingCutscene:
                 OnSwapStartingCutscene?.Invoke();

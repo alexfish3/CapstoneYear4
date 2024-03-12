@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading;
 using Udar.SceneManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,7 +12,10 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     public event Action OnReturnToMenu;
 
     [Header("Loading Screen")]
-    [SerializeField] bool LoadingScreenEnabled;
+    [SerializeField] bool loadingScreenEnabled;
+    [SerializeField] bool enableConfirm;
+    public bool EnableConfirm { get { return enableConfirm; }}
+
     [SerializeField] float loadingScreenDelay;
     [SerializeField] Image UIRender;
     Material UIRenderMaterial;
@@ -20,6 +24,9 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     [Header("Scene References")]
     [SerializeField] SceneField PlayerSelectScene;
     [SerializeField] SceneField GameScene;
+
+    AsyncOperation sceneLoad;
+    bool spawnMenuBool;
 
     private void Start()
     {
@@ -40,9 +47,11 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         GameManager.Instance.OnSwapStartingCutscene -= HideLoadingScreen;
     }
 
-    public void InvokeMenuSceneEvent() {
+    public void InvokeMenuSceneEvent() 
+    {
         Debug.Log("Return to main menu");
-        OnReturnToMenu?.Invoke(); }
+        OnReturnToMenu?.Invoke(); 
+    }
 
     ///<summary>
     /// Main method that loads the player select scene
@@ -74,8 +83,11 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///</summary>
     private IEnumerator LoadSceneAsync(int sceneToLoad, float delayTime, bool spawnMenu)
     {
-        // Sets all players to no input during loading screen
-        playerInstantiate.SwapPlayerControlSchemeToNoInput();
+        // Sets gamestate to loading
+        GameManager.Instance.SetGameState(GameState.Loading);
+
+        // Sets all players to loading input during loading screen
+        playerInstantiate.SwapPlayerInputControlSchemeToLoad();
 
         // Loads the first scene asynchronously
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Single);
@@ -88,12 +100,26 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         {
             if (asyncLoad.progress >= 0.9f)
             {
-                asyncLoad.allowSceneActivation = true;
+                Debug.Log("Loading Complete");
+                enableConfirm = true;
+                sceneLoad = asyncLoad;
+                spawnMenuBool = spawnMenu;
+                break;
             }
             yield return null;
         }
+    }
 
-        if(spawnMenu)
+    public void SwapToSceneAfterConfirm()
+    {
+        if (sceneLoad == null)
+            return;
+
+        Debug.Log("Scene Loaded Successfully");
+
+        sceneLoad.allowSceneActivation = true;
+
+        if (spawnMenuBool)
         {
             // Once menu scene is loaded, set players to spawn, if there are any
             playerInstantiate.SetAllPlayerSpawn();
@@ -103,11 +129,11 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     private void ShowLoadingScreen()
     {
         // Checks if loading screen is set, if is, return
-        if (LoadingScreenEnabled == true)
+        if (loadingScreenEnabled == true)
             return;
 
         // Sets loading screen to true
-        LoadingScreenEnabled = true;
+        loadingScreenEnabled = true;
 
         // Caches screen material
         UIRenderMaterial = new Material(UIRender.material);
@@ -121,10 +147,10 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     private void HideLoadingScreen()
     {
         // Checks if loading screen is not set, if is, return
-        if(LoadingScreenEnabled == false) 
+        if(loadingScreenEnabled == false) 
             return;
 
-        LoadingScreenEnabled = false;
+        loadingScreenEnabled = false;
         Debug.Log("Hide Loading Screen");
         LoadOut();
         loadingScreenAnimation.SetTrigger("LoadOut");
