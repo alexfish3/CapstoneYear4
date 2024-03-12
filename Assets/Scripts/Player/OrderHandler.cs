@@ -61,6 +61,7 @@ public class OrderHandler : MonoBehaviour
         ball.OnBoostStart += AttemptSteal;
         SceneManager.Instance.OnReturnToMenu += ResetHandler;
         GameManager.Instance.OnSwapAnything += UpdateScore;
+        GameManager.Instance.OnSwapStartingCutscene += InitHandler;
     }
 
     private void OnDisable()
@@ -68,6 +69,7 @@ public class OrderHandler : MonoBehaviour
         ball.OnBoostStart -= AttemptSteal;
         SceneManager.Instance.OnReturnToMenu -= ResetHandler;
         GameManager.Instance.OnSwapAnything -= UpdateScore;
+        GameManager.Instance.OnSwapStartingCutscene += InitHandler;
     }
 
     private void Update()
@@ -241,10 +243,20 @@ public class OrderHandler : MonoBehaviour
     }
 
     /// <summary>
+    /// For initializing the handler once they enter the main scene.
+    /// </summary>
+    private void InitHandler()
+    {
+        OrderManager.Instance.OnMainGameFinishes += () => ball.FreezeBall(true);
+    }
+
+    /// <summary>
     /// This method resets this handler.
     /// </summary>
     private void ResetHandler()
     {
+        OrderManager.Instance.OnMainGameFinishes -= () => ball.FreezeBall(false);
+
         if(order1 != null)
         {
             order1.EraseOrder();

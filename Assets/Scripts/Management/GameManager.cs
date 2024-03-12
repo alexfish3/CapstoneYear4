@@ -50,6 +50,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     ///</summary>
     public void SetGameState(GameState state)
     {
+        Time.timeScale = 1f;
         Debug.Log($"Setting state to: {state}");
         mainState = state;
 

@@ -17,6 +17,10 @@ public class NumberHandler : MonoBehaviour
     [SerializeField] GameObject dollarSign;
     [SerializeField] Image placementImage;
 
+    [Header("Final Order Countdown")]
+    [SerializeField] Image finalOrderCountdownImage;
+
+    private int currPlace = -1;
     // Update is called once per frame
     void Update()
     {
@@ -71,6 +75,16 @@ public class NumberHandler : MonoBehaviour
         }
     }
 
+    public void UpdateFinalCountdown(int time)
+    {
+        StartCoroutine(animateNumber(finalOrderCountdownImage, time));
+    }
+
+    public void SetFinalCountdown(bool enabled)
+    {
+        finalOrderCountdownImage.transform.parent.gameObject.SetActive(enabled);
+    }
+
     // Methods for returning the number sprite I need
     private Sprite getNumSprite(char intNum)
     {
@@ -85,6 +99,10 @@ public class NumberHandler : MonoBehaviour
 
     public void UpdatePlacement(int inPlace)
     {
+        if (currPlace == inPlace)
+            return;
+
+        currPlace = inPlace;
         StartCoroutine(animateNumber(placementImage, inPlace));
     }
 

@@ -9,55 +9,99 @@ using System;
 /// </summary>
 public class DynamicNumberUI : MonoBehaviour
 {
+    [SerializeField] private NumberHandler numHandler;
     [SerializeField] TextMeshProUGUI waveText;
     [SerializeField] TextMeshProUGUI centerText;
+
+    // final order countdown
     [SerializeField] TextMeshProUGUI finalOrderText;
-    private OrderHandler player;
+    private int currFinal = -1;
 
     TimeSpan timeSpan;
 
-    private void Start()
+    private void OnEnable()
     {
-        player = GetComponent<OrderHandler>();
+        GameManager.Instance.OnSwapAnything += SetNothing;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapAnything -= SetNothing;
+    }
+
+    /// <summary>
+    /// Sets the UI for normal gameplay.
+    /// </summary>
+    public void SetNormalGameplay()
+    {
+        centerText.text = "";
+        timeSpan = TimeSpan.FromSeconds(OrderManager.Instance.GameTimer);
+        waveText.text = timeSpan.ToString("m\\:ss\\.ff");
+        finalOrderText.text = "";
+    }
+
+    /// <summary>
+    /// Sets the UI for the final order area.
+    /// </summary>
+    public void SetFinalGameplay()
+    {
+        waveText.text = "";
+        waveText.color = Color.white;
+        centerText.text = "";
+        finalOrderText.text = $"Gold Order Value: ${OrderManager.Instance.FinalOrderValue}";
+    }
+
+    /// <summary>
+    /// Sets the UI for the countdown between main game and final area.
+    /// </summary>
+    /// <param name="inTime"></param>
+    public void SetFinalCountdown(int inTime)
+    {
+        numHandler.SetFinalCountdown(true);
+        waveText.text = "";
+        finalOrderText.text = "";
+        if (currFinal != inTime)
+        {
+            currFinal = inTime;
+            numHandler.UpdateFinalCountdown(inTime);
+        }
+    }
+
+    /// <summary>
+    /// Sets all text to nothing.
+    /// </summary>
+    public void SetNothing()
+    {
+        numHandler.SetFinalCountdown(false);
+        waveText.text = "";
+        finalOrderText.text = "";
+        centerText.text = "";
     }
 
     private void Update()
     {
-        // I figure in the future the placements will be individual sprites in an array or something so I didn't bother adding "st","nd","rd", etc...
-        //placementText.text = "" + player.Placement;
         if (OrderManager.Instance != null)
         {
             if (OrderManager.Instance.GameStarted)
             {
                 if (!OrderManager.Instance.FinalOrderActive)
                 {
-                    finalOrderText.text = "";
-                    if (OrderManager.Instance.GameTimer <= 10)
+                    if (OrderManager.Instance.GameTimer < 10f && OrderManager.Instance.GameTimer > 0f)
                     {
-                        centerText.text = OrderManager.Instance.GameTimer.ToString("Final Order In: 00.00");
-                        waveText.text = "";
+                        SetFinalCountdown((int)OrderManager.Instance.GameTimer);
                     }
                     else
                     {
-                        centerText.text = "";
-                        timeSpan = TimeSpan.FromSeconds(OrderManager.Instance.GameTimer);
-                        waveText.text = timeSpan.ToString("m\\:ss\\.ff");
-                        finalOrderText.text = "";
+                        SetNormalGameplay();
                     }
                 }
                 else
                 {
-                    waveText.text = "";
-                    waveText.color = Color.white;
-                    centerText.text = "";
-                    finalOrderText.text = $"Gold Order Value: ${OrderManager.Instance.FinalOrderValue}";
+                    if (GameManager.Instance.MainState == GameState.FinalPackage)
+                        SetFinalGameplay();
+                    else
+                        SetNothing();
                 }
-            }
-            else
-            {
-                waveText.text = "";
-                finalOrderText.text = "";
-                centerText.text = "";
             }
         }
     }

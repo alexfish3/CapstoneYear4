@@ -39,6 +39,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("Cooldown between order spawns")]
     [SerializeField] private float cooldownTime = 5f;
 
+    [Tooltip("Time between main game ending and golden cutscene playing.")]
+    [SerializeField] private float postGameLinger = 3f;
+
     [Tooltip("Multiplyer for final order increment. 1 will have it add a dollar to the value every second.")]
     [SerializeField] private float goldIncrementMultiplyer = 1f;
 
@@ -69,6 +72,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     // wave event stuff
     private event Action OnDeleteActiveOrders;
+
+    public event Action OnMainGameFinishes;
 
     [Header("Debug")]
     [Tooltip("When checked will loop through waves so you can play forever")]
@@ -235,8 +240,12 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         }
         catch
         {
-            GameManager.Instance.SetGameState(GameState.GoldenCutscene);
-            finalOrderActive = true;
+            if (!finalOrderActive)
+            {
+                finalOrderActive = true;
+                OnMainGameFinishes?.Invoke();
+                StartCoroutine(PostGameClarity());
+            }
         }
 
         if (!finalOrderActive)
@@ -424,15 +433,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     {
         finalOrderActive = false;
         gameStarted = false;
-        if (waveResets)
-        {
-            wave = 0;
-            GameManager.Instance.SetGameState(GameState.Begin);
-        }
-        else
-        {
-            GameManager.Instance.SetGameState(GameState.Results);
-        }
+        GameManager.Instance.SetGameState(GameState.Results);
     }
 
     /// <summary>
@@ -537,5 +538,17 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         yield return new WaitForSeconds(cooldownTime);
         SpawnOrder(Constants.OrderValue.Hard);
         cooledDown = true;
+    }
+
+    /// <summary>
+    /// Called when the main game ends. Lingers for a set amout of time before switching to the final order sequence.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator PostGameClarity()
+    {
+        Time.timeScale = 0.5f;
+        yield return new WaitForSeconds(postGameLinger/2);
+        Time.timeScale = 1.0f;
+        GameManager.Instance.SetGameState(GameState.GoldenCutscene);
     }
 }
