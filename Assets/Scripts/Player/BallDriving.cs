@@ -500,7 +500,6 @@ public class BallDriving : MonoBehaviour
             moveOnTransform = true;
         }
 
-
         //Adds the boost from rocket boosting
         if (boostInitialburst)
         {
@@ -626,9 +625,7 @@ public class BallDriving : MonoBehaviour
     private void LateUpdate()
     {
         if (wheelying)
-        {
             scooterModel.parent.parent.localEulerAngles = new Vector3(scooterModel.parent.parent.localEulerAngles.x, 0, 0);
-        }
     }
 
     /// <summary>
@@ -659,15 +656,12 @@ public class BallDriving : MonoBehaviour
         RaycastHit hit, waterHit;
 
         if (Physics.Raycast(groundDetector.transform.position, Vector3.down, out hit, GROUNDCHECK_DISTANCE))
-        {
             grounded = true;
-        }
         else
         {
             grounded = false;
             Debug.Log("NOT GROUNDED");
         }
-
 
         if (grounded)
         {
@@ -682,7 +676,7 @@ public class BallDriving : MonoBehaviour
                     {
                         groundBoostAmount = hit.collider.gameObject.GetComponent<Booster>().SpeedBoostAmount;
                     }
-                    catch (System.NullReferenceException e)
+                    catch (System.NullReferenceException e) //indicates the booster has no Booster script, and should just use the default value
                     {
                         groundBoostAmount = groundBoostDefault;
                     }
@@ -703,6 +697,7 @@ public class BallDriving : MonoBehaviour
                         }
                     }
                     break;
+
                 default:
                     if (currentMovingPlatform != null)
                     {
@@ -718,7 +713,6 @@ public class BallDriving : MonoBehaviour
         {
             if (Physics.Raycast(groundDetector.transform.position, Vector3.down, out waterHit, WATERCHECK_DISTANCE))
             {
-                //Debug.Log($"name: {waterHit.collider.tag}");
                 if (waterHit.collider.tag == "Water")
                 {
                     respawn.StartRespawnCoroutine();
@@ -737,20 +731,14 @@ public class BallDriving : MonoBehaviour
         if (WestFaceState)
         {
             if (leftStick != 0)
-            {
                 AssignDriftState();
-            }
             else
-            {
                 callToDrift = true; //can't drift without a selected direction, so it stows the request until a direction is selected
-            }
         }
         else
         {
             if (driftTier > 0)
-            {
                 driftBoostAchieved = true;
-            }
 
             DriftDrop(false);
         }
@@ -774,9 +762,7 @@ public class BallDriving : MonoBehaviour
             scooterModel.parent.DOPunchPosition(transform.up * DRIFT_HOP_AMOUNT, DRIFT_HOP_TIME, 5, 0);
         }
         else
-        {
             callToDrift = true;
-        }
     }
 
     /// <summary>
@@ -786,17 +772,7 @@ public class BallDriving : MonoBehaviour
     /// <returns>A rotation amount</returns>
     private float Drift()
     {
-        float scaledInput;
-
-        if (driftDirection > 0)
-        {
-            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnMinimum, driftTurnScalar);
-        }
-        else
-        {
-            scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, driftTurnScalar, driftTurnMinimum);
-        }
-
+        float scaledInput = RangeMutations.Map_Linear(leftStick, -1, 1, driftDirection > 0 ? driftTurnMinimum : driftTurnScalar, driftDirection > 0 ? driftTurnScalar : driftTurnMinimum);
         driftPoints += (2 * Time.deltaTime * (1 - driftBoostMode)) + (Time.deltaTime * scaledInput * driftBoostMode) * 100.0f;
 
         rumble.SuspendedRumble(pad, 0.0f, 0.07f);
@@ -838,14 +814,10 @@ public class BallDriving : MonoBehaviour
         drifting = false;
         callToDrift = false;
         driftPoints = 0;
+        driftTier = dirty ? 0 : driftTier;
 
         DriftSparkSet(0);
         rumble.EndSuspension(pad);
-
-        if (dirty)
-        {
-            driftTier = 0;
-        }
     }
 
     /// <summary>
@@ -884,7 +856,6 @@ public class BallDriving : MonoBehaviour
                 baseSpark.StartColor = driftSparksTier1Color;
                 wideSpark.StartColor = driftSparksTier1Color;
                 flare1Spark.StartColor = driftSparksTier1Color;
-
                 break;
 
             case 2:
@@ -899,7 +870,6 @@ public class BallDriving : MonoBehaviour
                 flare1Spark.StartColor = driftSparksTier2Color;
                 longSpark.StartColor = driftSparksTier2Color;
                 flare2Spark.StartColor = driftSparksTier2Color;
-
                 break;
 
             case 3:
@@ -915,8 +885,7 @@ public class BallDriving : MonoBehaviour
                 flare1Spark.StartColor = driftSparksTier3Color;
                 longSpark.StartColor = driftSparksTier3Color;
                 flare2Spark.StartColor = driftSparksTier3Color;
-                flare3Spark.StartColor = driftSparksTier3Color;
-                    
+                flare3Spark.StartColor = driftSparksTier3Color; 
                 break;
         }
     }
@@ -1012,9 +981,7 @@ public class BallDriving : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         while (phasing)
-        {
             yield return new WaitForSeconds(0.1f);
-        }
 
         boosting = false;
 
@@ -1047,17 +1014,21 @@ public class BallDriving : MonoBehaviour
     private IEnumerator BoostCooldown()
     {
         float elapsedTime = 0f;
+
         while (elapsedTime < boostRechargeTime)
         {
             elapsedTime += (Time.deltaTime * boostRechargeModifier);
             phaseIndicator.SetHornColor(elapsedTime / boostRechargeTime);
             yield return null;
         }
-        phaseIndicator.SetHornColor(1);
 
+        phaseIndicator.SetHornColor(1);
         boostAble = true;
     }
 
+    /// <summary>
+    /// Instantly recharges boost; used for scene transition or debug
+    /// </summary>
     private void ResetBoost()
     {
         StopBoostCooldown();
@@ -1112,20 +1083,14 @@ public class BallDriving : MonoBehaviour
             RaycastHit secondHit;
 
             if (Physics.Raycast(caddy.transform.position + Vector3.up, -caddy.ScooterNormal.forward, out secondHit, slipstreamDistance, lm)) //checks reciprocal ray
-            {
                 slipstreamRaysAligned = true;
-            }
         }
 
         //Updates slipstream time. Decreases at twice the speed it increases
         if (slipstreamRaysAligned && caddySpeedMet && selfSpeedMet)
-        {
             slipstreamPortion += Time.fixedDeltaTime;
-        }
         else
-        {
             slipstreamPortion -= (Time.fixedDeltaTime * 2.0f);
-        }
         slipstreamPortion = Mathf.Clamp(slipstreamPortion, 0.0f, slipstreamTime);
 
         float slipStreamScalar = RangeMutations.Map_Linear(slipstreamPortion, 0.0f, slipstreamTime, 0.0f, 1.0f);
@@ -1134,12 +1099,12 @@ public class BallDriving : MonoBehaviour
         if (slipstreamPortion == slipstreamTime)
         {
             slipstreamPortion = 0.0f;
-            if (caddy != null) { caddy.SetSlipstreamTrails(0.0f); }
+            if (caddy != null) caddy.SetSlipstreamTrails(0.0f);
             return slipstreamBoostAmount;
         }
         else
         {
-            if (caddy != null) { caddy.SetSlipstreamTrails(slipStreamScalar - 0.2f); }
+            if (caddy != null) caddy.SetSlipstreamTrails(slipStreamScalar - 0.2f);
             return slipStreamScalar * preBoostSlipstreamMax;
         }
     }
@@ -1199,10 +1164,7 @@ public class BallDriving : MonoBehaviour
         if (phasing)
             return;
 
-        Debug.Log("BOUNCE " + this.gameObject.transform.parent.name);
-
         Rigidbody opponentBall = opponent.gameObject.GetComponent<BallDriving>().Sphere.GetComponent<Rigidbody>(); //woof
-
         BounceOff(opponentBall.position, clashForce);
     }
 
