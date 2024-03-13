@@ -15,6 +15,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     [Header("Loading Screen")]
     [SerializeField] bool loadingScreenEnabled;
     [SerializeField] bool enableConfirm;
+    public bool LoadingScreenEnabled { get { return loadingScreenEnabled; } }
     public bool EnableConfirm { get { return enableConfirm; }}
 
     [SerializeField] float loadingScreenDelay;

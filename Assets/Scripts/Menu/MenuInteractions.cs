@@ -20,6 +20,7 @@ public class MenuInteractions : MonoBehaviour
     [Header("Bool Information")]
     public bool hostPlayer;
     [SerializeField] bool readiedUp = false;
+    private bool loadReady = false;
     public bool hostPause = false;
 
     [Header("Object References")]
@@ -223,11 +224,14 @@ public class MenuInteractions : MonoBehaviour
     ///</summary>
     private void PlayerReady(bool button)
     {
+        if (!readiedUp)
+            soundPool.PlayEnterUI();
+
         readyUpText.SetActive(true);
         readiedUp = true;
 
         PlayerInstantiate.Instance.ReadyUp(ballDriving.playerIndex - 1);
-        soundPool.PlayEnterUI();
+        
     }
 
     ///<summary>
@@ -268,6 +272,10 @@ public class MenuInteractions : MonoBehaviour
     ///</summary>
     public void PlayerUnready()
     {
+        if(readiedUp)
+        {
+            soundPool.PlayBackUI();
+        }
         Debug.Log("Unready");
 
         readyUpText.SetActive(false);
@@ -280,8 +288,12 @@ public class MenuInteractions : MonoBehaviour
     ///</summary>
     private void PlayerConfirmLoad(bool button)
     {
-        PlayerInstantiate.Instance.LoadingConfirm(ballDriving.playerIndex - 1);
+        if (!SceneManager.Instance.EnableConfirm && !loadReady)
+            return;
+
+        loadReady = true;
         soundPool.PlayEnterUI();
+        PlayerInstantiate.Instance.LoadingConfirm(ballDriving.playerIndex - 1);
     }
 
     ///<summary>
@@ -417,7 +429,7 @@ public class MenuInteractions : MonoBehaviour
         // Scrolls selector down
         optionsMenu.ExitMenu();
 
-        soundPool.PlayScrollUI();
+        soundPool.PlayBackUI();
     }
 
 
@@ -445,7 +457,8 @@ public class MenuInteractions : MonoBehaviour
     {
         // Scrolls selector down
         customizationSelector.SetCustomizationType(true);
-        soundPool.PlayScrollUI();
+        if(!readiedUp)
+            soundPool.PlayScrollUI();
     }
 
     ///<summary>
@@ -455,7 +468,8 @@ public class MenuInteractions : MonoBehaviour
     {
         // Scrolls selector up
         customizationSelector.SetCustomizationType(false);
-        soundPool.PlayScrollUI();
+        if(!readiedUp)
+            soundPool.PlayScrollUI();
     }
 
     ///<summary>
@@ -465,7 +479,8 @@ public class MenuInteractions : MonoBehaviour
     {
         // Scrolls selector left
         customizationSelector.SetCustomizationValue(false);
-        soundPool.PlayScrollUI();
+        if(!readiedUp)
+            soundPool.PlayScrollUI();
     }
 
     ///<summary>
@@ -475,7 +490,8 @@ public class MenuInteractions : MonoBehaviour
     {
         // Scrolls selector right
         customizationSelector.SetCustomizationValue(true);
-        soundPool.PlayScrollUI();
+        if(!readiedUp)
+            soundPool.PlayScrollUI();
     }
 
     ///<summary>
@@ -520,14 +536,6 @@ public class MenuInteractions : MonoBehaviour
         soundPool.PlayScrollUI();
     }
 
-
-    private void TutorialToggle(bool button)
-    {
-        if (!hostPlayer)
-            return;
-
-
-    }
     ///<summary>
     /// Calls method to reset canvas
     ///</summary>

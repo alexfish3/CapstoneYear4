@@ -53,6 +53,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [SerializeField] private AudioObject orderTheft;
     [SerializeField] private AudioObject death;
     [SerializeField] private AudioObject clockTowerBells;
+    [SerializeField] private AudioObject timeoutWhistle;
 
     [SerializeField] private AudioObject[] driftSparks;
 
@@ -97,6 +98,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         GameManager.Instance.OnSwapStartingCutscene += PlayMainTheme;
         GameManager.Instance.OnSwapGoldenCutscene += PlayFinalTheme;
         GameManager.Instance.OnSwapResults += PlayResultsTheme;
+
+        GameManager.Instance.OnSwapAnything += () => ChangeSnapshot("gameplay");
     }
     private void OnDisable()
     {
@@ -105,6 +108,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         GameManager.Instance.OnSwapStartingCutscene -= PlayMainTheme;
         GameManager.Instance.OnSwapGoldenCutscene -= PlayFinalTheme;
         GameManager.Instance.OnSwapResults -= PlayResultsTheme;
+
+        GameManager.Instance.OnSwapAnything -= () => ChangeSnapshot("gameplay");
     }
 
     /// <summary>
@@ -131,6 +136,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         sfxDictionary.Add("mini", miniBoost);
         sfxDictionary.Add("death", death);
         sfxDictionary.Add("bells", clockTowerBells);
+        sfxDictionary.Add("timeout", timeoutWhistle);
 
         // UI
         sfxDictionary.Add("confirm", enter);

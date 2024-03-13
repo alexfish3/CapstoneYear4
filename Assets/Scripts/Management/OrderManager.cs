@@ -201,8 +201,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void InitTutorial()
     {
-        for(int i=0;i<PlayerInstantiate.Instance.PlayerCount;i++)
+        for(int i=0;i<Constants.MAX_PLAYERS;i++)
         {
+            if (PlayerInstantiate.Instance.PlayerInputs[i] == null)
+                continue;
+
             tutorialOrders[i].InitOrder(false);
             IncrementCounters(tutorialOrders[i].Value, 1);
         }
@@ -245,6 +248,10 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 finalOrderActive = true;
                 OnMainGameFinishes?.Invoke();
                 StartCoroutine(PostGameClarity());
+
+                // sounds
+                SoundManager.Instance.PlaySFX("timeout", clockSource);
+                SoundManager.Instance.ChangeSnapshot("paused");
             }
         }
 
