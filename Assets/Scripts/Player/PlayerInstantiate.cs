@@ -78,6 +78,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapResults += SwapForResults;
 
         gameManager.OnSwapMenu += SwapForMainMenu;
+
+        // When players confirm load, disable all confirm bools
+        sceneManager.OnConfirmToLoad += DisableLoadingConfirmCount;
     }
 
     ///<summary>
@@ -105,6 +108,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapResults -= SwapForResults;
 
         gameManager.OnSwapMenu -= SwapForMainMenu;
+
+        // When players confirm load, disable all confirm bools
+        sceneManager.OnConfirmToLoad -= DisableLoadingConfirmCount;
     }
 
     ///<summary>
@@ -487,8 +493,21 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         if (sceneManager.EnableConfirm == false)
             return;
 
+        LoadingScreenManager.Instance.ConfirmButton(playerIndexToReadyUp);
+
         playerLoadingConfirm[playerIndexToReadyUp] = true;
         CheckLoadingConfirmCount();
+    }
+
+    ///<summary>
+    /// Disables all player's bools of readied up
+    ///</summary>
+    public void DisableLoadingConfirmCount()
+    {
+        for (int i = 0; i < Constants.MAX_PLAYERS; i++)
+        {
+            playerLoadingConfirm[i] = false;
+        }
     }
 
     ///<summary>
@@ -507,7 +526,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         // Checks if players are greater then 1 and all players are readied up
         if (readyUpCounter >= playerCount && playerCount >= 1)
         {
-            SceneManager.Instance.SwapToSceneAfterConfirm();
+            SceneManager.Instance.ConfirmLoad();
         }
         else
         {

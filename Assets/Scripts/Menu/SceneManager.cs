@@ -10,6 +10,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 {
     [SerializeField] PlayerInstantiate playerInstantiate;
     public event Action OnReturnToMenu;
+    public event Action OnConfirmToLoad;
 
     [Header("Loading Screen")]
     [SerializeField] bool loadingScreenEnabled;
@@ -32,7 +33,9 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     {
         playerInstantiate = PlayerInstantiate.Instance;
         playerInstantiate.OnReadiedUp += LoadGameScene;
+
         OnReturnToMenu += LoadMenuScene;
+        OnConfirmToLoad += SwapToSceneAfterConfirm;
 
         GameManager.Instance.OnSwapMenu += HideLoadingScreen;
         GameManager.Instance.OnSwapStartingCutscene += HideLoadingScreen;
@@ -41,7 +44,9 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     private void OnDisable()
     {
         playerInstantiate.OnReadiedUp -= LoadGameScene;
+        
         OnReturnToMenu -= LoadMenuScene;
+        OnConfirmToLoad -= SwapToSceneAfterConfirm;
 
         GameManager.Instance.OnSwapMenu -= HideLoadingScreen;
         GameManager.Instance.OnSwapStartingCutscene -= HideLoadingScreen;
@@ -101,6 +106,10 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
             if (asyncLoad.progress >= 0.9f)
             {
                 Debug.Log("Loading Complete");
+
+                // Sets up the loading scene with the amount of players
+                LoadingScreenManager.Instance.InitalizeButtonGameobjects(PlayerInstantiate.Instance.PlayerCount);
+
                 enableConfirm = true;
                 sceneLoad = asyncLoad;
                 spawnMenuBool = spawnMenu;
@@ -110,6 +119,14 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         }
     }
 
+    public void ConfirmLoad()
+    {
+        OnConfirmToLoad?.Invoke();
+    }
+
+    ///<summary>
+    /// After all players are confirmed, swap to scene
+    ///</summary>
     public void SwapToSceneAfterConfirm()
     {
         if (sceneLoad == null)
@@ -124,6 +141,9 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
             // Once menu scene is loaded, set players to spawn, if there are any
             playerInstantiate.SetAllPlayerSpawn();
         }
+
+        // Resets button objects after scene swaps
+        StartCoroutine(LoadingScreenManager.Instance.DisableButtonGameobjects());
     }
 
     private void ShowLoadingScreen()
