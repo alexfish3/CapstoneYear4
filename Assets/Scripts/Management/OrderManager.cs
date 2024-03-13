@@ -112,7 +112,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         {
             if (finalOrderActive && finalOrder.PlayerHolding != null)
             {
-                finalOrderValue += Time.deltaTime;
+                finalOrderValue += Time.deltaTime * goldIncrementMultiplyer;
             }
         }
         if (!spawnNormalPackages) { return; }

@@ -58,7 +58,7 @@ public class TutorialHandler : MonoBehaviour
             return;
 
         hasLearnt = true;
-        ball.SetBoostModifier(false);
+        //ball.SetBoostModifier(false);
         TutorialManager.Instance.IncrementAlumni(this);
         tutorialText.text = "";
     }
