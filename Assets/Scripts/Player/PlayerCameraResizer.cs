@@ -64,7 +64,9 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] MeshRenderer scooterModel;
     [SerializeField] DecalProjector[] logoDecal;
 
-    [SerializeField] Company displayCompany;
+    [SerializeField] CompanyInformation companyInfo;
+    public CompanyInformation CompanyInfo { get { return companyInfo; } }
+
 
     [Space(10)]
     [Header("Other")]
@@ -360,13 +362,12 @@ public class PlayerCameraResizer : MonoBehaviour
     /// </summary>
     public void InitalizeCompanyScooter(CompanyInformation companyInformation)
     {
+        companyInfo = companyInformation;
         scooterModel.material = companyInformation.scooterColorMaterial;
 
         foreach(DecalProjector decal in logoDecal)
         {
             decal.material = companyInformation.scooterDecalMaterial;
         }
-
-        displayCompany = companyInformation.companyName;
     }
 }

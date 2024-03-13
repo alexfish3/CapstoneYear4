@@ -67,7 +67,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != PlayerSelectScene.BuildIndex)
         {
             ShowLoadingScreen();
-            StartCoroutine(LoadSceneAsync(PlayerSelectScene.BuildIndex, loadingScreenDelay, true));
+            StartCoroutine(LoadSceneAsync(false, PlayerSelectScene.BuildIndex, loadingScreenDelay, true));
         }
     }
 
@@ -79,14 +79,14 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != GameScene.BuildIndex)
         {
             ShowLoadingScreen();
-            StartCoroutine(LoadSceneAsync(GameScene.BuildIndex, loadingScreenDelay, false));
+            StartCoroutine(LoadSceneAsync(true, GameScene.BuildIndex, loadingScreenDelay, false));
         }
     }
 
     ///<summary>
     /// Loads the scene async
     ///</summary>
-    private IEnumerator LoadSceneAsync(int sceneToLoad, float delayTime, bool spawnMenu)
+    private IEnumerator LoadSceneAsync(bool waitForConfirm, int sceneToLoad, float delayTime, bool spawnMenu)
     {
         // Sets gamestate to loading
         GameManager.Instance.SetGameState(GameState.Loading);
@@ -105,14 +105,22 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         {
             if (asyncLoad.progress >= 0.9f)
             {
-                Debug.Log("Loading Complete");
-
-                // Sets up the loading scene with the amount of players
-                LoadingScreenManager.Instance.InitalizeButtonGameobjects(PlayerInstantiate.Instance.PlayerCount);
-
-                enableConfirm = true;
                 sceneLoad = asyncLoad;
                 spawnMenuBool = spawnMenu;
+
+                // Wait for player confirm
+                if (waitForConfirm)
+                {
+                    // Sets up the loading scene with the amount of players
+                    LoadingScreenManager.Instance.InitalizeButtonGameobjects(PlayerInstantiate.Instance.PlayerInputs);
+                    enableConfirm = true;
+                }
+                // Auto Load
+                else if (!waitForConfirm)
+                {
+                    ConfirmLoad();
+                }
+
                 break;
             }
             yield return null;
@@ -131,8 +139,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     {
         if (sceneLoad == null)
             return;
-
-        Debug.Log("Scene Loaded Successfully");
 
         sceneLoad.allowSceneActivation = true;
 

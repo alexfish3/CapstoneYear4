@@ -7,6 +7,7 @@ public class CompanyInformation : ScriptableObject
 {
     [Header("Company Information")]
     public Company companyName;
+    public Color companyColor;
     public Material scooterColorMaterial;
     public Material scooterDecalMaterial;
 
