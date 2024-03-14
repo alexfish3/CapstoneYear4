@@ -19,6 +19,8 @@ public class OrderHandler : MonoBehaviour
     private Order order1 = null; // first order the player is holding
     private Order order2 = null; // second order the player is holding
 
+    [SerializeField] DrivingIndicators drivingIndicators; // Reference to driving indicator script on player
+
     private bool canTakeOrder;
     public bool CanTakeOrder { get { return canTakeOrder; } }
 
@@ -57,6 +59,8 @@ public class OrderHandler : MonoBehaviour
         ball = transform.parent.GetComponentInChildren<BallDriving>();
         soundPool = GetComponent<SoundPool>();
         qa = GetComponent<QAHandler>();
+
+        SetDrivingIndicators();
     }
 
     private void OnEnable()
@@ -100,12 +104,15 @@ public class OrderHandler : MonoBehaviour
                 soundPool.PlayOrderPickup();
                 inOrder.Pickup(this);
                 hasOrder = true;
+                
+                // Attach to order 2 position
                 if (order2 == null)
                 {
                     order2 = inOrder;
                     order2.transform.parent = order2Position;
                     order2.SetMeshPosition(order2Position.position);
                 }
+                // Attach to order 1 position
                 else
                 {
                     order1 = inOrder;
@@ -113,6 +120,8 @@ public class OrderHandler : MonoBehaviour
                     order1.SetMeshPosition(order1Position.position);
                 }
             }
+
+            SetDrivingIndicators();
         }
         ball.SetBoostModifier(hasOrder);
     }
@@ -148,6 +157,8 @@ public class OrderHandler : MonoBehaviour
             hasOrder = false;
         }
 
+        SetDrivingIndicators();
+
         numberHandler.UpdateScoreUI(score.ToString());
         ball.SetBoostModifier(hasOrder);
     }
@@ -169,8 +180,45 @@ public class OrderHandler : MonoBehaviour
             order2 = null;
         }
         if(shouldSpinout) { GotHit(); }
+
+        SetDrivingIndicators();
+
         hasOrder = false;
         ball.SetBoostModifier(hasOrder);
+    }
+
+    /// <summary>
+    /// This method sets the driving indicators on the player based on the best package the player is holding
+    /// </summary>
+    public void SetDrivingIndicators()
+    {
+        Constants.OrderValue bestOrderScore = 0;
+        try
+        {
+            bestOrderScore = GetBestOrder().Value;
+        }
+        catch
+        {
+            // Sets icon status to holding nothing 
+            drivingIndicators.SetRotationSprites(DrivingIndicators.IndicatorStatus.HoldingNothing);
+            return;
+        }
+
+        switch (bestOrderScore)
+        {
+            case Constants.OrderValue.Easy:
+                drivingIndicators.SetRotationSprites(DrivingIndicators.IndicatorStatus.HoldingEasy);
+                break;
+            case Constants.OrderValue.Medium:
+                drivingIndicators.SetRotationSprites(DrivingIndicators.IndicatorStatus.HoldingMedium);
+                break;
+            case Constants.OrderValue.Hard:
+                drivingIndicators.SetRotationSprites(DrivingIndicators.IndicatorStatus.HoldingHard);
+                break;
+            case Constants.OrderValue.Golden:
+                drivingIndicators.SetRotationSprites(DrivingIndicators.IndicatorStatus.HoldingGolden);
+                break;
+        }
     }
 
     /// <summary>
@@ -226,6 +274,8 @@ public class OrderHandler : MonoBehaviour
             hasOrder = false;
             ball.SetBoostModifier(hasOrder);
         }
+
+        SetDrivingIndicators();
     }
 
     /// <summary>
@@ -248,6 +298,8 @@ public class OrderHandler : MonoBehaviour
         victimPlayer.DropEverything(victimPlayer.order1Position.position, victimPlayer.order2Position.position);
         BallDriving victimControl = victimPlayer.gameObject.GetComponent<BallDriving>();
         victimControl.BounceOff(transform.position, victimControl.ClashForce * 0.5f);
+
+        SetDrivingIndicators();
     }
 
     /// <summary>

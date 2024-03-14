@@ -9893,7 +9893,7 @@ GameObject:
   - component: {fileID: 7314592526400082511}
   - component: {fileID: 8743856644518224088}
   m_Layer: 10
-  m_Name: Arrow
+  m_Name: Rotation Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9956,7 +9956,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 07f20ac2ce3910346966ce9c13e86038, type: 3}
-  m_Color: {r: 1, g: 0.9532509, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -21026,6 +21026,7 @@ MonoBehaviour:
   companyInfo: {fileID: 0}
   customizationSelector: {fileID: 1238175930791430519}
   ballDriving: {fileID: 3575753304509721870}
+  drivingIndicators: {fileID: 6612634177998966307}
   cameraLayer: 0
   nextFillSlot: 0
 --- !u!1 &1972777142083505637
@@ -26308,7 +26309,7 @@ GameObject:
   - component: {fileID: 764437467397047884}
   - component: {fileID: 5261810380282303847}
   m_Layer: 10
-  m_Name: Arrow
+  m_Name: Rotation Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26371,7 +26372,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 07f20ac2ce3910346966ce9c13e86038, type: 3}
-  m_Color: {r: 1, g: 0.9532509, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -32221,6 +32222,11 @@ MonoBehaviour:
   - {fileID: 6250616203581226616}
   - {fileID: 4815254111657331684}
   - {fileID: 1071194024074913370}
+  rotationSprites:
+  - {fileID: 6955364415175499480}
+  - {fileID: 8743856644518224088}
+  - {fileID: 5261810380282303847}
+  spriteOptions: []
   distanceScale: 10
   sizeValues: {x: 1, y: 100}
 --- !u!114 &909290580947496247
@@ -32236,6 +32242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberHandler: {fileID: 583497693855848728}
+  drivingIndicators: {fileID: 6612634177998966307}
   order1Position: {fileID: 7852903926308569364}
   order2Position: {fileID: 7504033612411268862}
   ball: {fileID: 3575753304509721870}
@@ -33628,7 +33635,7 @@ GameObject:
   - component: {fileID: 8113663447296400179}
   - component: {fileID: 6955364415175499480}
   m_Layer: 10
-  m_Name: Arrow
+  m_Name: Rotation Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33691,7 +33698,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 07f20ac2ce3910346966ce9c13e86038, type: 3}
-  m_Color: {r: 1, g: 0.9532509, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

@@ -13,6 +13,7 @@ public class CompanyInformation : ScriptableObject
 
     [Header("Player Information")]
     public RenderTexture playerTexture;
+    public Sprite[] playerIndicatorSprites;
 }
 
 public enum Company

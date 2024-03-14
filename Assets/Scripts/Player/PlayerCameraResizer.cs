@@ -72,6 +72,7 @@ public class PlayerCameraResizer : MonoBehaviour
     [Header("Other")]
     [SerializeField] GameObject customizationSelector;
     [SerializeField] BallDriving ballDriving;
+    [SerializeField] DrivingIndicators drivingIndicators;
     bool initalized = false;
     public int cameraLayer = 0;
     [SerializeField] int nextFillSlot = 0;
@@ -369,5 +370,7 @@ public class PlayerCameraResizer : MonoBehaviour
         {
             decal.material = companyInformation.scooterDecalMaterial;
         }
+
+        drivingIndicators.SetDrivingIndicatorsToCompany(companyInfo.playerIndicatorSprites);
     }
 }

@@ -13,9 +13,23 @@ public class DrivingIndicators : MonoBehaviour
     [SerializeField] List<Transform> playerCameraTransforms = new List<Transform>();
     [SerializeField] GameObject[] playersRotationObjects;
 
+    [Header("Rotation Sprite Options")]
+    [SerializeField] SpriteRenderer[] rotationSprites;
+    [SerializeField] Sprite[] spriteOptions;
+
     [Header("Distance")]
     [SerializeField] float distanceScale = 15f;
     [SerializeField] Vector2 sizeValues;
+
+    public enum IndicatorStatus
+    {
+        HoldingNothing,
+        HoldingEasy,
+        HoldingMedium,
+        HoldingHard,
+        HoldingGolden
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +62,11 @@ public class DrivingIndicators : MonoBehaviour
 
             playersRotationObjects[i].transform.localScale = new Vector3(sizeValue, sizeValue, sizeValue);
         }
+    }
+
+    public void SetDrivingIndicatorsToCompany(Sprite[] drivingIndicators)
+    {
+        spriteOptions = drivingIndicators;
     }
 
     public void UpdatePlayerReferencesForObjects()
@@ -86,6 +105,38 @@ public class DrivingIndicators : MonoBehaviour
                 PlayerCameraResizer.UpdatePlayerObjectLayer(needToSwitch, i, iconCamera);
                 counter++;
             }
+        }
+    }
+
+    public void SetRotationSprites(IndicatorStatus indicatorStatus)
+    {
+        switch(indicatorStatus)
+        {
+            case IndicatorStatus.HoldingNothing:
+                SetRotationSpritesSprite(spriteOptions[0]);
+                break;
+            case IndicatorStatus.HoldingEasy:
+                SetRotationSpritesSprite(spriteOptions[1]);
+                break;
+            case IndicatorStatus.HoldingMedium:
+                SetRotationSpritesSprite(spriteOptions[2]);
+                break;
+            case IndicatorStatus.HoldingHard:
+                SetRotationSpritesSprite(spriteOptions[3]);
+                break;
+            case IndicatorStatus.HoldingGolden:
+                SetRotationSpritesSprite(spriteOptions[4]);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SetRotationSpritesSprite(Sprite spriteToSet)
+    {
+        foreach(SpriteRenderer renderer in rotationSprites)
+        {
+            renderer.sprite = spriteToSet;
         }
     }
 }
