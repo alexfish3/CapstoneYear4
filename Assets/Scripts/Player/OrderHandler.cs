@@ -19,6 +19,9 @@ public class OrderHandler : MonoBehaviour
     private Order order1 = null; // first order the player is holding
     private Order order2 = null; // second order the player is holding
 
+    private bool canTakeOrder;
+    public bool CanTakeOrder { get { return canTakeOrder; } }
+
     [Tooltip("Positions the orders will snap to on the back of the scooter.")]
     [SerializeField] private Transform order1Position;
     [SerializeField] private Transform order2Position;
@@ -76,6 +79,8 @@ public class OrderHandler : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.T))
             DropEverything(order1Position.position, order2Position.position);
+
+        canTakeOrder = order1 == null || order2 == null;
     }
 
     /// <summary>
@@ -84,12 +89,17 @@ public class OrderHandler : MonoBehaviour
     /// <param name="inOrder">Order the player is trying to pick up</param>
     public void AddOrder(Order inOrder)
     {
+        if (inOrder == order1 || inOrder == order2)
+            return;
+
         if (inOrder.CanPickup || inOrder.PlayerDropped != this)
         {
             // will add order if it fits, elsewise will not do anything
             if (order1 == null || order2 == null)
             {
                 soundPool.PlayOrderPickup();
+                inOrder.Pickup(this);
+                hasOrder = true;
                 if (order2 == null)
                 {
                     order2 = inOrder;
@@ -102,8 +112,6 @@ public class OrderHandler : MonoBehaviour
                     order1.transform.parent = order1Position;
                     order1.SetMeshPosition(order1Position.position);
                 }
-                inOrder.Pickup(this);
-                hasOrder = true;
             }
         }
         ball.SetBoostModifier(hasOrder);

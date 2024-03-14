@@ -176,10 +176,10 @@ public class Order : MonoBehaviour
     /// </summary>
     public void Pickup(OrderHandler player)
     {
-        ResetMesh();
-
-        arrow.SetActive(true);
         playerHolding = player;
+
+        ResetMesh();
+        arrow.SetActive(true);
 
         // Removes the ui from all players
         //compassMarker.RemoveCompassUIFromAllPlayers();
@@ -209,10 +209,11 @@ public class Order : MonoBehaviour
     }
 
     /// <summary>
-    /// This method is "throws" the order in the air and then reinits it once the DOTween is complete. Meant for stealing.
+    /// This method "throws" the order in the air and then reinits it once the DOTween is complete. Meant for stealing.
     /// </summary>
     public void Drop(Vector3 newPosition)
     {
+        canPickup = false;
         ResetMesh();
 
         this.transform.parent = OrderManager.Instance.transform;
@@ -380,6 +381,9 @@ public class Order : MonoBehaviour
         playerHolding = null;
     }
 
+    /// <summary>
+    /// Resets the DOTween animations for the order.
+    /// </summary>
     private void ResetMesh()
     {
         floatyTween.Kill();

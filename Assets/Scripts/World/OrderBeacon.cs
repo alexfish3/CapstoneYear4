@@ -29,12 +29,15 @@ public class OrderBeacon : MonoBehaviour
 
     private Material cachedMat;
 
+    private bool canInteract;
+
     /// <summary>
     /// This method initializes the beacon. It sets the order the beacon is tracking, sets the color, and the position.
     /// </summary>
     /// <param name="</param>
     public void InitBeacon(Order inOrder, int orderIndex)
     {
+        canInteract = true;
         ToggleBeaconMesh(true);
         order = inOrder;
         meshRenderer.material = pickupMats[orderIndex];
@@ -67,6 +70,7 @@ public class OrderBeacon : MonoBehaviour
     /// <param name="dropoff">Dropoff location</param>
     public void SetDropoff(Transform dropoff)
     {
+        canInteract = true;
         this.transform.position = dropoff.position;
         this.transform.parent = OrderManager.Instance.transform;
         
@@ -95,6 +99,7 @@ public class OrderBeacon : MonoBehaviour
 
         customer.transform.parent = OrderManager.Instance.transform;
         this.transform.position = order.transform.position;
+        this.transform.parent = order.transform;
         ToggleBeaconMesh(true);
         meshRenderer.material.color = color;
         isPickup = true;
@@ -108,6 +113,7 @@ public class OrderBeacon : MonoBehaviour
     /// <param name="status">Enabled property of the mesh renderer</param>
     public void ToggleBeaconMesh(bool status)
     {
+        canInteract = status;
         meshRenderer.enabled = status;
         dissolveRend.enabled = status;
     }
@@ -146,22 +152,33 @@ public class OrderBeacon : MonoBehaviour
     }
 
     /// <summary>
-    /// Basic OnTriggerEnter, will execute whenever something enters the beacon's light.
+    /// Will execute whenever something enters the beacon's light.
     /// </summary>
     /// <param name="other"></param>
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
+        if (!canInteract || !order.CanPickup)
+            return;
+
         if (other.name == "Ball Of Fun")
         {
             Transform parent = other.transform.parent;
             OrderHandler orderHandler = parent.GetComponentInChildren<OrderHandler>();
             if (isPickup)
             {
-                orderHandler.AddOrder(order); // add the order if the beacon is a pickup beacon
+                if (orderHandler.CanTakeOrder)
+                {
+                    canInteract = false;
+                    orderHandler.AddOrder(order); // add the order if the beacon is a pickup beacon
+                }
             }
             else
             {
-                orderHandler.DeliverOrder(order); // deliver the order if the beacon is a dropoff beacon
+                if (order.PlayerHolding == orderHandler)
+                {
+                    canInteract = false;
+                    orderHandler.DeliverOrder(order); // deliver the order if the beacon is a dropoff beacon
+                }
             }
         }
     }
