@@ -118,6 +118,7 @@ Transform:
   - {fileID: 8538232330136513479}
   - {fileID: 7224742007730392868}
   - {fileID: 6920163334502025923}
+  - {fileID: 7053982873209658206}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9216095826110194695
@@ -132,9 +133,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67a0fa54a41369944bf61de302e9f86b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meshRenderer: {fileID: 4388523531314604654}
   compassMarker: {fileID: 4906676066496731464}
   customer: {fileID: 0}
+  posCheckOrigin: {fileID: 7053982873209658206}
+  meshRenderer: {fileID: 4388523531314604654}
   dissolveRend: {fileID: 8066127359285088311}
   dissolveMats:
   - {fileID: 2100000, guid: d3bc7801b9a5d3147a82c858bdd51c44, type: 2}
@@ -290,6 +292,37 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5736746076728585729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8775615275914551938
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7053982873209658206}
+  m_Layer: 28
+  m_Name: FlameGround
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7053982873209658206
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8775615275914551938}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.0694, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

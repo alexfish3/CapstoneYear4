@@ -274,7 +274,7 @@ public class Order : MonoBehaviour
     /// </summary>
     private void CalculateOrderPos()
     {
-        orderMeshObject.transform.position = ogMesh.transform.position;
+/*        orderMeshObject.transform.position = ogMesh.transform.position;
         int lm = 1 << 0; // default layer only
         RaycastHit hit;
 
@@ -283,7 +283,7 @@ public class Order : MonoBehaviour
             float diff = orderHeight - hit.distance;
             transform.position += diff * Vector3.up;
             Debug.Log($"Ray hit {hit.collider.name}, original distance is {hit.distance}, difference is {diff}");
-        }
+        }*/
     }
 
     /// <summary>

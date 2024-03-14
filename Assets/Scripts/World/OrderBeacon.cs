@@ -15,13 +15,17 @@ public class OrderBeacon : MonoBehaviour
     private bool isPickup = true;
     public bool IsPickup { get { return isPickup; } }
 
-    [SerializeField] private MeshRenderer meshRenderer; // renderer to change the color
     private Color color;
 
     [SerializeField] private CompassMarker compassMarker; // for the dropoff location on the compass marker
     public CompassMarker CompassMarker { get { return compassMarker; } }
 
     [SerializeField] private OrderGhost customer;
+
+    [SerializeField] private Transform posCheckOrigin;
+
+    [Header("Material Information")]
+    [SerializeField] private MeshRenderer meshRenderer; // renderer to change the color
     [SerializeField] private MeshRenderer dissolveRend;
     [SerializeField] private Material[] dissolveMats;
     [SerializeField] private Material[] pickupMats;
@@ -62,6 +66,8 @@ public class OrderBeacon : MonoBehaviour
             default:
                 break;
         }
+
+        CheckFlamePosition();
     }
 
     /// <summary>
@@ -86,6 +92,8 @@ public class OrderBeacon : MonoBehaviour
         order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
         // NOTE: if camera layers change it'll fuck with beacon rendering
         meshRenderer.gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer + 7;
+
+        CheckFlamePosition();
     }
 
     /// <summary>
@@ -105,6 +113,21 @@ public class OrderBeacon : MonoBehaviour
         isPickup = true;
         order.RemovePlayerHolding();
         meshRenderer.gameObject.layer = 0; // reset to default layer
+
+        CheckFlamePosition();
+    }
+
+    private void CheckFlamePosition()
+    {
+        int lm = 1 << 0; // default layer only
+        RaycastHit hit;
+
+        if (Physics.Raycast(dissolveRend.transform.position, Vector3.down, out hit, Mathf.Infinity, lm))
+        {
+            float diff = (dissolveRend.transform.position.y - posCheckOrigin.position.y) - hit.distance;
+            transform.position -= diff * Vector3.up;
+            Debug.Log($"Ray hit {hit.collider.name}, original distance is {hit.distance}, difference is {diff}");
+        }
     }
 
     /// <summary>
