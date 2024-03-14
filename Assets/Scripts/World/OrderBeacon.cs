@@ -22,8 +22,6 @@ public class OrderBeacon : MonoBehaviour
 
     [SerializeField] private OrderGhost customer;
 
-    [SerializeField] private Transform posCheckOrigin;
-
     [Header("Material Information")]
     [SerializeField] private MeshRenderer meshRenderer; // renderer to change the color
     [SerializeField] private MeshRenderer dissolveRend;
@@ -32,8 +30,10 @@ public class OrderBeacon : MonoBehaviour
     [SerializeField] private Material dropoffMat;
 
     private Material cachedMat;
-
     private bool canInteract;
+
+    private const float REND_HEIGHT = 1f; // for calculating the height of the flame
+    [SerializeField] private Transform flameChecker;
 
     /// <summary>
     /// This method initializes the beacon. It sets the order the beacon is tracking, sets the color, and the position.
@@ -101,6 +101,8 @@ public class OrderBeacon : MonoBehaviour
     /// </summary>
     public void ResetPickup()
     {
+        OrderManager.Instance.ReparentOrder(ref order);
+
         compassMarker.RemoveCompassUIFromAllPlayers();
         order.compassMarker.InitalizeCompassUIOnAllPlayers();
         meshRenderer.material = cachedMat;
@@ -119,13 +121,15 @@ public class OrderBeacon : MonoBehaviour
 
     private void CheckFlamePosition()
     {
+        dissolveRend.transform.localPosition = new Vector3(0, -0.0093f, 0); // hard coded value be careful
+        return;
         int lm = 1 << 0; // default layer only
         RaycastHit hit;
 
-        if (Physics.Raycast(dissolveRend.transform.position, Vector3.down, out hit, Mathf.Infinity, lm))
+        if (Physics.Raycast(flameChecker.transform.position, Vector3.down, out hit, Mathf.Infinity, lm))
         {
-            float diff = (dissolveRend.transform.position.y - posCheckOrigin.position.y) - hit.distance;
-            transform.position -= diff * Vector3.up;
+            float diff = (hit.distance - (REND_HEIGHT*2));
+            dissolveRend.transform.position += diff * Vector3.up;
             Debug.Log($"Ray hit {hit.collider.name}, original distance is {hit.distance}, difference is {diff}");
         }
     }

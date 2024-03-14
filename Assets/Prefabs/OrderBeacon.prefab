@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1867685644118948244}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.0148, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.0669644, y: 0.05863254, z: 1.0669644}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -118,7 +118,7 @@ Transform:
   - {fileID: 8538232330136513479}
   - {fileID: 7224742007730392868}
   - {fileID: 6920163334502025923}
-  - {fileID: 7053982873209658206}
+  - {fileID: 641337920684851595}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9216095826110194695
@@ -135,7 +135,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   compassMarker: {fileID: 4906676066496731464}
   customer: {fileID: 0}
-  posCheckOrigin: {fileID: 7053982873209658206}
   meshRenderer: {fileID: 4388523531314604654}
   dissolveRend: {fileID: 8066127359285088311}
   dissolveMats:
@@ -149,6 +148,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 812d0021bdbd25c44840a17098c8b023, type: 2}
   - {fileID: 2100000, guid: bc256a89d7bf83a4587ad81e21362049, type: 2}
   dropoffMat: {fileID: 2100000, guid: ea5f414c109d172489b9801027d213c3, type: 2}
+  flameChecker: {fileID: 641337920684851595}
 --- !u!114 &4906676066496731464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -266,6 +266,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6303189065804893695
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 641337920684851595}
+  m_Layer: 28
+  m_Name: Flame Checker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &641337920684851595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6303189065804893695}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.0376, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5736746076728585729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7915161555222000691
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,37 +323,6 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5736746076728585729}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8775615275914551938
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7053982873209658206}
-  m_Layer: 28
-  m_Name: FlameGround
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7053982873209658206
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8775615275914551938}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.0694, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

@@ -36,6 +36,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private bool cooledDown = true;
 
+    [Tooltip("Reference to the total order list.")]
+    [SerializeField] private GameObject totalOrderListGO;
+
     [Tooltip("Cooldown between order spawns")]
     [SerializeField] private float cooldownTime = 5f;
 
@@ -393,6 +396,15 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             default:
                 break;
         }
+    }
+
+    /// <summary>
+    /// Reparents an order to the total order list.
+    /// </summary>
+    /// <param name="inOrder"></param>
+    public void ReparentOrder(ref Order inOrder)
+    {
+        inOrder.transform.parent = totalOrderListGO.transform;
     }
 
     /// <summary>
