@@ -32,7 +32,7 @@ public class OrderBeacon : MonoBehaviour
     private Material cachedMat;
     private bool canInteract;
 
-    private const float REND_HEIGHT = 1f; // for calculating the height of the flame
+    private const float REND_HEIGHT = 1.9f; // for calculating the height of the flame
     [SerializeField] private Transform flameChecker;
 
     /// <summary>
@@ -78,7 +78,7 @@ public class OrderBeacon : MonoBehaviour
     {
         canInteract = true;
         this.transform.position = dropoff.position;
-        this.transform.parent = OrderManager.Instance.transform;
+        OrderManager.Instance.ReparentOrder(gameObject);
         
         customer.transform.position = dropoff.position;
         customer.transform.parent = this.transform;
@@ -101,7 +101,7 @@ public class OrderBeacon : MonoBehaviour
     /// </summary>
     public void ResetPickup()
     {
-        OrderManager.Instance.ReparentOrder(ref order);
+        OrderManager.Instance.ReparentOrder(order.gameObject);
 
         compassMarker.RemoveCompassUIFromAllPlayers();
         order.compassMarker.InitalizeCompassUIOnAllPlayers();
@@ -128,7 +128,7 @@ public class OrderBeacon : MonoBehaviour
 
         if (Physics.Raycast(flameChecker.transform.position, Vector3.down, out hit, Mathf.Infinity, lm))
         {
-            float diff = (hit.distance - (REND_HEIGHT*2));
+            float diff = hit.distance - REND_HEIGHT;
             dissolveRend.transform.position += diff * Vector3.up;
             Debug.Log($"Ray hit {hit.collider.name}, original distance is {hit.distance}, difference is {diff}");
         }

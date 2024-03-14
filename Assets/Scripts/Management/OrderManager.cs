@@ -402,7 +402,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// Reparents an order to the total order list.
     /// </summary>
     /// <param name="inOrder"></param>
-    public void ReparentOrder(ref Order inOrder)
+    public void ReparentOrder(GameObject inOrder)
     {
         inOrder.transform.parent = totalOrderListGO.transform;
     }
