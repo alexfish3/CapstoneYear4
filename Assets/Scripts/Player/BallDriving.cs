@@ -338,6 +338,8 @@ public class BallDriving : MonoBehaviour
 
         //Assigns drag
         sphereBody.drag = startingDrag;
+        if (forwardGear)
+            sphereBody.drag = startingDrag * (1 + Mathf.Clamp(RangeMutations.Map_Linear(currentVelocity, 0, 20, 1, 0), 0, 1));
         if (!grounded && !airboost)
         {
             sphereBody.drag = fallingDrag;
@@ -528,6 +530,8 @@ public class BallDriving : MonoBehaviour
         //Applies slow from holding the golden order
         if (orderHandler.HasGoldenOrder)
             totalForce *= goldenOrderMultiplier;
+
+        //force ranges from 0 to about ~45-46 at the highest
 
         //Adds the force to move forward
         if (grounded)
