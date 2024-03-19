@@ -150,10 +150,12 @@ public class Order : MonoBehaviour
                 break;
         }
 
+        // set mesh based on package type
         meshRenderer.material = orderMaterials[packageType];
         meshFilter.mesh = orderMesh[packageType];
         orderMeshObject.transform.localScale = new Vector3(meshScale[packageType], meshScale[packageType], meshScale[packageType]);
 
+        // beacon and compass marker information
         beacon.InitBeacon(this, packageType);
         compassMarker.icon = possiblePackageTypes[packageType];
         compassMarker.InitalizeCompassUIOnAllPlayers();

@@ -47,6 +47,7 @@ public class OrderBeacon : MonoBehaviour
         meshRenderer.material = pickupMats[orderIndex];
         cachedMat = meshRenderer.material;
         this.transform.position = order.transform.position;
+        meshRenderer.gameObject.layer = 0;
 
         // set the color of the dissolve
         switch(order.Value)
@@ -90,6 +91,7 @@ public class OrderBeacon : MonoBehaviour
         compassMarker.RemoveCompassUIFromAllPlayers();
 
         order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
+        
         // NOTE: if camera layers change it'll fuck with beacon rendering
         meshRenderer.gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer + 7;
 
@@ -121,17 +123,20 @@ public class OrderBeacon : MonoBehaviour
 
     private void CheckFlamePosition()
     {
-        dissolveRend.transform.localPosition = new Vector3(0, -0.0093f, 0); // hard coded value be careful
-        return;
+        dissolveRend.transform.gameObject.SetActive(false);
+        dissolveRend.transform.localPosition = new Vector3(0, 1, 0); // hard coded value be careful
         int lm = 1 << 0; // default layer only
         RaycastHit hit;
 
-        if (Physics.Raycast(flameChecker.transform.position, Vector3.down, out hit, Mathf.Infinity, lm))
+        if (Physics.Raycast(dissolveRend.transform.position, Vector3.down, out hit, Mathf.Infinity, lm))
         {
-            float diff = hit.distance - REND_HEIGHT;
-            dissolveRend.transform.position += diff * Vector3.up;
+            float diff = hit.distance;// - REND_HEIGHT;
+            dissolveRend.transform.position -= diff * Vector3.up;
+            dissolveRend.transform.localPosition += 0.059f * Vector3.up;
             Debug.Log($"Ray hit {hit.collider.name}, original distance is {hit.distance}, difference is {diff}");
         }
+
+        dissolveRend.transform.gameObject.SetActive(true);
     }
 
     /// <summary>
