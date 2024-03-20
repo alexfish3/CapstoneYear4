@@ -297,7 +297,7 @@ public class OrderHandler : MonoBehaviour
         }
         victimPlayer.DropEverything(victimPlayer.order1Position.position, victimPlayer.order2Position.position);
         BallDriving victimControl = victimPlayer.gameObject.GetComponent<BallDriving>();
-        victimControl.BounceOff(transform.position, victimControl.ClashForce * 0.5f);
+        if (victimControl != null) victimControl.BounceOff(transform.position, victimControl.ClashForce * 0.5f);
 
         SetDrivingIndicators();
     }
