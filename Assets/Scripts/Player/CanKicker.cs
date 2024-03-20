@@ -23,17 +23,17 @@ public class CanKicker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Kickable")
+        Kickable kickable = other.GetComponent<Kickable>();
+
+        if (other.tag == "Kickable" && !kickable.Kicked)
         {
             DoKick(other);            
-            other.gameObject.GetComponent<Kickable>().GetKicked(sphereCol);
+            kickable.GetKicked(sphereCol);
         }
     }
 
     public void DoKick(Collider col, float kickingModifier = 1.0f, Vector3? overridePosition = null)
     {
-        Physics.IgnoreCollision(sphereCol, col);
-
         Vector3 kickDirection = (col.transform.position - canKickingSpot.position).normalized;
         if (overridePosition != null)
         {

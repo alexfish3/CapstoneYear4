@@ -11,6 +11,7 @@ public class Kickable : MonoBehaviour
     private Dissolver dissolve;
 
     private bool kicked;
+    public bool Kicked => kicked;
 
     private float fadeTime = 1.0f;
 
@@ -74,8 +75,6 @@ public class Kickable : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
 
         dissolve.DissolveIn(fadeTime);
-        if (sphereBody != null) 
-            Physics.IgnoreCollision(sphereBody, GetComponent<Collider>(), false);
 
         rb.constraints = frozenAtStart ? RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.None;
         kicked = false;
