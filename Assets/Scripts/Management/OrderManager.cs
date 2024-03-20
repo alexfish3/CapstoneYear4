@@ -93,7 +93,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         HotKeys.Instance.onIncrementWave += IncrementWave;
         HotKeys.Instance.onDecrementWave += DecrementWave;
 
-        GameManager.Instance.OnSwapResults += ResetForNextGame;
+        GameManager.Instance.OnSwapMenu += ResetForNextGame;
     }
 
     private void OnDisable()
@@ -105,7 +105,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         HotKeys.Instance.onIncrementWave -= IncrementWave;
         HotKeys.Instance.onDecrementWave -= DecrementWave;
 
-        GameManager.Instance.OnSwapResults -= ResetForNextGame;
+        GameManager.Instance.OnSwapMenu -= ResetForNextGame;
     }
 
     private void Start()
