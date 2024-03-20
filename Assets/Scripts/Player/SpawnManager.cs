@@ -36,16 +36,16 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
 
     private void Start()
     {
-        gameManager.SetGameState(GameState.StartingCutscene);
+        //gameManager.SetGameState(GameState.StartingCutscene);
         // Set game to begin upon loading into scene
-        /*if (TutorialManager.Instance.ShouldTutorialize)
+        if (TutorialManager.Instance.ShouldTutorialize)
         {
             gameManager.SetGameState(GameState.StartingCutscene);
         }
         else
         {
             gameManager.SetGameState(GameState.GoldenCutscene);
-        }*/
+        }
     }
 
     ///<summary>

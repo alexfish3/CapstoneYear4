@@ -41,8 +41,8 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
         GameManager.Instance.OnSwapMenu += HideLoadingScreen;
         GameManager.Instance.OnSwapStartingCutscene += HideLoadingScreen;
-        
-        //GameManager.Instance.OnSwapGoldenCutscene += LoadFinalOrderScene;
+        GameManager.Instance.OnSwapGoldenCutscene += HideLoadingScreen;
+
     }
 
     private void OnDisable()
@@ -54,8 +54,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
         GameManager.Instance.OnSwapMenu -= HideLoadingScreen;
         GameManager.Instance.OnSwapStartingCutscene -= HideLoadingScreen;
-
-        //GameManager.Instance.OnSwapGoldenCutscene -= LoadFinalOrderScene;
+        GameManager.Instance.OnSwapGoldenCutscene -= HideLoadingScreen;
     }
 
     public void InvokeMenuSceneEvent() 

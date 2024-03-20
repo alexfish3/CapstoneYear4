@@ -477,6 +477,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void SpawnFinalOrder()
     {
+        return;
         Debug.Log("Spawn Final Order Start");
 
         //OnDeleteActiveOrders?.Invoke();

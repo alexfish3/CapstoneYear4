@@ -7,16 +7,12 @@ using UnityEngine;
 /// </summary>
 public class FinalOrder : MonoBehaviour
 {
-    private Order finalOrder;
-
-    private void Awake()
-    {
-        finalOrder = GetComponent<Order>();
-    }
+    [SerializeField] private Order finalOrder;
 
     void Start()
     {
-        OrderManager.Instance.AddOrder(finalOrder);
-        GameManager.Instance.SetGameState(GameState.GoldenCutscene);
+        finalOrder.InitOrder();
+        //finalOrder.InitOrder();
+        //GameManager.Instance.SetGameState(GameState.GoldenCutscene);
     }
 }

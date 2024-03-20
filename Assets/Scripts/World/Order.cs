@@ -95,7 +95,7 @@ public class Order : MonoBehaviour
         //GameManager.Instance.OnSwapGoldenCutscene -= EraseWhenSwappingToGold;
     }
 
-    private void Start()
+    private void Awake()
     {
         meshRenderer = orderMeshObject.GetComponent<MeshRenderer>();
         meshFilter = orderMeshObject.GetComponent<MeshFilter>();
@@ -106,11 +106,11 @@ public class Order : MonoBehaviour
 
     private void Update()
     {
-        if(GameManager.Instance.MainState == GameState.GoldenCutscene)
+        /*if(GameManager.Instance.MainState == GameState.GoldenCutscene)
         {
             return;
             EraseWhenSwappingToGold();
-        }
+        }*/
         meshRenderer.enabled = isActive;
         
         beacon.gameObject.SetActive(isActive);
