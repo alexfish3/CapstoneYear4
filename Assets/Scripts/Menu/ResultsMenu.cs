@@ -28,9 +28,15 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
         quitInfo.SetActive(false);
         resultsCanvas.enabled = true;
         StartCoroutine(QuitDelay());
+
         for (int i = 0; i < PlayerInstantiate.Instance.PlayerCount; i++)
         {
             OrderHandler currHandler = ScoreManager.Instance.GetHandlerOfIndex(i);
+
+            // Set player animations
+            Animator playerAnim = currHandler.transform.parent.GetComponent<PlayerCameraResizer>().playerAnimator;
+            playerAnim.SetInteger("End Status", i + 1);
+
             if (currHandler != null)
             {
                 playerImages[i].enabled = true;
@@ -56,7 +62,13 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
             displayText[i].enabled = false;
         }
 
-        //GameManager.Instance.SetGameState(GameState.Menu);
+        // Reset player result animations
+        for (int i = 0; i < PlayerInstantiate.Instance.PlayerCount; i++)
+        {
+            OrderHandler currHandler = ScoreManager.Instance.GetHandlerOfIndex(i);
+            Animator playerAnim = currHandler.transform.parent.GetComponent<PlayerCameraResizer>().playerAnimator;
+            playerAnim.SetInteger("End Status", 0);
+        }
     }
 
     private IEnumerator QuitDelay()

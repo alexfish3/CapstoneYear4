@@ -44,17 +44,6 @@ public class MenuGhostReveal : MonoBehaviour
             Debug.Log(num);
             yield return new WaitForSeconds(speed/ 100);
         }
-
-        //float revealCutoff = menuGhostRevealMaterial.GetFloat("_Cutoff");
-
-        //Debug.Log("The cutoff is " + revealCutoff);
-
-        //while (revealCutoff < 1.05f)
-        //{
-        //    revealCutoff += Time.deltaTime * 0.05f;
-        //    Debug.Log("The cutoff is " + revealCutoff);
-        //    menuGhostRevealMaterial.SetFloat("_Cutoff", revealCutoff);
-        //}
     }
 
 

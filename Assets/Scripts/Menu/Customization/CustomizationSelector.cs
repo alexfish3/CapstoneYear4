@@ -19,7 +19,7 @@ public class CustomizationSelector : MonoBehaviour
 
     [Header("References")]
     [SerializeField] GameObject selector;
-    [SerializeField] MeshRenderer ghostModel;
+    [SerializeField] SkinnedMeshRenderer ghostModel;
     [SerializeField] MeshRenderer ghostEyelid1;
     [SerializeField] MeshRenderer ghostEyelid2;
 

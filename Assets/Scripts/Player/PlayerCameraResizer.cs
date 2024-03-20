@@ -70,6 +70,7 @@ public class PlayerCameraResizer : MonoBehaviour
 
     [Space(10)]
     [Header("Other")]
+    public Animator playerAnimator;
     [SerializeField] GameObject customizationSelector;
     [SerializeField] BallDriving ballDriving;
     [SerializeField] DrivingIndicators drivingIndicators;

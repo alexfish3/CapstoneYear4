@@ -146,6 +146,9 @@ public class BallDriving : MonoBehaviour
     [Tooltip("How much speed is granted from the slipstream boost")]
     [SerializeField] private float slipstreamBoostAmount = 300.0f;
 
+    [Header("Animator Information")]
+    [SerializeField] Animator playerAnimator;
+
     [Header("Speed Lines")]
     [SerializeField] float speedLineValue = 1;
     Material speedLinesMain;
@@ -463,6 +466,11 @@ public class BallDriving : MonoBehaviour
         transform.eulerAngles = Vector3.Lerp(transform.eulerAngles, new Vector3(0, transform.eulerAngles.y + rotationAmount, 0), Time.deltaTime);
 
         ControlSpeedLines();
+
+        // Updates player driving animations
+
+        float speedValue = RangeMutations.Map_Linear(currentVelocity, 0, 30, 0, 10);
+        playerAnimator.SetFloat("Speed", speedValue);
     }
 
     /// <summary>
