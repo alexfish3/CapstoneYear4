@@ -8,9 +8,11 @@ public class Kickable : MonoBehaviour
     private Quaternion startRot;
 
     private Rigidbody rb;
-    private Fader fade;
+    private Dissolver dissolve;
 
-    private float fadeTime = 0.5f;
+    private bool kicked;
+
+    private float fadeTime = 1.0f;
 
     [Tooltip("Time after being kicked before respawning")]
     [SerializeField] private float respawnWaitTime = 10.0f;
@@ -27,7 +29,7 @@ public class Kickable : MonoBehaviour
     {
         startPos = transform.position;
         startRot = transform.rotation;
-        fade = GetComponent<Fader>();
+        dissolve = GetComponent<Dissolver>();
 
         rb = GetComponent<Rigidbody>();
 
@@ -47,8 +49,11 @@ public class Kickable : MonoBehaviour
     /// </summary>
     public void GetKicked(Collider sphereBody = null)
     {
+        if (kicked)
+            return;
         rb.constraints = RigidbodyConstraints.None;
         StartRespawn(sphereBody);
+        kicked = true;
     }
 
     /// <summary>
@@ -59,20 +64,21 @@ public class Kickable : MonoBehaviour
     {
         yield return new WaitForSeconds(respawnWaitTime);
 
-        fade.FadeOut(fadeTime);
+        dissolve.DissolveOut(fadeTime);
 
-        yield return new WaitForSeconds(fadeTime);
+        yield return new WaitForSeconds(fadeTime + 0.5f);
 
         transform.position = startPos;
         transform.rotation = startRot;
         rb.velocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
 
-        fade.Reset();
+        dissolve.DissolveIn(fadeTime);
         if (sphereBody != null) 
             Physics.IgnoreCollision(sphereBody, GetComponent<Collider>(), false);
 
         rb.constraints = frozenAtStart ? RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.None;
+        kicked = false;
     }
 
     private void StartRespawn(Collider sphereBody = null)

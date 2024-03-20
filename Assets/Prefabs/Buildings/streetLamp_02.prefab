@@ -211,7 +211,7 @@ PrefabInstance:
       addedObject: {fileID: -5434923895125979885}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9e00615e37d334a459cd97666ea55240, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1063289986031968862}
+      addedObject: {fileID: 6844715076666519466}
   m_SourcePrefab: {fileID: 100100000, guid: 9e00615e37d334a459cd97666ea55240, type: 3}
 --- !u!1 &2842366042724121101 stripped
 GameObject:
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnWaitTime: 4
   frozenAtStart: 0
---- !u!114 &1063289986031968862
+--- !u!114 &6844715076666519466
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,17 +310,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2842366042724121101}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42710fd87f7b6f0498875f90ed479c2f, type: 3}
+  m_Script: {fileID: 11500000, guid: af71e756e6c78bc4e8a2d532b3defcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  render: {fileID: 4355790814876244952}
+  mat: {fileID: 2100000, guid: a325750928f97d6489640e29fadd1357, type: 2}
 --- !u!4 &3186803025507541175 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9e00615e37d334a459cd97666ea55240, type: 3}
-  m_PrefabInstance: {fileID: 3148989254000510812}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &4355790814876244952 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 9e00615e37d334a459cd97666ea55240, type: 3}
   m_PrefabInstance: {fileID: 3148989254000510812}
   m_PrefabAsset: {fileID: 0}

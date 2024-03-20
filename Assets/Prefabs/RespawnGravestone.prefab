@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5349114834026511616}
   - component: {fileID: 2634943632340062778}
   - component: {fileID: -1610026411880427043}
-  - component: {fileID: -364064500279067276}
+  - component: {fileID: 7435157661869962245}
   m_Layer: 22
   m_Name: RespawnGravestone
   m_TagString: Kickable
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   respawnWaitTime: 7
   frozenAtStart: 0
---- !u!114 &-364064500279067276
+--- !u!114 &7435157661869962245
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,10 +143,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1814084137873696000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 42710fd87f7b6f0498875f90ed479c2f, type: 3}
+  m_Script: {fileID: 11500000, guid: af71e756e6c78bc4e8a2d532b3defcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  render: {fileID: 7777689917033590660}
+  mat: {fileID: 2100000, guid: a325750928f97d6489640e29fadd1357, type: 2}
 --- !u!1001 &8948215284918792960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -228,11 +228,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
---- !u!23 &7777689917033590660 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
-  m_PrefabInstance: {fileID: 8948215284918792960}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8909469271784117483 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7fa2af660ae84464a9fc28c0f2e5e285, type: 3}
