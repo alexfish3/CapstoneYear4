@@ -26,6 +26,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     [Header("Scene References")]
     [SerializeField] SceneField PlayerSelectScene;
     [SerializeField] SceneField GameScene;
+    [SerializeField] SceneField FinalOrderScene;
 
     AsyncOperation sceneLoad;
     bool spawnMenuBool;
@@ -40,6 +41,8 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
         GameManager.Instance.OnSwapMenu += HideLoadingScreen;
         GameManager.Instance.OnSwapStartingCutscene += HideLoadingScreen;
+        
+        //GameManager.Instance.OnSwapGoldenCutscene += LoadFinalOrderScene;
     }
 
     private void OnDisable()
@@ -51,6 +54,8 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
         GameManager.Instance.OnSwapMenu -= HideLoadingScreen;
         GameManager.Instance.OnSwapStartingCutscene -= HideLoadingScreen;
+
+        //GameManager.Instance.OnSwapGoldenCutscene -= LoadFinalOrderScene;
     }
 
     public void InvokeMenuSceneEvent() 
@@ -81,6 +86,15 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         {
             ShowLoadingScreen();
             StartCoroutine(LoadSceneAsync(true, GameScene.BuildIndex, loadingScreenDelay, false));
+        }
+    }
+
+    public void LoadFinalOrderScene()
+    {
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != FinalOrderScene.BuildIndex)
+        {
+            ShowLoadingScreen();
+            StartCoroutine(LoadSceneAsync(false, FinalOrderScene.BuildIndex, loadingScreenDelay, false));
         }
     }
 

@@ -86,12 +86,13 @@ public class Order : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapGoldenCutscene += EraseWhenSwappingToGold;
+        //GameManager.Instance.OnSwapGoldenCutscene += EraseWhenSwappingToGold;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapGoldenCutscene -= EraseWhenSwappingToGold;
+        //OrderManager.Instance.OnMainGameFinishes -= EraseWhenSwappingToGold;
+        //GameManager.Instance.OnSwapGoldenCutscene -= EraseWhenSwappingToGold;
     }
 
     private void Start()
@@ -105,6 +106,11 @@ public class Order : MonoBehaviour
 
     private void Update()
     {
+        if(GameManager.Instance.MainState == GameState.GoldenCutscene)
+        {
+            return;
+            EraseWhenSwappingToGold();
+        }
         meshRenderer.enabled = isActive;
         
         beacon.gameObject.SetActive(isActive);
@@ -125,6 +131,8 @@ public class Order : MonoBehaviour
     /// </summary>
     public void InitOrder(bool shouldAdd = true)
     {
+        OrderManager.Instance.OnMainGameFinishes += EraseWhenSwappingToGold;
+
         if (shouldAdd)
             OrderManager.Instance.AddOrder(this);
         
@@ -308,6 +316,7 @@ public class Order : MonoBehaviour
 
         OrderManager.Instance.IncrementCounters(value, -1);
         OrderManager.Instance.RemoveOrder(this);
+        OrderManager.Instance.OnMainGameFinishes -= EraseWhenSwappingToGold;
 
         if (value == Constants.OrderValue.Golden)
         {
@@ -329,6 +338,9 @@ public class Order : MonoBehaviour
         
         isActive = false;
         transform.position = pickup.position;
+
+        if(value != Constants.OrderValue.Golden)
+            OrderManager.Instance.ReparentOrder(gameObject);
 
         Debug.Log("Erase Order Finished");
     }
@@ -364,6 +376,7 @@ public class Order : MonoBehaviour
         if (value == Constants.OrderValue.Golden)
             return;
 
+        //OrderManager.Instance.ReparentOrder(gameObject);
         EraseOrder();
     }
 
