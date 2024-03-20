@@ -125,9 +125,11 @@ public class CutsceneManager : SingletonMonobehaviour<CutsceneManager>
         {
             case 0: // Begining Cutscene
                 GameManager.Instance.SetGameState(GameState.Tutorial);
+                Debug.Log("tutorial time");
                 break;
             case 1:
                 GameManager.Instance.SetGameState(GameState.FinalPackage);
+                Debug.Log("final package time");
                 break;
             default:
                 break;

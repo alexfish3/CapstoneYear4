@@ -79,8 +79,9 @@ public class OrderBeacon : MonoBehaviour
     {
         canInteract = true;
         this.transform.position = dropoff.position;
-        OrderManager.Instance.ReparentOrder(gameObject);
-        
+        //OrderManager.Instance.ReparentOrder(gameObject);
+        this.transform.parent = OrderManager.Instance.transform;
+
         customer.transform.position = dropoff.position;
         customer.transform.parent = this.transform;
         customer.InitCustomer();

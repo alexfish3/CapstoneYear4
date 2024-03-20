@@ -36,8 +36,16 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
 
     private void Start()
     {
-        // Set game to begin upon loading into scene
         gameManager.SetGameState(GameState.StartingCutscene);
+        // Set game to begin upon loading into scene
+        /*if (TutorialManager.Instance.ShouldTutorialize)
+        {
+            gameManager.SetGameState(GameState.StartingCutscene);
+        }
+        else
+        {
+            gameManager.SetGameState(GameState.GoldenCutscene);
+        }*/
     }
 
     ///<summary>
@@ -45,7 +53,7 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
     ///</summary>
     private void SpawnPlayersStartOfGame()
     {
-        GameObject[] spawnPoints = TutorialManager.Instance.ShouldTutorialize ? gameSpawnPositions : nonTutorialSpawnPositions;
+        GameObject[] spawnPoints = gameSpawnPositions;
         // Loops for all spawned players
         for (int i = 0; i <= Constants.MAX_PLAYERS; i++)
         {

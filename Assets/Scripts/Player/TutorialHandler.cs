@@ -36,6 +36,7 @@ public class TutorialHandler : MonoBehaviour
     /// </summary>
     public void ResetHandler()
     {
+        Debug.Log("resetting handler");
         hasLearnt = false;
         if (TutorialManager.Instance.ShouldTutorialize)
         {

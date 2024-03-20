@@ -92,6 +92,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapGoldenCutscene += SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave += IncrementWave;
         HotKeys.Instance.onDecrementWave += DecrementWave;
+
+        GameManager.Instance.OnSwapResults += ResetForNextGame;
     }
 
     private void OnDisable()
@@ -102,6 +104,13 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapGoldenCutscene -= SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave -= IncrementWave;
         HotKeys.Instance.onDecrementWave -= DecrementWave;
+
+        GameManager.Instance.OnSwapResults -= ResetForNextGame;
+    }
+
+    private void Start()
+    {
+        this.transform.parent = GameManager.Instance.transform;
     }
 
     private void Update()
@@ -109,6 +118,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(Input.GetKeyDown(KeyCode.Y))
         {
             OnDeleteActiveOrders?.Invoke();
+        }
+
+        if(Input.GetKeyDown(KeyCode.N))
+        {
+            waveTimer = 10f;
         }
 
         if (finalOrder != null)
@@ -204,7 +218,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void InitTutorial()
     {
-        for(int i=0;i<Constants.MAX_PLAYERS;i++)
+        TutorialManager.Instance.ShouldTutorialize = true;
+        for (int i=0;i<Constants.MAX_PLAYERS;i++)
         {
             if (PlayerInstantiate.Instance.PlayerInputs[i] == null)
                 continue;
@@ -219,7 +234,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     private void InitGame()
     {
-        finalOrder.EraseGoldWithoutDelivering();
+        //finalOrder.EraseGoldWithoutDelivering();
         OnDeleteActiveOrders?.Invoke();
 
         GetOrders();
@@ -248,8 +263,10 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         {
             if (!finalOrderActive)
             {
+                TutorialManager.Instance.ShouldTutorialize = false;
                 finalOrderActive = true;
                 OnMainGameFinishes?.Invoke();
+                MasterSkywalker();
                 StartCoroutine(PostGameClarity());
 
                 // sounds
@@ -265,6 +282,17 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             {
                 SoundManager.Instance.PlaySFX("bells", clockSource);
             }
+        }
+    }
+
+    /// <summary>
+    /// Unparents all the children.
+    /// </summary>
+    private void MasterSkywalker()
+    {
+        foreach(Transform child in transform)
+        {
+            ReparentOrder(child.gameObject);
         }
     }
 
@@ -295,6 +323,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// <param name="order">Order to be added to the list</param>
     public void AddOrder(Order order)
     {
+        if(order.Value == Constants.OrderValue.Golden)
+        {
+            finalOrder = order;
+        }
+
         if(!activeOrders.Contains(order))
         {
             activeOrders.Add(order);
@@ -404,6 +437,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// <param name="inOrder"></param>
     public void ReparentOrder(GameObject inOrder)
     {
+        if (GameManager.Instance.MainState == GameState.FinalPackage) // nothing to reparent to in the final scene
+            return;
+
         inOrder.transform.parent = totalOrderListGO.transform;
     }
 
@@ -431,6 +467,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         InitWave();
     }
 
+    public void SetFinalOrder(Order finalOrderIn)
+    {
+        finalOrder = finalOrderIn;
+    }
+
     /// <summary>
     /// For spawning the final order.
     /// </summary>
@@ -455,6 +496,14 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.SetGameState(GameState.Results);
     }
 
+    /// <summary>
+    /// Ensures next game will run smoothly.
+    /// </summary>
+    private void ResetForNextGame()
+    {
+        TutorialManager.Instance.ShouldTutorialize = true;
+        Destroy(this.gameObject);
+    }
     /// <summary>
     /// Shuffles the elements in a list.
     /// </summary>
@@ -568,6 +617,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         Time.timeScale = 0.5f;
         yield return new WaitForSeconds(postGameLinger/2);
         Time.timeScale = 1.0f;
-        GameManager.Instance.SetGameState(GameState.GoldenCutscene);
+        SceneManager.Instance.LoadFinalOrderScene();
+        //GameManager.Instance.SetGameState(GameState.GoldenCutscene);
     }
 }
