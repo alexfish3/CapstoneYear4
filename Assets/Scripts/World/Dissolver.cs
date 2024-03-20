@@ -20,7 +20,7 @@ public class Dissolver : MonoBehaviour
 
     private void Start()
     {
-        render = GetComponent<Renderer>();
+        render = GetComponentInChildren<Renderer>();
         oldMat = render.material;
         rb = GetComponent<Rigidbody>();
 
