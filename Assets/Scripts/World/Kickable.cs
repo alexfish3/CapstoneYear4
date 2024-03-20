@@ -17,7 +17,7 @@ public class Kickable : MonoBehaviour
     [Tooltip("Time after being kicked before respawning")]
     [SerializeField] private float respawnWaitTime = 10.0f;
 
-    [Tooltip("Whether this kickable is frozen in place until kicked. IE, whether it can be knocked over by other kickables being flung into it")]
+    [Tooltip("Whether this kickable is frozen in place until kicked.")]
     [SerializeField] private bool frozenAtStart = false;
 
     private IEnumerator respawnCoroutine;

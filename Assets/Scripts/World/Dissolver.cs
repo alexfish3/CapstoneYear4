@@ -7,9 +7,8 @@ using UnityEngine;
 
 public class Dissolver : MonoBehaviour
 {
-    [SerializeField] private Material mat;
-
-    private Material localMat;
+    [SerializeField] private Material dissolverMatReference;
+    Material dissolveMaterial;
     private Material oldMat;
     private Renderer render;
 
@@ -24,20 +23,24 @@ public class Dissolver : MonoBehaviour
         render = GetComponent<Renderer>();
         oldMat = render.material;
         rb = GetComponent<Rigidbody>();
+
+        dissolveMaterial = new Material(dissolverMatReference);
+        dissolveMaterial.SetTexture("_MainTexture", oldMat.GetTexture("_MainTex"));
+
     }
 
     public void DissolveOut(float time)
     {
-        render.material = mat;
+        render.material = dissolveMaterial;
         objectHeight = render.bounds.size.y;
-        render.material.SetFloat("_cutoffHeight", objectHeight);
+        render.material.SetFloat("_CutoffHeight", objectHeight);
         StartDissolve(false, time);
     }
 
     public void DissolveIn(float time) 
     {
         objectHeight = render.bounds.size.y;
-        render.material.SetFloat("_cutoffHeight", 0);
+        render.material.SetFloat("_CutoffHeight", 0);
         StartDissolve(true, time);
     }
 
@@ -56,7 +59,7 @@ public class Dissolver : MonoBehaviour
             while (height < objectHeight)
             {
                 height += (Time.deltaTime * modifier);
-                render.material.SetFloat("_cutoffHeight", height + rb.position.y);
+                render.material.SetFloat("_CutoffHeight", height + rb.position.y);
                 yield return null;
             }
             render.material = oldMat;
@@ -66,7 +69,7 @@ public class Dissolver : MonoBehaviour
             while (height > -objectHeight)
             {
                 height -= (Time.deltaTime * modifier);
-                render.material.SetFloat("_cutoffHeight", height + rb.position.y);
+                render.material.SetFloat("_CutoffHeight", height + rb.position.y);
                 yield return null;
             }
         }
