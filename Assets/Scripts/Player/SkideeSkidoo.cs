@@ -9,6 +9,9 @@ public class SkideeSkidoo : MonoBehaviour
 
     private BallDriving control;
 
+    private GameObject frontPos;
+    private GameObject backPos;
+
     private void Start()
     {
         control = GetComponent<BallDriving>();
@@ -18,10 +21,30 @@ public class SkideeSkidoo : MonoBehaviour
 
         frontTire.emitting = false;
         backTire.emitting = false;
+
+        frontPos = new GameObject("Front Position");
+        frontPos.transform.position = frontTire.transform.position;
+        frontPos.transform.rotation = frontTire.transform.rotation;
+        frontPos.transform.parent = transform;
+
+        backPos = new GameObject("Back Position");
+        backPos.transform.position = backTire.transform.position;
+        backPos.transform.rotation = backTire.transform.rotation;
+        backPos.transform.parent = transform;
+
+        frontTire.transform.parent = null;
+        backTire.transform.parent = null;
+        frontTire.gameObject.layer = 0;
+        backTire.gameObject.layer = 0;
     }
 
     private void Update()
     {
+        frontTire.transform.position = frontPos.transform.position;
+        frontTire.transform.rotation = frontPos.transform.rotation;
+        backTire.transform.position = backPos.transform.position;
+        backTire.transform.rotation = backPos.transform.rotation;
+
         frontTire.emitting = control.Grounded && control.Drifting;
         backTire.emitting = control.Grounded && control.Drifting;
     }
