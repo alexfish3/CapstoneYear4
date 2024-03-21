@@ -197,6 +197,7 @@ public class BallDriving : MonoBehaviour
     private Respawn respawn; // used to update the respawn point when grounded
     public Respawn Respawn { get { return respawn; } }
     private QAHandler qa;
+
     private float startingDrag;
     private PhysicMaterial pMat;
 
@@ -212,6 +213,7 @@ public class BallDriving : MonoBehaviour
     private float rotationAmount; //the amount to turn on any given frame
 
     private bool reverseGear, forwardGear, grounded, airboost;
+    public bool Grounded => grounded;
     private bool canDrive = true;
     private bool brakeChecking = false;
     private bool stopped = true;
@@ -222,6 +224,7 @@ public class BallDriving : MonoBehaviour
 
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
+    public bool Drifting => drifting;
     private int driftDirection; //-1 is drifting leftward, 1 is drifting rightward
     private bool driftBoostAchieved, firstFrameDriftBoostFlag = false;
     private float driftPoints = 0.0f;
@@ -337,7 +340,7 @@ public class BallDriving : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.B))
             ResetBoost();
 
-        transform.position = sphere.transform.position - new Vector3(0, 1, 0); //makes the scooter follow the sphere
+        transform.position = sphere.transform.position - new Vector3(0, 0.97f, 0); //makes the scooter follow the sphere
 
         //Assigns drag
         sphereBody.drag = startingDrag;
