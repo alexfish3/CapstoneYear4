@@ -75,6 +75,7 @@ public class TutorialHandler : MonoBehaviour
                 TeachSteal();
                 break;
             default:
+                FinishTutorial();
                 break;
         }
     }

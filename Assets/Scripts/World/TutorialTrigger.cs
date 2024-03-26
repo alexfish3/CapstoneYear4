@@ -6,7 +6,7 @@ using UnityEngine;
 public class TutorialTrigger : MonoBehaviour
 {
     // have enum here
-    [Header("The next tutorial in the sequence.")]
+    [Tooltip("The next tutorial in the sequence.")]
     [SerializeField] private TutorialType nextTutorial;
 
 
