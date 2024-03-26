@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum TutorialType
+{
+    Boost,
+    Pickup,
+    Steal,
+    Dropoff
+}
+
 public class TutorialManager : SingletonMonobehaviour<TutorialManager>
 {
     private bool shouldTutorialize = true;
