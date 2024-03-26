@@ -53,11 +53,15 @@ public class TutorialHandler : MonoBehaviour
     /// <summary>
     /// For when the handler completes the tutorial (boosts through the wall).
     /// </summary>
-    public void TeachHandler()
+    public void TeachHandler() // add tutorial type param here
     {
         if (hasLearnt)
             return;
 
+
+        // have some switch statement here to change the text based on tutorial type
+
+        // final tutorial
         hasLearnt = true;
         //ball.SetBoostModifier(false);
         TutorialManager.Instance.IncrementAlumni(this);

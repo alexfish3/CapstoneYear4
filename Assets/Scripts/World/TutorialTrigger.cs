@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class TutorialTrigger : MonoBehaviour
 {
+    // have enum here
+
     [Tooltip("Reference to the ground to be disabled once tutorial is complete.")]
     [SerializeField] private GameObject tutorialGround;
 
@@ -27,7 +29,7 @@ public class TutorialTrigger : MonoBehaviour
         TutorialHandler handler = other.transform.parent.GetComponentInChildren<TutorialHandler>();
         if (handler != null)
         {
-            handler.TeachHandler();
+            handler.TeachHandler(); // pass through tutorial type
         }
     }
 
