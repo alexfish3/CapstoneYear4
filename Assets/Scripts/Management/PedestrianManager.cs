@@ -11,22 +11,24 @@ public class CivilianManager : MonoBehaviour
     [SerializeField] private GameObject civilianPrefab;
 
     [Header("Waypoints")]
-    [Tooltip("List of waypoints, which should all rest a slight distance above ground level")]
-    [SerializeField] private Transform[] waypoints;
     [Tooltip("How many waypoints each *pedestrian* should have in their net")]
     [SerializeField] private int pedestrianWaypointCount = 4;
 
     private GameObject[] pedestrians;
+    private List<Transform> waypoints;
 
     private void Start()
     {
+        waypoints = new List<Transform>();
+        foreach (Transform child in transform)
+        {
+            waypoints.Add(child);
+        }
+
         pedestrians = new GameObject[pedestrianCount];
 
         for (int i = 0; i < pedestrianCount; i++)
         {
-            
-            
-
             Transform[] chosenPoints = new Transform[pedestrianWaypointCount];
 
             ShuffleWaypoints();
@@ -49,7 +51,7 @@ public class CivilianManager : MonoBehaviour
     /// </summary>
     private void ShuffleWaypoints()
     {
-        for (int n = waypoints.Length - 1; n > 0; n--)
+        for (int n = waypoints.Count - 1; n > 0; n--)
         {
             int k = Random.Range(0, n + 1);
 
