@@ -9,8 +9,8 @@ public class DrivingIndicators : MonoBehaviour
     PlayerInstantiate playerInstantiate;
     [SerializeField] PlayerInput thisPlayer;
     [SerializeField] GameObject thisPlayerGameobject;
-    [SerializeField] List<GameObject> playersToKeepTrackOf = new List<GameObject>();
-    [SerializeField] List<Transform> playerCameraTransforms = new List<Transform>();
+    [SerializeField] GameObject[] playersToKeepTrackOf;
+    [SerializeField] Transform[] playerCameraTransforms;
     [SerializeField] GameObject[] playersRotationObjects;
 
     [Header("Rotation Sprite Options")]
@@ -40,14 +40,12 @@ public class DrivingIndicators : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.K))
-        {
-            UpdatePlayerReferencesForObjects();
-        }
-
         // Rotate independently
-        for (int i = 0; i <= playersToKeepTrackOf.Count - 1; i++)
+        for (int i = 0; i <= playersToKeepTrackOf.Length - 1; i++)
         {
+            if (playersToKeepTrackOf[i] == null)
+                continue;
+
             playersRotationObjects[i].transform.rotation = Quaternion.Euler(new Vector3(
                 playerCameraTransforms[i].eulerAngles.x,
                 playerCameraTransforms[i].eulerAngles.y,
@@ -55,8 +53,11 @@ public class DrivingIndicators : MonoBehaviour
         }
 
         // scale independently
-        for (int i = 0; i <= playersToKeepTrackOf.Count - 1; i++)
+        for (int i = 0; i <= playersToKeepTrackOf.Length - 1; i++)
         {
+            if (playersToKeepTrackOf[i] == null)
+                continue;
+
             float distance = Vector3.Distance(thisPlayerGameobject.transform.position, playersToKeepTrackOf[i].transform.position);
             float sizeValue = Mathf.Clamp(distance / distanceScale, sizeValues.x, sizeValues.y);
 
@@ -80,30 +81,28 @@ public class DrivingIndicators : MonoBehaviour
         }
 
         // Loops and adds player references
-        int counter = 0;
-        playersToKeepTrackOf.Clear();
-        playerCameraTransforms.Clear();
+        playersToKeepTrackOf = new GameObject[4];
+        playerCameraTransforms = new Transform[4];
 
-        for(int i = 0; i < playerInstantiate.PlayerInputs.Length; i++)
+        for (int i = 0; i < playerInstantiate.PlayerInputs.Length; i++)
         {
             PlayerInput playerInput = playerInstantiate.PlayerInputs[i];
 
             if (playerInput != null && playerInput != thisPlayer)
             {
-                playersToKeepTrackOf.Add(playerInput.gameObject.GetComponentInChildren<BallDriving>().gameObject);
+                playersToKeepTrackOf[i] = playerInput.gameObject.GetComponentInChildren<BallDriving>().gameObject;
 
-                playerCameraTransforms.Add(playerInput.gameObject.GetComponent<PlayerCameraResizer>().PlayerReferenceCamera.transform);
+                playerCameraTransforms[i] = playerInput.gameObject.GetComponent<PlayerCameraResizer>().PlayerReferenceCamera.transform;
 
-                playersRotationObjects[counter].SetActive(true);
+                playersRotationObjects[i].SetActive(true);
 
                 List<GameObject> needToSwitch = new List<GameObject>
                 {
-                    playersRotationObjects[counter],
-                    playersRotationObjects[counter].transform.GetChild(0).gameObject
+                    playersRotationObjects[i],
+                    playersRotationObjects[i].transform.GetChild(0).gameObject
                 };
 
                 PlayerCameraResizer.UpdatePlayerObjectLayer(needToSwitch, i, iconCamera);
-                counter++;
             }
         }
     }

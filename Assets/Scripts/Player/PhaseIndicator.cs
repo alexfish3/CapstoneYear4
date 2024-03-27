@@ -11,7 +11,8 @@ public class PhaseIndicator : MonoBehaviour
 {
     bool initalized = false;
 
-    [SerializeField] Slider hornSlider;
+    [SerializeField] SliderBar hornSliderLeft;
+    [SerializeField] SliderBar hornSliderRight;
     [SerializeField] float intensity = 3;
 
     [Range(0f, 2f)]
@@ -71,7 +72,8 @@ public class PhaseIndicator : MonoBehaviour
     /// </summary>
     public void SetHornColor(float passIn)
     {
-        hornSlider.value = passIn;
+        hornSliderLeft.value = passIn;
+        hornSliderRight.value = passIn;
         hornGlowValue = passIn;
 
         float intensityFactor = Mathf.Pow(2, (hornGlowValue + intensity));

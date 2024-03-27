@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HornColor : MonoBehaviour
 {
     [SerializeField] Color charging, full;
-    [SerializeField] Slider slider;
+    [SerializeField] SliderBar slider;
     [SerializeField] Image sliderImage;
 
     private void Start()

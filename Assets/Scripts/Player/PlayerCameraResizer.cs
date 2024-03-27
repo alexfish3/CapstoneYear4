@@ -76,6 +76,7 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] DrivingIndicators drivingIndicators;
     bool initalized = false;
     public int cameraLayer = 0;
+    public int playerWorldLayer = 0;
     [SerializeField] int nextFillSlot = 0;
 
     private void Start()
@@ -130,17 +131,30 @@ public class PlayerCameraResizer : MonoBehaviour
 
         // Gets camera layer based on player
         if (nextFillSlot == 1)
+        {
             cameraLayer = 17;
+            playerWorldLayer = 10;
+        }
         else if (nextFillSlot == 2)
+        {
             cameraLayer = 18;
+            playerWorldLayer = 11;
+        }
         else if (nextFillSlot == 3)
+        {
             cameraLayer = 19;
+            playerWorldLayer = 12;
+        }
         else if (nextFillSlot == 4)
+        {
             cameraLayer = 20;
+            playerWorldLayer = 13;
+        }
 
         virtualCameraMain.layer = cameraLayer;
 
         // Add via bitwise to include the camera layer
+        referenceCam.cullingMask |= (1 << playerWorldLayer);
         referenceCam.cullingMask |= (1 << cameraLayer);
 
         // Updates camera layers to be spesific player renderers
@@ -179,13 +193,13 @@ public class PlayerCameraResizer : MonoBehaviour
 
         // Gets camera layer based on player
         if (playerPos == 0)
-            layer = 10;
+            layer = 24;// 10;
         else if (playerPos == 1)
-            layer = 11;
+            layer = 25;// 11;
         else if (playerPos == 2)
-            layer = 12;
+            layer = 26;// 12;
         else if (playerPos == 3)
-            layer = 13;
+            layer = 27;// 13;
 
         foreach (GameObject obj in objectsToChange)
         {
@@ -239,6 +253,7 @@ public class PlayerCameraResizer : MonoBehaviour
         {
             referenceCamData.SetRenderer(nextFillSlot + 4);
             referenceCam.cullingMask = phasingMask;
+
             // Add via bitwise to include the phase layer
             referenceCam.cullingMask |= (1 << 8);
             cameraCollidder.m_AvoidObstacles = false;
@@ -252,6 +267,7 @@ public class PlayerCameraResizer : MonoBehaviour
         }
 
         // Add via bitwise to include the camera layer
+        referenceCam.cullingMask |= (1 << playerWorldLayer);
         referenceCam.cullingMask |= (1 << cameraLayer);
     }
 
