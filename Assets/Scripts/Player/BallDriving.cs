@@ -670,7 +670,7 @@ public class BallDriving : MonoBehaviour
         int lm = 513; //layers 0 and 9
         RaycastHit hit, waterHit;
 
-        if (Physics.Raycast(groundDetector.transform.position, Vector3.down, out hit, GROUNDCHECK_DISTANCE))
+        if (Physics.Raycast(groundDetector.transform.position, Vector3.down, out hit, GROUNDCHECK_DISTANCE, lm))
             grounded = true;
         else
         {
