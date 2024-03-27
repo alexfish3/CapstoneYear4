@@ -200,7 +200,39 @@ public class Order : MonoBehaviour
         }
         playerDropped = null;
         beacon.SetDropoff(dropoff);
-        
+        beacon.gameObject.SetActive(true);
+        compassMarker.SwitchCompassUIForPlayers(true);
+
+        // start tweening
+        floatyTween = orderMeshObject.transform.DORotate(meshRotation, rotationDuration, RotateMode.FastBeyond360)
+            .SetLoops(-1, LoopType.Incremental)
+            .SetRelative()
+            .SetEase(Ease.Linear);
+        bobbyTween = orderMeshObject.transform.DOLocalMove(bobPosition, bobbingDuration)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetRelative()
+            .SetEase(Ease.Linear);
+        arrowTween = arrow.transform.DOLocalMove(bobPosition, bobbingDuration)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetRelative()
+            .SetEase(Ease.Linear);
+    }
+
+    /// <summary>
+    /// Similar to pickup but for the cardboard cutout to hold the tutorial order.
+    /// </summary>
+    public void CardboardHold(CutoutHandler player)
+    {
+        playerHolding = player;
+
+        ResetMesh();
+
+        // Removes the ui from all players
+        //compassMarker.RemoveCompassUIFromAllPlayers();
+
+        playerDropped = null;
+        beacon.SetDropoff(dropoff);
+        beacon.gameObject.SetActive(false);
         compassMarker.SwitchCompassUIForPlayers(true);
 
         // start tweening
