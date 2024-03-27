@@ -15,6 +15,8 @@ public class Order : MonoBehaviour
     [Tooltip("Order will spawn at runtime. Use this for the tutorial orders.")]
     [SerializeField] private bool isActive = false;
     public bool IsActive { get { return isActive; } set { isActive = value; } }
+    private bool stealActive = false;
+    public bool StealActive { get { return stealActive; } set { stealActive = value; } }
 
     [Header("Positional Information")]
     [Tooltip("How far above the ground the order is by default.")]
@@ -111,7 +113,7 @@ public class Order : MonoBehaviour
             return;
             EraseWhenSwappingToGold();
         }*/
-        meshRenderer.enabled = isActive;
+        meshRenderer.enabled = isActive || stealActive;
         
         beacon.gameObject.SetActive(isActive);
         
@@ -221,19 +223,34 @@ public class Order : MonoBehaviour
     /// <summary>
     /// Similar to pickup but for the cardboard cutout to hold the tutorial order.
     /// </summary>
-    public void CardboardHold(CutoutHandler player)
+    public void CardboardHold()
     {
-        playerHolding = player;
+        int packageType = 0;
+        switch (value)
+        {
+            case Constants.OrderValue.Easy:
+                packageType = 0;
+                break;
+            case Constants.OrderValue.Medium:
+                packageType = 1;
+                break;
+            case Constants.OrderValue.Hard:
+                packageType = 2;
+                break;
+            case Constants.OrderValue.Golden:
+                packageType = 3;
+                break;
+        }
+
+        // set mesh based on package type
+        meshRenderer.material = orderMaterials[packageType];
+        meshFilter.mesh = orderMesh[packageType];
+        orderMeshObject.transform.localScale = new Vector3(meshScale[packageType], meshScale[packageType], meshScale[packageType]);
+        stealActive = true;
 
         ResetMesh();
 
-        // Removes the ui from all players
-        //compassMarker.RemoveCompassUIFromAllPlayers();
-
-        playerDropped = null;
-        beacon.SetDropoff(dropoff);
         beacon.gameObject.SetActive(false);
-        compassMarker.SwitchCompassUIForPlayers(true);
 
         // start tweening
         floatyTween = orderMeshObject.transform.DORotate(meshRotation, rotationDuration, RotateMode.FastBeyond360)

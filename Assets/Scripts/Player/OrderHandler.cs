@@ -29,6 +29,7 @@ public class OrderHandler : MonoBehaviour
     [SerializeField] private Transform order2Position;
     [Tooltip("Reference to the ball for event subscription.")]
     [SerializeField] private BallDriving ball;
+    private TutorialHandler tutHandler;
     public bool IsBoosting { get { return ball.Boosting; } }
     private bool hasGoldenOrder;
     public bool HasGoldenOrder { get { return hasGoldenOrder; } set { hasGoldenOrder = value; } }
@@ -59,6 +60,7 @@ public class OrderHandler : MonoBehaviour
         ball = transform.parent.GetComponentInChildren<BallDriving>();
         soundPool = GetComponent<SoundPool>();
         qa = GetComponent<QAHandler>();
+        tutHandler = GetComponent<TutorialHandler>();
 
         SetDrivingIndicators();
     }
@@ -123,7 +125,8 @@ public class OrderHandler : MonoBehaviour
 
             SetDrivingIndicators();
         }
-        ball.SetBoostModifier(hasOrder);
+        if(tutHandler.HasLearnt)
+            ball.SetBoostModifier(hasOrder);
     }
 
     /// <summary>

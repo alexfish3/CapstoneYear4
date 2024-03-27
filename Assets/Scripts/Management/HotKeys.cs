@@ -25,13 +25,13 @@ public class HotKeys : SingletonMonobehaviour<HotKeys>
                 GameManager.Instance.SetGameState(GameState.StartingCutscene);
             }
         }
-        if(Input.GetKeyDown(KeyCode.Alpha5))
+        /*if(Input.GetKeyDown(KeyCode.Alpha5)) redone in order manager
         {
             if (GameManager.Instance.MainState != GameState.Menu && GameManager.Instance.MainState != GameState.PlayerSelect)
             {
                 GameManager.Instance.SetGameState(GameState.GoldenCutscene);
             }
-        }
+        }*/
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
             if (GameManager.Instance.MainState != GameState.Menu && GameManager.Instance.MainState != GameState.PlayerSelect)

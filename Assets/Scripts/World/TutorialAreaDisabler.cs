@@ -13,13 +13,13 @@ public class TutorialAreaDisabler : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Instance.OnSwapBegin += DisableGround;
-        GameManager.Instance.OnSwapStartingCutscene += () => TutorialGO.SetActive(true);
+        //GameManager.Instance.OnSwapStartingCutscene += () => TutorialGO.SetActive(true);
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnSwapBegin -= DisableGround;
-        GameManager.Instance.OnSwapStartingCutscene -= () => TutorialGO.SetActive(true);
+        //GameManager.Instance.OnSwapStartingCutscene -= () => TutorialGO.SetActive(true);
     }
 
     private void DisableGround()

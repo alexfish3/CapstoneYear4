@@ -6,6 +6,7 @@ using TMPro;
 public class TutorialHandler : MonoBehaviour
 {
     private bool hasLearnt = false;
+    public bool HasLearnt { get { return hasLearnt; } }
 
     public delegate void LearntDelegate();
     public LearntDelegate OnTutorialized;

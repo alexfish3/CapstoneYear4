@@ -125,6 +125,12 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             waveTimer = 10f;
         }
 
+        if(Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            wave = 3;
+            InitWave();
+        }
+
         if (finalOrder != null)
         {
             if (finalOrderActive && finalOrder.PlayerHolding != null)
