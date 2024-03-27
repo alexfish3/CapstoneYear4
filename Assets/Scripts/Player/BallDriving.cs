@@ -255,8 +255,6 @@ public class BallDriving : MonoBehaviour
 
     private float csv;
 
-    [SerializeField] private GameObject groundDetector;
-
     private bool dirtyTerrainRespawn = false;
     public bool DirtyTerrainRespawn { get { return dirtyTerrainRespawn; } set { dirtyTerrainRespawn = value; } }
 
@@ -670,7 +668,7 @@ public class BallDriving : MonoBehaviour
         int lm = 513; //layers 0 and 9
         RaycastHit hit, waterHit;
 
-        if (Physics.Raycast(groundDetector.transform.position, Vector3.down, out hit, GROUNDCHECK_DISTANCE, lm))
+        if (Physics.Raycast(scooterNormal.transform.position, Vector3.down, out hit, GROUNDCHECK_DISTANCE, lm))
             grounded = true;
         else
         {
@@ -726,7 +724,7 @@ public class BallDriving : MonoBehaviour
 
         if (!dirtyTerrainRespawn)
         {
-            if (Physics.Raycast(groundDetector.transform.position, Vector3.down, out waterHit, WATERCHECK_DISTANCE))
+            if (Physics.Raycast(scooterNormal.transform.position, Vector3.down, out waterHit, WATERCHECK_DISTANCE))
             {
                 if (waterHit.collider.tag == "Water")
                 {
