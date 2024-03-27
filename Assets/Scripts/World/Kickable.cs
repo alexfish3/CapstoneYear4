@@ -39,7 +39,7 @@ public class Kickable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Kickable")
+        if (other.tag == "Kickable" && other.GetComponent<Kickable>().Kicked)
         {
             GetKicked();
         }
