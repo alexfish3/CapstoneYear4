@@ -118,6 +118,13 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void AddPlayerReference(PlayerInput playerInput)
     {
+        if(playerInput.currentControlScheme != "Gamepad")
+        {
+            Debug.Log("Hit Mouse or Keyboard");
+            Destroy(playerInput.gameObject);
+            return;
+        }
+
         // If player spawn is disabled
         if(allowPlayerSpawn == false && playerCount >= 1)
         {

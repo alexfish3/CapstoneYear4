@@ -11,6 +11,7 @@ public class BoostPadUpdate : MonoBehaviour
     [SerializeField] bool added = false;
 
     [SerializeField] float angle;
+    [SerializeField] float extraAngle;
 
     private void Start()
     {
@@ -37,7 +38,7 @@ public class BoostPadUpdate : MonoBehaviour
         var xDistance = playerPassin.transform.position.x - this.transform.position.x;
         var zDistance = playerPassin.transform.position.z - this.transform.position.z;
 
-        angle = (Mathf.Atan2(zDistance, xDistance) * Mathf.Rad2Deg) + gameObject.transform.rotation.y;
+        angle = (Mathf.Atan2(zDistance, xDistance) * Mathf.Rad2Deg) + extraAngle;
 
         meshRenderers[playerPosition].material.SetFloat("_RotateAxis", angle);
 
