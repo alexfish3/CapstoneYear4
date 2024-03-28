@@ -344,16 +344,10 @@ public class BallDriving : MonoBehaviour
         sphereBody.drag = startingDrag;
         if (forwardGear)
             sphereBody.drag = startingDrag * (1 + Mathf.Clamp(RangeMutations.Map_Linear(currentVelocity, 0, 20, 1, 0), 0, 1));
-        if (!grounded && !airboost)
-        {
+        if (!grounded)
             sphereBody.drag = fallingDrag;
-            if (boosting)
-                airboost = true;
-        }
-        if (boosting)
+        if (boosting && grounded)
             sphereBody.drag = boostingDrag;
-        if (grounded)
-            airboost = false;
 
         if (!canDrive)
             return;
