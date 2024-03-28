@@ -18,6 +18,12 @@ public class TutorialHandler : MonoBehaviour
     [Tooltip("Text shown on the driving canvas when the player is being tutorialized.")]
     [SerializeField] private TextMeshProUGUI tutorialText;
 
+    [Header("Tutorial Text")]
+    [SerializeField] private string boostInstructions;
+    [SerializeField] private string pickupInstructions;
+    [SerializeField] private string stealInstructions;
+    [SerializeField] private GameObject tutorialImage;
+
     private void OnEnable()
     {
         GameManager.Instance.OnSwapStartingCutscene += ResetHandler;
@@ -42,6 +48,7 @@ public class TutorialHandler : MonoBehaviour
         if (TutorialManager.Instance.ShouldTutorialize)
         {
             ball.HardCodeBoostModifier(tutorialBoostMod);
+            tutorialImage.SetActive(true);
             TeachBoosting();
         }
         else
@@ -76,19 +83,18 @@ public class TutorialHandler : MonoBehaviour
                 TeachSteal();
                 break;
             default:
-                FinishTutorial();
                 break;
         }
     }
 
     private void TeachBoosting()
     {
-        tutorialText.text = "Press A to Boost";
+        tutorialText.text = boostInstructions;
     }
 
     private void TeachPickup()
     {
-        tutorialText.text = "Drive into the beacon to pickup an order";
+        tutorialText.text = pickupInstructions;
     }
 
     private void TeachDropoff()
@@ -99,7 +105,7 @@ public class TutorialHandler : MonoBehaviour
 
     private void TeachSteal()
     {
-        tutorialText.text = "Steal a players order by hitting them while you're boosting";
+        tutorialText.text = stealInstructions;
     }
 
     private void FinishTutorial()
@@ -109,5 +115,6 @@ public class TutorialHandler : MonoBehaviour
         ball.SetBoostModifier(true);
         TutorialManager.Instance.IncrementAlumni(this);
         tutorialText.text = "";
+        tutorialImage.SetActive(false);
     }
 }

@@ -86,7 +86,7 @@ public class DynamicNumberUI : MonoBehaviour
             {
                 if (!OrderManager.Instance.FinalOrderActive)
                 {
-                    if (OrderManager.Instance.GameTimer < 10f && OrderManager.Instance.GameTimer > 0f)
+                    if ((int)OrderManager.Instance.GameTimer < 10 && (int)OrderManager.Instance.GameTimer > 0)
                     {
                         SetFinalCountdown((int)OrderManager.Instance.GameTimer);
                     }
