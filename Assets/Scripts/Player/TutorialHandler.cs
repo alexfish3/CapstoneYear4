@@ -27,10 +27,12 @@ public class TutorialHandler : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Instance.OnSwapStartingCutscene += ResetHandler;
+        GameManager.Instance.OnSwapGoldenCutscene += () => TeachHandler(TutorialType.Dropoff);
     }
     private void OnDisable()
     {
         GameManager.Instance.OnSwapStartingCutscene -= ResetHandler;
+        GameManager.Instance.OnSwapGoldenCutscene -= () => TeachHandler(TutorialType.Dropoff);
     }
 
     private void Start()
