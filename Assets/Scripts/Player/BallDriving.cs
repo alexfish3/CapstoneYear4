@@ -1049,6 +1049,7 @@ public class BallDriving : MonoBehaviour
         StopEndBoost();
         phaseIndicator.SetHornColor(1);
         boostAble = true;
+        boosting = false;
     }
 
     /// <summary>
