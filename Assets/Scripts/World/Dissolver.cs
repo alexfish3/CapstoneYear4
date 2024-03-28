@@ -26,7 +26,7 @@ public class Dissolver : MonoBehaviour
 
         dissolveMaterial = new Material(dissolverMatReference);
         dissolveMaterial.SetTexture("_MainTexture", oldMat.GetTexture("_MainTex"));
-
+        dissolveMaterial.SetTexture("_NormalMap", oldMat.GetTexture("_BumpMap"));
     }
 
     public void DissolveOut(float time)
