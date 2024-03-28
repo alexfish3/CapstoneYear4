@@ -539,7 +539,7 @@ public class BallDriving : MonoBehaviour
         //Adds the force to move forward
         if (grounded)
         {
-            if (!onMovingPlatform && respawn != null)
+            if (respawn != null)
                 respawn.LastGroundedPos = sphere.transform.position;
 
             if (forwardGear)
