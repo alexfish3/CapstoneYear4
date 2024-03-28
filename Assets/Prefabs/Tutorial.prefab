@@ -1592,6 +1592,7 @@ Transform:
   m_Children:
   - {fileID: 4023800149993434250}
   - {fileID: 8642888575582467046}
+  - {fileID: 640823188589459757}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3370839494094737696
@@ -1884,7 +1885,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextTutorial: 3
-  tutorialGround: {fileID: 2624714754689217869}
 --- !u!1 &3809009757783490765
 GameObject:
   m_ObjectHideFlags: 0
@@ -3529,6 +3529,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5063814619645942623}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &7825076782610131957
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 640823188589459757}
+  - component: {fileID: 1763763016448761047}
+  m_Layer: 0
+  m_Name: CutoutManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &640823188589459757
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7825076782610131957}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4282568517586348556}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1763763016448761047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7825076782610131957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cb50305151259b4bba3621a1531395b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cutouts:
+  - {fileID: 4975771172780167170}
+  - {fileID: 2219150781216209570}
+  - {fileID: 4619205043026763848}
+  - {fileID: 7421750568024382943}
 --- !u!1 &8118657551378847859
 GameObject:
   m_ObjectHideFlags: 0
@@ -3836,7 +3885,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextTutorial: 2
-  tutorialGround: {fileID: 1629087231043401368}
 --- !u!1 &8412882016829462613
 GameObject:
   m_ObjectHideFlags: 0
@@ -4194,7 +4242,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextTutorial: 1
-  tutorialGround: {fileID: 6065792562353600177}
 --- !u!1001 &4491041643876264
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6629,6 +6676,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GhostCutout (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 1387046671970736324, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9056347354989039957, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
@@ -6690,6 +6741,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+--- !u!114 &7421750568024382943 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7975646841735501610, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+  m_PrefabInstance: {fileID: 599095687320816373}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 048a056794b295347a7bd23636299303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8502498909125499808 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9056347354989039957, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
@@ -17051,6 +17113,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GhostCutout (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1387046671970736324, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9056347354989039957, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
@@ -17112,6 +17178,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+--- !u!114 &4975771172780167170 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7975646841735501610, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+  m_PrefabInstance: {fileID: 3144160218333349672}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 048a056794b295347a7bd23636299303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6200567047530157693 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9056347354989039957, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
@@ -18101,6 +18178,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GhostCutout (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 1387046671970736324, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9056347354989039957, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
@@ -18162,6 +18243,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+--- !u!114 &4619205043026763848 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7975646841735501610, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+  m_PrefabInstance: {fileID: 3365743669235808098}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 048a056794b295347a7bd23636299303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &5988413008323962423 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9056347354989039957, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
@@ -40454,6 +40546,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GhostCutout (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 1387046671970736324, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9056347354989039957, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.4
@@ -40520,6 +40616,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9056347354989039957, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
   m_PrefabInstance: {fileID: 8098370892569013640}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2219150781216209570 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7975646841735501610, guid: 68df78a134f060f4586fd1c63263d8dc, type: 3}
+  m_PrefabInstance: {fileID: 8098370892569013640}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 048a056794b295347a7bd23636299303, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8107355471713931441
 PrefabInstance:
   m_ObjectHideFlags: 0
