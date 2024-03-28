@@ -28,6 +28,10 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     [SerializeField] SceneField GameScene;
     [SerializeField] SceneField FinalOrderScene;
 
+    [SerializeField] private Sprite mainTut;
+    [SerializeField] private Sprite finalTut;
+    [SerializeField] private Image tutorialImage;
+
     AsyncOperation sceneLoad;
     bool spawnMenuBool;
 
@@ -84,6 +88,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         Debug.Log("Load game scene");
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != GameScene.BuildIndex)
         {
+            tutorialImage.sprite = mainTut;
             ShowLoadingScreen();
             StartCoroutine(LoadSceneAsync(true, GameScene.BuildIndex, loadingScreenDelay, false));
         }
@@ -94,8 +99,9 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         Debug.Log("Load final order scene");
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != FinalOrderScene.BuildIndex)
         {
+            tutorialImage.sprite = finalTut;
             ShowLoadingScreen();
-            StartCoroutine(LoadSceneAsync(false, FinalOrderScene.BuildIndex, loadingScreenDelay, false));
+            StartCoroutine(LoadSceneAsync(true, FinalOrderScene.BuildIndex, loadingScreenDelay, false));
         }
     }
 
