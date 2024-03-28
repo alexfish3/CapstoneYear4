@@ -1045,8 +1045,11 @@ public class BallDriving : MonoBehaviour
     private void ResetBoost()
     {
         StopBoostCooldown();
+        StopBoostActive();
+        StopEndBoost();
         phaseIndicator.SetHornColor(1);
         boostAble = true;
+        boosting = false;
     }
 
     /// <summary>
