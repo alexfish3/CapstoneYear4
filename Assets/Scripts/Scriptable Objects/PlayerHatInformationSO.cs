@@ -13,5 +13,6 @@ public class PlayerHatInformationSO : ScriptableObject
 
     [Header("Transform Controls")]
     public Vector3 hatPosition;
+    public Vector3 hatRotation;
     public Vector3 hatScale;
 }

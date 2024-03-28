@@ -41,7 +41,6 @@ public class MenuGhostReveal : MonoBehaviour
         {
             float num = (1 / 100f) * (i + 1);
             menuGhostRevealMaterial.SetFloat("_Cutoff", num);
-            Debug.Log(num);
             yield return new WaitForSeconds(speed/ 100);
         }
     }

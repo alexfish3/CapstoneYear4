@@ -183,6 +183,7 @@ public class CustomizationSelector : MonoBehaviour
             hatModel.material = hatInfo.hatMaterial;
 
             hatModel.gameObject.transform.localPosition = hatInfo.hatPosition;
+            hatModel.gameObject.transform.localRotation = Quaternion.Euler(hatInfo.hatRotation.x, hatInfo.hatRotation.y, hatInfo.hatRotation.z);
             hatModel.gameObject.transform.localScale = hatInfo.hatScale;
         }
         else
