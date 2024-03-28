@@ -81,7 +81,8 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///</summary>
     private void LoadGameScene()
     {
-        if(UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != GameScene.BuildIndex)
+        Debug.Log("Load game scene");
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != GameScene.BuildIndex)
         {
             ShowLoadingScreen();
             StartCoroutine(LoadSceneAsync(true, GameScene.BuildIndex, loadingScreenDelay, false));
@@ -90,6 +91,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
     public void LoadFinalOrderScene()
     {
+        Debug.Log("Load final order scene");
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != FinalOrderScene.BuildIndex)
         {
             ShowLoadingScreen();
@@ -102,6 +104,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///</summary>
     private IEnumerator LoadSceneAsync(bool waitForConfirm, int sceneToLoad, float delayTime, bool spawnMenu)
     {
+        Debug.Log("Begin Loading");
         // Sets gamestate to loading
         GameManager.Instance.SetGameState(GameState.Loading);
 
