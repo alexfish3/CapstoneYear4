@@ -8,7 +8,9 @@ public class CivilianManager : MonoBehaviour
     [Tooltip("How many civilians to create")]
     [SerializeField] private int pedestrianCount = 10;
     [Tooltip("Civilian prefab reference")]
-    [SerializeField] private GameObject civilianPrefab;
+    [SerializeField] private GameObject[] civilianPrefabs;
+    [Tooltip("Civilian mayor prefab reference")]
+    [SerializeField] private GameObject mayorPrefab;
 
     [Header("Waypoints")]
     [Tooltip("How many waypoints each *pedestrian* should have in their net")]
@@ -37,7 +39,13 @@ public class CivilianManager : MonoBehaviour
                 chosenPoints[j] = waypoints[j];
             }
 
-            GameObject pedestrian = Instantiate(civilianPrefab, chosenPoints[0].position, Quaternion.identity);
+            GameObject pedestrian;
+
+            if (i == 0)
+                pedestrian = Instantiate(mayorPrefab, chosenPoints[0].position, Quaternion.identity);
+            else
+                pedestrian = Instantiate(civilianPrefabs[Random.Range(0, civilianPrefabs.Length)], chosenPoints[0].position, Quaternion.identity);
+
             CivilianAgent pedestrianAgent = pedestrian.GetComponent<CivilianAgent>();
 
             //pedestrian.transform.position = chosenPoints[0].position;
