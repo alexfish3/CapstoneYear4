@@ -500,6 +500,8 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         if (sceneManager.EnableConfirm == false)
             return;
 
+        Debug.LogError("CONFIRM LOAD 2");
+
         LoadingScreenManager.Instance.ConfirmButton(playerIndexToReadyUp);
 
         playerLoadingConfirm[playerIndexToReadyUp] = true;

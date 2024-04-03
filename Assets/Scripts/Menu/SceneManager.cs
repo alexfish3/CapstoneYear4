@@ -143,6 +143,8 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Single);
         asyncLoad.allowSceneActivation = false;
 
+        yield return new WaitForSeconds(delayTime);
+
         // Wait until the asynchronous scene is allowed to be activated
         while (!asyncLoad.allowSceneActivation)
         {
@@ -151,18 +153,18 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
                 sceneLoad = asyncLoad;
                 spawnMenuBool = spawnMenu;
 
-                yield return new WaitForSeconds(delayTime);
-
                 // Wait for player confirm
                 if (waitForConfirm)
                 {
                     // Sets up the loading scene with the amount of players
                     LoadingScreenManager.Instance.InitalizeButtonGameobjects(PlayerInstantiate.Instance.PlayerInputs);
                     enableConfirm = true;
+                    break;
                 }
                 // Auto Load
                 else if (!waitForConfirm)
                 {
+                    Debug.LogError("CONFIRM LOAD 1");
                     ConfirmLoad();
                 }
 
@@ -174,6 +176,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
     public void ConfirmLoad()
     {
+        enableConfirm = false;
         OnConfirmToLoad?.Invoke();
     }
 
@@ -182,6 +185,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///</summary>
     public void SwapToSceneAfterConfirm()
     {
+        Debug.LogError("LOAD THE SCENE");
         if (sceneLoad == null)
             return;
 
