@@ -33,6 +33,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     [SerializeField] private Image tutorialImage;
 
     AsyncOperation sceneLoad;
+    Coroutine sceneLoadCoroutune;
     bool spawnMenuBool;
 
     private void Start()
@@ -72,11 +73,18 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///</summary>
     private void LoadMenuScene()
     {
-        Debug.Log("Load menu");
+        Debug.LogError("Load menu");
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != PlayerSelectScene.BuildIndex)
         {
+            // Stops Corutine
+            if(sceneLoadCoroutune != null)
+            {
+                StopCoroutine(sceneLoadCoroutune);
+                sceneLoadCoroutune = null;
+            }
+
             ShowLoadingScreen();
-            StartCoroutine(LoadSceneAsync(false, PlayerSelectScene.BuildIndex, loadingScreenDelay, true));
+            sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(false, PlayerSelectScene.BuildIndex, loadingScreenDelay, true));
         }
     }
 
@@ -85,23 +93,37 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///</summary>
     private void LoadGameScene()
     {
-        Debug.Log("Load game scene");
+        Debug.LogError("Load game scene");
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != GameScene.BuildIndex)
         {
+            // Stops Corutine
+            if (sceneLoadCoroutune != null)
+            {
+                StopCoroutine(sceneLoadCoroutune);
+                sceneLoadCoroutune = null;
+            }
+
             tutorialImage.sprite = mainTut;
             ShowLoadingScreen();
-            StartCoroutine(LoadSceneAsync(true, GameScene.BuildIndex, loadingScreenDelay, false));
+            sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(true, GameScene.BuildIndex, loadingScreenDelay, false));
         }
     }
 
     public void LoadFinalOrderScene()
     {
-        Debug.Log("Load final order scene");
+        Debug.LogError("Load final order scene");
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != FinalOrderScene.BuildIndex)
         {
+            // Stops Corutine
+            if (sceneLoadCoroutune != null)
+            {
+                StopCoroutine(sceneLoadCoroutune);
+                sceneLoadCoroutune = null;
+            }
+
             tutorialImage.sprite = finalTut;
             ShowLoadingScreen();
-            StartCoroutine(LoadSceneAsync(true, FinalOrderScene.BuildIndex, loadingScreenDelay + 5f, false));
+            sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(true, FinalOrderScene.BuildIndex, loadingScreenDelay, false));
         }
     }
 
