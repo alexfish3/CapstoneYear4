@@ -126,7 +126,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         // Wait until the asynchronous scene is allowed to be activated
         while (!asyncLoad.allowSceneActivation)
         {
-            if (asyncLoad.progress >= 0.9f)
+            if (asyncLoad.progress >= 0.99f)
             {
                 sceneLoad = asyncLoad;
                 spawnMenuBool = spawnMenu;
