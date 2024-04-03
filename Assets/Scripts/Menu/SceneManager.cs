@@ -101,7 +101,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         {
             tutorialImage.sprite = finalTut;
             ShowLoadingScreen();
-            StartCoroutine(LoadSceneAsync(true, FinalOrderScene.BuildIndex, loadingScreenDelay, false));
+            StartCoroutine(LoadSceneAsync(true, FinalOrderScene.BuildIndex, loadingScreenDelay + 5f, false));
         }
     }
 
@@ -121,8 +121,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Single);
         asyncLoad.allowSceneActivation = false;
 
-        yield return new WaitForSeconds(delayTime);
-
         // Wait until the asynchronous scene is allowed to be activated
         while (!asyncLoad.allowSceneActivation)
         {
@@ -130,6 +128,8 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
             {
                 sceneLoad = asyncLoad;
                 spawnMenuBool = spawnMenu;
+
+                yield return new WaitForSeconds(delayTime);
 
                 // Wait for player confirm
                 if (waitForConfirm)

@@ -27,13 +27,16 @@ public class Dissolver : MonoBehaviour
         dissolveMaterial = new Material(dissolverMatReference);
         dissolveMaterial.SetTexture("_MainTexture", oldMat.GetTexture("_MainTex"));
         dissolveMaterial.SetTexture("_NormalMap", oldMat.GetTexture("_BumpMap"));
+
+        render.material = dissolveMaterial;
+        objectHeight = render.bounds.size.y;
+        render.material.SetFloat("_CutoffHeight", 2048);
     }
 
     public void DissolveOut(float time)
     {
-        render.material = dissolveMaterial;
         objectHeight = render.bounds.size.y;
-        render.material.SetFloat("_CutoffHeight", objectHeight);
+        render.material.SetFloat("_CutoffHeight", objectHeight + rb.position.y + 0.1f);
         StartDissolve(false, time);
     }
 
@@ -62,7 +65,7 @@ public class Dissolver : MonoBehaviour
                 render.material.SetFloat("_CutoffHeight", height + rb.position.y);
                 yield return null;
             }
-            render.material = oldMat;
+            render.material.SetFloat("_CutoffHeight", 2048);
         }
         else
         {
