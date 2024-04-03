@@ -12,7 +12,7 @@ using UnityEngine;
 
 public class OrderManager : SingletonMonobehaviour<OrderManager>
 {
-    private bool canSpawnOrders = true; // whether or not the manager can spawn orders
+    private bool canSpawnOrders = true; // determining if the current number of orders is below the wave value
     public bool CanSpawnOrders { get { return canSpawnOrders; } set { canSpawnOrders = value; } }
 
     [Header("Game Information")]
@@ -272,6 +272,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 TutorialManager.Instance.ShouldTutorialize = false;
                 finalOrderActive = true;
                 OnMainGameFinishes?.Invoke();
+
+                StopEasySpawn();
+                StopMediumSpawn();
+                StopHardSpawn();
+
                 MasterSkywalker();
                 StartCoroutine(PostGameClarity());
 

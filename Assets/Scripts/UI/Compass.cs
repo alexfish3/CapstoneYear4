@@ -93,6 +93,7 @@ public class Compass : MonoBehaviour
     ///</summary>
     public void AddCompassMarker(CompassMarker marker)
     {
+        Debug.Log("added icon: " + marker.icon.name);
         // Creates new object
         GameObject newMarker = Instantiate(iconPrefab, compassImage.transform);
         CompassIconUI compassIconUI = newMarker.GetComponent<CompassIconUI>();
