@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class RespawnManager : SingletonMonobehaviour<RespawnManager>
 {
-    [Tooltip("Parent Game Object for the respawn points of the main map.")]
-    [SerializeField] private GameObject mainMapRSPParent;
+    [Tooltip("Parent Game Object for the respawn points.")]
+    [SerializeField] private GameObject RSPParent;
 
-    [Tooltip("Parent Game Object for the respawn points of the final order sequence map.")]
-    [SerializeField] private GameObject finalMapRSPParent;
+    /*[Tooltip("Parent Game Object for the respawn points of the final order sequence map.")]
+    [SerializeField] private GameObject finalMapRSPParent;*/
 
     [Tooltip("Will return any respawn point less than this distance, even if it's not technically the closest.")]
     [SerializeField] private float closeEnough = 10f;
 
     private RespawnPoint[] respawnPoints;
 
-    private void OnEnable()
+    /*private void OnEnable()
     {
         GameManager.Instance.OnSwapStartingCutscene += InitMainRSPs;
         GameManager.Instance.OnSwapGoldenCutscene += InitFinalRSPs;
@@ -25,18 +25,11 @@ public class RespawnManager : SingletonMonobehaviour<RespawnManager>
     {
         GameManager.Instance.OnSwapStartingCutscene -= InitMainRSPs;
         GameManager.Instance.OnSwapGoldenCutscene -= InitFinalRSPs;
-    }
+    }*/
 
-    // for events
-
-    private void InitMainRSPs()
+    private void Start()
     {
-        InitRespawnPoints(mainMapRSPParent);
-    }
-
-    private void InitFinalRSPs()
-    {
-        InitRespawnPoints(finalMapRSPParent);
+        InitRespawnPoints(RSPParent);
     }
 
     /// <summary>

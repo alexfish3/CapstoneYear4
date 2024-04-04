@@ -265,7 +265,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         }
         catch
         {
-            if (!finalOrderActive)
+            if (!finalOrderActive) // this is where post game clarity happens
             {
                 TutorialManager.Instance.ShouldTutorialize = false;
                 finalOrderActive = true;

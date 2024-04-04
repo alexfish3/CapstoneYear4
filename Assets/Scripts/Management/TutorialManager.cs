@@ -22,13 +22,15 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapTutorial += SkipTutorial;
+        GameManager.Instance.OnSwapBegin += handlers.Clear;
+        GameManager.Instance.OnSwapGoldenCutscene += SkipTutorial;
         shouldTutorialize = true;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapTutorial -= SkipTutorial;
+        GameManager.Instance.OnSwapBegin -= handlers.Clear;
+        GameManager.Instance.OnSwapGoldenCutscene -= SkipTutorial;
     }
     /// <summary>
     /// Adds a tutorial handler to a list if it's not already there.
@@ -51,17 +53,15 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
     }
 
     /// <summary>
-    /// Called when tutorial state is set, skips tutorial if player toggles it.
+    /// Skips the tutorial in the event that a hotkey is pressed.
     /// </summary>
     public void SkipTutorial()
     {
-        handlers.Clear();
-
         if (shouldTutorialize)
             return;
 
+        handlers.Clear();
+
         OnTutorialComplete?.Invoke();
-        
-        GameManager.Instance.SetGameState(GameState.Begin);
     }
 }
