@@ -231,6 +231,7 @@ public class BallDriving : MonoBehaviour
     private float driftBoost = 0.0f;
     private int driftTier = 0;
     private bool moveOnTransform = false;
+    private bool isFrozen = false;
 
     private bool groundBoostFlag = false;
     private bool groundSlowFlag = false;
@@ -914,7 +915,7 @@ public class BallDriving : MonoBehaviour
     /// <param name="WestFaceState">The state of the south face button, passed by the event</param>
     private void BoostFlag(bool SouthFaceState)
     {
-        if (boostAble && !callToDrift && !drifting && !reverseGear && !spinningOut) //& by Tally Hall
+        if (boostAble && !callToDrift && !drifting && !reverseGear && !spinningOut && !isFrozen) //& by Tally Hall
         {
             StartBoostActive();
             OnBoostStart?.Invoke();
@@ -1240,6 +1241,10 @@ public class BallDriving : MonoBehaviour
         canDrive = !toFreeze;
         Debug.Log($"Can Drive : {canDrive}");
         sphereBody.constraints = toFreeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
+
+        // stop boost crap
+        isFrozen = toFreeze;
+        ResetBoost();
 
         Debug.Log("Freeze Ball Was Successful");
     }
