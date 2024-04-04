@@ -89,7 +89,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapTutorial += InitTutorial;
         GameManager.Instance.OnSwapBegin += InitGame;
         GameManager.Instance.OnSwapGoldenCutscene += DisableSpawning;
-        GameManager.Instance.OnSwapGoldenCutscene += SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave += IncrementWave;
         HotKeys.Instance.onDecrementWave += DecrementWave;
 
@@ -101,7 +100,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         GameManager.Instance.OnSwapTutorial -= InitTutorial;
         GameManager.Instance.OnSwapBegin -= InitGame;
         GameManager.Instance.OnSwapGoldenCutscene -= DisableSpawning;
-        GameManager.Instance.OnSwapGoldenCutscene -= SpawnFinalOrder;
         HotKeys.Instance.onIncrementWave -= IncrementWave;
         HotKeys.Instance.onDecrementWave -= DecrementWave;
 
@@ -273,9 +271,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 finalOrderActive = true;
                 OnMainGameFinishes?.Invoke();
 
-                StopEasySpawn();
+                DisableSpawning();
+
+                /*StopEasySpawn();
                 StopMediumSpawn();
-                StopHardSpawn();
+                StopHardSpawn();*/
 
                 MasterSkywalker();
                 StartCoroutine(PostGameClarity());
@@ -481,21 +481,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     public void SetFinalOrder(Order finalOrderIn)
     {
         finalOrder = finalOrderIn;
-    }
-
-    /// <summary>
-    /// For spawning the final order.
-    /// </summary>
-    private void SpawnFinalOrder()
-    {
-        return;
-        Debug.Log("Spawn Final Order Start");
-
-        //OnDeleteActiveOrders?.Invoke();
-        finalOrderActive = true;
-        finalOrder.InitOrder();
-
-        Debug.Log("Spawn Final Order Was Successful");
     }
 
     /// <summary>
