@@ -115,8 +115,10 @@ public class TutorialHandler : MonoBehaviour
         // final tutorial
         hasLearnt = true;
         ball.SetBoostModifier(true);
-        TutorialManager.Instance.IncrementAlumni(this);
         tutorialText.text = "";
         tutorialImage.SetActive(false);
+
+        if(TutorialManager.Instance != null)
+            TutorialManager.Instance.IncrementAlumni(this);
     }
 }
