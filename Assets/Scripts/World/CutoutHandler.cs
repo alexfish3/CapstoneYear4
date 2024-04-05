@@ -13,12 +13,26 @@ public class CutoutHandler : MonoBehaviour
     [Tooltip("Position the order will be.")]
     [SerializeField] private Transform orderPos;
 
+    [Tooltip("GO to block the player from advancing until they've stolen the order.")]
+    [SerializeField] private GameObject barrier;
+
+    [Tooltip("Time it takes for the barrier to dissolve.")]
+    [SerializeField] private float dissolveTime = 0.5f;
+
+    private Dissolver barrierDissolver;
+    private BoxCollider barrierCollider;
+
     private bool hasStolen = false;
-    // Start is called before the first frame update
+
     public void InitCutout()
     {
         order.CardboardHold();
         order.transform.position = orderPos.position;
+
+        barrierDissolver = barrier.GetComponent<Dissolver>();
+        barrierCollider = barrier.GetComponent<BoxCollider>();
+
+        barrierCollider.enabled = true;
     }
 
     private void OnTriggerStay(Collider other)
@@ -39,6 +53,8 @@ public class CutoutHandler : MonoBehaviour
                 order.InitOrder(false);
                 player.AddOrder(order);
                 hasStolen = true;
+                barrierCollider.enabled = false;
+                barrierDissolver.DissolveOut(dissolveTime);
             }
         }
         catch
