@@ -18,6 +18,7 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
     [Header("Canvas Objects")]
     [SerializeField] Canvas PlayerSelectCanvas;
     [SerializeField] Canvas OptionsCanvas;
+    [SerializeField] Canvas CreditsCanvas;
 
     [SerializeField] TMP_Text p1ConnectedController;
     PlayerInstantiate playerInstantiate;
@@ -91,12 +92,17 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
                 Debug.Log("Play");
                 SwapToPlayerSelect();
                 break;
+            // Options
             case 1:
                 Debug.Log("Options");
                 SwapToOptions();
                 break;
-            // Quit
             case 2:
+                Debug.Log("Credits");
+                SwapToCredits();
+                break;
+            // Quit
+            case 3:
                 Debug.Log("Quit");
 
             #if UNITY_EDITOR
@@ -128,10 +134,25 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
         selector.transform.position = new Vector3(selector.transform.position.x, selectorObjects[selectorPos].transform.position.y, selector.transform.position.z);
     }
 
+    public void SwapToCredits()
+    {
+        CreditsCanvas.enabled = true;
+
+        GameManager.Instance.SetGameState(GameState.Credits);
+
+        CreditsMenu.Instance.UpdateSelectors();
+
+        selectorPos = 0;
+        menuGhostImage.sprite = selectorGhostSprites[0];
+        // Updates selector for current slider selected
+        selector.transform.position = new Vector3(selector.transform.position.x, selectorObjects[selectorPos].transform.position.y, selector.transform.position.z);
+    }
+
     public void SwapToMainMenu()
     {
         PlayerSelectCanvas.enabled = false;
         OptionsCanvas.enabled = false;
+        CreditsCanvas.enabled = false;
         GameManager.Instance.SetGameState(GameState.Menu);
     }
 

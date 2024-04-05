@@ -5,6 +5,7 @@ using UnityEngine;
 public enum GameState { 
     Menu,
     Options,
+    Credits,
     PlayerSelect,
     Loading,
     StartingCutscene,
@@ -29,6 +30,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     public event Action OnSwapMenu;
     public event Action OnSwapOptions;
+    public event Action OnSwapCredits;
     public event Action OnSwapPlayerSelect;
     public event Action OnSwapLoading;
     public event Action OnSwapStartingCutscene;
@@ -65,6 +67,9 @@ public class GameManager : SingletonMonobehaviour<GameManager>
                 break;
             case GameState.Options:
                 OnSwapOptions?.Invoke();
+                break;
+            case GameState.Credits:
+                OnSwapCredits?.Invoke();
                 break;
             case GameState.PlayerSelect:
                 OnSwapPlayerSelect?.Invoke();

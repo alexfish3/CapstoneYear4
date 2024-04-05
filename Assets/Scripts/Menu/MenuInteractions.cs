@@ -8,6 +8,7 @@ public enum MenuType
 {
     MainMenu,
     Options,
+    Credits,
     PlayerSelect,
     Loading,
     Cutscene,
@@ -34,6 +35,7 @@ public class MenuInteractions : MonoBehaviour
     public PauseMenu pauseMenu;
     [SerializeField] MainMenu mainMenu;
     [SerializeField] OptionsMenu optionsMenu;
+    [SerializeField] CreditsMenu creditsMenu;
     [SerializeField] ResultsMenu resultsMenu;
     [SerializeField] GameObject readyUpText;
     [SerializeField] TutorialToggle tutorialToggle;
@@ -57,6 +59,7 @@ public class MenuInteractions : MonoBehaviour
 
         GameManager.Instance.OnSwapPlayerSelect += SwapToPlayerSelect;
         GameManager.Instance.OnSwapOptions += SwapToOptions;
+        GameManager.Instance.OnSwapCredits += SwapToCredits;
 
         GameManager.Instance.OnSwapStartingCutscene += PlayerUnready;
 
@@ -69,6 +72,7 @@ public class MenuInteractions : MonoBehaviour
 
         GameManager.Instance.OnSwapPlayerSelect -= SwapToPlayerSelect;
         GameManager.Instance.OnSwapOptions -= SwapToOptions;
+        GameManager.Instance.OnSwapCredits -= SwapToCredits;
 
         GameManager.Instance.OnSwapStartingCutscene -= PlayerUnready;
 
@@ -83,6 +87,11 @@ public class MenuInteractions : MonoBehaviour
     public void SwapToOptions()
     {
         SwapMenuType(MenuType.Options);
+    }
+
+    public void SwapToCredits()
+    {
+        SwapMenuType(MenuType.Credits);
     }
 
     public void SwapToLoadingScreen()
@@ -108,6 +117,9 @@ public class MenuInteractions : MonoBehaviour
                 return;
             case MenuType.Options:
                 OptionsInteractions();
+                return;
+            case MenuType.Credits:
+                CreditsInteractions();
                 return;
             case MenuType.PlayerSelect:
                 CharacterSelectMenuInteractons();
@@ -170,6 +182,15 @@ public class MenuInteractions : MonoBehaviour
         uiHandler.UpPadEvent.AddListener(OptionsScrollUp);
         uiHandler.RightPadEvent.AddListener(OptionsScrollRight);
         uiHandler.LeftPadEvent.AddListener(OptionsScrollLeft);
+    }
+
+    private void CreditsInteractions()
+    {
+        creditsMenu = CreditsMenu.Instance;
+
+        Debug.Log("<color=blue>Swap to Credits</color>");
+
+        uiHandler.EastFaceEvent.AddListener(CreditsExit);
     }
 
     private void CharacterSelectMenuInteractons()
@@ -331,7 +352,7 @@ public class MenuInteractions : MonoBehaviour
     }
 
     ///<summary>
-    /// Calls method when player scrolls down on Main Menu
+    /// Calls method when player confirms on the main menu
     ///</summary>
     private void MainMenuConfirm(bool button)
     {
@@ -365,7 +386,7 @@ public class MenuInteractions : MonoBehaviour
     }
 
     ///<summary>
-    /// Calls method when player scrolls down on Main Menu
+    /// Calls method when player scrolls down on Options Menu
     ///</summary>
     private void OptionsScrollDown(bool button)
     {
@@ -382,7 +403,7 @@ public class MenuInteractions : MonoBehaviour
     }
 
     ///<summary>
-    /// Calls method when player scrolls up on Options Menu
+    /// Calls method when player scrolls left on options menu
     ///</summary>
     private void OptionsScrollLeft(bool button)
     {
@@ -399,7 +420,7 @@ public class MenuInteractions : MonoBehaviour
     }
 
     ///<summary>
-    /// Calls method when player scrolls down on Main Menu
+    /// Calls method when player scrolls right on options menu
     ///</summary>
     private void OptionsScrollRight(bool button)
     {
@@ -416,7 +437,7 @@ public class MenuInteractions : MonoBehaviour
     }
 
     ///<summary>
-    /// Calls method when player scrolls down on Main Menu
+    /// Calls method when player exits the options menu
     ///</summary>
     private void OptionsExit(bool button)
     {
@@ -432,6 +453,22 @@ public class MenuInteractions : MonoBehaviour
         soundPool.PlayBackUI();
     }
 
+    ///<summary>
+    /// Calls method when player scrolls down on Main Menu
+    ///</summary>
+    private void CreditsExit(bool button)
+    {
+        if (hostPlayer == false)
+            return;
+
+        if (creditsMenu == null)
+            creditsMenu = CreditsMenu.Instance;
+
+        // Scrolls selector down
+        creditsMenu.ExitMenu();
+
+        soundPool.PlayBackUI();
+    }
 
     ///<summary>
     /// Calls method when player scrolls down on Main Menu
