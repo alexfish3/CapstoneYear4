@@ -11,7 +11,7 @@ using UnityEngine.UIElements;
 /// </summary>
 public class CivilianAgent : MonoBehaviour
 {
-    private const float FLING_CHANCE = 25.0f;
+    private const float FLING_CHANCE = 100.0f;
 
     [Header("Setup")]
     [Tooltip("Reference to the particle prefab")]
@@ -116,12 +116,12 @@ public class CivilianAgent : MonoBehaviour
             fuckDoll.transform.position = renderBasket.transform.position;
             fuckDoll.transform.rotation = renderBasket.transform.rotation;
             fuckBody.velocity = Vector3.zero;
-            fuckBody.angularVelocity = Vector3.zero;
+            fuckBody.angularVelocity = new Vector3(Random.Range(-4f,4f), Random.Range(-4f,4f),Random.Range(-4f, 4f));
 
             fuckDoll.SetActive(true);
             renderBasket.SetActive(false);
 
-            ck.DoKick(fuckDoll.GetComponent<Collider>(), 2, fuckDoll.transform.position - (0.75f * Vector3.up));
+            ck.DoKick(fuckDoll.GetComponent<Collider>(), 1.3f, fuckDoll.transform.position - (1.5f * Vector3.up));
             StartKickDeath();
         }
         else

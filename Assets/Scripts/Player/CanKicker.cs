@@ -42,6 +42,6 @@ public class CanKicker : MonoBehaviour
 
         PeterSparker.Instance.CreateImpactFromCollider(col, sphereCol.transform.position);
 
-        col.GetComponent<Rigidbody>().AddForce(kickDirection * kickingForce * control.CurrentVelocity);
+        col.GetComponent<Rigidbody>().AddForce(kickDirection * kickingForce * kickingModifier * control.CurrentVelocity);
     }
 }
