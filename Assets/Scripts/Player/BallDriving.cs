@@ -265,7 +265,9 @@ public class BallDriving : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapAnything += ResetBoost;
+        GameManager.Instance.OnSwapStartingCutscene += ResetBoost;
+        GameManager.Instance.OnSwapGoldenCutscene += ResetBoost;
+        GameManager.Instance.OnSwapMenu += ResetBoost;
 
         GameManager.Instance.OnSwapStartingCutscene += () => FreezeBall(true);
         GameManager.Instance.OnSwapGoldenCutscene += () => FreezeBall(true);
@@ -276,7 +278,9 @@ public class BallDriving : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapAnything -= ResetBoost;
+        GameManager.Instance.OnSwapStartingCutscene -= ResetBoost;
+        GameManager.Instance.OnSwapGoldenCutscene -= ResetBoost;
+        GameManager.Instance.OnSwapMenu -= ResetBoost;
 
         GameManager.Instance.OnSwapGoldenCutscene -= () => FreezeBall(true);
         GameManager.Instance.OnSwapStartingCutscene -= () => FreezeBall(true);
