@@ -149,7 +149,7 @@ public class OrderBeacon : MonoBehaviour
     {
         dissolveRend.transform.gameObject.SetActive(false);
         dissolveRend.transform.localPosition = new Vector3(0, 1, 0); // hard coded value be careful
-        int lm = 1 << 0; // default layer only
+        int lm = 1 << 29; // default layer only
         RaycastHit hit;
 
         if (Physics.Raycast(dissolveRend.transform.position, Vector3.down, out hit, Mathf.Infinity, lm))

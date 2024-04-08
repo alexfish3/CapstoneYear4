@@ -664,7 +664,7 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     private void GroundCheck()
     {
-        int lm = 513; //layers 0 and 9
+        int lm = (1 << 0) | (1 << 9) | (1 << 29);//513; //layers 0 and 9
         RaycastHit hit, waterHit;
 
         if (Physics.Raycast(scooterNormal.transform.position, Vector3.down, out hit, GROUNDCHECK_DISTANCE, lm))
