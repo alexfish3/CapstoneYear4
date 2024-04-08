@@ -82,7 +82,8 @@ public class PlayerCameraResizer : MonoBehaviour
     private void Start()
     {
         phaseTransitionMaterialMain = new Material(phaseTransitionMaterial);
-        phaseCameraRT = new RenderTexture(1920,1080,24, RenderTextureFormat.ARGBHalf);
+
+        phaseCameraRT = new RenderTexture(1920,1080,24, RenderTextureFormat.ARGB32);
         phaseCamera.targetTexture = phaseCameraRT;
 
         phaseTransitionMaterialMain.SetTexture("_MainTex", phaseCamera.targetTexture);
@@ -156,6 +157,9 @@ public class PlayerCameraResizer : MonoBehaviour
         // Add via bitwise to include the camera layer
         referenceCam.cullingMask |= (1 << playerWorldLayer);
         referenceCam.cullingMask |= (1 << cameraLayer);
+
+        // Add via bitwise to include player world layer to phase cam
+        phaseCamera.cullingMask |= (1 << playerWorldLayer);
 
         // Updates camera layers to be spesific player renderers
         referenceCamData.SetRenderer(nextFillSlot);
@@ -269,6 +273,9 @@ public class PlayerCameraResizer : MonoBehaviour
         // Add via bitwise to include the camera layer
         referenceCam.cullingMask |= (1 << playerWorldLayer);
         referenceCam.cullingMask |= (1 << cameraLayer);
+
+        // Add via bitwise to include player world layer to phase cam
+        phaseCamera.cullingMask |= (1 << playerWorldLayer);
     }
 
     ///<summary>
