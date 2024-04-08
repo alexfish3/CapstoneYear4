@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8066127359285088311}
   m_Layer: 28
   m_Name: Disolve Shader
-  m_TagString: Untagged
+  m_TagString: IgnoreBallCollision
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 8423860509157008844}
   m_Layer: 28
   m_Name: OrderBeacon
-  m_TagString: Untagged
+  m_TagString: IgnoreBallCollision
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,8 +116,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7127557446299552883}
-  - {fileID: 8538232330136513479}
-  - {fileID: 7224742007730392868}
   - {fileID: 6920163334502025923}
   - {fileID: 641337920684851595}
   m_Father: {fileID: 0}
@@ -136,19 +134,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   compassMarker: {fileID: 4906676066496731464}
   customer: {fileID: 0}
-  meshRenderer: {fileID: 4388523531314604654}
+  beaconFX: {fileID: 8321394938938873366}
+  mainColors:
+  - {r: 0.13069598, g: 0.8396226, b: 0.14484206, a: 0.003921569}
+  - {r: 0.7591988, g: 0.8392157, b: 0.12941177, a: 0.003921569}
+  - {r: 0.8392157, g: 0.15069748, b: 0.12941177, a: 0.003921569}
+  - {r: 0.8392157, g: 0.6454631, b: 0.12941177, a: 0.003921569}
+  - {r: 1, g: 1, b: 1, a: 0.003921569}
+  subColors:
+  - {r: 0.28475437, g: 0.764151, b: 0.2953488, a: 0}
+  - {r: 0.5279794, g: 0.5660378, b: 0.22160912, a: 0}
+  - {r: 0.5943396, g: 0.2270826, b: 0.39869758, a: 0}
+  - {r: 1, g: 0.98480475, b: 0, a: 0}
+  - {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 0}
   dissolveRend: {fileID: 8066127359285088311}
-  dissolveMats:
-  - {fileID: 2100000, guid: d3bc7801b9a5d3147a82c858bdd51c44, type: 2}
-  - {fileID: 2100000, guid: c2cae1a1ec883fe44bfb45a67b423f93, type: 2}
-  - {fileID: 2100000, guid: ccf01ef4a74f4e1409d4e956eb0d3470, type: 2}
-  - {fileID: 2100000, guid: 901bf023854eb944dbb1a7845fe0d992, type: 2}
-  pickupMats:
-  - {fileID: 2100000, guid: 8a6145372b235f04eabfaf3b907035b5, type: 2}
-  - {fileID: 2100000, guid: f17a3d94ae78a6d4bb685eb0e2427ef2, type: 2}
-  - {fileID: 2100000, guid: 812d0021bdbd25c44840a17098c8b023, type: 2}
-  - {fileID: 2100000, guid: bc256a89d7bf83a4587ad81e21362049, type: 2}
-  dropoffMat: {fileID: 2100000, guid: ea5f414c109d172489b9801027d213c3, type: 2}
+  flameColors:
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 1, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0.9150943, g: 0.7072952, b: 0.047481313, a: 1}
   flameChecker: {fileID: 641337920684851595}
 --- !u!114 &4906676066496731464
 MonoBehaviour:
@@ -184,89 +188,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2, y: 2, z: 1.2}
   m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
---- !u!1 &4549183296783944203
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8538232330136513479}
-  - component: {fileID: 2849496564264277551}
-  - component: {fileID: 4388523531314604654}
-  m_Layer: 28
-  m_Name: OrderBeacon
-  m_TagString: IgnoreBallCollision
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8538232330136513479
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4549183296783944203}
-  serializedVersion: 2
-  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9, y: 1, z: 0.9}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5736746076728585729}
-  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
---- !u!33 &2849496564264277551
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4549183296783944203}
-  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &4388523531314604654
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4549183296783944203}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 8a6145372b235f04eabfaf3b907035b5, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &6303189065804893695
 GameObject:
   m_ObjectHideFlags: 0
@@ -278,7 +199,7 @@ GameObject:
   - component: {fileID: 641337920684851595}
   m_Layer: 28
   m_Name: Flame Checker
-  m_TagString: Untagged
+  m_TagString: IgnoreBallCollision
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -298,37 +219,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5736746076728585729}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7915161555222000691
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7224742007730392868}
-  m_Layer: 28
-  m_Name: Beacon Parent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7224742007730392868
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7915161555222000691}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5736746076728585729}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &693501587263917881
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -340,6 +230,14 @@ PrefabInstance:
     - target: {fileID: 5558630169895200129, guid: 6324ba825d978f24b8685ad56570d321, type: 3}
       propertyPath: m_Name
       value: StylizedOrderBeacon
+      objectReference: {fileID: 0}
+    - target: {fileID: 5558630169895200129, guid: 6324ba825d978f24b8685ad56570d321, type: 3}
+      propertyPath: m_Layer
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 5558630169895200129, guid: 6324ba825d978f24b8685ad56570d321, type: 3}
+      propertyPath: m_TagString
+      value: IgnoreBallCollision
       objectReference: {fileID: 0}
     - target: {fileID: 7743371932475130698, guid: 6324ba825d978f24b8685ad56570d321, type: 3}
       propertyPath: m_LocalScale.x
@@ -401,5 +299,10 @@ PrefabInstance:
 --- !u!4 &7127557446299552883 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7743371932475130698, guid: 6324ba825d978f24b8685ad56570d321, type: 3}
+  m_PrefabInstance: {fileID: 693501587263917881}
+  m_PrefabAsset: {fileID: 0}
+--- !u!2083052967 &8321394938938873366 stripped
+VisualEffect:
+  m_CorrespondingSourceObject: {fileID: 8855300208501086511, guid: 6324ba825d978f24b8685ad56570d321, type: 3}
   m_PrefabInstance: {fileID: 693501587263917881}
   m_PrefabAsset: {fileID: 0}

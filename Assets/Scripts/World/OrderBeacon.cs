@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.VFX;
 
 /// <summary>
 /// This class is for the beacon to indicate where an order is and where it needs to be delivered to
@@ -23,13 +24,21 @@ public class OrderBeacon : MonoBehaviour
     [SerializeField] private OrderGhost customer;
 
     [Header("Material Information")]
-    [SerializeField] private MeshRenderer meshRenderer; // renderer to change the color
-    [SerializeField] private MeshRenderer dissolveRend;
-    [SerializeField] private Material[] dissolveMats;
+    //[SerializeField] private MeshRenderer meshRenderer; // renderer to change the color
+    /*[SerializeField] private Material[] dissolveMats;
     [SerializeField] private Material[] pickupMats;
-    [SerializeField] private Material dropoffMat;
+    [SerializeField] private Material dropoffMat;*/
+    [SerializeField] private VisualEffect beaconFX;
+    [Tooltip("The last element in the array is for dropoff beacons.")]
+    [SerializeField] private Color[] mainColors;
+    [Tooltip("The last element in the array is for dropoff beacons.")]
+    [SerializeField] private Color[] subColors;
+    private Color cachedMain, cachedSub;
+    
+    [SerializeField] private MeshRenderer dissolveRend;
+    [SerializeField] private Color[] flameColors;
 
-    private Material cachedMat;
+    //private Material cachedMat;
     private bool canInteract;
 
     private const float REND_HEIGHT = 1.9f; // for calculating the height of the flame
@@ -44,30 +53,40 @@ public class OrderBeacon : MonoBehaviour
         canInteract = true;
         ToggleBeaconMesh(true);
         order = inOrder;
-        meshRenderer.material = pickupMats[orderIndex];
-        cachedMat = meshRenderer.material;
+        //meshRenderer.material = pickupMats[orderIndex];
+        //cachedMat = meshRenderer.material;
         this.transform.position = order.transform.position;
-        meshRenderer.gameObject.layer = 0;
+        //meshRenderer.gameObject.layer = 0;
 
         // set the color of the dissolve
         switch(order.Value)
         {
             case Constants.OrderValue.Easy:
-                dissolveRend.material = dissolveMats[0];
+                dissolveRend.material.color = flameColors[0];
+                beaconFX.SetVector4("MainColor", mainColors[0]);
+                beaconFX.SetVector4("SubColor", subColors[0]);
                 break;
             case Constants.OrderValue.Medium:
-                dissolveRend.material = dissolveMats[1];
+                dissolveRend.material.color = flameColors[1];
+                beaconFX.SetVector4("MainColor", mainColors[1]);
+                beaconFX.SetVector4("SubColor", subColors[1]);
                 break;
             case Constants.OrderValue.Hard:
-                dissolveRend.material = dissolveMats[2];
+                dissolveRend.material.color = flameColors[2];
+                beaconFX.SetVector4("MainColor", mainColors[2]);
+                beaconFX.SetVector4("SubColor", subColors[2]);
                 break;
             case Constants.OrderValue.Golden:
-                dissolveRend.material = dissolveMats[3];
+                dissolveRend.material.color = flameColors[3];
+                beaconFX.SetVector4("MainColor", mainColors[3]);
+                beaconFX.SetVector4("SubColor", subColors[3]);
                 break;
             default:
                 break;
         }
 
+        cachedMain = beaconFX.GetVector4("MainColor");
+        cachedSub = beaconFX.GetVector4("SubColor");
         CheckFlamePosition();
     }
 
@@ -87,14 +106,16 @@ public class OrderBeacon : MonoBehaviour
         customer.InitCustomer();
         
         isPickup = false;
-        meshRenderer.material = dropoffMat;
+        beaconFX.SetVector4("MainColor", mainColors[4]);
+        beaconFX.SetVector4("SubColor", subColors[4]);
+        //meshRenderer.material = dropoffMat;
 
         compassMarker.RemoveCompassUIFromAllPlayers();
 
         order.PlayerHolding.GetComponent<Compass>().AddCompassMarker(compassMarker);
         
         // NOTE: if camera layers change it'll fuck with beacon rendering
-        meshRenderer.gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer + 7;
+        beaconFX.gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer + 7;
 
         CheckFlamePosition();
     }
@@ -108,16 +129,18 @@ public class OrderBeacon : MonoBehaviour
 
         compassMarker.RemoveCompassUIFromAllPlayers();
         order.compassMarker.InitalizeCompassUIOnAllPlayers();
-        meshRenderer.material = cachedMat;
+        //meshRenderer.material = cachedMat;
+        beaconFX.SetVector4("MainColor", cachedMain);
+        beaconFX.SetVector4("SubColor", cachedSub);
 
         customer.transform.parent = OrderManager.Instance.transform;
         this.transform.position = order.transform.position;
         this.transform.parent = order.transform;
         ToggleBeaconMesh(true);
-        meshRenderer.material.color = color;
+        //meshRenderer.material.color = color;
         isPickup = true;
         order.RemovePlayerHolding();
-        meshRenderer.gameObject.layer = 0; // reset to default layer
+        beaconFX.gameObject.layer = 28; // reset to render in phase layer
 
         CheckFlamePosition();
     }
@@ -147,8 +170,9 @@ public class OrderBeacon : MonoBehaviour
     public void ToggleBeaconMesh(bool status)
     {
         canInteract = status;
-        meshRenderer.enabled = status;
+        //meshRenderer.enabled = status;
         dissolveRend.enabled = status;
+        beaconFX.enabled = status;
     }
 
     /// <summary>

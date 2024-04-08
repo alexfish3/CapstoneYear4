@@ -122,9 +122,9 @@ public class Order : MonoBehaviour
             this.gameObject.transform.forward = -playerHolding.transform.right;
         }
 
-        Vector3 newDir = (arrow.transform.position - dropoff.position);
+        Vector3 newDir = dropoff.position - arrow.transform.position;
         newDir = new Vector3(newDir.x, 0, newDir.z);
-        arrow.transform.rotation = Quaternion.LookRotation(newDir, Vector3.up) * Quaternion.Euler(0,1,0);
+        arrow.transform.rotation = Quaternion.LookRotation(newDir, Vector3.up);
     }
 
 
@@ -205,8 +205,12 @@ public class Order : MonoBehaviour
         beacon.gameObject.SetActive(true);
         compassMarker.SwitchCompassUIForPlayers(true);
 
+        floatyTween.Kill();
+        bobbyTween.Kill();
+        arrowTween.Kill();
+
         // start tweening
-        floatyTween = orderMeshObject.transform.DORotate(meshRotation, rotationDuration, RotateMode.FastBeyond360)
+        floatyTween = orderMeshObject.transform.DOLocalRotate(meshRotation, rotationDuration, RotateMode.FastBeyond360)
             .SetLoops(-1, LoopType.Incremental)
             .SetRelative()
             .SetEase(Ease.Linear);
