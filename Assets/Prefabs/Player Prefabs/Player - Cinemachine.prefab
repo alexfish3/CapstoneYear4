@@ -9875,12 +9875,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 727571754085318872}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 12, z: 6}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 1.5, y: 3, z: -0.90000045}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8267366762298391490}
+  m_Father: {fileID: 7561922974526340759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &730117683719770273
 GameObject:
@@ -10355,6 +10355,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7504033612411268862}
+  - {fileID: 7852903926308569364}
   - {fileID: 4561220407587855232}
   - {fileID: 5058888366313526322}
   - {fileID: 2390081420358101456}
@@ -15606,8 +15608,6 @@ Transform:
   - {fileID: 243499399271245918}
   - {fileID: 635326074481409622}
   - {fileID: 7941929152852101134}
-  - {fileID: 7852903926308569364}
-  - {fileID: 7504033612411268862}
   - {fileID: 4750324403002619581}
   - {fileID: 5798194400190068091}
   - {fileID: 1923517483515956725}
@@ -20853,22 +20853,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 580bf271-fcde-4740-b96d-35017db9e1ae
     m_ActionName: UI/Down D-Pad[/DualShock4GamepadHID/dpad/down,/Keyboard/downArrow]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 44718454188821130}
-        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
-        m_MethodName: DPadPress
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: ed4f020f-6e48-4374-a1b3-991c876e0b75
-    m_ActionName: Player/Emote[/XInputControllerWindows/dpad]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 44718454188821130}
@@ -34563,12 +34547,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8855687159568968905}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: 12, z: -6}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -1.5000005, y: 3, z: -0.9}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8267366762298391490}
+  m_Father: {fileID: 7561922974526340759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8919162984186571176
 GameObject:
