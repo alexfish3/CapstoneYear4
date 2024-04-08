@@ -168,6 +168,9 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayBoostReady()
     {
+        if (!shouldPlay)
+            return;
+
         Debug.Log("Playing boost ready");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("boost_charged", source);
@@ -175,6 +178,9 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayBoostActivate()
     {
+        if (!shouldPlay)
+            return;
+
         Debug.Log("Playing boost activate");
         boostSource = GetAvailableSource();
         SoundManager.Instance.SwitchSource(ref boostSource, "Player");
@@ -202,7 +208,7 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayPhaseSound()
     {
-        if(phasing || boostSource == null) { return; }
+        if(phasing || boostSource == null || !shouldPlay) { return; }
         SoundManager.Instance.PlaySFX("phasing", boostSource);
         phasing = true;
     }
@@ -216,6 +222,9 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayOrderPickup()
     {
+        if (!shouldPlay)
+            return;
+
         Debug.Log("Playing pickup sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("pickup", source);
@@ -223,6 +232,9 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayOrderDropoff(string dropoffType = "dropoff")
     {
+        if(!shouldPlay) 
+            return;
+
         Debug.Log("Playing dropoff sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX(dropoffType, source);
@@ -230,6 +242,9 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayOrderTheft()
     {
+        if (!shouldPlay)
+            return;
+
         Debug.Log("Playing theft sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("whoosh", source);
@@ -237,6 +252,9 @@ public class SoundPool : MonoBehaviour
     }
     public void PlayDeathSound()
     {
+        if (!shouldPlay)
+            return;
+
         Debug.Log("Playing death sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.SwitchSource(ref source, "Player");
@@ -272,7 +290,7 @@ public class SoundPool : MonoBehaviour
 
     public void PlayDriftSpark(int index)
     {
-        if (currDriftIndex == index) { return; }
+        if (currDriftIndex == index || !shouldPlay) { return; }
         currDriftIndex = index;
         if(driftSparkSource == null)
             driftSparkSource = GetAvailableSource();
