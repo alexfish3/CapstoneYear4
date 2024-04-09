@@ -22,6 +22,11 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
     [SerializeField] float sfxValue;
     [SerializeField] int sfxPosition;
 
+    [Header("Fullscreen Info")]
+    [SerializeField] GameObject fullscreenSelector;
+    [SerializeField] GameObject[] fullscreenSelectorPositions;
+    [SerializeField] int fullscreenPosition;
+
     public enum OptionSelected
     {
         BGM = 0,
@@ -66,6 +71,7 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
 
         data.bgmPositionSave = bgmPosition;
         data.sfxPositionSave = sfxPosition;
+        data.fullscreenSave = fullscreenPosition;
 
         bf.Serialize(file, data);
         file.Close();
@@ -87,6 +93,7 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
             // Clamps loaded values incase data was tampered with
             bgmPosition = Mathf.Clamp(data.bgmPositionSave, 0, 11);
             sfxPosition = Mathf.Clamp(data.sfxPositionSave, 0, 11);
+            fullscreenPosition = Mathf.Clamp(data.fullscreenSave, 0, 1);
 
             // Closes file reader
             file.Close();
@@ -98,6 +105,10 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
 
         sfxValue = volumeValues[sfxPosition];
         soundManager.SetSFX(sfxValue);
+
+        UpdateFullscreen(fullscreenPosition);
+
+        //UpdateSelectors();
     }
 
 
@@ -108,6 +119,9 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
     {
         bgmSelector.transform.position = new Vector3(bgmSelectorPositions[bgmPosition].transform.position.x, bgmSelector.transform.position.y, bgmSelector.transform.position.z);
         sfxSelector.transform.position = new Vector3(sfxSelectorPositions[sfxPosition].transform.position.x, sfxSelector.transform.position.y, sfxSelector.transform.position.z);
+
+        fullscreenSelector.transform.position = new Vector3(fullscreenSelectorPositions[fullscreenPosition].transform.position.x,
+            fullscreenSelector.transform.position.y, fullscreenSelector.transform.position.z);
     }
 
     ///<summary>
@@ -158,7 +172,7 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
             {
                 if (bgmPosition == bgmSelectorPositions.Length - 1)
                 {
-                    bgmPosition = 0;
+                    //bgmPosition = 0;
                 }
                 else
                 {
@@ -170,7 +184,7 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
             {
                 if (bgmPosition == 0)
                 {
-                    bgmPosition = bgmSelectorPositions.Length - 1;
+                    //bgmPosition = bgmSelectorPositions.Length - 1;
                 }
                 else
                 {
@@ -189,7 +203,7 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
             {
                 if (sfxPosition == sfxSelectorPositions.Length - 1)
                 {
-                    sfxPosition = 0;
+                    //sfxPosition = 0;
                 }
                 else
                 {
@@ -201,7 +215,7 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
             {
                 if (sfxPosition == 0)
                 {
-                    sfxPosition = sfxSelectorPositions.Length - 1;
+                    //sfxPosition = sfxSelectorPositions.Length - 1;
                 }
                 else
                 {
@@ -215,18 +229,35 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
         }
         else if(optionSelected == OptionSelected.FULLSCREEN)
         {
+            // Positive Scroll
+            if (direction)
+            {
+                if (fullscreenPosition == fullscreenSelectorPositions.Length - 1)
+                {
+                    //fullscreenPosition = 0;
+                }
+                else
+                {
+                    fullscreenPosition = fullscreenPosition + 1;
+                }
+            }
+            // Negative Scroll
+            else
+            {
+                if (fullscreenPosition == 0)
+                {
+                    //fullscreenPosition = fullscreenSelectorPositions.Length - 1;
+                }
+                else
+                {
+                    fullscreenPosition = fullscreenPosition - 1;
+                }
+            }
 
-        }
+            fullscreenSelector.transform.position = new Vector3(fullscreenSelectorPositions[fullscreenPosition].transform.position.x, 
+                fullscreenSelector.transform.position.y, fullscreenSelector.transform.position.z);
 
-        // Positive Scroll
-        if (direction)
-        {
-
-        }
-        // Negative Scroll
-        else
-        {
-
+            UpdateFullscreen(fullscreenPosition);
         }
     }
 
@@ -243,6 +274,24 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
         selectorPos = 0;
         optionSelected = 0;
         selector.transform.position = new Vector3(selector.transform.position.x, selectorObjects[selectorPos].transform.position.y, selector.transform.position.z);
+    }
+
+    /// <summary>
+    /// Updates fullscreen based on input bool
+    /// </summary>
+    /// <param name="fullscreenValue"></param>
+    public void UpdateFullscreen(int fullscreenValue)
+    {
+        if (fullscreenValue == 0)
+        {
+            Debug.Log("Set Screen to Windowed");
+            Screen.fullScreen = false;
+        }
+        else
+        {
+            Debug.Log("Set Screen to Fullscreen");
+            Screen.fullScreen = true;
+        }
     }
 }
 
