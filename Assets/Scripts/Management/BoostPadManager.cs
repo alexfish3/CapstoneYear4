@@ -29,11 +29,6 @@ public class BoostPadManager : SingletonMonobehaviour<BoostPadManager>
             {
                 boostPad.UpdatePadRotation(playersToKeepTrackOf[i], i);
             }
-
-            //playersRotationObjects[i].transform.rotation = Quaternion.Euler(new Vector3(
-            //playerCameraTransforms[i].eulerAngles.x,
-            //playerCameraTransforms[i].eulerAngles.y,
-            //playerCameraTransforms[i].eulerAngles.z));
         }
     }
 

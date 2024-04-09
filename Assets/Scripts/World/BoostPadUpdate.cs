@@ -17,7 +17,7 @@ public class BoostPadUpdate : MonoBehaviour
     {
         foreach(var renderer in meshRenderers)
         {
-            renderer.material = new Material(referenceArrowMaterial);
+            renderer.materials[1] = new Material(referenceArrowMaterial);
         }
     }
 
@@ -40,7 +40,7 @@ public class BoostPadUpdate : MonoBehaviour
 
         angle = (Mathf.Atan2(zDistance, xDistance) * Mathf.Rad2Deg) + extraAngle;
 
-        meshRenderers[playerPosition].material.SetFloat("_RotateAxis", angle);
+        meshRenderers[playerPosition].materials[1].SetFloat("_RotateAxis", angle);
 
     }
 
