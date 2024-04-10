@@ -11,7 +11,11 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     [SerializeField] private RawImage[] playerImages;
     [SerializeField] private GameObject quitInfo;
+
+    [SerializeField] private Camera orthoCam;
     bool canQuit = false;
+
+    RectTransform canvasRect;
 
     private void OnEnable()
     {
@@ -23,8 +27,22 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
         GameManager.Instance.OnSwapResults -= UpdateResults;
     }
 
+    private void Start()
+    {
+        canvasRect = resultsCanvas.GetComponent<RectTransform>();
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            ScaleOrthoCam(orthoCam);
+        }
+    }
+
     private void UpdateResults()
     {
+        ScaleOrthoCam(orthoCam);
         quitInfo.SetActive(false);
         resultsCanvas.enabled = true;
         StartCoroutine(QuitDelay());
@@ -69,6 +87,13 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
             Animator playerAnim = currHandler.transform.parent.GetComponent<PlayerCameraResizer>().playerAnimator;
             playerAnim.SetInteger("End Status", 0);
         }
+    }
+
+    private void ScaleOrthoCam(Camera cam)
+    {
+        //this.re
+        cam.orthographicSize = Screen.width * (21f/1920f);
+        Debug.Log($"ORTHO LOGIC: {Screen.width} x {21f/1920f} = {cam.orthographicSize}");
     }
 
     private IEnumerator QuitDelay()

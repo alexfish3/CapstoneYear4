@@ -156,7 +156,7 @@ public class OrderBeacon : MonoBehaviour
         {
             float diff = hit.distance;// - REND_HEIGHT;
             dissolveRend.transform.position -= diff * Vector3.up;
-            dissolveRend.transform.localPosition += 0.059f * Vector3.up;
+            dissolveRend.transform.localPosition += 0.065f * Vector3.up;
             Debug.Log($"Ray hit {hit.collider.name}, original distance is {hit.distance}, difference is {diff}");
         }
 
