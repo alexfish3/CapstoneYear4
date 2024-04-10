@@ -56,25 +56,35 @@ public class Compass : MonoBehaviour
         // Loops for all markers on player and updates their position on the compass ui
         foreach (CompassInformationInstance instance in compassInformationObjects)
         {
-            CompassIconUI marker = instance.compassIcon;
-
-            // Updates the position on the compass
-            //marker.imageRect.rectTransform.anchoredPosition = GetPosOnCompass(marker.objectReference);
-            marker.imageRect.rectTransform.anchoredPosition = GetPosOnCompass(marker.objectReference);
-
-            // Calculates the distance of the player to the object
-            marker.distance = CalculateDistance(marker.objectReference);
-            marker.SetDistanceText();
-
-            // Determines if it is time to fade in or out marker, based on fade distance
-            if (marker.distance < Constants.DISTANCE_TO_FADE && marker.Faded == false)
+            if (instance.compassIcon != null && instance.compassMarker != null)
             {
-                marker.FadeMarkerOut();
+                CompassIconUI marker = instance.compassIcon;
+
+                // Updates the position on the compass
+                //marker.imageRect.rectTransform.anchoredPosition = GetPosOnCompass(marker.objectReference);
+                marker.imageRect.rectTransform.anchoredPosition = GetPosOnCompass(marker.objectReference);
+
+                // Calculates the distance of the player to the object
+                marker.distance = CalculateDistance(marker.objectReference);
+                marker.SetDistanceText();
+
+                // Determines if it is time to fade in or out marker, based on fade distance
+                if (marker.distance < Constants.DISTANCE_TO_FADE && marker.Faded == false)
+                {
+                    marker.FadeMarkerOut();
+                }
+                else if (marker.distance > Constants.DISTANCE_TO_FADE && marker.Faded == true)
+                {
+                    marker.FadeMarkerIn();
+                }
             }
-            else if (marker.distance > Constants.DISTANCE_TO_FADE && marker.Faded == true)
+            else
             {
-                marker.FadeMarkerIn();
+                Debug.LogError("MARKER ERROR");
+                compassInformationObjects.Remove(instance);
+                Destroy(instance.compassIcon.gameObject);
             }
+
         }
 
         var sortedListDescending = compassInformationObjects.OrderByDescending(instance => instance.compassIcon.distance).ToList();
