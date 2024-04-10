@@ -53,8 +53,8 @@ public class OrderHandler : MonoBehaviour
 
     private void Start()
     {
-        score = 0; // init score to 0
-        numberHandler.UpdateScoreUI(score.ToString());
+        /*score = 0; // init score to 0
+        numberHandler.UpdateScoreUI(score.ToString());*/
 
         ScoreManager.Instance.AddOrderHandler(this);
         ball = transform.parent.GetComponentInChildren<BallDriving>();

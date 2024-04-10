@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Threading;
+using TMPro;
 using Udar.SceneManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,6 +23,11 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     [SerializeField] Image UIRender;
     Material UIRenderMaterial;
     [SerializeField] Animator loadingScreenAnimation;
+
+    [Header("Leaderboard")]
+    [SerializeField] private GameObject leaderboardGO;
+    [SerializeField] private TextMeshProUGUI[] playerNames;
+    [SerializeField] private TextMeshProUGUI[] playerScores;
 
     [Header("Scene References")]
     [SerializeField] SceneField PlayerSelectScene;
@@ -103,6 +109,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
                 sceneLoadCoroutune = null;
             }
 
+            HideLeaderboard();
             tutorialImage.sprite = mainTut;
             ShowLoadingScreen();
             sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(GameScene.BuildIndex, loadingScreenDelay, true, false));
@@ -123,6 +130,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
             tutorialImage.sprite = finalTut;
             ShowLoadingScreen();
+            ShowLeaderboard();
             sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(FinalOrderScene.BuildIndex, loadingScreenDelay, true, false));
         }
     }
@@ -218,6 +226,33 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         loadingScreenAnimation.SetTrigger("LoadIn");
     }
 
+    private void ShowLeaderboard()
+    {
+        Debug.Log("showing leaderboard");
+        leaderboardGO.SetActive(true);
+        int topScore = ScoreManager.Instance.GetHandlerOfIndex(0).Score;
+        for(int i=0;i<PlayerInstantiate.Instance.PlayerCount;i++)
+        {
+            OrderHandler oh = ScoreManager.Instance.GetHandlerOfIndex(i);
+            Debug.Log($"enabling {i}th text");
+            playerNames[i].gameObject.SetActive(true);
+            playerScores[i].gameObject.SetActive(true);
+            playerNames[i].text = $"{oh.CompanyInfo.name} ({oh.transform.parent.name})";
+            playerScores[i].text = $"${topScore - oh.Score}";
+        }
+    }
+
+    private void HideLeaderboard()
+    {
+        Debug.Log("hiding leaderboard");
+        for(int i=0;i<playerNames.Length;i++)
+        {
+            playerNames[i].gameObject.SetActive(false);
+            playerScores[i].gameObject.SetActive(false);
+        }
+        leaderboardGO.SetActive(false);
+    }
+
     private void HideLoadingScreen()
     {
         // Checks if loading screen is not set, if is, return
@@ -232,7 +267,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
     void LoadIn() { StartCoroutine(AnimateMaterial(false)); }
     void LoadOut() { StartCoroutine(AnimateMaterial(true)); }
-
     private IEnumerator AnimateMaterial(bool type)
     {
         yield return null;
