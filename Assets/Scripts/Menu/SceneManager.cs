@@ -69,7 +69,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     }
 
     ///<summary>
-    /// Main method that loads the player select scene
+    /// Main method that loads the menu
     ///</summary>
     private void LoadMenuScene()
     {
@@ -84,7 +84,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
             }
 
             ShowLoadingScreen();
-            sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(false, PlayerSelectScene.BuildIndex, loadingScreenDelay, true));
+            sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(PlayerSelectScene.BuildIndex, loadingScreenDelay, false, true));
         }
     }
 
@@ -105,7 +105,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
             tutorialImage.sprite = mainTut;
             ShowLoadingScreen();
-            sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(true, GameScene.BuildIndex, loadingScreenDelay, false));
+            sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(GameScene.BuildIndex, loadingScreenDelay, true, false));
         }
     }
 
@@ -123,14 +123,14 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
             tutorialImage.sprite = finalTut;
             ShowLoadingScreen();
-            sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(true, FinalOrderScene.BuildIndex, loadingScreenDelay, false));
+            sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(FinalOrderScene.BuildIndex, loadingScreenDelay, true, false));
         }
     }
 
     ///<summary>
     /// Loads the scene async
     ///</summary>
-    private IEnumerator LoadSceneAsync(bool waitForConfirm, int sceneToLoad, float delayTime, bool spawnMenu)
+    private IEnumerator LoadSceneAsync(int sceneToLoad, float delayTime, bool waitForConfirm, bool spawnMenu)
     {
         Debug.Log("Begin Loading");
         // Sets gamestate to loading
@@ -142,8 +142,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         // Loads the first scene asynchronously
         AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Single);
         asyncLoad.allowSceneActivation = false;
-
-        
 
         // Wait until the asynchronous scene is allowed to be activated
         while (!asyncLoad.allowSceneActivation)
@@ -166,7 +164,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
                 else if (!waitForConfirm)
                 {
                     yield return new WaitForSeconds(delayTime);
-                    Debug.LogError("CONFIRM LOAD 1");
                     ConfirmLoad();
                 }
 
