@@ -77,6 +77,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     private event Action OnDeleteActiveOrders;
 
     public event Action OnMainGameFinishes;
+    public event Action OnFinalOrderDelivered;
 
     [Header("Debug")]
     [Tooltip("When checked will loop through waves so you can play forever")]
@@ -278,7 +279,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 StopHardSpawn();*/
 
                 MasterSkywalker();
-                StartCoroutine(PostGameClarity());
+                StartCoroutine(PostGameClarity(false));
 
                 // sounds
                 SoundManager.Instance.PlaySFX("timeout", clockSource);
@@ -488,9 +489,11 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     public void GoldOrderDelivered()
     {
+        OnFinalOrderDelivered?.Invoke();
         finalOrderActive = false;
         gameStarted = false;
-        GameManager.Instance.SetGameState(GameState.Results);
+        StartCoroutine(PostGameClarity(true));
+        SoundManager.Instance.ChangeSnapshot("paused");
     }
 
     /// <summary>
@@ -609,12 +612,19 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// Called when the main game ends. Lingers for a set amout of time before switching to the final order sequence.
     /// </summary>
     /// <returns></returns>
-    private IEnumerator PostGameClarity()
+    private IEnumerator PostGameClarity(bool isFinal)
     {
         Time.timeScale = 0.5f;
         yield return new WaitForSeconds(postGameLinger/2);
         Time.timeScale = 1.0f;
-        SceneManager.Instance.LoadFinalOrderScene();
+        if (!isFinal)
+        {
+            SceneManager.Instance.LoadFinalOrderScene();
+        }
+        else
+        {
+            GameManager.Instance.SetGameState(GameState.Results);
+        }
         //GameManager.Instance.SetGameState(GameState.GoldenCutscene);
     }
 }
