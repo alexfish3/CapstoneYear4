@@ -91,7 +91,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     private void ScaleOrthoCam(Camera cam)
     {
-        //this.re
+        float upp = 8.8f / Screen.width;
         cam.orthographicSize = Screen.width * (21f/1920f);
         Debug.Log($"ORTHO LOGIC: {Screen.width} x {21f/1920f} = {cam.orthographicSize}");
     }
