@@ -8,6 +8,7 @@ public class Kickable : MonoBehaviour
     private Quaternion startRot;
 
     private Rigidbody rb;
+    public Rigidbody Rb => rb;
     private Dissolver dissolve;
 
     private bool kicked;
@@ -22,6 +23,7 @@ public class Kickable : MonoBehaviour
     [SerializeField] private bool frozenAtStart = false;
 
     private IEnumerator respawnCoroutine;
+    private IEnumerator checkVelocityCoroutine;
 
     /// <summary>
     /// Stock Start. Gets references.
@@ -39,7 +41,7 @@ public class Kickable : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Kickable" && other.GetComponent<Kickable>().Kicked)
+        if (other.tag == "Kickable" && other.GetComponent<Kickable>().Kicked && other.GetComponent<Kickable>().Rb.velocity.magnitude > 1)
         {
             GetKicked();
         }
@@ -50,10 +52,15 @@ public class Kickable : MonoBehaviour
     /// </summary>
     public void GetKicked(Collider sphereBody = null)
     {
-        if (kicked)
+        if (kicked || respawnCoroutine != null)
             return;
         rb.constraints = RigidbodyConstraints.None;
+
+        StopRespawn();
         StartRespawn(sphereBody);
+        StopCheckVelocity();
+        StartCheckVelocity();
+
         kicked = true;
     }
 
@@ -78,6 +85,22 @@ public class Kickable : MonoBehaviour
 
         rb.constraints = frozenAtStart ? RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation : RigidbodyConstraints.None;
         kicked = false;
+        StopCheckVelocity();
+
+        yield return new WaitForSeconds(fadeTime);
+
+        StopRespawn();
+    }
+
+    private IEnumerator CheckVelocity()
+    {
+        while (true)
+        {
+            if (rb.velocity.magnitude < 1)
+                kicked = false;
+
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 
     private void StartRespawn(Collider sphereBody = null)
@@ -91,6 +114,20 @@ public class Kickable : MonoBehaviour
         {
             StopCoroutine(respawnCoroutine);
             respawnCoroutine = null;
+        }
+    }
+
+    private void StartCheckVelocity()
+    {
+        checkVelocityCoroutine = CheckVelocity();
+        StartCoroutine(checkVelocityCoroutine);
+    }
+    private void StopCheckVelocity()
+    {
+        if (checkVelocityCoroutine != null)
+        {
+            StopCoroutine(checkVelocityCoroutine);
+            checkVelocityCoroutine = null;
         }
     }
 }
