@@ -15,6 +15,8 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
     [SerializeField] private Camera orthoCam;
     bool canQuit = false;
 
+    [SerializeField] private float employeeBoardWidth = 8.8f;
+
     RectTransform canvasRect;
 
     private void OnEnable()
@@ -91,7 +93,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     private void ScaleOrthoCam(Camera cam)
     {
-        float upp = 8.8f / Screen.width;
+        float upp = employeeBoardWidth / Screen.width;
         float desiredOS = 0.5f * upp * Screen.height;
         cam.orthographicSize = desiredOS;
         Debug.Log($"ORTHO LOGIC: 0.5 x {upp} x {Screen.height} = {cam.orthographicSize}");
