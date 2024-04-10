@@ -90,6 +90,8 @@ public class OrderBeacon : MonoBehaviour
 
         cachedMain = beaconFX.GetVector4("MainColor");
         cachedSub = beaconFX.GetVector4("SubColor");
+        beaconFX.gameObject.layer = 28;
+        beaconFX.gameObject.SetActive(true);
         CheckFlamePosition();
     }
 
@@ -119,6 +121,7 @@ public class OrderBeacon : MonoBehaviour
         
         // NOTE: if camera layers change it'll fuck with beacon rendering
         beaconFX.gameObject.layer = order.PlayerHolding.transform.parent.GetComponentInChildren<SphereCollider>().gameObject.layer + 7;
+        beaconFX.gameObject.SetActive(true);
 
         CheckFlamePosition();
     }
@@ -144,6 +147,7 @@ public class OrderBeacon : MonoBehaviour
         isPickup = true;
         order.RemovePlayerHolding();
         beaconFX.gameObject.layer = 28; // reset to render in phase layer
+        beaconFX.gameObject.SetActive(true);
 
         CheckFlamePosition();
     }
