@@ -76,6 +76,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapResults += DisableReadiedUp;
         gameManager.OnSwapResults += ResetPlayerCanvas;
         gameManager.OnSwapResults += SwapForResults;
+        gameManager.OnSwapResults += SetAllPlayerSpawn;
 
         gameManager.OnSwapMenu += SwapForMainMenu;
 
@@ -106,6 +107,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapResults -= DisableReadiedUp;
         gameManager.OnSwapResults -= ResetPlayerCanvas;
         gameManager.OnSwapResults -= SwapForResults;
+        gameManager.OnSwapResults -= SetAllPlayerSpawn;
 
         gameManager.OnSwapMenu -= SwapForMainMenu;
 
@@ -674,7 +676,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
     }
 
-
     /// <summary>
     /// Swaps the control scheme for all players to driving
     /// </summary>
@@ -778,7 +779,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         {
             if (availiblePlayerInputs[i] == null)
                 continue;
-
             availiblePlayerInputs[i].gameObject.GetComponentInChildren<DrivingIndicators>().UpdatePlayerReferencesForObjects();
         }
     }

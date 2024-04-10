@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class LoadingScreenManager : SingletonMonobehaviour<LoadingScreenManager>
 {
     [Header("Loading Screen Information")]
+    [SerializeField] GameObject textConfirm;
     [SerializeField] Transform[] buttonPositions;
 
     [SerializeField] GameObject[] ButtonGameobjects;
@@ -32,6 +33,8 @@ public class LoadingScreenManager : SingletonMonobehaviour<LoadingScreenManager>
 
             buttons++;
         }
+
+        textConfirm.SetActive(true);
     }
 
     ///<summary>
@@ -47,6 +50,8 @@ public class LoadingScreenManager : SingletonMonobehaviour<LoadingScreenManager>
             ButtonGameobjects[i].gameObject.SetActive(false);
             ButtonColors[i].gameObject.SetActive(false);
         }
+
+        textConfirm.SetActive(false);
     }
 
     ///<summary>
