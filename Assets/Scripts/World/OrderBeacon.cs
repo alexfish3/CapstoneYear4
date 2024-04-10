@@ -34,9 +34,12 @@ public class OrderBeacon : MonoBehaviour
     [Tooltip("The last element in the array is for dropoff beacons.")]
     [SerializeField] private Color[] subColors;
     private Color cachedMain, cachedSub;
-    
+
+    [Header("Flame Logic")]
     [SerializeField] private MeshRenderer dissolveRend;
     [SerializeField] private Color[] flameColors;
+    [Tooltip("Height offset for the flame. Employ guess and check strategies to fine tune this number.")]
+    [SerializeField] private float flameOffset = 0.06f;
 
     //private Material cachedMat;
     private bool canInteract;
@@ -156,7 +159,7 @@ public class OrderBeacon : MonoBehaviour
         {
             float diff = hit.distance;// - REND_HEIGHT;
             dissolveRend.transform.position -= diff * Vector3.up;
-            dissolveRend.transform.localPosition += 0.065f * Vector3.up;
+            dissolveRend.transform.localPosition += flameOffset * Vector3.up;
             Debug.Log($"Ray hit {hit.collider.name}, original distance is {hit.distance}, difference is {diff}");
         }
 
