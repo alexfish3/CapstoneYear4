@@ -5,10 +5,11 @@ using UnityEngine;
 public class CreditsMenu : SingletonMonobehaviour<CreditsMenu>
 {
     [SerializeField] MainMenu menu;
+    [SerializeField] Animator animator;
 
-    public void UpdateSelectors()
+    public void BeginCredits()
     {
-
+        animator.SetTrigger("ScrollCredits");
     }
 
     ///<summary>
@@ -18,6 +19,7 @@ public class CreditsMenu : SingletonMonobehaviour<CreditsMenu>
     {
         Debug.Log("Exit credits");
 
+        animator.SetTrigger("Reset");
         menu.SwapToMainMenu();
     }
 }

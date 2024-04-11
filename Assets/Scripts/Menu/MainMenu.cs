@@ -140,7 +140,7 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
 
         GameManager.Instance.SetGameState(GameState.Credits);
 
-        CreditsMenu.Instance.UpdateSelectors();
+        CreditsMenu.Instance.BeginCredits();
 
         selectorPos = 0;
         menuGhostImage.sprite = selectorGhostSprites[0];
