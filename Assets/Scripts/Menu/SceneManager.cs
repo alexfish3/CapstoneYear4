@@ -237,7 +237,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
             Debug.Log($"enabling {i}th text");
             playerNames[i].gameObject.SetActive(true);
             playerScores[i].gameObject.SetActive(true);
-            playerNames[i].text = $"{oh.CompanyInfo.name} ({oh.transform.parent.name})";
+            playerNames[i].text = $"{oh.Placement}. {oh.CompanyInfo.name} ({oh.transform.parent.name})";
             playerScores[i].text = $"${topScore - oh.Score}";
         }
     }
