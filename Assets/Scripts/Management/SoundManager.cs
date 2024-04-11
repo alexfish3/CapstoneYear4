@@ -5,6 +5,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
+using static Unity.VisualScripting.Member;
 using Random = UnityEngine.Random;
 
 /// <summary>
@@ -12,8 +13,20 @@ using Random = UnityEngine.Random;
 /// </summary>
 public class SoundManager : SingletonMonobehaviour<SoundManager>
 {
+    // music
     [Tooltip("Reference to the source that will play all the music.")]
-    [SerializeField] private static AudioSource musicSource;
+    [SerializeField] private AudioSource[] musicSources;
+
+    // batton logic
+    private AudioSource playing, waiting;
+    private bool swappingTunes = false;
+    private double nextTime, currTime, introTime;
+    private int flip = 1;
+
+    // debug
+    private double dspTime;
+
+    // dictionary stuff
     private Dictionary<string, AudioObject> sfxDictionary = new Dictionary<string, AudioObject>();
     private Dictionary<string, AudioMixerSnapshot> snapshotDictionary = new Dictionary<string, AudioMixerSnapshot>();
 
@@ -67,8 +80,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [Header("Emotes")]
     [Tooltip("[0]: Top, [1]: Right, [2]: Bottom, [3]: Left")]
     [SerializeField] private AudioObject[] emoteSFX;
-    [Range(0f, 1f)] [SerializeField] private float emotePitchMin;
-    [Range(1f, 2f)] [SerializeField] private float emotePitchMax;
+    [Range(0f, 1f)][SerializeField] private float emotePitchMin;
+    [Range(1f, 2f)][SerializeField] private float emotePitchMax;
 
     [Header("Looping Logic")]
     [Tooltip("Length of the intro for the menu theme.")]
@@ -91,24 +104,22 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 
     private void OnEnable()
     {
-        musicSource = GetComponent<AudioSource>();
         // events for music
         GameManager.Instance.OnSwapMenu += PlayMenuTheme;
-        //GameManager.Instance.OnSwapPlayerSelect += PlayPlayerSelectTheme;
         GameManager.Instance.OnSwapStartingCutscene += PlayMainTheme;
         GameManager.Instance.OnSwapGoldenCutscene += PlayFinalTheme;
         GameManager.Instance.OnSwapResults += PlayResultsTheme;
-
+        // reset snapshot
         GameManager.Instance.OnSwapAnything += () => ChangeSnapshot("gameplay");
     }
     private void OnDisable()
     {
+        // events for music
         GameManager.Instance.OnSwapMenu -= PlayMenuTheme;
-        //GameManager.Instance.OnSwapPlayerSelect += PlayPlayerSelectTheme;
         GameManager.Instance.OnSwapStartingCutscene -= PlayMainTheme;
         GameManager.Instance.OnSwapGoldenCutscene -= PlayFinalTheme;
         GameManager.Instance.OnSwapResults -= PlayResultsTheme;
-
+        // reset snapshot
         GameManager.Instance.OnSwapAnything -= () => ChangeSnapshot("gameplay");
     }
 
@@ -144,7 +155,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         sfxDictionary.Add("scroll", scroll);
         sfxDictionary.Add("pause", pause);
 
-        if(simulatePlayers)
+        if (simulatePlayers)
         {
             IEnumerator p2, p3, p4;
             p2 = RandomNoises();
@@ -154,6 +165,31 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
             StartCoroutine(p3);
             StartCoroutine(p4);
 
+        }
+    }
+
+    private void Update()
+    {
+        if (swappingTunes)
+        {
+            currTime = 0;
+            nextTime = 0;
+            flip = 0;
+            return;
+        }
+
+        currTime = musicSources[1-flip].time;
+        dspTime = AudioSettings.dspTime;
+
+        if (currTime + introTime > nextTime)
+        {
+            musicSources[flip].timeSamples = Mathf.RoundToInt((float)introTime * musicSources[flip].clip.frequency);
+            musicSources[flip].PlayScheduled(AudioSettings.dspTime + introTime);
+
+            nextTime = musicSources[flip].clip.length - introTime;
+            currTime = 0;
+
+            flip = 1 - flip;
         }
     }
 
@@ -171,27 +207,8 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
             bgmRoutine = null;
         }
 
-        musicSource.Pause();
-        musicSource.clip = mainMenuBGM.clip;
-        musicSource.volume = mainMenuBGM.volume;
-        bgmRoutine = PlayLoopedSongWithIntro(musicSource, menuThemeIntroLength);
-        StartCoroutine(bgmRoutine);
+        SwitchMusic(mainMenuBGM, menuThemeIntroLength);
     }
-
-    // we no longer have a player select theme
-/*    private void PlayPlayerSelectTheme()
-    {
-        if (!playPlayerSelect)
-            return;
-
-        if (bgmRoutine != null)
-            StopCoroutine(bgmRoutine);
-
-        musicSource.Pause();
-        musicSource.clip = playerSelectBGM.clip;
-        musicSource.volume = playerSelectBGM.volume;
-        musicSource.Play();
-    }*/
 
     private void PlayMainTheme()
     {
@@ -202,11 +219,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
             bgmRoutine = null;
         }
 
-        musicSource.Pause();
-        musicSource.clip = mainGameLoop.clip;
-        musicSource.volume = mainGameLoop.volume;
-        bgmRoutine = PlayLoopedSongWithIntro(musicSource, gameThemeIntroLength);
-        StartCoroutine(bgmRoutine);
+        SwitchMusic(mainGameLoop, gameThemeIntroLength);
     }
 
     private void PlayFinalTheme()
@@ -217,20 +230,12 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
             bgmRoutine = null;
         }
 
-        musicSource.clip = finalOrderBGM.clip;
-        musicSource.volume = finalOrderBGM.volume;
-        bgmRoutine = PlayLoopedSongWithIntro(musicSource, finalThemeIntroLength);
-        StartCoroutine(bgmRoutine);
+        SwitchMusic(finalOrderBGM, finalThemeIntroLength);
     }
 
     private void PlayResultsTheme()
     {
-        if (bgmRoutine != null)
-            StopCoroutine(bgmRoutine);
-
-        musicSource.clip = resultsBGM.clip;
-        musicSource.volume = resultsBGM.volume;
-        musicSource.Play();
+        SwitchMusic(resultsBGM, 0.01f);
     }
 
     // the below methods are similar but play SFXs. The audio source to be used is the only param
@@ -287,7 +292,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
             SwitchSource(ref source, "Emote");
             source.gameObject.SetActive(true);
             source.Play();
-        } 
+        }
         catch
         {
             Debug.LogError($"Couldn't find index {index} of EmoteSFX array length {emoteSFX.Length}.");
@@ -300,9 +305,9 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     /// </summary>
     /// <param name="key">Key of the snapshot you're switching to</param>
     /// <param name="time">Time you want it to take, default is 0.1f</param>
-    public void ChangeSnapshot(string key, float time=0.1f)
+    public void ChangeSnapshot(string key, float time = 0.1f)
     {
-        if(snapshotDictionary.ContainsKey(key)) // this won't get called as often as SFX so I'm less worried about performance impact
+        if (snapshotDictionary.ContainsKey(key)) // this won't get called as often as SFX so I'm less worried about performance impact
         {
             snapshotDictionary[key].TransitionTo(time);
         }
@@ -316,7 +321,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     public AudioObject GetSFX(string key)
     {
         AudioObject outClip;
-        if(sfxDictionary.TryGetValue(key, out outClip))
+        if (sfxDictionary.TryGetValue(key, out outClip))
         {
             return outClip;
         }
@@ -332,7 +337,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     public void SwitchSource(ref AudioSource source, string channel)
     {
         AudioMixerGroup targetGroup = mainMixer.FindMatchingGroups(channel)[0];
-        if(targetGroup != null)
+        if (targetGroup != null)
         {
             source.outputAudioMixerGroup = targetGroup;
         }
@@ -342,11 +347,41 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         }
     }
 
+    /// <summary>
+    /// Switches the sources to passed in clip
+    /// </summary>
+    private void SwitchMusic(AudioObject inMusic, float inIntro)
+    {
+        if (inMusic.clip == musicSources[0].clip)
+            return;
+
+        swappingTunes = true;
+
+        musicSources[0].timeSamples = 0;
+        musicSources[1].timeSamples = 0;
+
+        musicSources[0].Pause();
+        musicSources[1].Pause();
+
+        musicSources[0].clip = inMusic.clip;
+        musicSources[0].volume = inMusic.volume;
+
+        musicSources[1].clip = inMusic.clip;
+        musicSources[1].volume = inMusic.volume;
+
+        introTime = inIntro;
+        nextTime = musicSources[0].clip.length;
+
+        musicSources[1 - flip].Play();
+
+        swappingTunes = false;
+    }
+
     // for volume control
 
     public void SetSFX(float value)
     {
-        mainMixer.SetFloat("SFX", value);        
+        mainMixer.SetFloat("SFX", value);
     }
 
     public void SetMusic(float value)
