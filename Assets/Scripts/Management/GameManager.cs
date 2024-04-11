@@ -28,6 +28,7 @@ public class GameManager : SingletonMonobehaviour<GameManager>
 
     public GameState MainState { get { return mainState; } }
 
+    // game state events
     public event Action OnSwapMenu;
     public event Action OnSwapOptions;
     public event Action OnSwapCredits;
@@ -41,6 +42,9 @@ public class GameManager : SingletonMonobehaviour<GameManager>
     public event Action OnSwapFinalPackage;
     public event Action OnSwapResults;
     public event Action OnSwapAnything;
+
+    // other important events
+    public event Action OnFinalOrderDelivered;
 
     public void Start()
     {
@@ -102,5 +106,10 @@ public class GameManager : SingletonMonobehaviour<GameManager>
             default:
                 break;
         }
+    }
+
+    public void InvokeFinalOrderDelivered()
+    {
+        OnFinalOrderDelivered?.Invoke();
     }
 }

@@ -77,7 +77,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     private event Action OnDeleteActiveOrders;
 
     public event Action OnMainGameFinishes;
-    public event Action OnFinalOrderDelivered;
 
     [Header("Debug")]
     [Tooltip("When checked will loop through waves so you can play forever")]
@@ -489,7 +488,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// </summary>
     public void GoldOrderDelivered()
     {
-        OnFinalOrderDelivered?.Invoke();
+        GameManager.Instance.InvokeFinalOrderDelivered();
         finalOrderActive = false;
         gameStarted = false;
         StartCoroutine(PostGameClarity(true));
