@@ -16,22 +16,28 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
     bool canQuit = false;
 
     [SerializeField] private float employeeBoardWidth = 8.8f;
-
     RectTransform canvasRect;
+
+    [SerializeField] private GameObject wiper;
+    [SerializeField] private GameObject canvasElements;
+    private Animator transitionAnimator;
 
     private void OnEnable()
     {
         GameManager.Instance.OnSwapResults += UpdateResults;
+        GameManager.Instance.OnFinalOrderDelivered += HideGame;
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnSwapResults -= UpdateResults;
+        GameManager.Instance.OnFinalOrderDelivered -= HideGame;
     }
 
     private void Start()
     {
         canvasRect = resultsCanvas.GetComponent<RectTransform>();
+        transitionAnimator = wiper.GetComponent<Animator>();
     }
 
     private void Update()
@@ -42,8 +48,19 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
         }
     }
 
+    private void HideGame()
+    {
+        canvasElements.SetActive(false);
+        resultsCanvas.enabled = true;
+        wiper.SetActive(true);
+        transitionAnimator.SetTrigger("WipeIn");
+    }
+
     private void UpdateResults()
     {
+        Debug.Log("update results");
+        canvasElements.SetActive(true);
+        transitionAnimator.SetTrigger("WipeOut");
         ScaleOrthoCam(orthoCam);
         quitInfo.SetActive(false);
         resultsCanvas.enabled = true;
