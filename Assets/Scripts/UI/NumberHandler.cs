@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,6 +17,8 @@ public class NumberHandler : MonoBehaviour
     [SerializeField] GameObject tipHolder;
     [SerializeField] GameObject dollarSign;
     [SerializeField] Image placementImage;
+    [SerializeField] private TextMeshProUGUI suffix;
+    [SerializeField] private TextMeshProUGUI suffixBG;
 
     [Header("Final Order Countdown")]
     [SerializeField] Image finalOrderCountdownImage;
@@ -104,6 +107,23 @@ public class NumberHandler : MonoBehaviour
 
         currPlace = inPlace;
         StartCoroutine(animateNumber(placementImage, inPlace));
+
+        switch(inPlace)
+        {
+            case 1:
+                suffix.text = "st";
+                break;
+            case 2:
+                suffix.text = "nd";
+                break;
+            case 3:
+                suffix.text = "rd";
+                break;
+            default:
+                suffix.text = "th";
+                break;
+        }
+        suffixBG.text = suffix.text;
     }
 
     private IEnumerator animateNumber(Image numToShrink, char charNum)

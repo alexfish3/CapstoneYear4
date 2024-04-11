@@ -53,7 +53,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         GameManager.Instance.OnSwapMenu += HideLoadingScreen;
         GameManager.Instance.OnSwapStartingCutscene += HideLoadingScreen;
         GameManager.Instance.OnSwapGoldenCutscene += HideLoadingScreen;
-
     }
 
     private void OnDisable()
@@ -88,7 +87,8 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
                 StopCoroutine(sceneLoadCoroutune);
                 sceneLoadCoroutune = null;
             }
-
+            HideLeaderboard();
+            tutorialImage.sprite = mainTut; // change this if we have a different loading screen for after results
             ShowLoadingScreen();
             sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(PlayerSelectScene.BuildIndex, loadingScreenDelay, false, true));
         }
@@ -238,14 +238,13 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
             playerNames[i].gameObject.SetActive(true);
             playerScores[i].gameObject.SetActive(true);
             playerNames[i].text = $"{oh.Placement}. {oh.CompanyInfo.name} ({oh.transform.parent.name})";
-            playerScores[i].text = $"${topScore - oh.Score}";
+            playerScores[i].text = $"${oh.Score}";
         }
     }
 
     private void HideLeaderboard()
     {
-        Debug.Log("hiding leaderboard");
-        for(int i=0;i<playerNames.Length;i++)
+        for (int i=0;i<playerNames.Length;i++)
         {
             playerNames[i].gameObject.SetActive(false);
             playerScores[i].gameObject.SetActive(false);

@@ -37,6 +37,7 @@ public class DynamicNumberUI : MonoBehaviour
         centerText.text = "";
         timeSpan = TimeSpan.FromSeconds(OrderManager.Instance.GameTimer);
         waveText.text = timeSpan.ToString("m\\:ss\\.ff");
+        finalOrderText.gameObject.SetActive(false);
         finalOrderText.text = "";
     }
 
@@ -48,7 +49,8 @@ public class DynamicNumberUI : MonoBehaviour
         waveText.text = "";
         waveText.color = Color.white;
         centerText.text = "";
-        finalOrderText.text = $"Gold Order Value: ${OrderManager.Instance.FinalOrderValue}";
+        finalOrderText.gameObject.SetActive(true);
+        finalOrderText.text = $": ${OrderManager.Instance.FinalOrderValue}";
     }
 
     /// <summary>
