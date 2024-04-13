@@ -127,8 +127,6 @@ public class PhaseIndicator : MonoBehaviour
     {
         GameObject grandmasterFlash = Instantiate(flashParticles, location, UnityEngine.Quaternion.identity);
         grandmasterFlash.transform.parent = this.transform;
-        //Transform actualFlash = grandmasterFlash.transform.GetChild(0);
-        //actualFlash.parent = this.transform;
         Destroy(grandmasterFlash, 1.5f);
     }
 }
