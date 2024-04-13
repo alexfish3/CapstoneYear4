@@ -14,10 +14,11 @@ public class PhaseIndicator : MonoBehaviour
     [SerializeField] SliderBar hornSliderLeft;
     [SerializeField] SliderBar hornSliderRight;
     [SerializeField] float intensity = 3;
+    [SerializeField] float readyIntensityBonus = 1.5f;
 
-    [Range(0f, 2f)]
+    [Range(0f, 1f)]
     [SerializeField] float hornGlowValue = 0;
-    public float hornValueMax;
+    private float hornValueMax = 1f;
     float hornGlowStep;
 
     [SerializeField] Color readyColor;
@@ -29,6 +30,11 @@ public class PhaseIndicator : MonoBehaviour
     [SerializeField] Renderer ghostRenderer;
     [SerializeField] Material hornGlowRef;
     [SerializeField] Material hornGlow;
+
+    [Header("Flashyflash")]
+    [SerializeField] Transform leftHorn;
+    [SerializeField] Transform rightHorn;
+    [SerializeField] GameObject flashParticles;
 
     private SoundPool soundPool; // for playing SFX
     private bool dirtyBoostReady = true;
@@ -85,33 +91,44 @@ public class PhaseIndicator : MonoBehaviour
     /// </summary>
     public void SetHornColor(float passInCurrent, float passInMax)
     {
-        hornSliderLeft.value = passInCurrent / passInMax;
-        hornSliderRight.value = passInCurrent / passInMax;
-        hornGlowValue = (passInCurrent / passInMax) * hornValueMax;
+        float ratio = passInCurrent / passInMax;
+        hornSliderLeft.value = ratio;
+        hornSliderRight.value = ratio;
+        hornGlowValue = ratio * hornValueMax;
 
-        float intensityFactor = Mathf.Pow(2, (hornGlowValue + intensity));
+        float intensityFactor = Mathf.Pow(2, (hornGlowValue * intensity));
 
         // Ready boost color
-        if ((passInCurrent / passInMax) >= 1f)
+        if (ratio >= 1f)
         {
             if (!dirtyBoostReady)
             {
                 soundPool.PlayBoostReady();
+                CreateFlash(leftHorn.transform.position);
+                CreateFlash(rightHorn.transform.position);
                 dirtyBoostReady = true;
             }
 
-            Color color = new Color(readyColor.r * intensityFactor, readyColor.g * intensityFactor, readyColor.b * intensityFactor);
+            Color color = new Color(readyColor.r * readyIntensityBonus * intensityFactor, readyColor.g * readyIntensityBonus * intensityFactor, readyColor.b * readyIntensityBonus * intensityFactor);
             hornGlow.SetColor("_EmissionColor", color);
             hornGlow.SetColor("_BaseColor", readyColor);
         }
         else
         {
             dirtyBoostReady = false;
-            Color currentColor = (hornGlowGraident.Evaluate(hornGlowValue / hornValueMax));
+            Color currentColor = (hornGlowGraident.Evaluate(hornGlowValue));
             Color color = new Color(currentColor.r * intensityFactor, currentColor.g * intensityFactor, currentColor.b * intensityFactor);
             hornGlow.SetColor("_EmissionColor", color);
             hornGlow.SetColor("_BaseColor", currentColor);
         }
     }
 
+    private void CreateFlash(UnityEngine.Vector3 location)
+    {
+        GameObject grandmasterFlash = Instantiate(flashParticles, location, UnityEngine.Quaternion.identity);
+        grandmasterFlash.transform.parent = this.transform;
+        //Transform actualFlash = grandmasterFlash.transform.GetChild(0);
+        //actualFlash.parent = this.transform;
+        Destroy(grandmasterFlash, 1.5f);
+    }
 }

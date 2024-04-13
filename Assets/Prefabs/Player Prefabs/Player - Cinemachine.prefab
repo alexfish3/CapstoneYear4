@@ -9682,6 +9682,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 699743c044e246c4caa4c6de91c95cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &616221382070857239
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2999618332069706756}
+  m_Layer: 7
+  m_Name: RightHornSparksPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2999618332069706756
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616221382070857239}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.523, y: 2.036, z: -0.938}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7041880053891497581}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &623309799504369535
 GameObject:
   m_ObjectHideFlags: 0
@@ -32406,22 +32437,22 @@ MonoBehaviour:
   hornSliderLeft: {fileID: 110003888640411645}
   hornSliderRight: {fileID: 7645400703520107787}
   intensity: 6
-  hornGlowValue: 2
-  hornValueMax: 2
-  readyColor: {r: 0.21868706, g: 0, b: 1, a: 1}
+  readyIntensityBonus: 10
+  hornGlowValue: 1
+  readyColor: {r: 0.27482426, g: 0.07075471, b: 1, a: 1}
   hornGlowGraident:
     serializedVersion: 2
     key0: {r: 0.2264151, g: 0.2264151, b: 0.2264151, a: 1}
     key1: {r: 0.39061946, g: 0.3962264, b: 0.031772878, a: 1}
-    key2: {r: 1, g: 0, b: 0.17500019, a: 0}
-    key3: {r: 0.8967657, g: 0, b: 1, a: 0}
+    key2: {r: 0.6226415, g: 0.09104663, b: 0.20370363, a: 0}
+    key3: {r: 0.78382945, g: 0.09019607, b: 1, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 14071
-    ctime2: 42020
+    ctime2: 37394
     ctime3: 65535
     ctime4: 0
     ctime5: 0
@@ -32435,7 +32466,7 @@ MonoBehaviour:
     atime5: 0
     atime6: 0
     atime7: 0
-    m_Mode: 0
+    m_Mode: 2
     m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
@@ -32443,6 +32474,9 @@ MonoBehaviour:
   ghostRenderer: {fileID: 2131244629435306492}
   hornGlowRef: {fileID: 2100000, guid: c09309cf1e4b9064eb91ab3c3529d172, type: 2}
   hornGlow: {fileID: 2100000, guid: c09309cf1e4b9064eb91ab3c3529d172, type: 2}
+  leftHorn: {fileID: 8895790515350047708}
+  rightHorn: {fileID: 2999618332069706756}
+  flashParticles: {fileID: 6972864939505964995, guid: ace5d12d0c912cd41884752add392b9b, type: 3}
   ShowPhase: 1
 --- !u!114 &6612634177998966307
 MonoBehaviour:
@@ -34258,6 +34292,37 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &8555009965234069726
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8895790515350047708}
+  m_Layer: 7
+  m_Name: LeftHornSparksPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8895790515350047708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8555009965234069726}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.523, y: 2.036, z: 0.938}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7041880053891497581}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8630642574564462381
 GameObject:
   m_ObjectHideFlags: 0
@@ -35855,6 +35920,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8830332384404889154, guid: a1fb04967ae84f648927555756bceb1b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5036586874731227263}
+    - targetCorrespondingSourceObject: {fileID: 639237055666170490, guid: a1fb04967ae84f648927555756bceb1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8895790515350047708}
+    - targetCorrespondingSourceObject: {fileID: 639237055666170490, guid: a1fb04967ae84f648927555756bceb1b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2999618332069706756}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a1fb04967ae84f648927555756bceb1b, type: 3}
       insertIndex: -1
@@ -35863,6 +35934,11 @@ PrefabInstance:
 --- !u!137 &2131244629435306492 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -795591646974540309, guid: a1fb04967ae84f648927555756bceb1b, type: 3}
+  m_PrefabInstance: {fileID: 7594984520267584535}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7041880053891497581 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 639237055666170490, guid: a1fb04967ae84f648927555756bceb1b, type: 3}
   m_PrefabInstance: {fileID: 7594984520267584535}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &7325008034767235398 stripped
