@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -209,6 +210,10 @@ public class Respawn : MonoBehaviour
             respawnCoroutine = RespawnPlayer();
         }
 
+        modelParent.transform.parent.parent.DOComplete();
+        modelParent.transform.parent.parent.DOComplete();
+        modelParent.transform.parent.parent.DOKill();
+        modelParent.transform.parent.parent.localEulerAngles = Vector3.zero;
         modelParent.SetActive(false);
 
         StartCoroutine(respawnCoroutine);
@@ -229,6 +234,7 @@ public class Respawn : MonoBehaviour
         respawnWisp.transform.localPosition = wispOrigin;
 
         ballDriving.FreezeBall(false, false);
+        modelParent.transform.parent.parent.localEulerAngles = Vector3.zero;
 
         respawnCoroutine = null;
         GetComponent<Rigidbody>().useGravity = true;

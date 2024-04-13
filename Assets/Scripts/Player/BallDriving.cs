@@ -220,6 +220,10 @@ public class BallDriving : MonoBehaviour
     private bool spinningOut = false;
     private bool wheelying = false;
 
+    private Tween wheelie;
+    private Tween wheelieEnd;
+    private Sequence mySeq;
+
     private bool callToDrift = false; //whether the controller should attempt to drift. only used if drift is called while the left stick is neutral
     private bool drifting = false;
     public bool Drifting => drifting;
@@ -261,7 +265,7 @@ public class BallDriving : MonoBehaviour
 
     private SoundPool soundPool; // for driving noises
 
-    public bool InsideBuilding = false;
+    public bool insideBuilding = false;
 
     private void OnEnable()
     {
@@ -595,7 +599,7 @@ public class BallDriving : MonoBehaviour
                 phasing = false;
                 ToggleCollision(false);
                 checkPhaseStatus = false;
-                InsideBuilding = false;
+                insideBuilding = false;
 
                 if(phaseType == PhaseType.OnlyInBuilding)
                     cameraResizer.SwapCameraRendering(false);
@@ -603,22 +607,22 @@ public class BallDriving : MonoBehaviour
                 soundPool.StopPhaseSound();
             }
             // Check if either raycast hit
-            else if (hit1Success == false && hit2Success == false && InsideBuilding == true)
+            else if (hit1Success == false && hit2Success == false && insideBuilding == true)
             {
                 Debug.Log("Not Inside Building");
-                InsideBuilding = false;
+                insideBuilding = false;
 
                 if (phaseType == PhaseType.OnlyInBuilding)
                     cameraResizer.SwapCameraRendering(false);
             }
-            else if (hit1Success == true && hit2Success == true && InsideBuilding == false)
+            else if (hit1Success == true && hit2Success == true && insideBuilding == false)
             {
                 Debug.Log("Inside Building");
 
                 if (phaseType == PhaseType.OnlyInBuilding)
                     cameraResizer.SwapCameraRendering(true);
 
-                InsideBuilding = true;
+                insideBuilding = true;
 
                 Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
                 Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.red);
@@ -952,13 +956,14 @@ public class BallDriving : MonoBehaviour
 
         //~~~~~~~~~Wheelie~~~~~~~~~~~
         scooterModel.parent.parent.DOComplete();
-        Tween wheelie = scooterModel.parent.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
+        scooterModel.parent.parent.localEulerAngles = Vector3.zero;
+        wheelie = scooterModel.parent.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
         wheelie.SetEase(Ease.OutQuint);
         wheelie.SetRelative(true);
-        Tween wheelieEnd = scooterModel.parent.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
+        wheelieEnd = scooterModel.parent.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
         wheelieEnd.SetEase(Ease.OutBounce);
         wheelieEnd.SetRelative(true);
-        Sequence mySeq = DOTween.Sequence();
+        mySeq = DOTween.Sequence();
         mySeq.Append(wheelie);
         mySeq.Append(wheelieEnd);
         wheelying = true;
@@ -1025,7 +1030,8 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostCooldown()
     {
-        scooterModel.parent.parent.DOComplete();
+        KillWheelie();
+
         boostElapsedTime = 0f;
         boostTimerMaxTime = boostRechargeTime;
 
@@ -1047,14 +1053,26 @@ public class BallDriving : MonoBehaviour
         StopBoostCooldown();
         StopBoostActive();
         StopEndBoost();
-        scooterModel.parent.parent.DOComplete();
+
+        KillWheelie();
+
         boostElapsedTime = boostTimerMaxTime;
+
         if (phaseType == PhaseType.AtAllTimes)
             cameraResizer.SwapCameraRendering(false);
+
         boostAble = true;
         boosting = false;
         wheelying = false;
         checkPhaseStatus = true;
+    }
+
+    private void KillWheelie()
+    {
+        wheelie.Complete();
+        wheelieEnd.Complete();
+        mySeq.Complete();
+        scooterModel.parent.parent.localEulerAngles = Vector3.zero;
     }
 
     /// <summary>
@@ -1266,7 +1284,7 @@ public class BallDriving : MonoBehaviour
 
             boostElapsedTime = 0f;
 
-            scooterModel.parent.parent.DOComplete();
+            KillWheelie();
             checkPhaseStatus = true;
             boosting = false;
             wheelying = false;
