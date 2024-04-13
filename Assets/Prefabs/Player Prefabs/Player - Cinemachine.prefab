@@ -32325,8 +32325,7 @@ MonoBehaviour:
   boostPower: 60
   boostDuration: 1.6
   boostRechargeTime: 3
-  defaultBoostModifier: 1
-  handsFullBoostModifier: 0.375
+  handsFullBoostRechargeTime: 5
   boostingDrag: 0.86
   boostingSteerModifier: 0.6
   clashForce: 4000
@@ -32440,6 +32439,7 @@ MonoBehaviour:
     m_ColorSpace: -1
     m_NumColorKeys: 4
     m_NumAlphaKeys: 2
+  control: {fileID: 3575753304509721870}
   ghostRenderer: {fileID: 2131244629435306492}
   hornGlowRef: {fileID: 2100000, guid: c09309cf1e4b9064eb91ab3c3529d172, type: 2}
   hornGlow: {fileID: 2100000, guid: c09309cf1e4b9064eb91ab3c3529d172, type: 2}
@@ -32589,7 +32589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6223c6502eec0745a9b37a529135d3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tutorialBoostMod: 4
+  tutorialBoostMod: 0.1
   tutorialText: {fileID: 7096246538780459242}
   boostInstructions: (A) to Phase-Boost
   pickupInstructions: Grab Orders!
@@ -34128,7 +34128,7 @@ Transform:
   m_GameObject: {fileID: 8501127692924196179}
   serializedVersion: 2
   m_LocalRotation: {x: -0.07663677, y: -0, z: -0, w: -0.99705917}
-  m_LocalPosition: {x: 0, y: 2.9, z: -6.83}
+  m_LocalPosition: {x: 0, y: 2.849234, z: -6.501712}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -34862,6 +34862,10 @@ PrefabInstance:
     - target: {fileID: 3137244736015681938, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_Name
       value: Driving Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 3470031458764411373, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      propertyPath: value
+      value: 0.202
       objectReference: {fileID: 0}
     - target: {fileID: 4159013514717826824, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: numberSprites.Array.data[0]

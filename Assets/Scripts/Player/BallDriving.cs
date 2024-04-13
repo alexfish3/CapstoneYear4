@@ -121,11 +121,9 @@ public class BallDriving : MonoBehaviour
     [Tooltip("How long the boost lasts")]
     [SerializeField] private float boostDuration = 1.0f;
     [Tooltip("How long it takes to recharge the boost, starting after it finishes")]
-    [SerializeField] private float boostRechargeTime = 10.0f;
-    [Tooltip("Modifier value to determine how fast the boost recharges without an order")]
-    [SerializeField] private float defaultBoostModifier = 1f;
-    [Tooltip("Modifier value ot determine how fast the boost recharges with an order")]
-    [SerializeField] private float handsFullBoostModifier = 0.5f;
+    [SerializeField] private float boostRechargeTime = 3.0f;
+    [Tooltip("How long it takes to recharge the boost when holding an order")]
+    [SerializeField] private float handsFullBoostRechargeTime = 5.0f;
     [Tooltip("The amount of drag while boosting (Exercise caution when changing this; ask Will before playing with it too much)")]
     [SerializeField] private float boostingDrag = 1.0f;
     [Tooltip("A multipler applied to steering power while in a boost, which reduces your steering capability")]
@@ -244,13 +242,15 @@ public class BallDriving : MonoBehaviour
 
     private bool boostInitialburst = false;
     private bool boosting = false;
-    public bool Boosting { get { return boosting; } }
+    public bool Boosting => boosting;
     private bool boostAble = true;
     public bool BoostAble { set { boostAble = value; } }
     private bool phasing = false;
-    public bool Phasing { get { return boosting; } }
-
-    private float boostRechargeModifier = 1f;
+    public bool Phasing => phasing;
+    private float boostElapsedTime = 0f;
+    public float BoostElapsedTime => boostElapsedTime;
+    private float boostTimerMaxTime = 0f;
+    public float BoostTimerMaxTime => boostTimerMaxTime;
 
     private float slipstreamPortion = 0.0f;
 
@@ -297,8 +297,8 @@ public class BallDriving : MonoBehaviour
         pad = PlayerInstantiate.Instance.PlayerGamepads[playerIndex - 1];
         rumble = gameObject.GetComponent<Rumbler>();
 
-        // Sets horn glow to max
-        phaseIndicator.SetHornColor(1f);
+        boostTimerMaxTime = boostDuration;
+        boostElapsedTime = boostTimerMaxTime;
 
         sphereBody = sphere.GetComponent<Rigidbody>();
         sphereTransform = sphere.GetComponent<Transform>();
@@ -950,26 +950,26 @@ public class BallDriving : MonoBehaviour
         if (phaseType == PhaseType.AtAllTimes)
             cameraResizer.SwapCameraRendering(true);
 
+        //~~~~~~~~~Wheelie~~~~~~~~~~~
         scooterModel.parent.parent.DOComplete();
-
         Tween wheelie = scooterModel.parent.parent.DORotate(new Vector3(-WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
         wheelie.SetEase(Ease.OutQuint);
         wheelie.SetRelative(true);
         Tween wheelieEnd = scooterModel.parent.parent.DORotate(new Vector3(WHEELIE_AMOUNT, 0, 0), 0.8f * 1.6f, RotateMode.LocalAxisAdd);
         wheelieEnd.SetEase(Ease.OutBounce);
         wheelieEnd.SetRelative(true);
-
         Sequence mySeq = DOTween.Sequence();
         mySeq.Append(wheelie);
         mySeq.Append(wheelieEnd);
-
         wheelying = true;
+        //~~~~~~~~EndWheelie~~~~~~~~~~
 
-        float elapsedTime = 0f;
-        while(elapsedTime < boostDuration)
+        boostElapsedTime = boostDuration;
+        boostTimerMaxTime = boostDuration;
+        while (boostElapsedTime > 0)
         {
-            elapsedTime += Time.deltaTime;
-            phaseIndicator.SetHornColor(1 - (elapsedTime / boostDuration));
+            boostElapsedTime -= Time.deltaTime;
+            boostElapsedTime = Mathf.Max(boostElapsedTime, 0f);
             yield return null;
         }
 
@@ -1025,16 +1025,17 @@ public class BallDriving : MonoBehaviour
     /// <returns>IEnumerator boilerplate</returns>
     private IEnumerator BoostCooldown()
     {
-        float elapsedTime = 0f;
+        scooterModel.parent.parent.DOComplete();
+        boostElapsedTime = 0f;
+        boostTimerMaxTime = boostRechargeTime;
 
-        while (elapsedTime < boostRechargeTime)
+        while (boostElapsedTime < boostTimerMaxTime)
         {
-            elapsedTime += (Time.deltaTime * boostRechargeModifier);
-            phaseIndicator.SetHornColor(elapsedTime / boostRechargeTime);
+            boostElapsedTime += Time.deltaTime;
+            boostElapsedTime = Mathf.Min(boostElapsedTime, boostTimerMaxTime);
             yield return null;
         }
 
-        phaseIndicator.SetHornColor(1);
         boostAble = true;
     }
 
@@ -1045,10 +1046,15 @@ public class BallDriving : MonoBehaviour
     {
         StopBoostCooldown();
         StopBoostActive();
-        StartEndBoost();
-        phaseIndicator.SetHornColor(1);
+        StopEndBoost();
+        scooterModel.parent.parent.DOComplete();
+        boostElapsedTime = boostTimerMaxTime;
+        if (phaseType == PhaseType.AtAllTimes)
+            cameraResizer.SwapCameraRendering(false);
         boostAble = true;
         boosting = false;
+        wheelying = false;
+        checkPhaseStatus = true;
     }
 
     /// <summary>
@@ -1230,7 +1236,8 @@ public class BallDriving : MonoBehaviour
     /// Freezes the ball's rigidbody and prevents it from driving
     /// </summary>
     /// <param name="toFreeze">True for freeze, False for unfreeze</param>
-    public void FreezeBall(bool toFreeze)
+    /// <param name="resetBoost">True to reset boost as part of freezing/unfreezing</param>
+    public void FreezeBall(bool toFreeze, bool resetBoost = true)
     {
         Debug.Log("Freeze Ball Start");
 
@@ -1245,10 +1252,29 @@ public class BallDriving : MonoBehaviour
         canDrive = !toFreeze;
         Debug.Log($"Can Drive : {canDrive}");
         sphereBody.constraints = toFreeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
-
-        // stop boost crap
+        
         isFrozen = toFreeze;
-        ResetBoost();
+
+        if (resetBoost)
+        {
+            ResetBoost();
+        }
+        else if (boostActiveCoroutine != null || endBoostCoroutine != null)
+        {
+            StopBoostActive();
+            StopEndBoost();
+
+            boostElapsedTime = 0f;
+
+            scooterModel.parent.parent.DOComplete();
+            checkPhaseStatus = true;
+            boosting = false;
+            wheelying = false;
+            if (phaseType == PhaseType.AtAllTimes)
+                cameraResizer.SwapCameraRendering(false);
+
+            StartBoostCooldown();
+        }
 
         Debug.Log("Freeze Ball Was Successful");
     }
@@ -1268,7 +1294,9 @@ public class BallDriving : MonoBehaviour
     /// <param name="holdingPackage">Status of the player's inventory</param>
     public void SetBoostModifier(bool holdingPackage)
     {
-        boostRechargeModifier = holdingPackage ? handsFullBoostModifier : defaultBoostModifier;
+        float currentElapsedTimeRatio = boostElapsedTime / boostTimerMaxTime;
+        boostTimerMaxTime = holdingPackage ? handsFullBoostRechargeTime : boostRechargeTime;
+        if (!boosting) boostElapsedTime = currentElapsedTimeRatio * boostTimerMaxTime;
     }
 
     /// <summary>
@@ -1277,7 +1305,9 @@ public class BallDriving : MonoBehaviour
     /// <param name="mod">Modifier value</param>
     public void HardCodeBoostModifier(float mod)
     {
-        boostRechargeModifier = mod;
+        float currentElapsedTimeRatio = boostElapsedTime / boostTimerMaxTime;
+        boostTimerMaxTime = mod;
+        if (!boosting) boostElapsedTime = currentElapsedTimeRatio * boostTimerMaxTime;
     }
 
     private void StartBoostActive()

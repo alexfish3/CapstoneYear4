@@ -14,7 +14,7 @@ public class TutorialHandler : MonoBehaviour
     private BallDriving ball;
 
     [Tooltip("Boost modifier when the player is being tutorialized.")]
-    [SerializeField] private float tutorialBoostMod = 10;
+    [SerializeField] private float tutorialBoostMod = 0.1f;
     [Tooltip("Text shown on the driving canvas when the player is being tutorialized.")]
     [SerializeField] private TextMeshProUGUI tutorialText;
 

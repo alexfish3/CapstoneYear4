@@ -22,6 +22,8 @@ public class PhaseIndicator : MonoBehaviour
 
     [SerializeField] Color readyColor;
     [SerializeField] Gradient hornGlowGraident;
+
+    [SerializeField] BallDriving control;
   
     [Header("Material Info")]
     [SerializeField] Renderer ghostRenderer;
@@ -35,6 +37,9 @@ public class PhaseIndicator : MonoBehaviour
 
     Coroutine hornStatus;
 
+    private float currentBoostMaxTime;
+    private float currentBoostRechargeAmount;
+
     // Define a delegate for the completion of the glow depletion
     public delegate void GlowDepleteComplete();
 
@@ -43,6 +48,14 @@ public class PhaseIndicator : MonoBehaviour
         soundPool = GetComponent<SoundPool>();
 
         hornGlowStep = hornValueMax / 100;
+    }
+
+    private void Update()
+    {
+        currentBoostMaxTime = control.BoostTimerMaxTime; //Gets the current values of boost recharge status from balldriving
+        currentBoostRechargeAmount = control.BoostElapsedTime;
+
+        SetHornColor(currentBoostRechargeAmount, currentBoostMaxTime);
     }
 
     /// <summary>
@@ -70,16 +83,16 @@ public class PhaseIndicator : MonoBehaviour
     /// <summary>
     /// Sets the horn color value
     /// </summary>
-    public void SetHornColor(float passIn)
+    public void SetHornColor(float passInCurrent, float passInMax)
     {
-        hornSliderLeft.value = passIn;
-        hornSliderRight.value = passIn;
-        hornGlowValue = passIn;
+        hornSliderLeft.value = passInCurrent / passInMax;
+        hornSliderRight.value = passInCurrent / passInMax;
+        hornGlowValue = (passInCurrent / passInMax) * hornValueMax;
 
         float intensityFactor = Mathf.Pow(2, (hornGlowValue + intensity));
 
         // Ready boost color
-        if (passIn >= 1f)
+        if ((passInCurrent / passInMax) >= 1f)
         {
             if (!dirtyBoostReady)
             {
@@ -90,7 +103,6 @@ public class PhaseIndicator : MonoBehaviour
             Color color = new Color(readyColor.r * intensityFactor, readyColor.g * intensityFactor, readyColor.b * intensityFactor);
             hornGlow.SetColor("_EmissionColor", color);
             hornGlow.SetColor("_BaseColor", readyColor);
-
         }
         else
         {
