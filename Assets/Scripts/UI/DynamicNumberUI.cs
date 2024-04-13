@@ -22,11 +22,13 @@ public class DynamicNumberUI : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Instance.OnSwapAnything += SetNothing;
+        GameManager.Instance.OnSwapMenu += () => finalOrderText.gameObject.SetActive(false);
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnSwapAnything -= SetNothing;
+        GameManager.Instance.OnSwapMenu -= () => finalOrderText.gameObject.SetActive(false);
     }
 
     /// <summary>

@@ -279,6 +279,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
                 MasterSkywalker();
                 StartCoroutine(PostGameClarity(false));
+                gameStarted = true;
 
                 // sounds
                 SoundManager.Instance.PlaySFX("timeout", clockSource);
