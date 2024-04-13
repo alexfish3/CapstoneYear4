@@ -970,7 +970,7 @@ public class BallDriving : MonoBehaviour
         //~~~~~~~~EndWheelie~~~~~~~~~~
 
         boostElapsedTime = boostDuration;
-        boostTimerMaxTime = boostDuration;
+        SetBoostModifier(orderHandler.HasOrder);
         while (boostElapsedTime > 0)
         {
             boostElapsedTime -= Time.deltaTime;

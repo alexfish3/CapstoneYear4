@@ -34,6 +34,7 @@ public class OrderHandler : MonoBehaviour
     private bool hasGoldenOrder;
     public bool HasGoldenOrder { get { return hasGoldenOrder; } set { hasGoldenOrder = value; } }
     private bool hasOrder = false;
+    public bool HasOrder => hasOrder;
 
     private SoundPool soundPool;
     private QAHandler qa;
