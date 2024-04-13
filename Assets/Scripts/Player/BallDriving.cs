@@ -255,6 +255,7 @@ public class BallDriving : MonoBehaviour
     public float BoostElapsedTime => boostElapsedTime;
     private float boostTimerMaxTime = 0f;
     public float BoostTimerMaxTime => boostTimerMaxTime;
+    private float boostRechargeTimeSet;
 
     private float slipstreamPortion = 0.0f;
 
@@ -303,6 +304,7 @@ public class BallDriving : MonoBehaviour
 
         boostTimerMaxTime = boostDuration;
         boostElapsedTime = boostTimerMaxTime;
+        boostRechargeTimeSet = boostRechargeTime;
 
         sphereBody = sphere.GetComponent<Rigidbody>();
         sphereTransform = sphere.GetComponent<Transform>();
@@ -970,7 +972,7 @@ public class BallDriving : MonoBehaviour
         //~~~~~~~~EndWheelie~~~~~~~~~~
 
         boostElapsedTime = boostDuration;
-        SetBoostModifier(orderHandler.HasOrder);
+        boostTimerMaxTime = boostDuration;
         while (boostElapsedTime > 0)
         {
             boostElapsedTime -= Time.deltaTime;
@@ -1313,8 +1315,8 @@ public class BallDriving : MonoBehaviour
     public void SetBoostModifier(bool holdingPackage)
     {
         float currentElapsedTimeRatio = boostElapsedTime / boostTimerMaxTime;
-        boostTimerMaxTime = holdingPackage ? handsFullBoostRechargeTime : boostRechargeTime;
-        if (!boosting) boostElapsedTime = currentElapsedTimeRatio * boostTimerMaxTime;
+        boostRechargeTime = holdingPackage ? handsFullBoostRechargeTime : boostRechargeTimeSet;
+        SetBoostRatio(currentElapsedTimeRatio);
     }
 
     /// <summary>
@@ -1324,8 +1326,17 @@ public class BallDriving : MonoBehaviour
     public void HardCodeBoostModifier(float mod)
     {
         float currentElapsedTimeRatio = boostElapsedTime / boostTimerMaxTime;
-        boostTimerMaxTime = mod;
-        if (!boosting) boostElapsedTime = currentElapsedTimeRatio * boostTimerMaxTime;
+        boostRechargeTime = mod;
+        SetBoostRatio(currentElapsedTimeRatio);
+    }
+
+    private void SetBoostRatio(float ratio)
+    {
+        if (!boosting)
+        {
+            boostTimerMaxTime = boostRechargeTime;
+            boostElapsedTime = ratio * boostTimerMaxTime;
+        }
     }
 
     private void StartBoostActive()
