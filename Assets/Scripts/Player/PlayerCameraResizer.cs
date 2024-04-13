@@ -67,7 +67,6 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] CompanyInformation companyInfo;
     public CompanyInformation CompanyInfo { get { return companyInfo; } }
 
-
     [Space(10)]
     [Header("Other")]
     public Animator playerAnimator;
@@ -75,8 +74,10 @@ public class PlayerCameraResizer : MonoBehaviour
     [SerializeField] BallDriving ballDriving;
     [SerializeField] DrivingIndicators drivingIndicators;
     bool initalized = false;
+
     public int cameraLayer = 0;
     public int playerWorldLayer = 0;
+    int iconLayer = 0;
     [SerializeField] int nextFillSlot = 0;
 
     private void Start()
@@ -174,7 +175,6 @@ public class PlayerCameraResizer : MonoBehaviour
     ///</summary>
     public void UpdateIconVirtualCameras(int nextFillSlot)
     {
-        int iconLayer = 0;
         // Gets camera layer based on player
         if (nextFillSlot == 1)
             iconLayer = 24;

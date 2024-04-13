@@ -8,7 +8,6 @@ using UnityEngine;
 /// </summary>
 public class Order : MonoBehaviour
 {
-
     [SerializeField] private Constants.OrderValue value;
     public Constants.OrderValue Value { get { return value; } }
 
@@ -81,6 +80,9 @@ public class Order : MonoBehaviour
 
     [Tooltip("Different meshes of the package depending on the difficulty")]
     [SerializeField] private Mesh[] orderMesh;
+
+    [Header("Becon Indicator Info")]
+    [SerializeField] BeconIndicator beconIndicator;
 
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
 
@@ -170,6 +172,8 @@ public class Order : MonoBehaviour
         compassMarker.icon = possiblePackageTypes[packageType];
         compassMarker.InitalizeCompassUIOnAllPlayers();
         CalculateOrderPos();
+
+        beconIndicator.InitalizeBeconIndicator(value);
     }
     
     /// <summary>
@@ -222,6 +226,9 @@ public class Order : MonoBehaviour
             .SetLoops(-1, LoopType.Yoyo)
             .SetRelative()
             .SetEase(Ease.Linear);
+
+
+        beconIndicator.RemoveBeconIndicator();
     }
 
     /// <summary>
@@ -297,6 +304,8 @@ public class Order : MonoBehaviour
             .SetEase(Ease.OutBounce).OnComplete(() => ReInitOrder(newPosition));
         StartPickupCooldownCoroutine();
 
+
+        beconIndicator.InitalizeBeconIndicator(value);
     }
 
     /// <summary>
@@ -395,6 +404,7 @@ public class Order : MonoBehaviour
         if(value != Constants.OrderValue.Golden)
             OrderManager.Instance.ReparentOrder(gameObject);
 
+        beconIndicator.RemoveBeconIndicator();
         Debug.Log("Erase Order Finished");
     }
 
