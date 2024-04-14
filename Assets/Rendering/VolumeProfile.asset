@@ -198,7 +198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3345e9a813c9bd54ea2e6236e77d0439, type: 3}
   m_Name: CustomVignette
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   radius:
     m_OverrideState: 1
     m_Value: 0.76
@@ -210,7 +210,7 @@ MonoBehaviour:
     m_Value: {r: 0.63246393, g: 0.15566039, b: 1, a: 1}
   vignetteTexture:
     m_OverrideState: 1
-    m_Value: {fileID: 8400000, guid: e1c32a28c974f8b4d99cc81517ff91aa, type: 2}
+    m_Value: {fileID: 0}
     dimension: 1
 --- !u!114 &-4520914038529948424
 MonoBehaviour:
@@ -389,12 +389,11 @@ MonoBehaviour:
   m_Name: VolumeProfile
   m_EditorClassIdentifier: 
   components:
-  - {fileID: -6836137532856480276}
   - {fileID: -8136382280583836482}
   - {fileID: -986112137725958182}
-  - {fileID: 8930676171534077055}
-  - {fileID: -6015258064583874045}
   - {fileID: 7791016109097023689}
+  - {fileID: -6015258064583874045}
+  - {fileID: -6836137532856480276}
 --- !u!114 &111048609333009509
 MonoBehaviour:
   m_ObjectHideFlags: 3
