@@ -30,9 +30,9 @@ public class OrderBeacon : MonoBehaviour
     [SerializeField] private Material dropoffMat;*/
     [SerializeField] private VisualEffect beaconFX;
     [Tooltip("The last element in the array is for dropoff beacons.")]
-    [SerializeField] private Color[] mainColors;
+    [SerializeField][ColorUsage(true, true)] private Color[] mainColors;
     [Tooltip("The last element in the array is for dropoff beacons.")]
-    [SerializeField] private Color[] subColors;
+    [SerializeField][ColorUsage(true, true)] private Color[] subColors;
     private Color cachedMain, cachedSub;
 
     [Header("Flame Logic")]
