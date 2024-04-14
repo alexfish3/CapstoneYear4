@@ -21025,8 +21025,8 @@ Transform:
   m_LocalScale: {x: 0.23102, y: 0.23102, z: 0.23102}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 5143845534564275575}
   - {fileID: 5058888366313526322}
-  - {fileID: 6315617413159969014}
   m_Father: {fileID: 7561922974526340759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!2083052967 &248491319085092719
@@ -26601,7 +26601,7 @@ Transform:
   - {fileID: 831500308564820175}
   m_Father: {fileID: 8267366762298391490}
   m_LocalEulerAnglesHint: {x: 0, y: 20, z: 0}
---- !u!1 &4335218919630588422
+--- !u!1 &4502975872225824544
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -26609,23 +26609,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6315617413159969014}
-  - component: {fileID: 5860742199303421931}
-  - component: {fileID: 6369512515584680830}
+  - component: {fileID: 5143845534564275575}
+  - component: {fileID: 8882964302815110527}
+  - component: {fileID: 9121526513052605377}
   m_Layer: 0
-  m_Name: DeathParticles
+  m_Name: RebornParticles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6315617413159969014
+--- !u!4 &5143845534564275575
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4335218919630588422}
+  m_GameObject: {fileID: 4502975872225824544}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -26634,13 +26634,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8206776199169874906}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!198 &5860742199303421931
+--- !u!198 &8882964302815110527
 ParticleSystem:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4335218919630588422}
+  m_GameObject: {fileID: 4502975872225824544}
   serializedVersion: 8
   lengthInSec: 5
   simulationSpeed: 1
@@ -26888,8 +26888,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 1.2
-      minScalar: 0.5
+      scalar: 2
+      minScalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -27265,7 +27265,7 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 6
     enabled: 1
-    type: 17
+    type: 0
     angle: 45
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
@@ -27581,7 +27581,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 15
+        scalar: 25
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -31415,14 +31415,14 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!199 &6369512515584680830
+--- !u!199 &9121526513052605377
 ParticleSystemRenderer:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4335218919630588422}
+  m_GameObject: {fileID: 4502975872225824544}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -37796,16 +37796,16 @@ MonoBehaviour:
   wispHeight: 5
   wispRiseTime: 0.5
   wispToCasketTime: 0.8
-  wispTrailTime: 0.35
+  wispTrailTime: 1
   growTime: 0.1
   wispSpawnOffset: 5
   tombstoneOffset: 2
-  graveDepth: 4
+  graveDepth: 3
   respawnGravestone: {fileID: 1814084137873696000, guid: c0504eb1c67f9e64fba2f42512ae7199, type: 3}
   control: {fileID: 5659362900598450531}
   modelParent: {fileID: 5347577715965998407}
   deathWisp: {fileID: 248491319085092719}
-  deathParticles: {fileID: 5860742199303421931}
+  rebornParticles: {fileID: 8882964302815110527}
 --- !u!114 &4378912548228919951
 MonoBehaviour:
   m_ObjectHideFlags: 0

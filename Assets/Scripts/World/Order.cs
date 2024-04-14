@@ -110,11 +110,6 @@ public class Order : MonoBehaviour
 
     private void Update()
     {
-        /*if(GameManager.Instance.MainState == GameState.GoldenCutscene)
-        {
-            return;
-            EraseWhenSwappingToGold();
-        }*/
         meshRenderer.enabled = isActive || stealActive;
         
         beacon.gameObject.SetActive(isActive);
