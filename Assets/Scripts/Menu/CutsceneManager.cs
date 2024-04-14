@@ -138,7 +138,7 @@ public class CutsceneManager : SingletonMonobehaviour<CutsceneManager>
 
     public void BeginCountdownAnimation()
     {
-        cutsceneCountdownAnimation.SetTrigger("Countdown");
+        cutsceneCountdownAnimation.SetTrigger(HashReference._scrollCountdownTrigger);
     }
 }
 

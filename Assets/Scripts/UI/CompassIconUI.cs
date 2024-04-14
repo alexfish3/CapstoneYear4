@@ -24,9 +24,9 @@ public class CompassIconUI : MonoBehaviour
     public void FadeMarkerOut()
     {
         faded = true;
-        animator.SetTrigger("FadeOut");
-        animatorChildLeft.SetTrigger("FadeOut");
-        animatorChildRight.SetTrigger("FadeOut");
+        animator.SetTrigger(HashReference._fadeOutTrigger);
+        animatorChildLeft.SetTrigger(HashReference._fadeOutTrigger);
+        animatorChildRight.SetTrigger(HashReference._fadeOutTrigger);
     }
 
     ///<summary>
@@ -35,9 +35,9 @@ public class CompassIconUI : MonoBehaviour
     public void FadeMarkerIn()
     {
         faded = false;
-        animator.SetTrigger("FadeIn");
-        animatorChildLeft.SetTrigger("FadeIn");
-        animatorChildRight.SetTrigger("FadeIn");
+        animator.SetTrigger(HashReference._fadeInTrigger);
+        animatorChildLeft.SetTrigger(HashReference._fadeInTrigger);
+        animatorChildRight.SetTrigger(HashReference._fadeInTrigger);
     }
 
     public void SetCompassIconSprite(Sprite sprite)
@@ -52,18 +52,9 @@ public class CompassIconUI : MonoBehaviour
     ///</summary>
     public void SetDistanceText()
     {
-        if(Constants.DISTANCE_TYPE == Constants.DistanceType.Meters)
-        {
-            distanceText.text = distance.ToString() + "m";
-            distanceTextChildLeft.text = distance.ToString() + "m";
-            distanceTextChildRight.text = distance.ToString() + "m";
-        }
-        else if (Constants.DISTANCE_TYPE == Constants.DistanceType.Feet)
-        {
-            distanceText.text = distance.ToString() + "ft";
-            distanceTextChildLeft.text = distance.ToString() + "ft";
-            distanceTextChildRight.text = distance.ToString() + "ft";
-        }
+        distanceText.text = distance.ToString() + "ft";
+        distanceTextChildLeft.text = distance.ToString() + "ft";
+        distanceTextChildRight.text = distance.ToString() + "ft";
     }
 
 

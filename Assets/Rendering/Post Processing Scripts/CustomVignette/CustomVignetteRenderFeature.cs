@@ -47,10 +47,10 @@ public class CustomVignetteRenderFeature : ScriptableRendererFeature
 
             if (customVignette.IsActive())
             {
-                _mat.SetFloat("_Radius", (float)customVignette.radius);
-                _mat.SetFloat("_Feather", (float)customVignette.feather);
-                _mat.SetColor("_MainColor", (Color)customVignette.color);
-                _mat.SetTexture("_ImageTex", (Texture)customVignette.vignetteTexture);
+                _mat.SetFloat(HashReference._radiusProperty, (float)customVignette.radius);
+                _mat.SetFloat(HashReference._featherProperty, (float)customVignette.feather);
+                _mat.SetColor(HashReference._mainColorProperty, (Color)customVignette.color);
+                _mat.SetTexture(HashReference._imageTexProperty, (Texture)customVignette.vignetteTexture);
 
                 Blit(commandBuffer, src, tint, _mat, 0);
                 Blit(commandBuffer, tint, src);

@@ -75,8 +75,8 @@ public class PhaseIndicator : MonoBehaviour
 
         Color color = new Color(readyColor.r * factor, readyColor.g * factor, readyColor.b * factor);
 
-        hornGlow.SetColor("_BaseColor", readyColor);
-        hornGlow.SetColor("_EmissionColor", color);
+        hornGlow.SetColor(HashReference._baseColorProperty, readyColor);
+        hornGlow.SetColor(HashReference._emissionColorProperty, color);
 
         Material[] ghostMaterials = ghostRenderer.materials;
         ghostMaterials[1] = hornGlow;
@@ -110,16 +110,16 @@ public class PhaseIndicator : MonoBehaviour
             }
 
             Color color = new Color(readyColor.r * readyIntensityBonus * intensityFactor, readyColor.g * readyIntensityBonus * intensityFactor, readyColor.b * readyIntensityBonus * intensityFactor);
-            hornGlow.SetColor("_EmissionColor", color);
-            hornGlow.SetColor("_BaseColor", readyColor);
+            hornGlow.SetColor(HashReference._emissionColorProperty, color);
+            hornGlow.SetColor(HashReference._baseColorProperty, readyColor);
         }
         else
         {
             dirtyBoostReady = false;
             Color currentColor = (hornGlowGraident.Evaluate(hornGlowValue));
             Color color = new Color(currentColor.r * intensityFactor, currentColor.g * intensityFactor, currentColor.b * intensityFactor);
-            hornGlow.SetColor("_EmissionColor", color);
-            hornGlow.SetColor("_BaseColor", currentColor);
+            hornGlow.SetColor(HashReference._emissionColorProperty, color);
+            hornGlow.SetColor(HashReference._baseColorProperty, currentColor);
         }
     }
 

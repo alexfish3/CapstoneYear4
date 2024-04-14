@@ -32,8 +32,8 @@ public class CompositePass : ScriptableRenderPass
     public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
     {
         workingMaterial = new Material(material);
-        workingMaterial.SetTexture("_Texture1", texture1);
-        workingMaterial.SetTexture("_Texture2", texture2);
+        workingMaterial.SetTexture(HashReference._texture1Property, texture1);
+        workingMaterial.SetTexture(HashReference._texture2Property, texture2);
 
         renderCam = renderingData.cameraData.camera;
 

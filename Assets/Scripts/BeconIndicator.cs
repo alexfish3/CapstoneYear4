@@ -117,7 +117,7 @@ public class BeconIndicator : MonoBehaviour
         }
 
         // plays the spawn animation for the becon
-        animator.SetTrigger("Spawn");
+        animator.SetTrigger(HashReference._spawnTrigger);
     }
 
     public void RemoveBeconIndicator()
@@ -131,6 +131,6 @@ public class BeconIndicator : MonoBehaviour
         }
 
         // plays the reset animation for the becon
-        animator.SetTrigger("Reset");
+        animator.SetTrigger(HashReference._resetTrigger);
     }
 }

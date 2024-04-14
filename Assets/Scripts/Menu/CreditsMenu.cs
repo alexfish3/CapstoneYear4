@@ -9,7 +9,7 @@ public class CreditsMenu : SingletonMonobehaviour<CreditsMenu>
 
     public void BeginCredits()
     {
-        animator.SetTrigger("ScrollCredits");
+        animator.SetTrigger(HashReference._scrollCreditsTrigger);
     }
 
     ///<summary>
@@ -17,9 +17,7 @@ public class CreditsMenu : SingletonMonobehaviour<CreditsMenu>
     ///</summary>
     public void ExitMenu()
     {
-        Debug.Log("Exit credits");
-
-        animator.SetTrigger("Reset");
+        animator.SetTrigger(HashReference._resetTrigger);
         menu.SwapToMainMenu();
     }
 }

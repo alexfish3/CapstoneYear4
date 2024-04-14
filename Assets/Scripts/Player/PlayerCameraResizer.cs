@@ -87,7 +87,7 @@ public class PlayerCameraResizer : MonoBehaviour
         phaseCameraRT = new RenderTexture(1920,1080,24, RenderTextureFormat.ARGB32);
         phaseCamera.targetTexture = phaseCameraRT;
 
-        phaseTransitionMaterialMain.SetTexture("_MainTex", phaseCamera.targetTexture);
+        phaseTransitionMaterialMain.SetTexture(HashReference._mainTexProperty, phaseCamera.targetTexture);
 
         phaseRender.GetComponent<Image>().material = phaseTransitionMaterialMain;
     }

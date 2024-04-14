@@ -26,20 +26,20 @@ public class Dissolver : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         dissolveMaterial = new Material(dissolverMatReference);
-        dissolveMaterial.SetTexture("_MainTexture", oldMat.GetTexture("_MainTex"));
-        dissolveMaterial.SetTexture("_NormalMap", oldMat.GetTexture("_BumpMap"));
-        dissolveMaterial.SetColor("_MainColor", oldMat.GetColor("_BaseColor"));
+        dissolveMaterial.SetTexture(HashReference._mainTextureProperty, oldMat.GetTexture(HashReference._mainTexProperty));
+        dissolveMaterial.SetTexture(HashReference._normalMapProperty, oldMat.GetTexture(HashReference._bumpMapProperty));
+        dissolveMaterial.SetColor(HashReference._mainColorProperty, oldMat.GetColor(HashReference._baseColorProperty));
 
         render.material = dissolveMaterial;
         objectHeight = render.bounds.size.y;
-        render.material.SetFloat("_CutoffHeight", 2048);
+        render.material.SetFloat(HashReference._cutoffHeightProperty, 2048);
     }
 
     public void DissolveOut(float time)
     {
         StopDissolve();
         objectHeight = render.bounds.size.y;
-        render.material.SetFloat("_CutoffHeight", objectHeight + rb.position.y + 0.1f);
+        render.material.SetFloat(HashReference._cutoffHeightProperty, objectHeight + rb.position.y + 0.1f);
         StartDissolve(false, time);
     }
 
@@ -47,7 +47,7 @@ public class Dissolver : MonoBehaviour
     {
         StopDissolve();
         objectHeight = render.bounds.size.y;
-        render.material.SetFloat("_CutoffHeight", 0);
+        render.material.SetFloat(HashReference._cutoffHeightProperty, 0);
         StartDissolve(true, time);
     }
 
@@ -67,10 +67,10 @@ public class Dissolver : MonoBehaviour
             while (height < objectHeight)
             {
                 height += (Time.deltaTime * modifier);
-                render.material.SetFloat("_CutoffHeight", height + rb.position.y);
+                render.material.SetFloat(HashReference._cutoffHeightProperty, height + rb.position.y);
                 yield return null;
             }
-            render.material.SetFloat("_CutoffHeight", 2048);
+            render.material.SetFloat(HashReference._cutoffHeightProperty, 2048);
             Debug.Log($"{gameObject.name} is here");
         }
         else
@@ -79,10 +79,10 @@ public class Dissolver : MonoBehaviour
             while (height > -objectHeight)
             {
                 height -= (Time.deltaTime * modifier);
-                render.material.SetFloat("_CutoffHeight", height + rb.position.y);
+                render.material.SetFloat(HashReference._cutoffHeightProperty, height + rb.position.y);
                 yield return null;
             }
-            render.material.SetFloat("_CutoffHeight", 0);
+            render.material.SetFloat(HashReference._cutoffHeightProperty, 0);
             Debug.Log($"{gameObject.name} is gone");
         }
     }

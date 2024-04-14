@@ -133,7 +133,7 @@ public class CustomizationSelector : MonoBehaviour
             {
                 valueToChange++;
             }
-            currentSlider.SetTrigger("SlideLeft");
+            currentSlider.SetTrigger(HashReference._slideLeftTrigger);
         }
         // Negative Scroll
         else
@@ -146,7 +146,7 @@ public class CustomizationSelector : MonoBehaviour
             {
                 valueToChange--;
             }
-            currentSlider.SetTrigger("SlideRight");
+            currentSlider.SetTrigger(HashReference._slideRightTrigger);
         }
 
         if (customizationChanging == CustomizationChanging.playerColor)

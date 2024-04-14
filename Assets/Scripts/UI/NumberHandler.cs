@@ -129,40 +129,35 @@ public class NumberHandler : MonoBehaviour
     private IEnumerator animateNumber(Image numToShrink, char charNum)
     {
         Sprite spriteToChangeTo = getNumSprite(charNum);
+        Animator numAnimator = numToShrink.transform.parent.GetComponent<Animator>();
 
-        //// If the sprite is same as other sprite
-        //if (numToShrink.sprite == spriteToChangeTo)
-        //    yield break;
-        numToShrink.transform.parent.GetComponent<Animator>().SetTrigger("Shrink");
+        numAnimator.SetTrigger(HashReference._shrinkTrigger);
         yield return new WaitForSeconds(0.2f);
         numToShrink.enabled = true;
 
         numToShrink.sprite = spriteToChangeTo;
-        numToShrink.transform.parent.GetComponent<Animator>().SetTrigger("Grow");
+        numAnimator.SetTrigger(HashReference._growTrigger);
 
         yield return new WaitForSeconds(Random.Range(0, 0.4f));
-        numToShrink.transform.parent.GetComponent<Animator>().SetTrigger("Idle");
+        numAnimator.SetTrigger(HashReference._idleTrigger);
         yield break;
     }
 
     private IEnumerator animateNumber(Image numToShrink, int intNum)
     {
         Sprite spriteToChangeTo = getNumSprite(intNum);
-
-        //// If the sprite is same as other sprite
-        //if (numToShrink.sprite == spriteToChangeTo)
-        //    yield break;
+        Animator numAnimator = numToShrink.transform.parent.GetComponent<Animator>();
 
         // else animate number
-        numToShrink.transform.parent.GetComponent<Animator>().SetTrigger("Shrink");
+        numAnimator.SetTrigger(HashReference._shrinkTrigger);
         yield return new WaitForSeconds(0.2f);
         numToShrink.enabled = true;
 
         numToShrink.sprite = spriteToChangeTo;
-        numToShrink.transform.parent.GetComponent<Animator>().SetTrigger("Grow");
+        numAnimator.SetTrigger(HashReference._growTrigger);
 
         yield return new WaitForSeconds(Random.Range(0, 0.4f));
-        numToShrink.transform.parent.GetComponent<Animator>().SetTrigger("Idle");
+        numAnimator.SetTrigger(HashReference._idleTrigger);
         yield break;
     }
 }
