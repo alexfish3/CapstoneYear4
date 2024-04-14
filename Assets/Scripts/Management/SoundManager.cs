@@ -15,17 +15,11 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
 {
     // music
     [Tooltip("Reference to the source that will play all the music.")]
-    [SerializeField] private AudioSource[] musicSources;
+    [SerializeField] private AudioSource musicSource; // testing this for timesample in update implementation
 
-    // batton logic
-    private AudioSource playing, waiting;
-    private bool swappingTunes = false;
-    private double nextTime, currTime, introTime;
-    private int flip = 1;
-
-    // debug
-    private double dspTime;
-
+    private bool swappingTunes = true;
+    private int totalLength, introLength;
+    
     // dictionary stuff
     private Dictionary<string, AudioObject> sfxDictionary = new Dictionary<string, AudioObject>();
     private Dictionary<string, AudioMixerSnapshot> snapshotDictionary = new Dictionary<string, AudioMixerSnapshot>();
@@ -47,14 +41,12 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [Header("Music")]
     [SerializeField] private AudioObject mainGameLoop;
     [SerializeField] private AudioObject mainMenuBGM;
-    //[SerializeField] private AudioObject playerSelectBGM;
     [SerializeField] private AudioObject finalOrderBGM;
     [SerializeField] private AudioObject resultsBGM;
 
     [Header("SFX")]
     [SerializeField] private AudioObject engineActive;
     [SerializeField] private AudioObject engineIdle;
-    //[SerializeField] private AudioObject drift;
     [SerializeField] private AudioObject brake;
     [SerializeField] private AudioObject boostUsed;
     [SerializeField] private AudioObject boostCharged;
@@ -98,7 +90,7 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     [SerializeField] private bool playPlayerSelect;
 
     // looping coroutine
-    private IEnumerator bgmRoutine;
+    //private IEnumerator bgmRoutine;
 
     private bool shouldPlayMain = true;
 
@@ -172,24 +164,19 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     {
         if (swappingTunes)
         {
-            currTime = 0;
-            nextTime = 0;
-            flip = 0;
             return;
         }
 
-        currTime = musicSources[1-flip].time;
-        dspTime = AudioSettings.dspTime;
-
-        if (currTime + introTime > nextTime)
+        if(musicSource.timeSamples >= totalLength || !musicSource.isPlaying)
         {
-            musicSources[flip].timeSamples = Mathf.RoundToInt((float)introTime * musicSources[flip].clip.frequency);
-            musicSources[flip].PlayScheduled(AudioSettings.dspTime + introTime);
+            musicSource.timeSamples = introLength;
+            musicSource.Play();
+        }
 
-            nextTime = musicSources[flip].clip.length - introTime;
-            currTime = 0;
-
-            flip = 1 - flip;
+        if(Input.GetKeyDown(KeyCode.M))
+        {
+            musicSource.timeSamples = totalLength - 50000;
+            musicSource.Play();
         }
     }
 
@@ -200,41 +187,24 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
             return;
 
         shouldPlayMain = false;
-
-        if (bgmRoutine != null)
-        {
-            StopCoroutine(bgmRoutine);
-            bgmRoutine = null;
-        }
-
         SwitchMusic(mainMenuBGM, menuThemeIntroLength);
     }
 
     private void PlayMainTheme()
     {
         shouldPlayMain = true;
-        if (bgmRoutine != null)
-        {
-            StopCoroutine(bgmRoutine);
-            bgmRoutine = null;
-        }
-
         SwitchMusic(mainGameLoop, gameThemeIntroLength);
     }
 
     private void PlayFinalTheme()
     {
-        if (bgmRoutine != null)
-        {
-            StopCoroutine(bgmRoutine);
-            bgmRoutine = null;
-        }
-
+        shouldPlayMain = true;
         SwitchMusic(finalOrderBGM, finalThemeIntroLength);
     }
 
     private void PlayResultsTheme()
     {
+        shouldPlayMain = true;
         SwitchMusic(resultsBGM, 0.01f);
     }
 
@@ -276,7 +246,6 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         }
         catch
         {
-            Debug.LogError($"Couldn't find index {index} of DriftSparks array length {driftSparks.Length}.");
             return;
         }
     }
@@ -295,7 +264,6 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         }
         catch
         {
-            Debug.LogError($"Couldn't find index {index} of EmoteSFX array length {emoteSFX.Length}.");
             return;
         }
     }
@@ -325,7 +293,6 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         {
             return outClip;
         }
-        Debug.LogError($"Couldn't find clip in dictionary with key: {key}.");
         return null;
     }
 
@@ -341,10 +308,6 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         {
             source.outputAudioMixerGroup = targetGroup;
         }
-        else
-        {
-            Debug.LogError($"Couldn't find group in mixer with name: {channel}.");
-        }
     }
 
     /// <summary>
@@ -352,27 +315,21 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
     /// </summary>
     private void SwitchMusic(AudioObject inMusic, float inIntro)
     {
-        if (inMusic.clip == musicSources[0].clip)
+        if (inMusic.clip == musicSource.clip)
             return;
 
-        swappingTunes = true;
+        swappingTunes = true; // won't do anything in update
 
-        musicSources[0].timeSamples = 0;
-        musicSources[1].timeSamples = 0;
+        // calculate new lengths
+        introLength = Mathf.RoundToInt(inIntro * inMusic.clip.frequency) + 1;
+        totalLength = Mathf.RoundToInt(inMusic.clip.length * inMusic.clip.frequency);
+        
+        // init clip and volume
+        musicSource.clip = inMusic.clip;
+        musicSource.volume = inMusic.volume;
 
-        musicSources[0].Pause();
-        musicSources[1].Pause();
-
-        musicSources[0].clip = inMusic.clip;
-        musicSources[0].volume = inMusic.volume;
-
-        musicSources[1].clip = inMusic.clip;
-        musicSources[1].volume = inMusic.volume;
-
-        introTime = inIntro;
-        nextTime = musicSources[0].clip.length;
-
-        musicSources[1 - flip].Play();
+        musicSource.timeSamples = 0;
+        musicSource.Play();
 
         swappingTunes = false;
     }
@@ -410,10 +367,6 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
                 }
                 source.timeSamples = introTime;
             }
-        }
-        else
-        {
-            Debug.LogError("No audio clip present in looping coroutine.");
         }
     }
 
