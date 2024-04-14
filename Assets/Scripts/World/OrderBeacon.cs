@@ -24,10 +24,6 @@ public class OrderBeacon : MonoBehaviour
     [SerializeField] private OrderGhost customer;
 
     [Header("Material Information")]
-    //[SerializeField] private MeshRenderer meshRenderer; // renderer to change the color
-    /*[SerializeField] private Material[] dissolveMats;
-    [SerializeField] private Material[] pickupMats;
-    [SerializeField] private Material dropoffMat;*/
     [SerializeField] private VisualEffect beaconFX;
     [Tooltip("The last element in the array is for dropoff beacons.")]
     [SerializeField][ColorUsage(true, true)] private Color[] mainColors;
@@ -56,10 +52,7 @@ public class OrderBeacon : MonoBehaviour
         canInteract = true;
         ToggleBeaconMesh(true);
         order = inOrder;
-        //meshRenderer.material = pickupMats[orderIndex];
-        //cachedMat = meshRenderer.material;
         this.transform.position = order.transform.position;
-        //meshRenderer.gameObject.layer = 0;
 
         // set the color of the dissolve
         switch(order.Value)
@@ -103,7 +96,6 @@ public class OrderBeacon : MonoBehaviour
     {
         canInteract = true;
         this.transform.position = dropoff.position;
-        //OrderManager.Instance.ReparentOrder(gameObject);
         this.transform.parent = OrderManager.Instance.transform;
 
         customer.transform.position = dropoff.position;
@@ -113,7 +105,6 @@ public class OrderBeacon : MonoBehaviour
         isPickup = false;
         beaconFX.SetVector4("MainColor", mainColors[4]);
         beaconFX.SetVector4("SubColor", subColors[4]);
-        //meshRenderer.material = dropoffMat;
 
         compassMarker.RemoveCompassUIFromAllPlayers();
 

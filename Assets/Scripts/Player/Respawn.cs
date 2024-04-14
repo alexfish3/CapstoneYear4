@@ -1,10 +1,12 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.VFX;
 
 /// <summary>
 /// This class will respawn the player if they fall into the water.
@@ -33,6 +35,9 @@ public class Respawn : MonoBehaviour
     [Tooltip("Trailtime of the wisp trail renderer component.")]
     [SerializeField] private float wispTrailTime = 1f;
 
+    [Tooltip("Time it takes for the player to grow back to full size")]
+    [SerializeField] private float growTime = 0.1f;
+
     [Tooltip("How far below the player death position the wisp spawns.")]
     [SerializeField] private float wispSpawnOffset = 5f;
 
@@ -52,8 +57,10 @@ public class Respawn : MonoBehaviour
     [Tooltip("For enabling / disabling the mesh.")]
     [SerializeField] private GameObject modelParent;
 
-    [Tooltip("The trail renderer used to animate the respawn.")]
-    [SerializeField] private TrailRenderer respawnWisp;
+    [Tooltip("The VFX used to animate the respawn.")]
+    [SerializeField] private VisualEffect deathWisp;
+    private TrailRenderer wispTrail;
+    [SerializeField] private ParticleSystem deathParticles;
 
     private OrderHandler orderHandler;
     private BallDriving ballDriving;
@@ -63,6 +70,8 @@ public class Respawn : MonoBehaviour
 
     private Vector3 wispOrigin; // original pos of the wisp
 
+    private Vector3 ogPlayerScale, ogWispScale; // for scaling up and down the player model
+
     // Sound stuff
     private SoundPool soundPool;
 
@@ -71,6 +80,9 @@ public class Respawn : MonoBehaviour
 
     // qa
     private QAHandler qa;
+
+    private Rigidbody rb;
+    private SphereCollider sc;
 
     private void OnEnable()
     {
@@ -94,19 +106,27 @@ public class Respawn : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
+        wispTrail = deathWisp.GetComponentInChildren<TrailRenderer>();
         orderHandler = control.GetComponent<OrderHandler>();
         ballDriving = control.GetComponent<BallDriving>();
         soundPool = control.GetComponent<SoundPool>();
         qa = control.GetComponent<QAHandler>();
+        rb = GetComponent<Rigidbody>();
+        sc = GetComponent<SphereCollider>();
 
         tombstoneOffset = Mathf.Abs(tombstoneOffset); // in case a stinky designer made this value negative
-        wispOrigin = respawnWisp.transform.localPosition;
+        wispOrigin = deathWisp.transform.localPosition;
 
-        respawnWisp.time = 0f;
-        respawnWisp.gameObject.SetActive(false);
+        wispTrail.time = 0f;
+        //respawnWisp.gameObject.SetActive(false);
+        deathWisp.enabled = (false);
+        deathWisp.SetFloat("Duration", liftDuration + wispRiseTime + wispToCasketTime);
+        deathParticles.Stop();
 
+        ogPlayerScale = modelParent.transform.localScale;
+        ogWispScale = deathWisp.transform.localScale;
     }
 
     /// <summary>
@@ -118,10 +138,11 @@ public class Respawn : MonoBehaviour
         RespawnPoint rsp = RespawnManager.Instance.GetRespawnPoint(lastGroundedPos); // get the RSP
         rsp.InUse = true;
         // init the wisp
-        Vector3 wispStart = respawnWisp.transform.position;
-        respawnWisp.transform.position -= Vector3.up * wispSpawnOffset;
-        respawnWisp.gameObject.SetActive(true);
-        respawnWisp.time = wispTrailTime;
+        Vector3 wispStart = deathWisp.transform.position;
+        deathWisp.transform.position -= Vector3.up * wispSpawnOffset;
+        deathWisp.enabled = (true);
+        deathWisp.Reinit();
+        wispTrail.time = wispTrailTime;
 
         orderHandler.DropEverything(rsp.Order1Spawn, rsp.Order2Spawn, false);
 
@@ -139,7 +160,7 @@ public class Respawn : MonoBehaviour
         // raise the wisp above the water
         while (elapsedTime < wispRiseTime)
         {
-            respawnWisp.transform.position = Vector3.Lerp(wispStart, wispRise, elapsedTime / wispRiseTime); // lift wisp above water
+            deathWisp.transform.position = Vector3.Lerp(wispStart, wispRise, elapsedTime / wispRiseTime); // lift wisp above water
             control.transform.rotation = Quaternion.Slerp(controlStart, controlEnd, elapsedTime / wispRiseTime); // rotate around wisp
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -148,13 +169,13 @@ public class Respawn : MonoBehaviour
         // reset vars for next movement
         elapsedTime = 0;
         Vector3 casketLocation = rsp.PlayerSpawn - Vector3.up * graveDepth;
-        wispStart = respawnWisp.transform.position;
+        wispStart = deathWisp.transform.position;
         Vector3 playerStart = transform.position;
 
         // move the wisp to the casket under RSP
         while (elapsedTime < wispToCasketTime)
         {
-            respawnWisp.transform.position = Vector3.Lerp(wispStart, casketLocation, elapsedTime / wispToCasketTime); // move wisp to casket
+            deathWisp.transform.position = Vector3.Lerp(wispStart, casketLocation, elapsedTime / wispToCasketTime); // move wisp to casket
             transform.position = Vector3.Lerp(playerStart, casketLocation, elapsedTime / wispToCasketTime); // for control to follow wisp
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -164,10 +185,6 @@ public class Respawn : MonoBehaviour
         elapsedTime = 0;
         Vector3 liftTarget = new Vector3(rsp.PlayerSpawn.x, rsp.PlayerSpawn.y + liftHeight, rsp.PlayerSpawn.z);
 
-        // re-enable player mesh and disable wisp
-        modelParent.SetActive(true);
-        respawnWisp.gameObject.SetActive(false);
-
         // lift player out of their tomb
         while (elapsedTime < liftDuration)
         {
@@ -176,8 +193,25 @@ public class Respawn : MonoBehaviour
             yield return null;
         }
 
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<SphereCollider>().enabled = true;
+        // grow player mesh and shrink wisp
+        elapsedTime = 0;
+        modelParent.transform.localScale = Vector3.zero;
+        modelParent.SetActive(true);
+        deathParticles.Play();
+
+        while (elapsedTime < growTime)
+        {
+            modelParent.transform.localScale = Vector3.Lerp(Vector3.zero, ogPlayerScale, elapsedTime / growTime);
+            deathWisp.transform.localScale = Vector3.Lerp(ogWispScale, Vector3.zero, elapsedTime / growTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        deathParticles.time = 0;
+        deathWisp.enabled = false;
+        deathWisp.transform.localScale = ogWispScale;
+        modelParent.transform.localScale = ogPlayerScale;
+        
         rsp.InitPoint();
 
         StopRespawnCoroutine();
@@ -197,13 +231,14 @@ public class Respawn : MonoBehaviour
         qa.Deaths++;
         qa.SetDeath();
         soundPool.PlayDeathSound();
+        deathParticles.Play();
 
         ballDriving.FreezeBall(true, false);
 
         // Turning these off fixes camera jittering on respawn
-        GetComponent<Rigidbody>().velocity = Vector3.zero; // set velocity to 0 on respawn
-        GetComponent<Rigidbody>().useGravity = false;
-        GetComponent<SphereCollider>().enabled = false;
+        rb.velocity = Vector3.zero; // set velocity to 0 on respawn
+        rb.useGravity = false;
+        sc.enabled = false;
 
         if (respawnCoroutine == null)
         {
@@ -228,18 +263,23 @@ public class Respawn : MonoBehaviour
 
         isRespawning = false;
 
-        respawnWisp.time = 0f;
+        wispTrail.time = 0f;
         modelParent.SetActive(true);
-        respawnWisp.gameObject.SetActive(false);
-        respawnWisp.transform.localPosition = wispOrigin;
+        deathWisp.enabled = (false);
+        deathWisp.transform.localPosition = wispOrigin;
 
         ballDriving.FreezeBall(false, false);
         modelParent.transform.parent.parent.localEulerAngles = Vector3.zero;
 
         respawnCoroutine = null;
-        GetComponent<Rigidbody>().useGravity = true;
-        GetComponent<SphereCollider>().enabled = true;
+        rb.useGravity = true;
+        sc.enabled = true;
 
         ballDriving.DirtyTerrainRespawn = false;
+
+        deathParticles.time = 0;
+        deathWisp.enabled = false;
+        deathWisp.transform.localScale = ogWispScale;
+        modelParent.transform.localScale = ogPlayerScale;
     }
 }
