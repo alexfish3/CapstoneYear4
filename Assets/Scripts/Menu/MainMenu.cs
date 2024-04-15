@@ -43,7 +43,6 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
 
             playerInstantiate.ClearPlayerArray();
             ScoreManager.Instance.UpdateOrderHandlers(playerInstantiate.PlayerInputs);
-            QAManager.Instance.UpdateQAHandlers(playerInstantiate.PlayerInputs);
 
             p1ConnectedController.text = "";
 

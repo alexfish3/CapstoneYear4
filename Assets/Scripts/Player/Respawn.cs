@@ -80,9 +80,6 @@ public class Respawn : MonoBehaviour
     private bool isRespawning;
     public bool IsRespawning { get { return isRespawning; } }
 
-    // qa
-    private QAHandler qa;
-
     private Rigidbody rb;
     private SphereCollider sc;
 
@@ -114,7 +111,6 @@ public class Respawn : MonoBehaviour
         orderHandler = control.GetComponent<OrderHandler>();
         ballDriving = control.GetComponent<BallDriving>();
         soundPool = control.GetComponent<SoundPool>();
-        qa = control.GetComponent<QAHandler>();
         rb = GetComponent<Rigidbody>();
         sc = GetComponent<SphereCollider>();
 
@@ -221,8 +217,6 @@ public class Respawn : MonoBehaviour
     public void StartRespawnCoroutine()
     {
         isRespawning = true;
-        qa.Deaths++;
-        qa.SetDeath();
         soundPool.PlayDeathSound();
 
         ballDriving.FreezeBall(true, false);

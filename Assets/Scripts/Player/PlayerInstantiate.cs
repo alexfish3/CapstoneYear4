@@ -351,7 +351,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         PlayerSelectCanvas.Instance.TogglePressButtonTexts(position, true);
 
         ScoreManager.Instance.UpdateOrderHandlers(availiblePlayerInputs);
-        QAManager.Instance.UpdateQAHandlers(availiblePlayerInputs);
         
         Destroy(playerInput.gameObject);
 

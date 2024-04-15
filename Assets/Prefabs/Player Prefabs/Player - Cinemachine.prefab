@@ -20579,7 +20579,6 @@ Transform:
   m_Children:
   - {fileID: 3485168695745609235}
   - {fileID: 5289018042734306124}
-  - {fileID: 5501556261569880939}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!114 &8599783233579185957
@@ -37194,7 +37193,6 @@ GameObject:
   - component: {fileID: 6840122069703632551}
   - component: {fileID: 6355295014402667270}
   - component: {fileID: 138630427348282848}
-  - component: {fileID: 267954890541210731}
   - component: {fileID: 7990054834478366176}
   - component: {fileID: 3382091636616336334}
   - component: {fileID: 3169174171109316493}
@@ -37548,22 +37546,6 @@ MonoBehaviour:
   pickupInstructions: Grab Orders!
   stealInstructions: Phase-Boost to steal
   tutorialImage: {fileID: 195588922581166810}
---- !u!114 &267954890541210731
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5659362900598450531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd0a52e9340450c4685a27b61a3b2558, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  trailFrequency: 0.3
-  iconHeight: 5
-  deathIcon: {fileID: 6610777362765945118, guid: 45003b8e6211a6848bf64ed46e5f6051, type: 3}
-  trailParent: {fileID: 8190429145956856732}
 --- !u!114 &7990054834478366176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38811,37 +38793,6 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
---- !u!1 &8190429145956856732
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5501556261569880939}
-  m_Layer: 0
-  m_Name: Trail Parent
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5501556261569880939
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8190429145956856732}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2487563408603273116}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8191777048927747739
 GameObject:
   m_ObjectHideFlags: 0

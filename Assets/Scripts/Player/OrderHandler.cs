@@ -37,7 +37,6 @@ public class OrderHandler : MonoBehaviour
     public bool HasOrder => hasOrder;
 
     private SoundPool soundPool;
-    private QAHandler qa;
 
     public delegate void GotHitDelegate();
     public event GotHitDelegate GotHit;
@@ -60,7 +59,6 @@ public class OrderHandler : MonoBehaviour
         ScoreManager.Instance.AddOrderHandler(this);
         ball = transform.parent.GetComponentInChildren<BallDriving>();
         soundPool = GetComponent<SoundPool>();
-        qa = GetComponent<QAHandler>();
         tutHandler = GetComponent<TutorialHandler>();
 
         SetDrivingIndicators();
@@ -141,7 +139,6 @@ public class OrderHandler : MonoBehaviour
         {
             soundPool.PlayOrderDropoff(key);
             score += (int)order1.Value;
-            qa.Deliver(order1.Value);
             order1.DeliverOrder();
             order1 = null;
             ScoreManager.Instance.UpdatePlacement();
@@ -150,7 +147,6 @@ public class OrderHandler : MonoBehaviour
         {
             soundPool.PlayOrderDropoff(key);
             score += (int)order2.Value;
-            qa.Deliver(order2.Value);
             order2.DeliverOrder();
             order2 = null;
             ScoreManager.Instance.UpdatePlacement();
@@ -294,10 +290,6 @@ public class OrderHandler : MonoBehaviour
             soundPool.PlayOrderTheft();
             victimPlayer.LoseOrder(newOrder);
             AddOrder(newOrder);
-            if (GameManager.Instance.MainState != GameState.FinalPackage)
-                qa.Steals++;
-            else
-                qa.GoldSteals++;
         }
         victimPlayer.DropEverything(victimPlayer.order1Position.position, victimPlayer.order2Position.position);
         BallDriving victimControl = victimPlayer.gameObject.GetComponent<BallDriving>();

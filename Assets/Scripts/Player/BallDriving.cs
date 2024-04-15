@@ -194,7 +194,6 @@ public class BallDriving : MonoBehaviour
     public Collider SphereCollider { get { return sphereCollider; } }
     private Respawn respawn; // used to update the respawn point when grounded
     public Respawn Respawn { get { return respawn; } }
-    private QAHandler qa;
 
     private float startingDrag;
     private PhysicMaterial pMat;
@@ -328,7 +327,6 @@ public class BallDriving : MonoBehaviour
 
         respawn = sphere.GetComponent<Respawn>(); // get respawn component
         soundPool = GetComponent<SoundPool>();
-        qa = GetComponent<QAHandler>();
 
         baseSpark = particleBasket.GetChild(0).GetComponent<ParticleManipulator>();
         wideSpark = particleBasket.GetChild(1).GetComponent<ParticleManipulator>();
@@ -932,7 +930,6 @@ public class BallDriving : MonoBehaviour
 
             rumble.RumblePulse(pad, 0.45f, 0.9f, 1f);
             soundPool.PlayBoostActivate();
-            qa.Boosts++;
         }
     }
 
