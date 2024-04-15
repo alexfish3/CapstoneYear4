@@ -16,6 +16,7 @@ public class PlayerCameraResizer : MonoBehaviour
     [Header("Main Camera Details")]
     [Tooltip("This is the camera in which if changed, other cameras will also change to match")]
     [SerializeField] Camera referenceCam;
+    [SerializeField] Camera wheelCam;
     public Camera PlayerReferenceCamera { get { return referenceCam; } }
     [SerializeField] UniversalAdditionalCameraData referenceCamData;
 
@@ -39,6 +40,7 @@ public class PlayerCameraResizer : MonoBehaviour
     [Header("Camera References")]
     [SerializeField] LayerMask drivingMask;
     [SerializeField] LayerMask phasingMask;
+
 
     [SerializeField] Camera drivingUICamera;
     [SerializeField] Camera iconCamera;
@@ -79,6 +81,7 @@ public class PlayerCameraResizer : MonoBehaviour
     public int playerWorldLayer = 0;
     int iconLayer = 0;
     [SerializeField] int nextFillSlot = 0;
+
 
     private void Start()
     {
@@ -136,26 +139,25 @@ public class PlayerCameraResizer : MonoBehaviour
         {
             cameraLayer = 17;
             playerWorldLayer = 10;
-            referenceCam.tag = "Player 1";
         }
         else if (nextFillSlot == 2)
         {
             cameraLayer = 18;
             playerWorldLayer = 11;
-            referenceCam.tag = "Player 2";
         }
         else if (nextFillSlot == 3)
         {
             cameraLayer = 19;
             playerWorldLayer = 12;
-            referenceCam.tag = "Player 3";
         }
         else if (nextFillSlot == 4)
         {
             cameraLayer = 20;
             playerWorldLayer = 13;
-            referenceCam.tag = "Player 4";
         }
+
+        referenceCam.tag = "Player " + nextFillSlot;
+        wheelCam.tag = "Wheel " + nextFillSlot;
 
         virtualCameraMain.layer = cameraLayer;
 
