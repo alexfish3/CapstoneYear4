@@ -136,21 +136,25 @@ public class PlayerCameraResizer : MonoBehaviour
         {
             cameraLayer = 17;
             playerWorldLayer = 10;
+            referenceCam.tag = "Player 1";
         }
         else if (nextFillSlot == 2)
         {
             cameraLayer = 18;
             playerWorldLayer = 11;
+            referenceCam.tag = "Player 2";
         }
         else if (nextFillSlot == 3)
         {
             cameraLayer = 19;
             playerWorldLayer = 12;
+            referenceCam.tag = "Player 3";
         }
         else if (nextFillSlot == 4)
         {
             cameraLayer = 20;
             playerWorldLayer = 13;
+            referenceCam.tag = "Player 4";
         }
 
         virtualCameraMain.layer = cameraLayer;
