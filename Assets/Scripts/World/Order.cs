@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 /// <summary>
 /// This class is for the order items in the game. It has simple methods for adding and dropping off orders, and contains the enum for the values of the orders.
@@ -72,8 +73,11 @@ public class Order : MonoBehaviour
     [Header("Order Type Information")]
     [SerializeField] Sprite[] possiblePackageTypes;
 
-    [Tooltip("The HDR color options for the different tiers of packages")]
-    [SerializeField][ColorUsageAttribute(true, true)]public Color[] packageColors;
+    [Tooltip("The HDR color options for different tiers of order glow")]
+    [SerializeField][ColorUsageAttribute(true, true)]private Color[] glowColors;
+
+    [Tooltip("Ref to glow VFX")]
+    [SerializeField] private VisualEffect glow;
 
     [Tooltip("Materials for different orders")]
     [SerializeField] private Material[] orderMaterials;
@@ -87,17 +91,6 @@ public class Order : MonoBehaviour
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
 
     private Transform ogMesh;
-
-    private void OnEnable()
-    {
-        //GameManager.Instance.OnSwapGoldenCutscene += EraseWhenSwappingToGold;
-    }
-
-    private void OnDisable()
-    {
-        //OrderManager.Instance.OnMainGameFinishes -= EraseWhenSwappingToGold;
-        //GameManager.Instance.OnSwapGoldenCutscene -= EraseWhenSwappingToGold;
-    }
 
     private void Awake()
     {
@@ -166,9 +159,10 @@ public class Order : MonoBehaviour
         beacon.InitBeacon(this, packageType);
         compassMarker.icon = possiblePackageTypes[packageType];
         compassMarker.InitalizeCompassUIOnAllPlayers();
-        CalculateOrderPos();
-
         beconIndicator.InitalizeBeconIndicator(value);
+
+        // glow up gurl
+        glow.SetVector4("GlowColour", glowColors[packageType]);
     }
     
     /// <summary>
@@ -317,7 +311,6 @@ public class Order : MonoBehaviour
         playerDropped = playerHolding;
         beacon.ResetPickup();
         RemovePlayerHolding();
-        CalculateOrderPos();
     }
     /// <summary>
     /// This method performs the first half of the delivery, basically just hands the order to the customer.
@@ -334,23 +327,6 @@ public class Order : MonoBehaviour
         {
             EraseOrder(); // temp fix for dotween handoff bug
         }
-    }
-
-    /// <summary>
-    /// Calculates the position of the order so flames don't clip in the ground.
-    /// </summary>
-    private void CalculateOrderPos()
-    {
-/*        orderMeshObject.transform.position = ogMesh.transform.position;
-        int lm = 1 << 0; // default layer only
-        RaycastHit hit;
-
-        if(Physics.Raycast(orderMeshObject.transform.position, Vector3.down, out hit, Mathf.Infinity, lm))
-        {
-            float diff = orderHeight - hit.distance;
-            transform.position += diff * Vector3.up;
-            Debug.Log($"Ray hit {hit.collider.name}, original distance is {hit.distance}, difference is {diff}");
-        }*/
     }
 
     /// <summary>
