@@ -14,8 +14,8 @@ public class FreezeBox : MonoBehaviour
 
         try
         {
-            bd = other.GetComponent<BallDriving>();
-            bd.FreezeBall(true, false);
+            bd = other.gameObject.transform.parent.GetComponentInChildren<BallDriving>();
+            bd.FreezeBall(true, false, true);
         }
         catch
         {

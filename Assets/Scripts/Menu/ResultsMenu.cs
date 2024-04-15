@@ -9,14 +9,10 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
     [SerializeField] private TMP_Text[] displayText;
     [SerializeField] Canvas resultsCanvas;
 
-    [SerializeField] private RawImage[] playerImages;
     [SerializeField] private GameObject quitInfo;
 
     [SerializeField] private Camera orthoCam;
     bool canQuit = false;
-
-    [SerializeField] private float employeeBoardWidth = 8.8f;
-    RectTransform canvasRect;
 
     [SerializeField] private GameObject wiper;
     [SerializeField] private GameObject canvasElements;
@@ -36,16 +32,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     private void Start()
     {
-        canvasRect = resultsCanvas.GetComponent<RectTransform>();
         transitionAnimator = wiper.GetComponent<Animator>();
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.O))
-        {
-            ScaleOrthoCam(orthoCam);
-        }
     }
 
     private void HideGame()
@@ -61,7 +48,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
         Debug.Log("update results");
         canvasElements.SetActive(true);
         transitionAnimator.SetTrigger("WipeOut");
-        ScaleOrthoCam(orthoCam);
+        //ScaleOrthoCam(orthoCam);
         quitInfo.SetActive(false);
         resultsCanvas.enabled = true;
         StartCoroutine(QuitDelay());
@@ -71,14 +58,11 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
             OrderHandler currHandler = ScoreManager.Instance.GetHandlerOfIndex(i);
 
             // Set player animations
-            Animator playerAnim = currHandler.transform.parent.GetComponent<PlayerCameraResizer>().playerAnimator;
-            playerAnim.SetInteger("End Status", i + 1);
+            //Animator playerAnim = currHandler.transform.parent.GetComponent<PlayerCameraResizer>().playerAnimator;
+            //playerAnim.SetInteger("End Status", i + 1);
 
             if (currHandler != null)
             {
-                playerImages[i].enabled = true;
-                playerImages[i].texture = currHandler.CompanyInfo.playerTexture; //readd when the eotm menu is working
-
                 displayText[i].enabled = true;
                 displayText[i].text = "$" + currHandler.Score;
             }
@@ -87,15 +71,14 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     public void ConfirmMenu()
     {
-        if(!canQuit)
+        if (!canQuit)
         {
             return;
         }
         SceneManager.Instance.InvokeMenuSceneEvent();
 
-        for (int i=0;i<displayText.Length;i++)
+        for (int i = 0; i < displayText.Length; i++)
         {
-            playerImages[i].enabled = false;
             displayText[i].enabled = false;
         }
 
@@ -106,14 +89,6 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
             Animator playerAnim = currHandler.transform.parent.GetComponent<PlayerCameraResizer>().playerAnimator;
             playerAnim.SetInteger("End Status", 0);
         }
-    }
-
-    private void ScaleOrthoCam(Camera cam)
-    {
-        float upp = employeeBoardWidth / Screen.width;
-        float desiredOS = 0.5f * upp * Screen.height;
-        cam.orthographicSize = desiredOS;
-        Debug.Log($"ORTHO LOGIC: 0.5 x {upp} x {Screen.height} = {cam.orthographicSize}");
     }
 
     private IEnumerator QuitDelay()

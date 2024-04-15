@@ -8,12 +8,12 @@ public class EOTMManager : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapResults += InitFrames;
+        //GameManager.Instance.OnSwapResults += InitFrames;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapResults -= InitFrames;
+        //GameManager.Instance.OnSwapResults -= InitFrames;
     }
 
     private void InitFrames()
