@@ -1254,7 +1254,8 @@ public class BallDriving : MonoBehaviour
     /// </summary>
     /// <param name="toFreeze">True for freeze, False for unfreeze</param>
     /// <param name="resetBoost">True to reset boost as part of freezing/unfreezing</param>
-    public void FreezeBall(bool toFreeze, bool resetBoost = true)
+    /// <param name="freezeY">True to freeze Y for the results freezeframe</param>
+    public void FreezeBall(bool toFreeze, bool resetBoost = true, bool freezeY = false)
     {
         Debug.Log("Freeze Ball Start");
 
@@ -1269,7 +1270,10 @@ public class BallDriving : MonoBehaviour
         canDrive = !toFreeze;
         Debug.Log($"Can Drive : {canDrive}");
         sphereBody.constraints = toFreeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
-        
+
+        if (freezeY && toFreeze)
+            sphereBody.constraints = RigidbodyConstraints.FreezePositionY;
+
         isFrozen = toFreeze;
 
         if (resetBoost)
@@ -1294,6 +1298,15 @@ public class BallDriving : MonoBehaviour
         }
 
         Debug.Log("Freeze Ball Was Successful");
+    }
+
+    /// <summary>
+    /// Automatically starts a boost. Used for results freezeframe.
+    /// </summary>
+    public void AutoBoost()
+    {
+        FreezeBall(false);
+        StartBoostActive();
     }
 
     /// <summary>
