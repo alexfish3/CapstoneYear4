@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ResultsMovementController : SingletonMonobehaviour<ResultsMovementController>
+public class ResultsMovementController : MonoBehaviour
 {
     private List<GameObject> players = new List<GameObject>();
     [SerializeField] private Transform[] playerSpawns;
@@ -43,7 +43,6 @@ public class ResultsMovementController : SingletonMonobehaviour<ResultsMovementC
         enableThisForResults.SetActive(true);
         for(int i=0;i<players.Count;i++)
         {
-            Debug.Log("moving: " + players[i].name);
             players[i].transform.position = playerSpawns[i].position;
             players[i].transform.rotation = playerSpawns[i].rotation;
         }

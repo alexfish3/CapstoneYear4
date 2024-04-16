@@ -275,6 +275,7 @@ public class BallDriving : MonoBehaviour
 
         GameManager.Instance.OnSwapStartingCutscene += () => FreezeBall(true);
         GameManager.Instance.OnSwapGoldenCutscene += () => FreezeBall(true);
+        GameManager.Instance.OnSwapResults += () => FreezeBall(true);
 
         GameManager.Instance.OnSwapTutorial += () => FreezeBall(false);
         GameManager.Instance.OnSwapFinalPackage += () => FreezeBall(false);
@@ -288,6 +289,7 @@ public class BallDriving : MonoBehaviour
 
         GameManager.Instance.OnSwapGoldenCutscene -= () => FreezeBall(true);
         GameManager.Instance.OnSwapStartingCutscene -= () => FreezeBall(true);
+        GameManager.Instance.OnSwapResults -= () => FreezeBall(true);
 
         GameManager.Instance.OnSwapTutorial -= () => FreezeBall(false);
         GameManager.Instance.OnSwapFinalPackage -= () => FreezeBall(false);

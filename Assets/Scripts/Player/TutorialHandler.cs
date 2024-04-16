@@ -22,6 +22,7 @@ public class TutorialHandler : MonoBehaviour
     [SerializeField] private string boostInstructions;
     [SerializeField] private string pickupInstructions;
     [SerializeField] private string stealInstructions;
+    [SerializeField] private string dropoffInstructions;
     [SerializeField] private GameObject tutorialImage;
 
     private void OnEnable()
@@ -84,6 +85,9 @@ public class TutorialHandler : MonoBehaviour
             case (TutorialType.Steal):
                 TeachSteal();
                 break;
+            case (TutorialType.Final):
+                FinishTutorial();
+                break;
             default:
                 break;
         }
@@ -101,8 +105,7 @@ public class TutorialHandler : MonoBehaviour
 
     private void TeachDropoff()
     {
-        FinishTutorial(); // todo: dropoff tutorial that finished the tutorial when the player delivers a package
-        //tutorialText.text = "Follow the arrow to a white beacon to deliver the order";
+        tutorialText.text = dropoffInstructions;
     }
 
     private void TeachSteal()

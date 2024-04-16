@@ -7,7 +7,8 @@ public enum TutorialType
     Boost,
     Pickup,
     Steal,
-    Dropoff
+    Dropoff,
+    Final
 }
 
 public class TutorialManager : SingletonMonobehaviour<TutorialManager>
