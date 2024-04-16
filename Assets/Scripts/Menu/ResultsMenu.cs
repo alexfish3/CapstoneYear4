@@ -11,7 +11,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     [SerializeField] private GameObject quitInfo;
 
-    [SerializeField] private Camera orthoCam;
+    [SerializeField] private Camera cam;
     bool canQuit = false;
 
     [SerializeField] private GameObject wiper;
@@ -32,6 +32,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     private void Start()
     {
+        cam.enabled = false;
         transitionAnimator = wiper.GetComponent<Animator>();
     }
 
@@ -48,9 +49,9 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
         Debug.Log("update results");
         canvasElements.SetActive(true);
         transitionAnimator.SetTrigger("WipeOut");
-        //ScaleOrthoCam(orthoCam);
         quitInfo.SetActive(false);
         resultsCanvas.enabled = true;
+        cam.enabled = true;
         StartCoroutine(QuitDelay());
 
         for (int i = 0; i < PlayerInstantiate.Instance.PlayerCount; i++)
@@ -58,8 +59,8 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
             OrderHandler currHandler = ScoreManager.Instance.GetHandlerOfIndex(i);
 
             // Set player animations
-            //Animator playerAnim = currHandler.transform.parent.GetComponent<PlayerCameraResizer>().playerAnimator;
-            //playerAnim.SetInteger("End Status", i + 1);
+            Animator playerAnim = currHandler.transform.parent.GetComponent<PlayerCameraResizer>().playerAnimator;
+            playerAnim.SetInteger("End Status", i + 1);
 
             if (currHandler != null)
             {
