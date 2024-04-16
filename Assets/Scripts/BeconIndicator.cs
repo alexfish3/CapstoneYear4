@@ -104,9 +104,9 @@ public class BeconIndicator : MonoBehaviour
         playersToKeepTrackOf = new GameObject[4];
         playerCameraTransforms = new Transform[4];
 
-        for (int i = 0; i < playerInstantiate.PlayerInputs.Length; i++)
+        for (int i = 0; i < PlayerInstantiate.Instance.PlayerInputs.Length; i++)
         {
-            PlayerInput playerInput = playerInstantiate.PlayerInputs[i];
+            PlayerInput playerInput = PlayerInstantiate.Instance.PlayerInputs[i];
 
             if (playerInput != null)
             {

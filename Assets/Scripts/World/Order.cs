@@ -104,7 +104,8 @@ public class Order : MonoBehaviour
     private void Update()
     {
         meshRenderer.enabled = isActive || stealActive;
-        
+        glow.enabled = meshRenderer.enabled;
+
         beacon.gameObject.SetActive(isActive);
         
         if (playerHolding != null)
