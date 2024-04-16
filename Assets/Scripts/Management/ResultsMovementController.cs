@@ -12,12 +12,12 @@ public class ResultsMovementController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapGoldenCutscene += () => enableThisForResults.SetActive(false);
+        //GameManager.Instance.OnSwapGoldenCutscene += () => enableThisForResults.SetActive(false);
         GameManager.Instance.OnSwapResults += SpawnPlayers;
     }
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapGoldenCutscene -= () => enableThisForResults.SetActive(false);
+       // GameManager.Instance.OnSwapGoldenCutscene -= () => enableThisForResults.SetActive(false);
         GameManager.Instance.OnSwapResults -= SpawnPlayers;
     }
 

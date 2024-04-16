@@ -21,7 +21,15 @@ public class Fader : MonoBehaviour
     private void Start()
     {
         mat = render.material;
-        originalColor = mat.color;
+
+        try
+        {
+            originalColor = mat.color;
+        }
+        catch
+        {
+            Debug.LogError("No Color on material");
+        }
     }
 
     /// <summary>
