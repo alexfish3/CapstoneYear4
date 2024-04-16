@@ -12,6 +12,20 @@ public class SkideeSkidoo : MonoBehaviour
     private GameObject frontPos;
     private GameObject backPos;
 
+    [Tooltip("Time the skidmarks last.")]
+    [SerializeField] private float skidTime = 1f;
+
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapGoldenCutscene += () => SetPoopy(skidTime);
+        GameManager.Instance.OnSwapResults += () => SetPoopy(0);
+    }
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapGoldenCutscene -= () => SetPoopy(skidTime);
+        GameManager.Instance.OnSwapResults -= () => SetPoopy(0);
+    }
+
     private void Start()
     {
         control = GetComponent<BallDriving>();
@@ -47,5 +61,14 @@ public class SkideeSkidoo : MonoBehaviour
 
         frontTire.emitting = control.Grounded && control.Drifting;
         backTire.emitting = control.Grounded && control.Drifting;
+    }
+
+    /// <summary>
+    /// Used for setting the time of skid marks.
+    /// </summary>
+    private void SetPoopy(float poopTime)
+    {
+        frontTire.time = poopTime;
+        backTire.time = poopTime;
     }
 }
