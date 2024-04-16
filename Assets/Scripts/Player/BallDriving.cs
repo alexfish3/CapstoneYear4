@@ -1,3 +1,7 @@
+#if (UNITY_EDITOR)
+#define ENABLEDEBUGLOG
+#endif
+
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -41,6 +45,7 @@ public class BallDriving : MonoBehaviour
     private IEnumerator endBoostCoroutine;
     private IEnumerator spinOutTimeCoroutine;
     private IEnumerator slowdownImmunityCoroutine;
+    private IEnumerator coyoteTimeCoroutine;
 
     public delegate void BoostDelegate(); // boost event stuff for the trail
     public BoostDelegate OnBoostStart;
@@ -130,6 +135,8 @@ public class BallDriving : MonoBehaviour
     [SerializeField] private float boostingSteerModifier = 0.4f;
     [Tooltip("How much force is used when clashing")]
     [SerializeField] private float clashForce = 50.0f;
+    [Tooltip("How many frames the scooter is prevented from falling when boosting")]
+    [SerializeField] private int coyoteFrames = 10;
     public float ClashForce { get { return clashForce; } }
 
     [Header("Slipstream")]
@@ -211,6 +218,8 @@ public class BallDriving : MonoBehaviour
 
     private bool reverseGear, forwardGear, grounded, airboost;
     public bool Grounded => grounded;
+    private bool coyoteing = false;
+    private bool hasCoyoted = false;
     private bool canDrive = true;
     private bool brakeChecking = false;
     private bool stopped = true;
@@ -594,9 +603,11 @@ public class BallDriving : MonoBehaviour
 
             if (hit1Success == false && hit2Success == false && checkPhaseStatus)
             {
-                Debug.Log("Stop Phasing Inside Building");
-                Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
-                Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
+                #if ENABLEDEBUGLOG
+                    Debug.Log("Stop Phasing Inside Building");
+                    Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
+                    Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
+                #endif
 
                 phasing = false;
                 ToggleCollision(false);
@@ -611,15 +622,19 @@ public class BallDriving : MonoBehaviour
             // Check if either raycast hit
             else if (hit1Success == false && hit2Success == false && insideBuilding == true)
             {
-                Debug.Log("Not Inside Building");
+                #if ENABLEDEBUGLOG
+                    Debug.Log("Not Inside Building");
+                #endif
                 insideBuilding = false;
 
                 if (phaseType == PhaseType.OnlyInBuilding)
                     cameraResizer.SwapCameraRendering(false);
             }
-            else if (hit1Success == true && hit2Success == true && insideBuilding == false)
+            else if (hit1Success == true && hit2Success == true && insideBuilding == false && boosting)
             {
-                Debug.Log("Inside Building");
+                #if ENABLEDEBUGLOG
+                    Debug.Log("Inside Building");
+                #endif
 
                 if (phaseType == PhaseType.OnlyInBuilding)
                     cameraResizer.SwapCameraRendering(true);
@@ -676,13 +691,13 @@ public class BallDriving : MonoBehaviour
         if (Physics.Raycast(scooterNormal.transform.position, Vector3.down, out hit, GROUNDCHECK_DISTANCE, lm))
             grounded = true;
         else
-        {
             grounded = false;
-            Debug.Log("NOT GROUNDED");
-        }
 
         if (grounded)
         {
+            StopCoyoteTime();
+            hasCoyoted = false;
+
             scooterNormal.up = Vector3.Lerp(scooterNormal.up, hit.normal, Time.fixedDeltaTime * 10.0f);
             scooterNormal.Rotate(0, transform.eulerAngles.y, 0);
 
@@ -726,6 +741,10 @@ public class BallDriving : MonoBehaviour
                     break;
             }
         }
+        else if (!coyoteing && !hasCoyoted && boosting && coyoteTimeCoroutine == null)
+        {
+            StartCoyoteTime();
+        }
 
         if (!dirtyTerrainRespawn)
         {
@@ -738,6 +757,27 @@ public class BallDriving : MonoBehaviour
                 }
             }
         }
+    }
+
+    private IEnumerator CoyoteTime()
+    {
+        coyoteing = true;
+        hasCoyoted = true;
+        int framesElapsed = 0;
+
+        while (framesElapsed < coyoteFrames)
+        {
+            sphereBody.velocity = new Vector3(sphereBody.velocity.x, Mathf.Max(0f, sphereBody.velocity.y), sphereBody.velocity.z);
+
+            framesElapsed++;
+            #if ENABLEDEBUGLOG
+                Debug.Log($"Coyoteing for {framesElapsed} frames");
+            #endif
+
+            yield return null;
+        }
+
+        StopCoyoteTime();
     }
 
     /// <summary>
@@ -979,7 +1019,9 @@ public class BallDriving : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("Glow depletion complete");
+        #if ENABLEDEBUGLOG
+            Debug.Log("Glow depletion complete");
+        #endif
 
         // After glow depletion is complete, proceed with the rest of the boost logic
         StartEndBoost(wheelie, wheelieEnd);
@@ -1259,7 +1301,9 @@ public class BallDriving : MonoBehaviour
     /// <param name="freezeY">True to freeze Y for the results freezeframe</param>
     public void FreezeBall(bool toFreeze, bool resetBoost = true, bool freezeY = false)
     {
-        Debug.Log("Freeze Ball Start");
+        #if ENABLEDEBUGLOG
+            Debug.Log("Freeze Ball Start");
+        #endif
 
         if (sphereBody == null)
             return;
@@ -1270,7 +1314,9 @@ public class BallDriving : MonoBehaviour
         sphereBody.angularVelocity = Vector3.zero;
 
         canDrive = !toFreeze;
-        Debug.Log($"Can Drive : {canDrive}");
+        #if ENABLEDEBUGLOG
+            Debug.Log($"Can Drive : {canDrive}");
+        #endif
         sphereBody.constraints = toFreeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
 
         if (freezeY && toFreeze)
@@ -1295,11 +1341,14 @@ public class BallDriving : MonoBehaviour
             wheelying = false;
             if (phaseType == PhaseType.AtAllTimes)
                 cameraResizer.SwapCameraRendering(false);
-
-            StartBoostCooldown();
+            
+            if (boostCooldownCoroutine == null)
+                StartBoostCooldown();
         }
 
-        Debug.Log("Freeze Ball Was Successful");
+        #if ENABLEDEBUGLOG
+            Debug.Log("Freeze Ball Was Successful");
+        #endif
     }
 
     /// <summary>
@@ -1432,6 +1481,22 @@ public class BallDriving : MonoBehaviour
         {
             StopCoroutine(slowdownImmunityCoroutine);
             slowdownImmunityCoroutine = null;
+        }
+    }
+
+    private void StartCoyoteTime()
+    {
+        StopCoyoteTime();
+        coyoteTimeCoroutine = CoyoteTime();
+        StartCoroutine(coyoteTimeCoroutine);
+    }
+    private void StopCoyoteTime()
+    {
+        if (coyoteTimeCoroutine != null)
+        {
+            StopCoroutine(coyoteTimeCoroutine);
+            coyoteTimeCoroutine = null;
+            coyoteing = false;
         }
     }
 }
