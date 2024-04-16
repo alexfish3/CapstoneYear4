@@ -28,7 +28,7 @@ public class ResultsMovementController : MonoBehaviour
         {
             try
             {
-                players.Add(ScoreManager.Instance.GetHandlerOfIndex(i).transform.parent.GetComponentInChildren<Respawn>().gameObject); // super scuffed way to get ref to the sphere
+                players.Add(ScoreManager.Instance.GetHandlerOfIndex(i).transform.parent.GetComponentInChildren<Rigidbody>().gameObject); // super scuffed way to get ref to the sphere
             }
             catch
             {
@@ -43,8 +43,12 @@ public class ResultsMovementController : MonoBehaviour
         enableThisForResults.SetActive(true);
         for(int i=0;i<players.Count;i++)
         {
+            // set position of the ball
             players[i].transform.position = playerSpawns[i].position;
-            players[i].transform.rotation = playerSpawns[i].rotation;
+            players[i].transform.rotation = Quaternion.identity;// playerSpawns[i].rotation;
+
+            // rotate the control object
+            players[i].transform.parent.GetComponentInChildren<BallDriving>().transform.rotation = Quaternion.identity; 
         }
     }
 }
