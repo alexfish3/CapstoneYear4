@@ -47,11 +47,6 @@ public class NumberHandler : MonoBehaviour
 
         char[] splitScore = passedInScore.ToCharArray();
 
-        //// Reset dollar positions
-        //moneyImages[0].enabled = true;
-        //moneyImages[1].enabled = true;
-        //moneyImages[2].enabled = true;
-
         // If there is 0-9 dollars
         if (splitScore.Length == 1)
         {
@@ -94,7 +89,6 @@ public class NumberHandler : MonoBehaviour
         StartCoroutine(animateNumberTimer(timerImages[0], splitScore[0]));
         StartCoroutine(animateNumberTimer(timerImages[1], splitScore[2]));
         StartCoroutine(animateNumberTimer(timerImages[2], splitScore[3]));
-
     }
 
 
@@ -188,8 +182,6 @@ public class NumberHandler : MonoBehaviour
         // Early Return
         if (spriteToChangeTo != numToShrink.sprite)
         {
-            Debug.Log("Trigger");
-
             Animator numAnimator = numToShrink.transform.parent.GetComponent<Animator>();
 
             numAnimator.SetTrigger(HashReference._shrinkTrigger);
