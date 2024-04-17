@@ -6,8 +6,8 @@ public static class HashReference
 {
     // Credits Menu
     public static int _scrollCreditsTrigger = Animator.StringToHash("ScrollCredits");
-    // Cutscene Manager
-    public static int _scrollCountdownTrigger = Animator.StringToHash("Countdown");
+    // Cutscene Manager and Player Select Canvas
+    public static int _countdownTrigger = Animator.StringToHash("Countdown");
     // Becon Indicator
     public static int _spawnTrigger = Animator.StringToHash("Spawn");
     public static int _resetTrigger = Animator.StringToHash("Reset");
@@ -21,7 +21,6 @@ public static class HashReference
     // Customization Selector
     public static int _slideLeftTrigger = Animator.StringToHash("SlideLeft");
     public static int _slideRightTrigger = Animator.StringToHash("SlideRight");
-
 
     public static int _mainTexProperty = Shader.PropertyToID("_MainTex");
     public static int _mainColorProperty = Shader.PropertyToID("_MainColor");

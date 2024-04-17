@@ -51,7 +51,7 @@ public class NumberHandler : MonoBehaviour
             moneyImages[0].enabled = false;
             moneyImages[1].enabled = false;
             StartCoroutine(animateNumber(moneyImages[2], splitScore[0]));
-            dollarSign.transform.localPosition = new Vector3(20, 0, 0);
+            dollarSign.transform.localPosition = new Vector3(0, 0, 0);
             tipHolder.transform.localPosition = new Vector3(-50, 0, 0);
             tipHolder.transform.localScale = new Vector3(1.45f, 1.45f, 1.45f);
         }
@@ -61,7 +61,7 @@ public class NumberHandler : MonoBehaviour
             moneyImages[0].enabled = false;
             StartCoroutine(animateNumber(moneyImages[1], splitScore[0]));
             StartCoroutine(animateNumber(moneyImages[2], splitScore[1]));
-            dollarSign.transform.localPosition = new Vector3(-45, 0, 0);
+            dollarSign.transform.localPosition = new Vector3(-65, 0, 0);
             tipHolder.transform.localPosition = new Vector3(-16, 0, 0);
             tipHolder.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
         }
@@ -71,7 +71,7 @@ public class NumberHandler : MonoBehaviour
             StartCoroutine(animateNumber(moneyImages[0], splitScore[0]));
             StartCoroutine(animateNumber(moneyImages[1], splitScore[1]));
             StartCoroutine(animateNumber(moneyImages[2], splitScore[2]));
-            dollarSign.transform.localPosition = new Vector3(-100, 0, 0);
+            dollarSign.transform.localPosition = new Vector3(-115, 0, 0);
 
             tipHolder.transform.localPosition = new Vector3(0, 0, 0);
             tipHolder.transform.localScale = new Vector3(1, 1, 1);

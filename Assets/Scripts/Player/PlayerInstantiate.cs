@@ -40,8 +40,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     int readyUpCounter = 0;
     [Tooltip("Set to true when all players are readied up")]
     [SerializeField] bool isAllReadedUp = false;
-    [Tooltip("The time it takes to start the match")]
-    [SerializeField] float countdownTimer = 5f;
     Coroutine readyUpCountdown;
 
     [Header("Loading Screen Ready Information")]
@@ -76,7 +74,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         gameManager.OnSwapResults += DisableReadiedUp;
         gameManager.OnSwapResults += ResetPlayerCanvas;
         gameManager.OnSwapResults += SwapForResults;
-        //gameManager.OnSwapResults += SetAllPlayerSpawn;
 
         gameManager.OnSwapMenu += SwapForMainMenu;
 
@@ -479,14 +476,12 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     private IEnumerator ReadyUpCountdown()
     {
-        for(float i = countdownTimer; i >= 0; i--)
+        if(PlayerSelectCanvas.Instance != null)
         {
-            PlayerSelectCanvas.Instance.UpdateCountdown(i + 1);
-            yield return new WaitForSeconds(1f);
+            PlayerSelectCanvas.Instance.BeginCountdown();
         }
+        yield return new WaitForSeconds(3f);
 
-        Debug.Log("Properly Readied Up");
-        PlayerSelectCanvas.Instance.UpdateCountdown(0);
         isAllReadedUp = true;
         OnReadiedUp?.Invoke();
         readyUpCountdown = null;

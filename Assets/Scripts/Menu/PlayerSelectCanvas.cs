@@ -13,6 +13,7 @@ public class PlayerSelectCanvas : SingletonMonobehaviour<PlayerSelectCanvas>
 
     [Header("Other")]
     [SerializeField] PlayerInstantiate playerInstantiate;
+    [SerializeField] Animator countdown;
 
     public void Start()
     {
@@ -21,14 +22,14 @@ public class PlayerSelectCanvas : SingletonMonobehaviour<PlayerSelectCanvas>
         TogglePressButtonOnAllTexts(playerInstantiate.PlayerInputs);
     }
 
-    public void UpdateCountdown(float countdown)
+    public void BeginCountdown()
     {
-        countdownText.text = countdown.ToString();
+        countdown.SetTrigger(HashReference._countdownTrigger);
     }
 
     public void StopCountdown()
     {
-        countdownText.text = "";
+        countdown.SetTrigger(HashReference._resetTrigger);
     }
 
     // Toggles the press button text on one player's position
