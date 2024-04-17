@@ -37062,8 +37062,9 @@ GameObject:
   - component: {fileID: 6355295014402667270}
   - component: {fileID: 138630427348282848}
   - component: {fileID: 7990054834478366176}
-  - component: {fileID: 3382091636616336334}
   - component: {fileID: 3169174171109316493}
+  - component: {fileID: 4131692962719853851}
+  - component: {fileID: 3382091636616336334}
   m_Layer: 7
   m_Name: Control
   m_TagString: Untagged
@@ -37428,6 +37429,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97560fa2dee463545a00fd34024c4afb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3169174171109316493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5659362900598450531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 581e7b0ec0361d24d963aee7e3a36334, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  frontTire: {fileID: 3265197162674454916}
+  backTire: {fileID: 1863711332687211497}
+  skidTime: 5
+--- !u!114 &4131692962719853851
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5659362900598450531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32abd2650bb4f624ea1aa580195ccd72, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headlight: {fileID: 8077807281646379695}
 --- !u!136 &3382091636616336334
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -37451,21 +37480,6 @@ CapsuleCollider:
   m_Height: 4.301789
   m_Direction: 1
   m_Center: {x: -0, y: 1.6244934, z: -0.41731143}
---- !u!114 &3169174171109316493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5659362900598450531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 581e7b0ec0361d24d963aee7e3a36334, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  frontTire: {fileID: 3265197162674454916}
-  backTire: {fileID: 1863711332687211497}
-  skidTime: 5
 --- !u!1 &5669572057001603781
 GameObject:
   m_ObjectHideFlags: 0
@@ -38820,7 +38834,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8501127692924196179}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.07663677, y: -0, z: -0, w: -0.99705917}
+  m_LocalRotation: {x: -0.07663687, y: -0, z: -0, w: -0.9970591}
   m_LocalPosition: {x: 0, y: 2.9, z: -6.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
