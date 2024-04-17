@@ -184,6 +184,9 @@ public class Respawn : MonoBehaviour
         modelParent.SetActive(true);
         deathWisp.enabled = false;
         wispTrail.time = 0;
+
+        rebornParticles.transform.parent = rsp.transform;
+        rebornParticles.transform.localPosition = Vector3.zero;
         rebornParticles.Play();
 
 
@@ -196,6 +199,9 @@ public class Respawn : MonoBehaviour
         }
 
         rebornParticles.Stop();
+        rebornParticles.transform.parent = deathWisp.transform;
+        rebornParticles.transform.localPosition = Vector3.zero;
+
         rebornParticles.time = 0;
         deathWisp.enabled = false;
         deathWisp.transform.localScale = ogWispScale;
@@ -264,6 +270,9 @@ public class Respawn : MonoBehaviour
         ballDriving.DirtyTerrainRespawn = false;
 
         rebornParticles.time = 0;
+        rebornParticles.transform.parent = deathWisp.transform;
+        rebornParticles.transform.localPosition = Vector3.zero;
+
         deathWisp.enabled = false;
         deathWisp.transform.localScale = ogWispScale;
         modelParent.transform.localScale = ogPlayerScale;
