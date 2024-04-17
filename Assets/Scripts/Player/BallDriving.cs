@@ -726,7 +726,9 @@ public class BallDriving : MonoBehaviour
                         currentMovingPlatform = hit.collider.gameObject.GetComponent<MovingPlatform>();
                         if ((movingPlatformIndex = currentMovingPlatform.AddToScooterList(this)) == -1)
                         {
-                            Debug.LogError("Invalid Platform Index");
+                            #if ENABLEDEBUGLOG
+                                Debug.LogError("Invalid Platform Index");
+                            #endif
                         }
                     }
                     break;
@@ -1025,6 +1027,7 @@ public class BallDriving : MonoBehaviour
 
         // After glow depletion is complete, proceed with the rest of the boost logic
         StartEndBoost(wheelie, wheelieEnd);
+        StopBoostActive();
     }
 
     /// <summary>
@@ -1059,6 +1062,7 @@ public class BallDriving : MonoBehaviour
         }
 
         StartBoostCooldown();
+        StopEndBoost();
     }
 
     private void StartBoostCooldown()
@@ -1086,6 +1090,7 @@ public class BallDriving : MonoBehaviour
         }
 
         boostAble = true;
+        StopBoostCooldown();
     }
 
     /// <summary>
@@ -1333,8 +1338,6 @@ public class BallDriving : MonoBehaviour
             StopBoostActive();
             StopEndBoost();
 
-            boostElapsedTime = 0f;
-
             KillWheelie();
             checkPhaseStatus = true;
             boosting = false;
@@ -1342,8 +1345,7 @@ public class BallDriving : MonoBehaviour
             if (phaseType == PhaseType.AtAllTimes)
                 cameraResizer.SwapCameraRendering(false);
             
-            if (boostCooldownCoroutine == null)
-                StartBoostCooldown();
+            StartBoostCooldown();
         }
 
         #if ENABLEDEBUGLOG
