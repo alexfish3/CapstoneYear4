@@ -90,7 +90,8 @@ public class Order : MonoBehaviour
 
     private IEnumerator pickupCooldownCoroutine; // IEnumerator reference for pickupCooldown coroutine
 
-    private Transform ogMesh;
+    private Vector3 ogMeshPos;
+    private Quaternion ogMeshRot;
 
     private void Awake()
     {
@@ -98,7 +99,8 @@ public class Order : MonoBehaviour
         meshFilter = orderMeshObject.GetComponent<MeshFilter>();
         initMeshRotation = orderMeshObject.transform.localRotation;
 
-        ogMesh = orderMeshObject.transform;
+        ogMeshPos = orderMeshObject.transform.position;
+        ogMeshRot = orderMeshObject.transform.rotation;
     }
 
     private void Update()
@@ -441,8 +443,9 @@ public class Order : MonoBehaviour
         arrowTween.Kill();
 
         arrow.transform.localPosition = Vector3.zero;
-        orderMeshObject.transform.position = ogMesh.position;
-        orderMeshObject.transform.rotation = ogMesh.rotation;
+
+        orderMeshObject.transform.position = orderMeshObject.transform.position;
+        orderMeshObject.transform.rotation = ogMeshRot;//Quaternion.Euler(-90, 0, 180);//ogMesh.localRotation;
     }
 
     private void StartPickupCooldownCoroutine()
