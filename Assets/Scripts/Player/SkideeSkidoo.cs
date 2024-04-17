@@ -17,12 +17,12 @@ public class SkideeSkidoo : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapGoldenCutscene += () => SetPoopy(skidTime);
+        GameManager.Instance.OnSwapStartingCutscene += () => SetPoopy(skidTime);
         GameManager.Instance.OnSwapResults += () => SetPoopy(0);
     }
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapGoldenCutscene -= () => SetPoopy(skidTime);
+        GameManager.Instance.OnSwapStartingCutscene -= () => SetPoopy(skidTime);
         GameManager.Instance.OnSwapResults -= () => SetPoopy(0);
     }
 
