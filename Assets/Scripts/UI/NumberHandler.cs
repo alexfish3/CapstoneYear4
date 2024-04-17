@@ -16,9 +16,16 @@ public class NumberHandler : MonoBehaviour
     [SerializeField] Image[] moneyImages;
     [SerializeField] GameObject tipHolder;
     [SerializeField] GameObject dollarSign;
+
+    [Header("Placement")]
     [SerializeField] Image placementImage;
     [SerializeField] private TextMeshProUGUI suffix;
     [SerializeField] private TextMeshProUGUI suffixBG;
+
+    [Header("Timer")]
+    [SerializeField] string timerCount;
+    [SerializeField] Image[] timerImages;
+
 
     [Header("Final Order Countdown")]
     [SerializeField] Image finalOrderCountdownImage;
@@ -77,6 +84,19 @@ public class NumberHandler : MonoBehaviour
             tipHolder.transform.localScale = new Vector3(1, 1, 1);
         }
     }
+
+    public void UpdateTimerUI(string passedInTimer)
+    {
+        timerCount = passedInTimer;
+
+        char[] splitScore = passedInTimer.ToCharArray();
+        
+        StartCoroutine(animateNumberTimer(timerImages[0], splitScore[0]));
+        StartCoroutine(animateNumberTimer(timerImages[1], splitScore[2]));
+        StartCoroutine(animateNumberTimer(timerImages[2], splitScore[3]));
+
+    }
+
 
     public void UpdateFinalCountdown(int time)
     {
@@ -159,5 +179,29 @@ public class NumberHandler : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(0, 0.4f));
         numAnimator.SetTrigger(HashReference._idleTrigger);
         yield break;
+    }
+
+    private IEnumerator animateNumberTimer(Image numToShrink, char charNum)
+    {
+        Sprite spriteToChangeTo = getNumSprite(charNum);
+
+        // Early Return
+        if (spriteToChangeTo != numToShrink.sprite)
+        {
+            Debug.Log("Trigger");
+
+            Animator numAnimator = numToShrink.transform.parent.GetComponent<Animator>();
+
+            numAnimator.SetTrigger(HashReference._shrinkTrigger);
+            yield return new WaitForSeconds(0.2f);
+            numToShrink.enabled = true;
+
+            numToShrink.sprite = spriteToChangeTo;
+            numAnimator.SetTrigger(HashReference._growTrigger);
+
+            yield return new WaitForSeconds(Random.Range(0, 0.4f));
+            numAnimator.SetTrigger(HashReference._idleTrigger);
+            yield break;
+        }
     }
 }

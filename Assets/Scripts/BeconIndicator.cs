@@ -63,9 +63,6 @@ public class BeconIndicator : MonoBehaviour
             {
                 float alpha = RangeMutations.Map_Linear(distance, fadeDistance - fadeLength, fadeDistance, 0f, 1);
                 newColor = new Color(cahceColor.r, cahceColor.b, cahceColor.g, alpha);
-
-                Debug.Log("Alpha is " + alpha);
-
             }
             // Normal
             else
@@ -73,14 +70,11 @@ public class BeconIndicator : MonoBehaviour
                 newColor = Color.white;
             }
             rotationSprites[i].color = newColor;
-            Debug.Log("New Alpha is " + newColor.a);
         }
     }
 
     public void InitalizeBeconIndicator(Constants.OrderValue orderValue)
     {
-        Debug.Log("Initalize Becon Icons");
-
         foreach(SpriteRenderer renderer in rotationSprites)
         {
             switch (orderValue)

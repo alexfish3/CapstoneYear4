@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class Ticker : MonoBehaviour
 {
-    public static float tickTime_010 = 0.1f;
-    private float tickerTimer_010;
+    public static float tickTime_1 = 0.5f;
+    private float tickerTimer_1;
 
-    public delegate void TickAction010();
-    public static event TickAction010 OnTickAction010;
+    public delegate void TickAction1();
+    public static event TickAction1 OnTickAction010;
 
     // Update is called once per frame
     void Update()
     {
-        tickerTimer_010 += Time.deltaTime;
+        tickerTimer_1 += Time.deltaTime;
 
-        if(tickerTimer_010 >= tickTime_010)
+        if(tickerTimer_1 >= tickTime_1)
         {
-            tickerTimer_010 = 0;
+            tickerTimer_1 = 0;
             TickEvent();
         }
     }

@@ -9,9 +9,11 @@ using System;
 /// </summary>
 public class DynamicNumberUI : MonoBehaviour
 {
+    [SerializeField] GameObject waveTimerDynamic;
     [SerializeField] private NumberHandler numHandler;
-    [SerializeField] TextMeshProUGUI waveText;
     [SerializeField] TextMeshProUGUI centerText;
+
+    string timer;
 
     // final order countdown
     [SerializeField] TextMeshProUGUI finalOrderText;
@@ -21,13 +23,17 @@ public class DynamicNumberUI : MonoBehaviour
 
     private void OnEnable()
     {
+        //Ticker.OnTickAction010 += Tick;
         GameManager.Instance.OnSwapAnything += SetNothing;
+        GameManager.Instance.OnSwapBegin += () => waveTimerDynamic.SetActive(true);
         GameManager.Instance.OnSwapMenu += () => finalOrderText.gameObject.SetActive(false);
     }
 
     private void OnDisable()
     {
+        //Ticker.OnTickAction010 -= Tick;
         GameManager.Instance.OnSwapAnything -= SetNothing;
+        GameManager.Instance.OnSwapBegin -= () => waveTimerDynamic.SetActive(true);
         GameManager.Instance.OnSwapMenu -= () => finalOrderText.gameObject.SetActive(false);
     }
 
@@ -38,7 +44,15 @@ public class DynamicNumberUI : MonoBehaviour
     {
         centerText.text = "";
         timeSpan = TimeSpan.FromSeconds(OrderManager.Instance.GameTimer);
-        waveText.text = timeSpan.ToString("m\\:ss\\.ff");
+
+        string timeSpanString = timeSpan.ToString("m\\:ss");
+        if (timer != timeSpanString)
+        {
+            timer = timeSpanString;
+            numHandler.UpdateTimerUI(timer);
+        }
+
+        //waveText.text = timeSpan.ToString("m\\:ss\\.ff");
         finalOrderText.gameObject.SetActive(false);
         finalOrderText.text = "";
     }
@@ -48,8 +62,6 @@ public class DynamicNumberUI : MonoBehaviour
     /// </summary>
     public void SetFinalGameplay()
     {
-        waveText.text = "";
-        waveText.color = Color.white;
         centerText.text = "";
         finalOrderText.gameObject.SetActive(true);
         finalOrderText.text = $": ${OrderManager.Instance.FinalOrderValue}";
@@ -62,7 +74,7 @@ public class DynamicNumberUI : MonoBehaviour
     public void SetFinalCountdown(int inTime)
     {
         numHandler.SetFinalCountdown(true);
-        waveText.text = "";
+        waveTimerDynamic.SetActive(false);
         finalOrderText.text = "";
         if (currFinal != inTime)
         {
@@ -77,7 +89,7 @@ public class DynamicNumberUI : MonoBehaviour
     public void SetNothing()
     {
         numHandler.SetFinalCountdown(false);
-        waveText.text = "";
+        waveTimerDynamic.SetActive(false);
         finalOrderText.text = "";
         centerText.text = "";
     }
