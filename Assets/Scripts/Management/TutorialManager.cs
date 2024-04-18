@@ -25,19 +25,23 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
     private void OnEnable()
     {
         GameManager.Instance.OnSwapBegin += handlers.Clear;
-        GameManager.Instance.OnSwapGoldenCutscene += SkipTutorial;
         shouldTutorialize = true;
     }
 
     private void OnDisable()
     {
         GameManager.Instance.OnSwapBegin -= handlers.Clear;
-        GameManager.Instance.OnSwapGoldenCutscene -= SkipTutorial;
     }
 
     private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            foreach (TutorialHandler handler in handlers)
+            {
+                handler.TeachHandler(TutorialType.Final);
+            }
+        }
     }
     /// <summary>
     /// Adds a tutorial handler to a list if it's not already there.
