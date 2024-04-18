@@ -13,7 +13,7 @@ public class DynamicNumberUI : MonoBehaviour
     [SerializeField] private NumberHandler numHandler;
     [SerializeField] TextMeshProUGUI centerText;
     // final order countdown
-    [SerializeField] GameObject finalOrderText;
+    [SerializeField] GameObject finalOrderNumber;
 
     string timer;
     string goldenValue;
@@ -25,7 +25,7 @@ public class DynamicNumberUI : MonoBehaviour
         //Ticker.OnTickAction010 += Tick;
         GameManager.Instance.OnSwapAnything += SetNothing;
         GameManager.Instance.OnSwapBegin += () => waveTimerDynamic.SetActive(true);
-        GameManager.Instance.OnSwapMenu += () => finalOrderText.gameObject.SetActive(false);
+        GameManager.Instance.OnSwapMenu += () => finalOrderNumber.gameObject.SetActive(false);
     }
 
     private void OnDisable()
@@ -33,7 +33,7 @@ public class DynamicNumberUI : MonoBehaviour
         //Ticker.OnTickAction010 -= Tick;
         GameManager.Instance.OnSwapAnything -= SetNothing;
         GameManager.Instance.OnSwapBegin -= () => waveTimerDynamic.SetActive(true);
-        GameManager.Instance.OnSwapMenu -= () => finalOrderText.gameObject.SetActive(false);
+        GameManager.Instance.OnSwapMenu -= () => finalOrderNumber.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public class DynamicNumberUI : MonoBehaviour
         }
 
         //waveText.text = timeSpan.ToString("m\\:ss\\.ff");
-        finalOrderText.gameObject.SetActive(false);
+        finalOrderNumber.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -61,7 +61,7 @@ public class DynamicNumberUI : MonoBehaviour
     public void SetFinalGameplay()
     {
         centerText.text = "";
-        finalOrderText.gameObject.SetActive(true);
+        finalOrderNumber.gameObject.SetActive(true);
 
         string currentGoldenValue = OrderManager.Instance.FinalOrderValue.ToString();
         if(goldenValue != currentGoldenValue)

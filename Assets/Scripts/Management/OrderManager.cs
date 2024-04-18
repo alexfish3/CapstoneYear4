@@ -87,6 +87,9 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("When true will randomize initial spawn order of all orders.")]
     [SerializeField] private bool randomizeWaves;
 
+    // stop timer
+    private bool countdown = true;
+
     private void OnEnable()
     {
         GameManager.Instance.OnSwapTutorial += InitTutorial;
@@ -116,17 +119,14 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     private void Update()
     {
+        // HOTKEY
         if(Input.GetKeyDown(KeyCode.Y))
         {
             OnDeleteActiveOrders?.Invoke();
         }
 
-        if(Input.GetKeyDown(KeyCode.N))
-        {
-            waveTimer = 10f;
-        }
-
-        if(Input.GetKeyDown(KeyCode.Alpha5))
+        // HOTKEY
+        if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             wave = 3;
             InitWave();
@@ -191,8 +191,18 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             ResetWave();
             InitWave();
         }
-        waveTimer -= Time.deltaTime;
-        gameTimer -= Time.deltaTime;
+
+        if (countdown)
+        {
+            waveTimer -= Time.deltaTime;
+            gameTimer -= Time.deltaTime;
+        }
+
+        // HOTKEY
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            countdown = !countdown;
+        }
     }
 
     /// <summary>
@@ -512,7 +522,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// <summary>
     /// Ensures next game will run smoothly.
     /// </summary>
-    private void ResetForNextGame()
+    public void ResetForNextGame()
     {
         TutorialManager.Instance.ShouldTutorialize = true;
         Destroy(this.gameObject);

@@ -41,6 +41,15 @@ public class TutorialHandler : MonoBehaviour
         ball = GetComponent<BallDriving>();
     }
 
+    private void Update()
+    {
+        // HOTKEY
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            TeachHandler(TutorialType.Final);
+        }
+    }
+
     /// <summary>
     /// Resets the tutorial handler so players can be tutorialized on subsequent playthroughs.
     /// </summary>

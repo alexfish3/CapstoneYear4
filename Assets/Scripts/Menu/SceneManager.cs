@@ -97,10 +97,10 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///<summary>
     /// Main method that loads the game
     ///</summary>
-    private void LoadGameScene()
+    public void LoadGameScene()
     {
         Debug.LogError("Load game scene");
-        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != GameScene.BuildIndex)
+        if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != GameScene.BuildIndex && PlayerInstantiate.Instance.PlayerCount >= 1)
         {
             // Stops Corutine
             if (sceneLoadCoroutune != null)
@@ -113,6 +113,9 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
             tutorialImage.sprite = mainTut;
             ShowLoadingScreen();
             sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(GameScene.BuildIndex, loadingScreenDelay, true, false));
+            
+            if(OrderManager.Instance != null)
+                OrderManager.Instance.ResetForNextGame();
         }
     }
 
