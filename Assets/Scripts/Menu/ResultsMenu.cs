@@ -16,17 +16,22 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
     [SerializeField] private GameObject wiper;
     [SerializeField] private GameObject canvasElements;
-    private Animator transitionAnimator;
+    private Animator transitionAnimator, camAnimator;
+
+    [Tooltip("Basically the length of the camera animation.")]
+    [SerializeField] private float timeBeforeUI = 4f;
+
+    private IEnumerator resultsRoutine;
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapResults += UpdateResults;
+        GameManager.Instance.OnSwapResults += InitResults;
         GameManager.Instance.OnFinalOrderDelivered += HideGame;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapResults -= UpdateResults;
+        GameManager.Instance.OnSwapResults -= InitResults;
         GameManager.Instance.OnFinalOrderDelivered -= HideGame;
     }
 
@@ -34,6 +39,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
     {
         cam.enabled = false;
         transitionAnimator = wiper.GetComponent<Animator>();
+        camAnimator = cam.GetComponent<Animator>();
     }
 
     private void HideGame()
@@ -41,17 +47,31 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
         canvasElements.SetActive(false);
         resultsCanvas.enabled = true;
         wiper.SetActive(true);
-        transitionAnimator.SetTrigger("WipeIn");
+        transitionAnimator.SetTrigger(HashReference._wipeInTrigger);
     }
 
-    private void UpdateResults()
+    private void InitResults()
     {
-        Debug.Log("update results");
-        canvasElements.SetActive(true);
-        transitionAnimator.SetTrigger("WipeOut");
-        quitInfo.SetActive(false);
-        resultsCanvas.enabled = true;
+        if (resultsRoutine != null)
+        {
+            StopCoroutine(resultsRoutine);
+            resultsRoutine = null;
+        }
+        resultsRoutine = UpdateResults();
+        StartCoroutine(resultsRoutine);
+    }
+
+    private IEnumerator UpdateResults()
+    {
+        transitionAnimator.SetTrigger(HashReference._wipeOutTrigger);
         cam.enabled = true;
+        camAnimator.SetTrigger(HashReference._startTrigger);
+        quitInfo.SetActive(false);
+
+        yield return new WaitForSeconds(timeBeforeUI);
+        
+        canvasElements.SetActive(true);
+        resultsCanvas.enabled = true;
         StartCoroutine(QuitDelay());
 
         for (int i = 0; i < PlayerInstantiate.Instance.PlayerCount; i++)
@@ -60,11 +80,11 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
 
             // Set player animations
             Animator playerAnim = currHandler.transform.parent.GetComponent<PlayerCameraResizer>().playerAnimator;
-            playerAnim.SetInteger("End Status", i + 1);
+            playerAnim.SetInteger(HashReference._endStatusFloat, i + 1);
 
             if (currHandler != null)
             {
-                displayText[i].enabled = true;
+                displayText[i].gameObject.SetActive(true);
                 displayText[i].text = "$" + currHandler.Score;
             }
         }
@@ -88,7 +108,7 @@ public class ResultsMenu : SingletonMonobehaviour<ResultsMenu>
         {
             OrderHandler currHandler = ScoreManager.Instance.GetHandlerOfIndex(i);
             Animator playerAnim = currHandler.transform.parent.GetComponent<PlayerCameraResizer>().playerAnimator;
-            playerAnim.SetInteger("End Status", 0);
+            playerAnim.SetInteger(HashReference._endStatusFloat, 0);
         }
     }
 

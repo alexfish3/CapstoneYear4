@@ -24,12 +24,12 @@ public static class HashReference
     // Results screen
     public static int _wipeInTrigger = Animator.StringToHash("WipeIn");
     public static int _wipeOutTrigger = Animator.StringToHash("WipeOut");
+    public static int _startTrigger = Animator.StringToHash("Start");
 
     // Ghost
     public static int _speedFloat = Animator.StringToHash("Speed");
     public static int _endStatusFloat = Animator.StringToHash("End Status");
     public static int _stealLeftTrigger = Animator.StringToHash("StealLeft");
-
 
     public static int _mainTexProperty = Shader.PropertyToID("_MainTex");
     public static int _mainColorProperty = Shader.PropertyToID("_MainColor");
