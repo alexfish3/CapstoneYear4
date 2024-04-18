@@ -50,12 +50,13 @@ public class TrailHandler : MonoBehaviour
     /// <returns></returns>
     private IEnumerator LerpBoost(TrailRenderer trail, float maxTime)
     {
+	trail.time = 0f;
         trail.gameObject.SetActive(true);
-        float startTime = trail.time;
+        float startTime = 0;
         float elapsedTime = 0;
-        while (trail.time < maxTime)
+        while (trail.time < 1.8f)
         {
-            trail.time = Mathf.Lerp(startTime, maxTime, elapsedTime);
+            trail.time = Mathf.Lerp(0, 1.8f, elapsedTime);
             elapsedTime += Time.deltaTime * boostTrailMulitplier;
             yield return null;
         }
@@ -67,10 +68,11 @@ public class TrailHandler : MonoBehaviour
 
         while(trail.time > 0)
         {
-            trail.time = Mathf.Lerp(maxTime, startTime, elapsedTime);
+            trail.time = Mathf.Lerp(1.8f, 0f, elapsedTime);
             elapsedTime += Time.deltaTime * boostTrailMulitplier;
             yield return null;
         }
+	trail.time = 0f;
         trail.gameObject.SetActive(false);
     }
 }
