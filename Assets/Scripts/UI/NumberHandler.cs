@@ -27,6 +27,7 @@ public class NumberHandler : MonoBehaviour
     [SerializeField] Image[] timerImages;
 
     [Header("Final Order Countdown")]
+    [SerializeField] GameObject finalOrderTextObject;
     [SerializeField] Image finalOrderCountdownImage;
 
     [Header("Final Order Value")]
@@ -79,7 +80,7 @@ public class NumberHandler : MonoBehaviour
         timerCount = passedInTimer;
 
         char[] splitScore = passedInTimer.ToCharArray();
-        
+
         StartCoroutine(animateNumberTimer(timerImages[0], splitScore[0]));
         StartCoroutine(animateNumberTimer(timerImages[1], splitScore[2]));
         StartCoroutine(animateNumberTimer(timerImages[2], splitScore[3]));
@@ -121,6 +122,7 @@ public class NumberHandler : MonoBehaviour
 
     public void SetFinalCountdown(bool enabled)
     {
+        finalOrderTextObject.SetActive(enabled);
         finalOrderCountdownImage.transform.parent.gameObject.SetActive(enabled);
     }
 
