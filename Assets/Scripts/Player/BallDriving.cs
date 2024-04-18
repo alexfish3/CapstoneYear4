@@ -1199,8 +1199,8 @@ public class BallDriving : MonoBehaviour
     /// <param name="opponent">The other person in the collision</param>
     private void BallClash(OrderHandler opponent)
     {
-        if (phasing)
-            return;
+       // if (phasing)
+         //   return;
 
         Rigidbody opponentBall = opponent.gameObject.GetComponent<BallDriving>().Sphere.GetComponent<Rigidbody>(); //woof
         BounceOff(opponentBall.position, clashForce);
