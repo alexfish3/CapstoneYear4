@@ -45,8 +45,12 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     [Tooltip("Time between main game ending and golden cutscene playing.")]
     [SerializeField] private float postGameLinger = 3f;
 
-    [Tooltip("Multiplyer for final order increment. 1 will have it add a dollar to the value every second.")]
-    [SerializeField] private float goldIncrementMultiplyer = 1f;
+    [Tooltip("Final order increment. 1 will have it add a dollar to the value.")]
+    [SerializeField] private float goldIncrementValue = 1f;
+
+    [Tooltip("Timer for when value is added to the golden package. 1 will have it add money every second")]
+    [SerializeField] private float goldValueTimer = 1f;
+    float goldTimer = 0f;
 
     [Tooltip("The master list of all non-golden orders in the game.")]
     [SerializeField] private List<Order> normalOrders;
@@ -75,7 +79,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
 
     // wave event stuff
     private event Action OnDeleteActiveOrders;
-
     public event Action OnMainGameFinishes;
 
     [Header("Debug")]
@@ -133,7 +136,17 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         {
             if (finalOrderActive && finalOrder.PlayerHolding != null)
             {
-                finalOrderValue += Time.deltaTime * goldIncrementMultiplyer;
+
+                if(goldTimer >= goldValueTimer)
+                {
+                    goldTimer = 0;
+                    if (finalOrderValue <= 999)
+                        finalOrderValue += goldIncrementValue;
+                }
+                else
+                {
+                    goldTimer += Time.deltaTime;
+                }
             }
         }
         if (!spawnNormalPackages) { return; }

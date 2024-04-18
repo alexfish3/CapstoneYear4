@@ -26,20 +26,14 @@ public class NumberHandler : MonoBehaviour
     [SerializeField] string timerCount;
     [SerializeField] Image[] timerImages;
 
-
     [Header("Final Order Countdown")]
     [SerializeField] Image finalOrderCountdownImage;
 
+    [Header("Final Order Value")]
+    [SerializeField] string finalOrderValue;
+    [SerializeField] Image[] finalOrderImages;
+
     private int currPlace = -1;
-    // Update is called once per frame
-    void Update()
-    {
-        if (trigger == true)
-        {
-            trigger = false;
-            UpdateScoreUI(moneyCount);
-        }
-    }
 
     public void UpdateScoreUI(string passedInScore)
     {
@@ -91,10 +85,38 @@ public class NumberHandler : MonoBehaviour
         StartCoroutine(animateNumberTimer(timerImages[2], splitScore[3]));
     }
 
-
     public void UpdateFinalCountdown(int time)
     {
         StartCoroutine(animateNumber(finalOrderCountdownImage, time));
+    }
+
+    public void UpdateOrderValueUI(string passedInScore)
+    {
+        finalOrderValue = passedInScore;
+
+        char[] splitScore = passedInScore.ToCharArray();
+
+        // If there is 0-9 dollars
+        if (splitScore.Length == 1)
+        {
+            finalOrderImages[1].enabled = false;
+            finalOrderImages[2].enabled = false;
+            StartCoroutine(animateNumberTimer(finalOrderImages[0], splitScore[0]));
+        }
+        // If there is 10-99 dollars
+        else if (splitScore.Length == 2)
+        {
+            finalOrderImages[2].enabled = false;
+            StartCoroutine(animateNumberTimer(finalOrderImages[0], splitScore[0]));
+            StartCoroutine(animateNumberTimer(finalOrderImages[1], splitScore[1]));
+        }
+        // If there is 100-999 dollars
+        else if (splitScore.Length == 3)
+        {
+            StartCoroutine(animateNumberTimer(finalOrderImages[0], splitScore[0]));
+            StartCoroutine(animateNumberTimer(finalOrderImages[1], splitScore[1]));
+            StartCoroutine(animateNumberTimer(finalOrderImages[2], splitScore[2]));
+        }
     }
 
     public void SetFinalCountdown(bool enabled)
@@ -182,6 +204,8 @@ public class NumberHandler : MonoBehaviour
         // Early Return
         if (spriteToChangeTo != numToShrink.sprite)
         {
+            Debug.Log("Animatoe");
+
             Animator numAnimator = numToShrink.transform.parent.GetComponent<Animator>();
 
             numAnimator.SetTrigger(HashReference._shrinkTrigger);

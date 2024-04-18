@@ -12,13 +12,12 @@ public class DynamicNumberUI : MonoBehaviour
     [SerializeField] GameObject waveTimerDynamic;
     [SerializeField] private NumberHandler numHandler;
     [SerializeField] TextMeshProUGUI centerText;
+    // final order countdown
+    [SerializeField] GameObject finalOrderText;
 
     string timer;
-
-    // final order countdown
-    [SerializeField] TextMeshProUGUI finalOrderText;
+    string goldenValue;
     private int currFinal = -1;
-
     TimeSpan timeSpan;
 
     private void OnEnable()
@@ -54,7 +53,6 @@ public class DynamicNumberUI : MonoBehaviour
 
         //waveText.text = timeSpan.ToString("m\\:ss\\.ff");
         finalOrderText.gameObject.SetActive(false);
-        finalOrderText.text = "";
     }
 
     /// <summary>
@@ -64,7 +62,13 @@ public class DynamicNumberUI : MonoBehaviour
     {
         centerText.text = "";
         finalOrderText.gameObject.SetActive(true);
-        finalOrderText.text = $": ${OrderManager.Instance.FinalOrderValue}";
+
+        string currentGoldenValue = OrderManager.Instance.FinalOrderValue.ToString();
+        if(goldenValue != currentGoldenValue)
+        {
+            goldenValue = currentGoldenValue;
+            numHandler.UpdateOrderValueUI(goldenValue);
+        }
     }
 
     /// <summary>
@@ -75,7 +79,6 @@ public class DynamicNumberUI : MonoBehaviour
     {
         numHandler.SetFinalCountdown(true);
         waveTimerDynamic.SetActive(false);
-        finalOrderText.text = "";
         if (currFinal != inTime)
         {
             currFinal = inTime;
@@ -90,7 +93,6 @@ public class DynamicNumberUI : MonoBehaviour
     {
         numHandler.SetFinalCountdown(false);
         waveTimerDynamic.SetActive(false);
-        finalOrderText.text = "";
         centerText.text = "";
     }
 
