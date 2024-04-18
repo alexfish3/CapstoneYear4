@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public enum TutorialType
 {
@@ -32,6 +33,11 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
     {
         GameManager.Instance.OnSwapBegin -= handlers.Clear;
         GameManager.Instance.OnSwapGoldenCutscene -= SkipTutorial;
+    }
+
+    private void Update()
+    {
+        
     }
     /// <summary>
     /// Adds a tutorial handler to a list if it's not already there.

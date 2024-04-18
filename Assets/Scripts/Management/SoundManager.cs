@@ -172,12 +172,6 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
             musicSource.timeSamples = introLength;
             musicSource.Play();
         }
-
-        if(Input.GetKeyDown(KeyCode.M))
-        {
-            musicSource.timeSamples = totalLength - 50000;
-            musicSource.Play();
-        }
     }
 
     // below are methods to play various BGMs
