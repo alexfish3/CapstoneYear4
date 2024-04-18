@@ -485,7 +485,7 @@ public class BallDriving : MonoBehaviour
         // Updates player driving animations
 
         float speedValue = RangeMutations.Map_Linear(currentVelocity, 0, 30, 0, 10);
-        playerAnimator.SetFloat("Speed", speedValue);
+        playerAnimator.SetFloat(HashReference._speedFloat, speedValue);
     }
 
     /// <summary>

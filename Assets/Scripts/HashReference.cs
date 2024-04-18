@@ -21,6 +21,15 @@ public static class HashReference
     // Customization Selector
     public static int _slideLeftTrigger = Animator.StringToHash("SlideLeft");
     public static int _slideRightTrigger = Animator.StringToHash("SlideRight");
+    // Results screen
+    public static int _wipeInTrigger = Animator.StringToHash("WipeIn");
+    public static int _wipeOutTrigger = Animator.StringToHash("WipeOut");
+
+    // Ghost
+    public static int _speedFloat = Animator.StringToHash("Speed");
+    public static int _endStatusFloat = Animator.StringToHash("End Status");
+    public static int _stealLeftTrigger = Animator.StringToHash("StealLeft");
+
 
     public static int _mainTexProperty = Shader.PropertyToID("_MainTex");
     public static int _mainColorProperty = Shader.PropertyToID("_MainColor");

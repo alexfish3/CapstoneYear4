@@ -51,6 +51,8 @@ public class OrderHandler : MonoBehaviour
     private CompanyInformation companyInfo;
     public CompanyInformation CompanyInfo { get {  return companyInfo; } set {  companyInfo = value; } }
 
+    [SerializeField] Animator playerAnimator;
+
     private void Start()
     {
         /*score = 0; // init score to 0
@@ -287,6 +289,7 @@ public class OrderHandler : MonoBehaviour
         Order newOrder = victimPlayer.GetBestOrder();
         if (newOrder != null && (order1 == null || order2 == null))
         {
+            playerAnimator.SetTrigger(HashReference._stealLeftTrigger);
             soundPool.PlayOrderTheft();
             victimPlayer.LoseOrder(newOrder);
             AddOrder(newOrder);
