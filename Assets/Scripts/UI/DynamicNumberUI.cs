@@ -14,6 +14,7 @@ public class DynamicNumberUI : MonoBehaviour
     [SerializeField] TextMeshProUGUI centerText;
     // final order countdown
     [SerializeField] GameObject finalOrderNumber;
+    [SerializeField] private GameObject dynamicWaveTimer;
 
     string timer;
     string goldenValue;
@@ -41,6 +42,9 @@ public class DynamicNumberUI : MonoBehaviour
     /// </summary>
     public void SetNormalGameplay()
     {
+        dynamicWaveTimer.SetActive(true);
+        numHandler.SetFinalCountdown(false);
+        
         centerText.text = "";
         timeSpan = TimeSpan.FromSeconds(OrderManager.Instance.GameTimer);
 
@@ -104,7 +108,7 @@ public class DynamicNumberUI : MonoBehaviour
             {
                 if (!OrderManager.Instance.FinalOrderActive)
                 {
-                    if ((int)OrderManager.Instance.GameTimer < 10 && (int)OrderManager.Instance.GameTimer > 0)
+                    if (OrderManager.Instance.GameTimer < 10f && OrderManager.Instance.GameTimer > 0f)
                     {
                         SetFinalCountdown((int)OrderManager.Instance.GameTimer);
                     }

@@ -484,13 +484,14 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     /// <summary>
     /// Starts the next wave.
     /// </summary>
-    private void ResetWave()
+    private void ResetWave(bool inc = true)
     {
         StopEasySpawn();
         StopMediumSpawn();
         StopHardSpawn();
         cooledDown = true;
-        wave++;
+        if(inc)
+            wave++;
     }
 
     private void IncrementWave()
@@ -500,8 +501,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     }
     private void DecrementWave()
     {
-        ResetWave();
-        wave -= 2; // never expected to have to decrease waves
+        ResetWave(false);
+        wave--;
         InitWave();
     }
 
