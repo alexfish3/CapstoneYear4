@@ -604,7 +604,6 @@ public class BallDriving : MonoBehaviour
             if (hit1Success == false && hit2Success == false && checkPhaseStatus)
             {
                 #if ENABLEDEBUGLOG
-                    Debug.Log("Stop Phasing Inside Building");
                     Debug.DrawRay(phaseRaycastPositions[0].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
                     Debug.DrawRay(phaseRaycastPositions[1].transform.position, transform.TransformDirection(Vector3.down) * 200, Color.white);
                 #endif
@@ -622,9 +621,6 @@ public class BallDriving : MonoBehaviour
             // Check if either raycast hit
             else if (hit1Success == false && hit2Success == false && insideBuilding == true)
             {
-                #if ENABLEDEBUGLOG
-                    Debug.Log("Not Inside Building");
-                #endif
                 insideBuilding = false;
 
                 if (phaseType == PhaseType.OnlyInBuilding)
@@ -632,10 +628,6 @@ public class BallDriving : MonoBehaviour
             }
             else if (hit1Success == true && hit2Success == true && insideBuilding == false && boosting)
             {
-                #if ENABLEDEBUGLOG
-                    Debug.Log("Inside Building");
-                #endif
-
                 if (phaseType == PhaseType.OnlyInBuilding)
                     cameraResizer.SwapCameraRendering(true);
 
@@ -727,7 +719,7 @@ public class BallDriving : MonoBehaviour
                         if ((movingPlatformIndex = currentMovingPlatform.AddToScooterList(this)) == -1)
                         {
                             #if ENABLEDEBUGLOG
-                                Debug.LogError("Invalid Platform Index");
+
                             #endif
                         }
                     }
@@ -772,9 +764,6 @@ public class BallDriving : MonoBehaviour
             sphereBody.velocity = new Vector3(sphereBody.velocity.x, Mathf.Max(0f, sphereBody.velocity.y), sphereBody.velocity.z);
 
             framesElapsed++;
-            #if ENABLEDEBUGLOG
-                Debug.Log($"Coyoteing for {framesElapsed} frames");
-            #endif
 
             yield return null;
         }
@@ -1021,9 +1010,6 @@ public class BallDriving : MonoBehaviour
             yield return null;
         }
 
-        #if ENABLEDEBUGLOG
-            Debug.Log("Glow depletion complete");
-        #endif
 
         // After glow depletion is complete, proceed with the rest of the boost logic
         StartEndBoost(wheelie, wheelieEnd);
@@ -1306,9 +1292,7 @@ public class BallDriving : MonoBehaviour
     /// <param name="freezeY">True to freeze Y for the results freezeframe</param>
     public void FreezeBall(bool toFreeze, bool resetBoost = true, bool freezeY = false)
     {
-        #if ENABLEDEBUGLOG
-            Debug.Log("Freeze Ball Start");
-        #endif
+
 
         if (sphereBody == null)
             return;
@@ -1319,9 +1303,7 @@ public class BallDriving : MonoBehaviour
         sphereBody.angularVelocity = Vector3.zero;
 
         canDrive = !toFreeze;
-        #if ENABLEDEBUGLOG
-            Debug.Log($"Can Drive : {canDrive}");
-        #endif
+
         sphereBody.constraints = toFreeze ? RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ : RigidbodyConstraints.None;
 
         if (freezeY && toFreeze)
@@ -1348,9 +1330,7 @@ public class BallDriving : MonoBehaviour
             StartBoostCooldown();
         }
 
-        #if ENABLEDEBUGLOG
-            Debug.Log("Freeze Ball Was Successful");
-        #endif
+
     }
 
     /// <summary>

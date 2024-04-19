@@ -39,7 +39,6 @@ public class BoostPadManager : SingletonMonobehaviour<BoostPadManager>
 
     public void UpdateBoostPads()
     {
-        Debug.Log("Update Pads");
 
         // Loops and adds player references
         playersToKeepTrackOf = new GameObject[4];

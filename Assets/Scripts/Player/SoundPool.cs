@@ -66,7 +66,6 @@ public class SoundPool : MonoBehaviour
         if (source == null)
             return;
 
-        Debug.Log("Resetting source (playing)");
         source.Stop();
         source.gameObject.SetActive(false);
         SoundManager.Instance.SwitchSource(ref source, "SFX");
@@ -89,7 +88,6 @@ public class SoundPool : MonoBehaviour
             }
         }
         // hopefully won't get here, if it happens frequently we can increase the pool size in SM
-        Debug.LogError("Created new source, pool too small.");
         return Instantiate(SoundManager.Instance.AudioSourcePrefab, transform).GetComponent<AudioSource>();
     }
 
@@ -171,7 +169,6 @@ public class SoundPool : MonoBehaviour
         if (!shouldPlay)
             return;
 
-        Debug.Log("Playing boost ready");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("boost_charged", source);
         StartCoroutine(KillSource(source));
@@ -181,7 +178,6 @@ public class SoundPool : MonoBehaviour
         if (!shouldPlay)
             return;
 
-        Debug.Log("Playing boost activate");
         boostSource = GetAvailableSource();
         SoundManager.Instance.SwitchSource(ref boostSource, "Player");
         SoundManager.Instance.PlaySFX("boost_used", boostSource);
@@ -199,8 +195,6 @@ public class SoundPool : MonoBehaviour
             miniBoostSource = GetAvailableSource(); 
         }
         
-        
-        Debug.Log("Playing mini boost");
         miniBoostSource.loop = false;
         SoundManager.Instance.SwitchSource(ref miniBoostSource, "Player");
         SoundManager.Instance.PlaySFX("mini", miniBoostSource);
@@ -224,8 +218,7 @@ public class SoundPool : MonoBehaviour
     {
         if (!shouldPlay)
             return;
-
-        Debug.Log("Playing pickup sound");
+        
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("pickup", source);
         StartCoroutine(KillSource(source));
@@ -235,7 +228,6 @@ public class SoundPool : MonoBehaviour
         if(!shouldPlay) 
             return;
 
-        Debug.Log("Playing dropoff sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX(dropoffType, source);
         StartCoroutine(KillSource(source));
@@ -245,7 +237,6 @@ public class SoundPool : MonoBehaviour
         if (!shouldPlay)
             return;
 
-        Debug.Log("Playing theft sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.PlaySFX("whoosh", source);
         StartCoroutine(KillSource(source));
@@ -255,7 +246,6 @@ public class SoundPool : MonoBehaviour
         if (!shouldPlay)
             return;
 
-        Debug.Log("Playing death sound");
         AudioSource source = GetAvailableSource();
         SoundManager.Instance.SwitchSource(ref source, "Player");
         SoundManager.Instance.PlaySFX("death", source);

@@ -80,7 +80,6 @@ public class Compass : MonoBehaviour
             }
             else
             {
-                Debug.LogError("MARKER ERROR");
                 compassInformationObjects.Remove(instance);
                 Destroy(instance.compassIcon.gameObject);
             }
@@ -103,7 +102,6 @@ public class Compass : MonoBehaviour
     ///</summary>
     public void AddCompassMarker(CompassMarker marker)
     {
-        Debug.Log("added icon: " + marker.icon.name);
         // Creates new object
         GameObject newMarker = Instantiate(iconPrefab, compassImage.transform);
         CompassIconUI compassIconUI = newMarker.GetComponent<CompassIconUI>();
@@ -127,7 +125,6 @@ public class Compass : MonoBehaviour
     ///</summary>
     public void RemoveCompassMarker(CompassMarker marker)
     {
-        Debug.Log("Remove Compass Marker From Player");
 
         CompassInformationInstance oneToRemove = null;
 
@@ -158,7 +155,7 @@ public class Compass : MonoBehaviour
     ///</summary>
     public void ChangeCompassMarkerIcon(CompassMarker marker, bool isCarried)
     {
-        Debug.Log("Change Icon");
+
     }
 
     ///<summary>
@@ -200,7 +197,6 @@ public class Compass : MonoBehaviour
     ///</summary>
     public void ResetCompass()
     {
-        Debug.Log("Reset Compass");
 
         for(int i = compassInformationObjects.Count - 1; i >= 0; i--)
         {

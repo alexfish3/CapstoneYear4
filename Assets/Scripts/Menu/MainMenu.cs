@@ -88,21 +88,17 @@ public class MainMenu : SingletonMonobehaviour<MainMenu>
         {
             // Play
             case 0:
-                Debug.Log("Play");
                 SwapToPlayerSelect();
                 break;
             // Options
             case 1:
-                Debug.Log("Options");
                 SwapToOptions();
                 break;
             case 2:
-                Debug.Log("Credits");
                 SwapToCredits();
                 break;
             // Quit
             case 3:
-                Debug.Log("Quit");
 
             #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;

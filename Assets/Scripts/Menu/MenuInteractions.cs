@@ -128,7 +128,6 @@ public class MenuInteractions : MonoBehaviour
                 LoadingMenuInteractons();
                 return;
             case MenuType.Cutscene:
-                Debug.Log("no input for cutscene");
                 return;
             case MenuType.PauseMenu:
                 PauseMenuInteractons();
@@ -141,7 +140,6 @@ public class MenuInteractions : MonoBehaviour
 
     private void ClearMenuInputs()
     {
-        Debug.Log("<color=blue>Clear Inputs</color>");
         customizationSelector.gameObject.SetActive(false);
 
         uiHandler.SouthFaceEvent.RemoveAllListeners();
@@ -161,8 +159,6 @@ public class MenuInteractions : MonoBehaviour
         // Reference main menu every time we swap
         mainMenu = MainMenu.Instance;
 
-        Debug.Log("<color=blue>Swap to Main Menu</color>");
-
         uiHandler.DownPadEvent.AddListener(MainMenuScrollDown);
         uiHandler.UpPadEvent.AddListener(MainMenuScrollUp);
 
@@ -173,8 +169,6 @@ public class MenuInteractions : MonoBehaviour
     {
         // Reference options menu every time we swap
         optionsMenu = OptionsMenu.Instance;
-
-        Debug.Log("<color=blue>Swap to Options</color>");
 
         uiHandler.EastFaceEvent.AddListener(OptionsExit);
 
@@ -188,14 +182,11 @@ public class MenuInteractions : MonoBehaviour
     {
         creditsMenu = CreditsMenu.Instance;
 
-        Debug.Log("<color=blue>Swap to Credits</color>");
-
         uiHandler.EastFaceEvent.AddListener(CreditsExit);
     }
 
     private void CharacterSelectMenuInteractons()
     {
-        Debug.Log("<color=blue>Swap to Character Select Menu</color>");
 
         customizationSelector.gameObject.SetActive(true);
 
@@ -210,7 +201,6 @@ public class MenuInteractions : MonoBehaviour
 
     private void LoadingMenuInteractons()
     {
-        Debug.Log("<color=blue>Swap to Loading Menu</color>");
 
         uiHandler.SouthFaceEvent.AddListener(PlayerConfirmLoad);
     }
@@ -218,7 +208,6 @@ public class MenuInteractions : MonoBehaviour
 
     private void PauseMenuInteractons()
     {
-        Debug.Log("<color=blue>Swap to Pause Menu</color>");
 
         uiHandler.StartPadEvent.AddListener(PlayGame);
         drivingHandler.StartPadEvent.AddListener(PauseGame);
@@ -232,7 +221,6 @@ public class MenuInteractions : MonoBehaviour
 
     private void ResultsMenuInteractions()
     {
-        Debug.Log("<color=blue>Swap to Results Menu</color>");
 
         // Reference main menu every time we swap
         mainMenu = MainMenu.Instance;
@@ -297,7 +285,6 @@ public class MenuInteractions : MonoBehaviour
         {
             soundPool.PlayBackUI();
         }
-        Debug.Log("Unready");
 
         readyUpText.SetActive(false);
         readiedUp = false;
@@ -585,7 +572,7 @@ public class MenuInteractions : MonoBehaviour
     public void PlayGame(bool button)
     {
         SoundManager.Instance.ChangeSnapshot("gameplay");
-        Debug.Log("Play Game");
+
         PlayerInstantiate.Instance.PlayerPlay();
     }
 
@@ -593,7 +580,7 @@ public class MenuInteractions : MonoBehaviour
     {
         soundPool.PlayPauseUI();
         SoundManager.Instance.ChangeSnapshot("paused");
-        Debug.Log("Pause Game Host");
+
         PlayerInstantiate.Instance.PlayerPause(playerInput);
     }
 

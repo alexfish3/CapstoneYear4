@@ -166,7 +166,9 @@ namespace Cinemachine.Editor
             string pkgFile = ScriptableObjectUtility.CinemachineInstallPath 
                 + "/CinemachineExamples.unitypackage";
             if (!File.Exists(pkgFile))
-                Debug.LogError("Missing file " + pkgFile);
+            {
+
+            }
             else
                 AssetDatabase.ImportPackage(pkgFile, true);
         }

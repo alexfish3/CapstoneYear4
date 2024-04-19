@@ -266,8 +266,6 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
     ///</summary>
     public void ExitMenu()
     {
-        Debug.Log("Exit Menu");
-
         SaveOptions();
 
         menu.SwapToMainMenu();
@@ -284,12 +282,10 @@ public class OptionsMenu : SingletonMonobehaviour<OptionsMenu>
     {
         if (fullscreenValue == 0)
         {
-            Debug.Log("Set Screen to Windowed");
             Screen.fullScreen = false;
         }
         else
         {
-            Debug.Log("Set Screen to Fullscreen");
             Screen.fullScreen = true;
         }
     }

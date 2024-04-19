@@ -119,7 +119,7 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     {
         if(playerInput.currentControlScheme != "Gamepad")
         {
-            Debug.Log("Hit Mouse or Keyboard");
+
             Destroy(playerInput.gameObject);
             return;
         }
@@ -127,16 +127,15 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         // If player spawn is disabled
         if(allowPlayerSpawn == false && playerCount >= 1)
         {
-            Debug.Log("Disable Spawning");
+
             Destroy(playerInput.gameObject);
             return;
         }
 
-        Debug.Log("Added Player");
 
         if (playerCount <= 0)
         {
-            Debug.Log("Spawn Host Player");
+
             playerInput.gameObject.GetComponent<PlayerUIHandler>().menuInteractions.hostPlayer = true;
             playerInput.gameObject.GetComponent<PlayerUIHandler>().menuInteractions.SwapMenuType(MenuType.MainMenu);
 
@@ -144,7 +143,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         }
         else
         {
-            Debug.Log("Spawn Sub Player");
             playerInput.gameObject.GetComponent<PlayerUIHandler>().menuInteractions.SwapToPlayerSelect();
         }
 
@@ -240,8 +238,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void SetAllPlayerSpawn()
     {
-        Debug.Log("Spawn Players at right positions");
-
         // Loops for all spawned players
         for (int i = 0; i < availiblePlayerInputs.Length; i++)
         {
@@ -278,7 +274,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
             {
                 if (cameraRectCounter < cameraRects.Length)
                 {
-                    Debug.Log("Resize Camera");
                     Rect temp = cameraRects[cameraRectCounter];
                     availiblePlayerInputs[i].camera.rect = temp;
                     cameraRectCounter++;
@@ -286,7 +281,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
                 else
                 {
                     // Handle the case where there are more non-null player inputs than camera rects
-                    Debug.LogWarning("Not enough camera rects for all players.");
                     break;
                 }
             }
@@ -298,8 +292,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     private Rect[] CalculateRects()
     {
-        Debug.LogWarning("Resizing UI, player count is now " + playerCount);
-
         Rect[] viewportRects = new Rect[playerCount];
         
         // 1 Player
@@ -334,8 +326,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void RemovePlayerRef(PlayerInput playerInput)
     {
-        Debug.Log("Remove Player");
-
         // If player spawn is disabled
         if (allowPlayerSpawn == false && Constants.SPAWN_MID_MATCH == false)
         {
@@ -496,8 +486,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         if (sceneManager.EnableConfirm == false)
             return;
 
-        Debug.LogError("CONFIRM LOAD 2");
-
         LoadingScreenManager.Instance.ConfirmButton(playerIndexToReadyUp);
 
         playerLoadingConfirm[playerIndexToReadyUp] = true;
@@ -544,8 +532,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     /// </summary>
     private void SwapForMainMenu()
     {
-        Debug.Log("Swap for Main Menu");
-
         SwapPlayerInputControlSchemeToUI();
 
         SwapMenuTypeForAllPlayers(MenuType.MainMenu);
@@ -556,8 +542,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     /// </summary>
     private void SwapForCutscene()
     {
-        Debug.Log("Swap for Cutscene");
-
         SwapPlayerInputControlSchemeToUI();
 
         SwapMenuTypeForAllPlayers(MenuType.Cutscene);
@@ -568,8 +552,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     /// </summary>
     private void SwapForCharacterSelect()
     {
-        Debug.Log("Swap for Charater Select");
-
         SwapPlayerInputControlSchemeToUI();
 
         SwapMenuTypeForAllPlayers(MenuType.PlayerSelect);
@@ -580,8 +562,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     /// </summary>
     private void SwapForResults()
     {
-        Debug.Log("Swap for Results");
-
         SwapPlayerInputControlSchemeToUI();
 
         SwapMenuTypeForAllPlayers(MenuType.ResultsMenu);
@@ -617,8 +597,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void SwapPlayerInputControlSchemeToUI()
     {
-        Debug.Log("<color=green>Swapping To UI Controls</color>");
-
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
             if (availiblePlayerInputs[i] == null)
@@ -637,8 +615,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void SwapPlayerInputControlSchemeToDrive()
     {
-        Debug.Log("<color=green>Swapping To Driving Controls</color>");
-
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
             if (availiblePlayerInputs[i] == null)
@@ -657,8 +633,6 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
     ///</summary>
     public void SwapPlayerInputControlSchemeToLoad()
     {
-        Debug.Log("<color=green>Swapping To Load Controls</color>");
-
         for (int i = 0; i < Constants.MAX_PLAYERS; i++)
         {
             if (availiblePlayerInputs[i] == null)
@@ -683,12 +657,9 @@ public class PlayerInstantiate : SingletonMonobehaviour<PlayerInstantiate>
         if (cutsceneManager == null)
             cutsceneManager = CutsceneManager.Instance;
 
-        Debug.Log("Swap for Driving");
-
         cutsceneManager.BeginCountdownAnimation();
 
         yield return new WaitForSeconds(3f);
-        Debug.Log("Waited Three seconds");
 
         SwapPlayerInputControlSchemeToDrive();
         SwapMenuTypeForAllPlayers(MenuType.PauseMenu);

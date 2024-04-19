@@ -63,7 +63,6 @@ public class Dissolver : MonoBehaviour
 
         if (direction)
         {
-            Debug.Log($"Time for {gameObject.name} to reappear");
             while (height < objectHeight)
             {
                 height += (Time.deltaTime * modifier);
@@ -71,11 +70,9 @@ public class Dissolver : MonoBehaviour
                 yield return null;
             }
             render.material.SetFloat(HashReference._cutoffHeightProperty, 2048);
-            Debug.Log($"{gameObject.name} is here");
         }
         else
         {
-            Debug.Log($"Time for {gameObject.name} to go away");
             while (height > -objectHeight)
             {
                 height -= (Time.deltaTime * modifier);
@@ -83,7 +80,6 @@ public class Dissolver : MonoBehaviour
                 yield return null;
             }
             render.material.SetFloat(HashReference._cutoffHeightProperty, 0);
-            Debug.Log($"{gameObject.name} is gone");
         }
     }
 

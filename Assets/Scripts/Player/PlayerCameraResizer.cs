@@ -111,7 +111,6 @@ public class PlayerCameraResizer : MonoBehaviour
         if(referenceCam.rect.x != viewPortRectDefault.x || referenceCam.rect.y != viewPortRectDefault.y 
             || referenceCam.rect.width != viewPortRectDefault.z || referenceCam.rect.height != viewPortRectDefault.w)
         {
-            Debug.Log("Camera Resizing Needed! Will resize all cameras on stack");
 
             // Loops through each cam
             foreach(Camera cam in camerasToFollow)
@@ -245,8 +244,6 @@ public class PlayerCameraResizer : MonoBehaviour
         // Sets current phase status to be what camera mode is
         currentPhaseStatus = mainCameraOn;
 
-        Debug.Log("Triggering Phase Camera Swap");
-
         if (phaseCameraUpdateCoroutine != null)
             StopCoroutine(phaseCameraUpdateCoroutine);
 
@@ -303,8 +300,6 @@ public class PlayerCameraResizer : MonoBehaviour
             playerCamera.enabled = false;
             menuUICamera.enabled = false;
 
-            Debug.Log("Reparent to main cam");
-
             try
             {
                 playerCamera.GetUniversalAdditionalCameraData().cameraStack.RemoveAt(0);
@@ -312,7 +307,6 @@ public class PlayerCameraResizer : MonoBehaviour
             }
             catch
             {
-                Debug.LogWarning("Cannot Reparent Camera");
             }
         }
         // Reparent to player camera
@@ -321,8 +315,6 @@ public class PlayerCameraResizer : MonoBehaviour
             drivingUICamera.enabled = false;
             playerCamera.enabled = true;
             menuUICamera.enabled = true;
-
-            Debug.Log("Reparent to menu cam");
 
             try
             {
@@ -333,7 +325,6 @@ public class PlayerCameraResizer : MonoBehaviour
             }
             catch
             {
-                Debug.LogWarning("Cannot Reparent Camera");
             }
 
             playerCamera.GetUniversalAdditionalCameraData().cameraStack.Add(menuUICamera);

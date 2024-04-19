@@ -341,7 +341,6 @@ public class Order : MonoBehaviour
 
         orderMeshObject.transform.rotation = initMeshRotation;
 
-        Debug.Log("Erase Order " + GameManager.Instance.MainState);
         DOTween.Kill(transform);
         arrow.SetActive(false);
         
@@ -379,7 +378,6 @@ public class Order : MonoBehaviour
             OrderManager.Instance.ReparentOrder(gameObject);
 
         beconIndicator.RemoveBeconIndicator();
-        Debug.Log("Erase Order Finished");
     }
 
     /// <summary>

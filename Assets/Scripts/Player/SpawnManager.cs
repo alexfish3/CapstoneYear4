@@ -20,7 +20,6 @@ public class SpawnManager : SingletonMonobehaviour<SpawnManager>
         gameManager = GameManager.Instance;
         playerInstantiate = PlayerInstantiate.Instance;
 
-        Debug.Log("Enable to add spawns");
         gameManager.OnSwapStartingCutscene += SpawnPlayersStartOfGame;
         gameManager.OnSwapGoldenCutscene += SpawnPlayersFinalPackage;
     }

@@ -72,8 +72,6 @@ public class DrivingIndicators : MonoBehaviour
 
     public void UpdatePlayerReferencesForObjects()
     {
-        Debug.Log("Update Arrows");
-
         // Sets all to false
         foreach(GameObject rotationObject in playersRotationObjects)
         {

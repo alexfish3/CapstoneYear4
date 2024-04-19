@@ -128,7 +128,7 @@ public class QAManager : SingletonMonobehaviour<QAManager>
         }
         catch(IOException e) // mainly occurs when the file is open somewhere else
         {
-            Debug.LogWarning(e.Message);
+
             return;
         }
     }
@@ -152,7 +152,7 @@ public class QAManager : SingletonMonobehaviour<QAManager>
         }
         catch(IOException e) // mainly occurs when the file is open somewhere else
         {
-            Debug.LogWarning(e.Message);
+
             return;
         }
     }

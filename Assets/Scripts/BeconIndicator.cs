@@ -116,7 +116,6 @@ public class BeconIndicator : MonoBehaviour
 
     public void RemoveBeconIndicator()
     {
-        Debug.Log("Delete Becon Icons");
 
         // Sets all to false
         foreach (GameObject beconSprite in beconRotationObjects)

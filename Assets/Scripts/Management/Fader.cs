@@ -28,7 +28,7 @@ public class Fader : MonoBehaviour
         }
         catch
         {
-            Debug.LogError("No Color on material");
+
         }
     }
 

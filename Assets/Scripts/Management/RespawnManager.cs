@@ -49,7 +49,6 @@ public class RespawnManager : SingletonMonobehaviour<RespawnManager>
     {
         if(respawnPoints.Length == 0)
         {
-            Debug.LogError("No respawn points in array!");
             return null;
         }
 

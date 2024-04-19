@@ -69,7 +69,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
     public void InvokeMenuSceneEvent() 
     {
-        Debug.Log("Return to main menu");
         OnReturnToMenu?.Invoke(); 
     }
 
@@ -78,7 +77,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///</summary>
     private void LoadMenuScene()
     {
-        Debug.LogError("Load menu");
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != PlayerSelectScene.BuildIndex)
         {
             // Stops Corutine
@@ -99,7 +97,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///</summary>
     public void LoadGameScene()
     {
-        Debug.LogError("Load game scene");
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != GameScene.BuildIndex && PlayerInstantiate.Instance.PlayerCount >= 1)
         {
             // Stops Corutine
@@ -121,7 +118,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
     public void LoadFinalOrderScene()
     {
-        Debug.LogError("Load final order scene");
         if (UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex != FinalOrderScene.BuildIndex)
         {
             // Stops Corutine
@@ -143,7 +139,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///</summary>
     private IEnumerator LoadSceneAsync(int sceneToLoad, float delayTime, bool waitForConfirm, bool spawnMenu)
     {
-        Debug.Log("Begin Loading");
         // Sets gamestate to loading
         GameManager.Instance.SetGameState(GameState.Loading);
 
@@ -195,7 +190,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
     ///</summary>
     public void SwapToSceneAfterConfirm()
     {
-        Debug.LogError("LOAD THE SCENE");
         if (sceneLoad == null)
             return;
 
@@ -224,20 +218,17 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
         UIRenderMaterial = new Material(UIRender.material);
         UIRender.material = UIRenderMaterial;
 
-        Debug.Log("Show Loading Screen");
         LoadIn();
         loadingScreenAnimation.SetTrigger("LoadIn");
     }
 
     private void ShowLeaderboard()
     {
-        Debug.Log("showing leaderboard");
         leaderboardGO.SetActive(true);
         int topScore = ScoreManager.Instance.GetHandlerOfIndex(0).Score;
         for(int i=0;i<PlayerInstantiate.Instance.PlayerCount;i++)
         {
             OrderHandler oh = ScoreManager.Instance.GetHandlerOfIndex(i);
-            Debug.Log($"enabling {i}th text");
             playerNames[i].gameObject.SetActive(true);
             playerScores[i].gameObject.SetActive(true);
             playerNames[i].text = $"{oh.Placement}. {oh.CompanyInfo.name} ({oh.transform.parent.name})";
@@ -262,7 +253,6 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
             return;
 
         loadingScreenEnabled = false;
-        Debug.Log("Hide Loading Screen");
         LoadOut();
         loadingScreenAnimation.SetTrigger("LoadOut");
     }

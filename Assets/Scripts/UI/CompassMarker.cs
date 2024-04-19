@@ -57,8 +57,6 @@ public class CompassMarker : MonoBehaviour
             if (playerInstantiate.PlayerInputs[i] == null)
                 continue;
 
-            Debug.Log("Remove From Player");
-
             PlayerInput player = playerInstantiate.PlayerInputs[i];
 
             player.gameObject.GetComponentInChildren<Compass>().RemoveCompassMarker(this);

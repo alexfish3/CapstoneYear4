@@ -155,7 +155,6 @@ public class OrderBeacon : MonoBehaviour
             float diff = hit.distance;// - REND_HEIGHT;
             dissolveRend.transform.position -= diff * Vector3.up;
             dissolveRend.transform.localPosition += flameOffset * Vector3.up;
-            Debug.Log($"Ray hit {hit.collider.name}, original distance is {hit.distance}, difference is {diff}");
         }
 
         dissolveRend.transform.gameObject.SetActive(true);
@@ -191,8 +190,6 @@ public class OrderBeacon : MonoBehaviour
     /// </summary>
     public void EraseBeacon()
     {
-        Debug.Log("Erase Becon");
-
         gameObject.GetComponent<CompassMarker>().RemoveCompassUIFromAllPlayers();
 
         customer.ThankYouComeAgain();

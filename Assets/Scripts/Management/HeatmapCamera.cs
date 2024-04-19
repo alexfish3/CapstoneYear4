@@ -40,7 +40,7 @@ public class HeatmapCamera : MonoBehaviour
 
     private void TakePicture()
     {
-        Debug.Log("Take Picture Start");
+
         if (!QAManager.Instance.GenerateHeatmap)
             return;
 
@@ -67,7 +67,6 @@ public class HeatmapCamera : MonoBehaviour
         File.WriteAllBytes(Application.streamingAssetsPath + $"/HeatMaps/{heatmapFolder}/{screenshotNum}_main.png", bytes);
         viewport.enabled = false;
 
-        Debug.Log("Take Picture Was Successful");
     }
 
     private void TakeFinalPicture()

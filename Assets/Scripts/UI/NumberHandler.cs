@@ -206,8 +206,6 @@ public class NumberHandler : MonoBehaviour
         // Early Return
         if (spriteToChangeTo != numToShrink.sprite)
         {
-            Debug.Log("Animatoe");
-
             Animator numAnimator = numToShrink.transform.parent.GetComponent<Animator>();
 
             numAnimator.SetTrigger(HashReference._shrinkTrigger);

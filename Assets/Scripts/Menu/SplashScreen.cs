@@ -20,7 +20,6 @@ public class SplashScreen : MonoBehaviour
     ///</summary>
     public void LoadMenuFromSplash(float timer)
     {
-        Debug.LogError("Load menu");
         // Stops Corutine
         if (sceneLoadCoroutune != null)
         {
@@ -36,7 +35,6 @@ public class SplashScreen : MonoBehaviour
     ///</summary>
     private IEnumerator LoadSceneAsync(int sceneToLoad, float delayTime)
     {
-        Debug.Log("Begin Loading");
         // Sets gamestate to loading
 
         // Loads the first scene asynchronously
@@ -49,7 +47,6 @@ public class SplashScreen : MonoBehaviour
             if (asyncLoad.progress >= 0.90f && splashScreenAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
             {
                 yield return new WaitForSeconds(delayTime);
-                Debug.LogError("LOAD THE SCENE");
 
                 asyncLoad.allowSceneActivation = true;
 

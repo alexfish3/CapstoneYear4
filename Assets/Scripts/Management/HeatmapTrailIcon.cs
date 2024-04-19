@@ -21,11 +21,9 @@ public class HeatmapTrailIcon : MonoBehaviour
 
     private void DestroyIcon()
     {
-        Debug.Log("Destroy Icon Start");
         if (this)
         {
             Destroy(gameObject);
         }
-        Debug.Log("Destroy Icon Was Successful");
     }
 }
