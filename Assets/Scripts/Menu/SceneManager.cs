@@ -231,7 +231,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
             OrderHandler oh = ScoreManager.Instance.GetHandlerOfIndex(i);
             playerNames[i].gameObject.SetActive(true);
             playerScores[i].gameObject.SetActive(true);
-            playerNames[i].text = $"{oh.Placement}. {oh.CompanyInfo.name} ({oh.transform.parent.name})";
+            playerNames[i].text = $"{oh.Placement}. ({oh.transform.parent.name}) {oh.CompanyInfo.name}";
             playerScores[i].text = $"${oh.Score}";
         }
     }
