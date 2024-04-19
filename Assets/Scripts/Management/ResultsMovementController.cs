@@ -52,9 +52,4 @@ public class ResultsMovementController : MonoBehaviour
             players[i].transform.parent.GetComponentInChildren<BallDriving>().transform.rotation = Quaternion.identity; 
         }
     }
-
-    private void DissolvePlayersIn()
-    {
-
-    }
 }
