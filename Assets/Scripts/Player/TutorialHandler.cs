@@ -17,9 +17,11 @@ public class TutorialHandler : MonoBehaviour
     [SerializeField] private float tutorialBoostMod = 0.1f;
     [Tooltip("Text shown on the driving canvas when the player is being tutorialized.")]
     [SerializeField] private TextMeshProUGUI tutorialText;
+    [SerializeField] private TextMeshProUGUI tutorialTextPurple;
 
     [Header("Tutorial Text")]
     [SerializeField] private string boostInstructions;
+    [SerializeField] private string boostInstructionsPurple;
     [SerializeField] private string pickupInstructions;
     [SerializeField] private string stealInstructions;
     [SerializeField] private string dropoffInstructions;
@@ -73,6 +75,7 @@ public class TutorialHandler : MonoBehaviour
         {
             ball.SetBoostModifier(false);
             tutorialText.text = "";
+            tutorialTextPurple.text = "";
         }
     }
 
@@ -111,21 +114,25 @@ public class TutorialHandler : MonoBehaviour
     private void TeachBoosting()
     {
         tutorialText.text = boostInstructions;
+        tutorialTextPurple.text = boostInstructionsPurple;
     }
 
     private void TeachPickup()
     {
         tutorialText.text = pickupInstructions;
+        tutorialTextPurple.text = pickupInstructions;
     }
 
     private void TeachDropoff()
     {
         tutorialText.text = dropoffInstructions;
+        tutorialTextPurple.text = dropoffInstructions;
     }
 
     private void TeachSteal()
     {
         tutorialText.text = stealInstructions;
+        tutorialTextPurple.text = stealInstructions;
     }
 
     public void FinishTutorial()
@@ -137,6 +144,7 @@ public class TutorialHandler : MonoBehaviour
         hasLearnt = true;
         ball.SetBoostModifier(true);
         tutorialText.text = "";
+        tutorialTextPurple.text = "";
         tutorialImage.SetActive(false);
 
         if(TutorialManager.Instance != null)

@@ -36854,6 +36854,140 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 699743c044e246c4caa4c6de91c95cd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5284271531563951486
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 890173192872275766}
+  - component: {fileID: 1156681133740270582}
+  - component: {fileID: 450556825283587946}
+  m_Layer: 5
+  m_Name: Tutorial Text Purple
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &890173192872275766
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5284271531563951486}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalScale: {x: 4.3158, y: 4.3158, z: 4.3158}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8376488116330561128}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -1337, y: 530}
+  m_SizeDelta: {x: 372.376, y: 142.6802}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1156681133740270582
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5284271531563951486}
+  m_CullTransparentMesh: 1
+--- !u!114 &450556825283587946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5284271531563951486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: rrrr
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 1d54536b552dc334291a0df44fc1f5ed, type: 2}
+  m_sharedMaterial: {fileID: 5157369361770760288, guid: 1d54536b552dc334291a0df44fc1f5ed, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4291569287
+  m_fontColor: {r: 0.5303929, g: 0.14751692, b: 0.8018868, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 48
+  m_fontSizeBase: 48
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 16
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 86.46271, y: 55.64132, z: 41.41086, w: -129.105}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &5347577715965998407
 GameObject:
   m_ObjectHideFlags: 0
@@ -37413,7 +37547,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tutorialBoostMod: 0.3
   tutorialText: {fileID: 7096246538780459242}
+  tutorialTextPurple: {fileID: 450556825283587946}
   boostInstructions: '<sprite index=3> to Phase-Boost '
+  boostInstructionsPurple: '     to Phase-Boost '
   pickupInstructions: Grab Orders!
   stealInstructions: Phase-Boost to steal
   dropoffInstructions: Deliver to Earn Money
@@ -39926,7 +40062,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6040495258928502522, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_text
-      value: 
+      value: rrrr
       objectReference: {fileID: 0}
     - target: {fileID: 6040495258928502522, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       propertyPath: m_fontStyle
@@ -39958,6 +40094,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2474583909240989250, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3437834839590548905}
+    - targetCorrespondingSourceObject: {fileID: 5012940974053025912, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+      insertIndex: 2
+      addedObject: {fileID: 890173192872275766}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
 --- !u!114 &110003888640411645 stripped
@@ -40051,6 +40190,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e286de84156d8746b0880081925235c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &8376488116330561128 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5012940974053025912, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
+  m_PrefabInstance: {fileID: 3580019541855933968}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &9073679027257769206 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5495209367309118182, guid: 477d1cb7b9311fa479eeb18deb2a7c81, type: 3}
