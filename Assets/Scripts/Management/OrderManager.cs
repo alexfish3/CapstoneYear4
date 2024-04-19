@@ -140,8 +140,8 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 if(goldTimer >= goldValueTimer)
                 {
                     goldTimer = 0;
-                    if (finalOrderValue <= 999)
-                        finalOrderValue += goldIncrementValue;
+                    if (finalOrderValue >= 10)
+                        finalOrderValue -= goldIncrementValue;
                 }
                 else
                 {
@@ -298,6 +298,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             {
                 TutorialManager.Instance.ShouldTutorialize = false;
                 finalOrderActive = true;
+                finalOrderValue = 400;
                 OnMainGameFinishes?.Invoke();
 
                 DisableSpawning();
