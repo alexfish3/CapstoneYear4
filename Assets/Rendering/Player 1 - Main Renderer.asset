@@ -1,19 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-9222676969425248800
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e46f5beab01c6f24c929444386c6d440, type: 3}
-  m_Name: CustomVignetteRenderFeature
-  m_EditorClassIdentifier: 
-  m_Active: 1
---- !u!114 &-8184155004212467652
+--- !u!114 &-9102460134291223361
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -23,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: Render VFX
+  m_Name: Player Hidden
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    passTag: Render VFX
+    passTag: Player Hidden
     Event: 550
     filterSettings:
-      RenderQueueType: 1
+      RenderQueueType: 0
       LayerMask:
         serializedVersion: 2
-        m_Bits: 268435456
+        m_Bits: 128
       PassNames: []
-    overrideMaterial: {fileID: 0}
+    overrideMaterial: {fileID: 2100000, guid: 66b4146b3b388df42aea925b707eb41b, type: 2}
     overrideMaterialPassIndex: 0
     overrideShader: {fileID: 0}
     overrideShaderPassIndex: 0
-    overrideMode: 1
+    overrideMode: 0
     overrideDepthState: 0
     depthCompareFunction: 4
     enableWrite: 1
@@ -55,7 +42,23 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
---- !u!114 &-6662672601640701798
+--- !u!114 &-8123595742492509647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f53db7a7da0eee14780fa79447033640, type: 3}
+  m_Name: Anime Speed Lines
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  settings:
+    material: {fileID: 2100000, guid: f6a4f606e013e9841a706f3d8cbc168c, type: 2}
+    renderPassEvent: 550
+--- !u!114 &-7205162931209145595
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -65,26 +68,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b3d386ba5cd94485973aee1479b272e, type: 3}
-  m_Name: PlayerHidden
+  m_Name: RenderObjects
   m_EditorClassIdentifier: 
   m_Active: 1
   settings:
-    passTag: PlayerHidden
-    Event: 300
+    passTag: RenderObjects
+    Event: 550
     filterSettings:
-      RenderQueueType: 0
+      RenderQueueType: 1
       LayerMask:
         serializedVersion: 2
-        m_Bits: 128
+        m_Bits: 268435456
       PassNames: []
-    overrideMaterial: {fileID: 2100000, guid: d4c1750439c266f4bb4b22b8c14a2756, type: 2}
+    overrideMaterial: {fileID: 0}
     overrideMaterialPassIndex: 0
     overrideShader: {fileID: 0}
     overrideShaderPassIndex: 0
     overrideMode: 1
-    overrideDepthState: 1
-    depthCompareFunction: 5
-    enableWrite: 0
+    overrideDepthState: 0
+    depthCompareFunction: 4
+    enableWrite: 1
     stencilSettings:
       overrideStencilState: 0
       stencilReference: 0
@@ -132,23 +135,6 @@ MonoBehaviour:
   - {fileID: 2800000, guid: 3302065f671a8450b82c9ddf07426f3a, type: 3}
   - {fileID: 2800000, guid: 56a77a3e8d64f47b6afe9e3c95cb57d5, type: 3}
   m_Shader: {fileID: 4800000, guid: 0849e84e3d62649e8882e9d6f056a017, type: 3}
---- !u!114 &-1674164047765867845
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7afc38c2d1fc5794db8af8261ba5f3b1, type: 3}
-  m_Name: OutlineObjectFeature
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  mask:
-    serializedVersion: 2
-    m_Bits: 268435457
-  Event: 250
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -166,14 +152,13 @@ MonoBehaviour:
     hdrDebugViewPS: {fileID: 4800000, guid: 573620ae32aec764abd4d728906d2587, type: 3}
   m_RendererFeatures:
   - {fileID: -3808891703496517900}
-  - {fileID: -9222676969425248800}
-  - {fileID: -6662672601640701798}
-  - {fileID: 7607228783780055565}
-  - {fileID: 3684009917260949925}
-  - {fileID: -1674164047765867845}
-  - {fileID: -8184155004212467652}
-  - {fileID: 1019413497999485541}
-  m_RendererFeatureMap: f45628112d1924cbe05d3bff287802809a707ab4916e89a30d4a5626464e9269a5e95a43803b2033bb722f2dab2cc4e83c282e9b620a6c8e656a7fe32caf250e
+  - {fileID: -9102460134291223361}
+  - {fileID: 1882900383052072918}
+  - {fileID: 999744163982048838}
+  - {fileID: 4645851673546684642}
+  - {fileID: -8123595742492509647}
+  - {fileID: -7205162931209145595}
+  m_RendererFeatureMap: f45628112d1924cbbfcc6a19bc90ad81d607441fec67211a467e6b3005cedf0de278e7787b61794031badb7db630438f057377187d1e029c
   m_UseNativeRenderPass: 0
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   xrSystemData: {fileID: 11400000, guid: 60e1133243b97e347b653163a8c01b64, type: 2}
@@ -200,35 +185,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   m_DefaultStencilState:
-    overrideStencilState: 0
+    overrideStencilState: 1
     stencilReference: 0
     stencilCompareFunction: 8
     passOperation: 2
     failOperation: 0
     zFailOperation: 0
   m_ShadowTransparentReceive: 0
-  m_RenderingMode: 1
-  m_DepthPrimingMode: 2
-  m_CopyDepthMode: 1
+  m_RenderingMode: 0
+  m_DepthPrimingMode: 0
+  m_CopyDepthMode: 2
   m_AccurateGbufferNormals: 1
   m_IntermediateTextureMode: 1
---- !u!114 &1019413497999485541
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f53db7a7da0eee14780fa79447033640, type: 3}
-  m_Name: Anime Speed Lines
-  m_EditorClassIdentifier: 
-  m_Active: 1
-  settings:
-    material: {fileID: 2100000, guid: f6a4f606e013e9841a706f3d8cbc168c, type: 2}
-    renderPassEvent: 550
---- !u!114 &3684009917260949925
+--- !u!114 &999744163982048838
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -251,7 +220,7 @@ MonoBehaviour:
       normalBlend: 1
   m_CopyDepthPS: {fileID: 4800000, guid: d6dae50ee9e1bfa4db75f19f99355220, type: 3}
   m_DBufferClear: {fileID: 4800000, guid: f056d8bd2a1c7e44e9729144b4c70395, type: 3}
---- !u!114 &7607228783780055565
+--- !u!114 &1882900383052072918
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -266,12 +235,12 @@ MonoBehaviour:
   m_Active: 1
   settings:
     passTag: Player Visible
-    Event: 300
+    Event: 550
     filterSettings:
-      RenderQueueType: 0
+      RenderQueueType: 1
       LayerMask:
         serializedVersion: 2
-        m_Bits: 128
+        m_Bits: 256
       PassNames: []
     overrideMaterial: {fileID: 0}
     overrideMaterialPassIndex: 0
@@ -293,3 +262,20 @@ MonoBehaviour:
       restoreCamera: 1
       offset: {x: 0, y: 0, z: 0, w: 0}
       cameraFieldOfView: 60
+--- !u!114 &4645851673546684642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7afc38c2d1fc5794db8af8261ba5f3b1, type: 3}
+  m_Name: OutlineObjectFeature
+  m_EditorClassIdentifier: 
+  m_Active: 1
+  mask:
+    serializedVersion: 2
+    m_Bits: 268435457
+  Event: 550
