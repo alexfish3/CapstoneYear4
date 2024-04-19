@@ -298,7 +298,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
             {
                 TutorialManager.Instance.ShouldTutorialize = false;
                 finalOrderActive = true;
-                finalOrderValue = 400;
+                finalOrderValue = 200;
                 OnMainGameFinishes?.Invoke();
 
                 DisableSpawning();

@@ -129,7 +129,7 @@ public class SceneManager : SingletonMonobehaviour<SceneManager>
 
             tutorialImage.sprite = finalTut;
             ShowLoadingScreen();
-            ShowLeaderboard();
+            //ShowLeaderboard();
             sceneLoadCoroutune = StartCoroutine(LoadSceneAsync(FinalOrderScene.BuildIndex, loadingScreenDelay, true, false));
         }
     }
