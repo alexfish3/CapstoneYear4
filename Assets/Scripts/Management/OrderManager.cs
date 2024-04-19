@@ -372,6 +372,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(!activeOrders.Contains(order))
         {
             activeOrders.Add(order);
+            OnDeleteActiveOrders += order.EraseOrder;
         }
     }
 

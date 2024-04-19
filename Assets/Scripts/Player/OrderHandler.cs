@@ -162,7 +162,9 @@ public class OrderHandler : MonoBehaviour
         SetDrivingIndicators();
 
         numberHandler.UpdateScoreUI(score.ToString());
-        ball.SetBoostModifier(hasOrder);
+        
+        if(tutHandler.HasLearnt)
+            ball.SetBoostModifier(hasOrder);
     }
 
     /// <summary>

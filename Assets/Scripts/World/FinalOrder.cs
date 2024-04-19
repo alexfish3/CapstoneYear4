@@ -9,10 +9,24 @@ public class FinalOrder : MonoBehaviour
 {
     [SerializeField] private Order finalOrder;
 
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwapAnything += EraseFinal;
+    }
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwapAnything -= EraseFinal;
+    }
     void Start()
     {
         finalOrder.InitOrder();
-        //finalOrder.InitOrder();
-        //GameManager.Instance.SetGameState(GameState.GoldenCutscene);
+    }
+
+    private void EraseFinal()
+    {
+        if(GameManager.Instance.MainState != GameState.GoldenCutscene && GameManager.Instance.MainState != GameState.FinalPackage && finalOrder.IsActive)
+        {
+            finalOrder.EraseGoldWithoutDelivering();
+        }
     }
 }
