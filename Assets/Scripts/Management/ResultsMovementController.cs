@@ -7,8 +7,8 @@ public class ResultsMovementController : MonoBehaviour
     private List<GameObject> players = new List<GameObject>();
     [SerializeField] private Transform[] playerSpawns;
     [SerializeField] private GameObject enableThisForResults;
+    [SerializeField] private GameObject disableThisForResults;
     [SerializeField] private float timePerBoost = 1f;
-    [SerializeField] private Collider fountainCollider;
 
     private void OnEnable()
     {
@@ -41,6 +41,7 @@ public class ResultsMovementController : MonoBehaviour
     {
         SortPlayers();
         enableThisForResults.SetActive(true);
+        disableThisForResults.SetActive(false);
         for(int i=0;i<players.Count;i++)
         {
             // set position of the ball
@@ -50,5 +51,10 @@ public class ResultsMovementController : MonoBehaviour
             // rotate the control object
             players[i].transform.parent.GetComponentInChildren<BallDriving>().transform.rotation = Quaternion.identity; 
         }
+    }
+
+    private void DissolvePlayersIn()
+    {
+
     }
 }
