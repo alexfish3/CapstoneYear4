@@ -169,12 +169,17 @@ public class NumberHandler : MonoBehaviour
         Sprite spriteToChangeTo = getNumSprite(charNum);
         Animator numAnimator = numToShrink.transform.parent.GetComponent<Animator>();
 
-        numAnimator.SetTrigger(HashReference._shrinkTrigger);
+        numAnimator.SetBool(HashReference._shrinkTrigger, false);
+        numAnimator.SetBool(HashReference._growTrigger, false);
+        numAnimator.SetBool(HashReference._idleTrigger, false);
+
+        numAnimator.SetBool(HashReference._shrinkTrigger, true);
         yield return new WaitForSeconds(0.2f);
+        numAnimator.SetBool(HashReference._shrinkTrigger, false);
         numToShrink.enabled = true;
 
         numToShrink.sprite = spriteToChangeTo;
-        numAnimator.SetTrigger(HashReference._growTrigger);
+        numAnimator.SetBool(HashReference._growTrigger, true);
 
         yield return new WaitForSeconds(Random.Range(0, 0.4f));
         numAnimator.SetTrigger(HashReference._idleTrigger);
@@ -208,12 +213,17 @@ public class NumberHandler : MonoBehaviour
         {
             Animator numAnimator = numToShrink.transform.parent.GetComponent<Animator>();
 
-            numAnimator.SetTrigger(HashReference._shrinkTrigger);
+            numAnimator.SetBool(HashReference._shrinkTrigger, false);
+            numAnimator.SetBool(HashReference._growTrigger, false);
+            numAnimator.SetBool(HashReference._idleTrigger, false);
+
+            numAnimator.SetBool(HashReference._shrinkTrigger, true);
             yield return new WaitForSeconds(0.2f);
+            numAnimator.SetBool(HashReference._shrinkTrigger, false);
             numToShrink.enabled = true;
 
             numToShrink.sprite = spriteToChangeTo;
-            numAnimator.SetTrigger(HashReference._growTrigger);
+            numAnimator.SetBool(HashReference._growTrigger, true);
 
             yield return new WaitForSeconds(Random.Range(0, 0.4f));
             numAnimator.SetTrigger(HashReference._idleTrigger);
