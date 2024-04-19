@@ -46,6 +46,10 @@ public class TutorialHandler : MonoBehaviour
         // HOTKEY
         if(Input.GetKeyDown(KeyCode.S))
         {
+            if(!hasLearnt)
+            {
+                transform.parent.GetComponentInChildren<Respawn>().StartRespawnCoroutine();
+            }
             TeachHandler(TutorialType.Final);
         }
     }

@@ -78,7 +78,7 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
     private IEnumerator easySpawnCoroutine, mediumSpawnCoroutine, hardSpawnCoroutine; // coroutines for managing cooldowns of the order spawns
 
     // wave event stuff
-    private event Action OnDeleteActiveOrders;
+    public event Action OnDeleteActiveOrders;
     public event Action OnMainGameFinishes;
 
     [Header("Debug")]
@@ -252,8 +252,14 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
                 continue;
 
             tutorialOrders[i].InitOrder(false);
+            OnDeleteActiveOrders += tutorialOrders[i].EraseOrder;
             IncrementCounters(tutorialOrders[i].Value, 1);
         }
+    }
+
+    public void DeleteActiveOrders()
+    {
+        OnDeleteActiveOrders?.Invoke();
     }
 
     /// <summary>
@@ -366,7 +372,6 @@ public class OrderManager : SingletonMonobehaviour<OrderManager>
         if(!activeOrders.Contains(order))
         {
             activeOrders.Add(order);
-            OnDeleteActiveOrders += order.EraseOrder;
         }
     }
 

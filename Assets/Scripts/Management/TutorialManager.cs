@@ -35,12 +35,13 @@ public class TutorialManager : SingletonMonobehaviour<TutorialManager>
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S) && GameManager.Instance.MainState == GameState.Tutorial)
         {
             foreach (TutorialHandler handler in handlers)
             {
                 handler.TeachHandler(TutorialType.Final);
             }
+            OrderManager.Instance.DeleteActiveOrders();
         }
     }
     /// <summary>
