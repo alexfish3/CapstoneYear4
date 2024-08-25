@@ -11,13 +11,25 @@ public class HeadlightController : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwapStartingCutscene += () => headlight.enabled = true;
-        GameManager.Instance.OnSwapResults += () => headlight.enabled = false;
+        GameManager.Instance.OnSwapStartingCutscene += EnableHeadlight;
+        GameManager.Instance.OnSwapResults += DisableHeadlight;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwapStartingCutscene -= () => headlight.enabled = true;
-        GameManager.Instance.OnSwapResults -= () => headlight.enabled = false;
+        GameManager.Instance.OnSwapStartingCutscene -= EnableHeadlight;
+        GameManager.Instance.OnSwapResults -= DisableHeadlight;
+    }
+
+    private void EnableHeadlight()
+    {
+        if(headlight != null)
+            headlight.enabled = true;
+    }
+
+    private void DisableHeadlight() // no head?
+    {
+        if(headlight != null)
+            headlight.enabled = false;
     }
 }

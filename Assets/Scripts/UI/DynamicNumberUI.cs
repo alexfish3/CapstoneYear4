@@ -25,16 +25,12 @@ public class DynamicNumberUI : MonoBehaviour
     {
         //Ticker.OnTickAction010 += Tick;
         GameManager.Instance.OnSwapAnything += SetNothing;
-        GameManager.Instance.OnSwapBegin += () => waveTimerDynamic.SetActive(true);
-        GameManager.Instance.OnSwapStartingCutscene += () => finalOrderNumber.gameObject.SetActive(false);
     }
 
     private void OnDisable()
     {
         //Ticker.OnTickAction010 -= Tick;
         GameManager.Instance.OnSwapAnything -= SetNothing;
-        GameManager.Instance.OnSwapBegin -= () => waveTimerDynamic.SetActive(true);
-        GameManager.Instance.OnSwapStartingCutscene -= () => finalOrderNumber.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -43,8 +39,9 @@ public class DynamicNumberUI : MonoBehaviour
     public void SetNormalGameplay()
     {
         dynamicWaveTimer.SetActive(true);
+        waveTimerDynamic.SetActive(true);
         numHandler.SetFinalCountdown(false);
-        
+        finalOrderNumber.gameObject.SetActive(false);
         centerText.text = "";
         timeSpan = TimeSpan.FromSeconds(OrderManager.Instance.GameTimer);
 
