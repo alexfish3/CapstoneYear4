@@ -30,13 +30,13 @@ public class TutorialHandler : MonoBehaviour
     private void OnEnable()
     {
         GameManager.Instance.OnSwapStartingCutscene += ResetHandler;
-        GameManager.Instance.OnSwapGoldenCutscene += () => TeachHandler(TutorialType.Final);
+        GameManager.Instance.OnSwapGoldenCutscene += FinishTutorial;
         TutorialManager.Instance.OnTutorialComplete += FinishTutorial;
     }
     private void OnDisable()
     {
         GameManager.Instance.OnSwapStartingCutscene -= ResetHandler;
-        GameManager.Instance.OnSwapGoldenCutscene -= () => TeachHandler(TutorialType.Final);
+        GameManager.Instance.OnSwapGoldenCutscene -= FinishTutorial;
         TutorialManager.Instance.OnTutorialComplete -= FinishTutorial;
     }
 
@@ -144,6 +144,7 @@ public class TutorialHandler : MonoBehaviour
         ball.SetBoostModifier(true);
         tutorialText.text = "";
         tutorialTextPurple.text = "";
+
         tutorialImage.SetActive(false);
 
         if(TutorialManager.Instance != null)
